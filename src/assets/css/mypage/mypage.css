@@ -1,0 +1,35 @@
+/* 반려견 등록페이지 */
+.sidebar {
+    width: 320px;
+    height: 750px;
+    /* background-color: green; */
+    position: fixed;
+}
+
+.profile {
+    width: 250px;
+    height: 200px;
+    margin: 30px 0 0 30px;
+    display: flex;
+    /* background-color: red; */
+}
+
+.sidebar .profile img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+
+.profileId {
+    margin: 50px 0 0 20px;
+}
+
+.profileId label:first-child {
+    font-weight: bold;
+}
+.profilePet img{
+    width: 150px;
+    height: 150px;
+    border-radius: 20%;
+}

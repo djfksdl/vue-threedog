@@ -1,0 +1,40 @@
+/* 메니저 페이지 공통 헤더 */
+.mheader{
+    height: 80px;
+    background-color: aquamarine;
+}
+.mheader .mheaderWrap{
+    width: 1200px;
+    height: 80px;
+    margin: 0 auto;
+    background-color: paleturquoise;
+    display: flex;
+    justify-content: space-between;
+    padding-right: 20px;
+    align-items: center;
+}
+/* 헤더 왼쪽(로고+메뉴) */
+.mheader .mheaderWrap .mheaderLeft{
+    display: flex;
+}
+.mheader .mheaderWrap .mheaderLeft .mlogo{
+    width: 150px;
+    height: 80px;
+    background-color: plum;
+    display: flex;
+    align-items: center;
+}
+.mheader .mheaderWrap .mheaderLeft .mlogo a img{
+    width: 150px;
+    object-fit: contain;
+}
+.mheader .mheaderWrap .mheaderLeft .mMenu{
+    display: flex;
+    align-items: center;
+}
+.mheader .mheaderWrap .mheaderLeft .mMenu a{}
+.mheader .mheaderWrap .mheaderLeft .mMenu a li{
+    margin: 0 20px;
+}
+/* 헤더 오른쪽 로그인 */
+.mheader .mheaderWrap .mheaderRight{}

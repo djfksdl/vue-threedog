@@ -1,24 +1,26 @@
 <template>
     <div id="wrap">
-           <AppHeader />
-           <div id="potal-main-container" class="clearfix">
-               
-  
-           </div><!-- potal-main-container -->
-           <AppFooter />           
+        <ManagerHeader />
+          <div class="container">
+
+          </div>
+           
+        <ManagerFooter />  
        </div><!-- wrap --> 
+
   </template>
   
   
   <script>
-   import AppFooter from "@/components/AppFooter.vue"
-   import AppHeader from "@/components/AppHeader.vue"
+  
+   import ManagerFooter from "@/components/ManagerFooter.vue"
+   import ManagerHeader from "@/components/ManagerHeader.vue"
   
    export default {
        name: "EditView",
        components: {
-           AppFooter,
-           AppHeader
+            ManagerFooter,
+            ManagerHeader
        },
        data() {
            return {
