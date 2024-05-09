@@ -1,11 +1,11 @@
 /* 메니저 페이지 공통 헤더 */
 .mheader{
-    height: 100px;
+    height: 80px;
     background-color: aquamarine;
 }
 .mheader .mheaderWrap{
     width: 1200px;
-    height: 100px;
+    height: 80px;
     margin: 0 auto;
     background-color: paleturquoise;
     display: flex;
@@ -19,8 +19,14 @@
 }
 .mheader .mheaderWrap .mheaderLeft .mlogo{
     width: 150px;
-    height: 100px;
+    height: 80px;
     background-color: plum;
+    display: flex;
+    align-items: center;
+}
+.mheader .mheaderWrap .mheaderLeft .mlogo a img{
+    width: 150px;
+    object-fit: contain;
 }
 .mheader .mheaderWrap .mheaderLeft .mMenu{
     display: flex;

@@ -5,7 +5,7 @@
             <div class="mheaderLeft">
                 <!-- 로고 -->
                 <div class="mlogo">
-                    <p>로고자리</p>
+                    <router-link to="/"><img src="@/assets/images/logo.png" alt=""></router-link>
                 </div>
                 <!-- 메뉴 -->
                 <ul class="mMenu">
@@ -19,7 +19,7 @@
             </div>
             <!-- 헤더 오른쪽 로그인 -->
             <div class="mheaderRight">
-                <p>000님</p>
+                <p><router-link to=""><strong>보리최고</strong>님</router-link></p>
             </div>
         </div>
     </div>
