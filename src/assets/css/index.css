@@ -7,8 +7,11 @@
 div{
     font-family:"Pretendard", sans-serif;
 }
-.wrap{
-    height: 970px;
+.container{
+    width: 1200px;
+    margin: 0 auto;
+    background-color: pink;
+    height: 750px;
 }
 li{
     list-style: none;
