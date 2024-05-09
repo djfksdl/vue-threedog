@@ -5,7 +5,7 @@
                 <img class="main-slide" src="../../assets/images/main-slide.png">
          </div><!-- potal-main-slide -->
          <div id="potal-main-container" class="clearfix">
-                d
+                힛
          </div><!-- potal-main-container -->
          <AppFooter />           
      </div><!-- wrap --> 
@@ -37,7 +37,7 @@
     width: 1200px;
     margin: 0 auto;
     text-align: center;
-    background-color: aqua;
+    background-color: antiquewhite;
     height: 2000px; /* 임시로 준 크기임 */
 }
 
