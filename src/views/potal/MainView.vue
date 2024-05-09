@@ -1,12 +1,12 @@
 <template>
   <div id="wrap">
          <AppHeader />
-         <div id="ys-main-container" class="clearfix">
+         <div id="potal-main-container" class="clearfix">
              
 
-         </div><!-- //container -->
+         </div><!-- potal-main-container -->
          <AppFooter />           
-     </div><!-- //wrap --> 
+     </div><!-- wrap --> 
 </template>
 
 
