@@ -1,0 +1,27 @@
+/* 메니저 페이지 공통 헤더 */
+.mheader{
+    height: 100px;
+    background-color: aquamarine;
+}
+.mheader .mheaderWrap{
+    width: 1200px;
+    height: 100px;
+    margin: 0 auto;
+    background-color: paleturquoise;
+    display: flex;
+}
+/* 로고 */
+.mheader .mheaderWrap .mlogo{
+    width: 150px;
+    height: 100px;
+    background-color: plum;
+}
+.mheader .mheaderWrap .mMenu{
+    display: flex;
+    align-items: center;
+}
+.mheader .mheaderWrap .mMenu a{}
+.mheader .mheaderWrap .mMenu a li{
+    margin: 0 20px;
+
+}
