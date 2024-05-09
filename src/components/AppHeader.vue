@@ -22,12 +22,13 @@ export default {
 .header{
     width: 100%;
     height: 138px;
-    background-color: #d6d6d6;
+    /* background-color: #d6d6d6; */
 }
 
 .logo{
-    width: 250px;
-    height: 150px;
+    width: 400px;
+    height: auto;
+    margin: 20px 10px 10px 300px;
     object-fit: contain;
 }
 </style>
