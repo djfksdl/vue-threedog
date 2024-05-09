@@ -1,19 +1,26 @@
 <template>
     <div class="mheader">
         <div class="mheaderWrap">
-            <!-- 로고 -->
-            <div class="mlogo">
-                <p>로고자리</p>
+            <!-- 헤더 왼쪽(로고+메뉴) -->
+            <div class="mheaderLeft">
+                <!-- 로고 -->
+                <div class="mlogo">
+                    <p>로고자리</p>
+                </div>
+                <!-- 메뉴 -->
+                <ul class="mMenu">
+                    <!-- 회원+원장 -->
+                    <router-link to=""><li>후기게시판</li></router-link>
+                    <!-- 원장 로그인했을때 보이는것 -->
+                    <router-link to=""><li>알림창</li></router-link>
+                    <router-link to=""><li>예약스케쥴</li></router-link>
+                    <router-link to=""><li>매출/통계</li></router-link>
+                </ul>
             </div>
-            <!-- 메뉴 -->
-            <ul class="mMenu">
-                <!-- 회원+원장 -->
-                <router-link to=""><li>후기게시판</li></router-link>
-                <!-- 원장 로그인했을때 보이는것 -->
-                <router-link to=""><li>알림창</li></router-link>
-                <router-link to=""><li>예약스케쥴</li></router-link>
-                <router-link to=""><li>매출/통계</li></router-link>
-            </ul>
+            <!-- 헤더 오른쪽 로그인 -->
+            <div class="mheaderRight">
+                <p>000님</p>
+            </div>
         </div>
     </div>
 </template>
