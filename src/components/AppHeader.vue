@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-        <img src="../assets/images/logo.png">
+        <img class="logo" src="../assets/images/logo.png">
     </div>
 </template>
 
@@ -22,7 +22,12 @@ export default {
 .header{
     width: 100%;
     height: 138px;
-    background-color: green;
+    background-color: #d6d6d6;
 }
 
+.logo{
+    width: 250px;
+    height: 150px;
+    object-fit: contain;
+}
 </style>
