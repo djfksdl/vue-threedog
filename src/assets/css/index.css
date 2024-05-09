@@ -1,0 +1,19 @@
+/* 공통! */
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+div{
+    font-family:"Pretendard", sans-serif;
+}
+.wrap{
+    height: 970px;
+}
+li{
+    list-style: none;
+}
+a{
+    color: black;
+    text-decoration: none;
+}
