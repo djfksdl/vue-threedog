@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import MainView from '@/views/potal/MainView.vue'
 import DiaryView from '@/views/manager/DiaryView.vue'
 import PetAddFormView from '@/views/mypage/PetAddFormView.vue'
+import EditView from '@/views/edit/EditView.vue'
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
     path: '/petaddform',
     name: 'petaddform',
     component:PetAddFormView
+  },
+  {
+    path: '/edit',
+    name: 'edit',
+    component: EditView
   },
 ]
 
