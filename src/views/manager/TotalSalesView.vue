@@ -66,7 +66,7 @@
       // 차트를 그리는 메서드
       drawChart(canvasRef, labels, data, backgroundColor, borderColor, label) {
         new Chart(canvasRef, {
-          type: 'doughnut',
+          type: 'bar',
           data: {
             labels: labels,
             datasets: [{
@@ -114,7 +114,7 @@
       display: flex; /* Flex 컨테이너로 설정 */
       justify-content: center; /* 가로 방향으로 가운데 정렬 */
       align-items: center; /* 세로 방향으로 가운데 정렬 */
-      width: 100%; /* 부모 요소에 맞게 가로 너비를 100%로 설정 */
+      width: 1500px; /* 부모 요소에 맞게 가로 너비를 100%로 설정 */
   }
   
   /* 그래프 제목 스타일 */
