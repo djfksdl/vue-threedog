@@ -11,7 +11,7 @@ div{
     width: 1200px;
     margin: 0 auto;
     background-color: pink;
-    height: 750px;
+    /* height: 750px; */
 }
 li{
     list-style: none;
