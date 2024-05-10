@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import "@/assets/css/mheader/mheader.css"
+import "@/assets/css/mHeaderFooter/mheader.css"
 export default {
     name: "ManagerHeader",
     components: {},

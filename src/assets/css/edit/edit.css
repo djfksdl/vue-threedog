@@ -21,9 +21,14 @@
 
 /* ==============내용부분============= */
 /* 미용사진 */
-.cutImgBox{}
+.cutImgBox{
+    background-color: sandybrown;
+}
 .cutImgBox h1{}
 .cutImgBox .cutSlide{}
 .cutImgBox .cutSlide img{
-    width: 300px;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    margin-right: 20px;
 }

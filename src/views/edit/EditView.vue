@@ -19,6 +19,11 @@
                     <div class="cutSlide">
                         <img src="@/assets/images/dog.jpg">
                         <img src="@/assets/images/dog.jpg">
+                        <img src="@/assets/images/spy.jpg">
+                        <img src="@/assets/images/dog.jpg">
+                        <img src="@/assets/images/dog.jpg">
+                        <img src="@/assets/images/dog.jpg">
+                        <img src="@/assets/images/dog.jpg">
                         <img src="@/assets/images/dog.jpg">
                     </div>
                 </div>
