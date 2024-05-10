@@ -32,6 +32,7 @@
      },
  };
 </script>
+
 <style>
 #potal-main-container{
     width: 1200px;
