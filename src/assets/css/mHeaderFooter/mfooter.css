@@ -1,0 +1,17 @@
+/* 메니저 페이지 공통 푸터 */
+.mfooter{
+    background-color: #626262;
+    color: white;
+    padding: 20px 0;
+}
+.mfooter .mfooterWrap{
+    width: 1200px;
+    margin: 0 auto;
+}
+.mfooter .mfooterWrap .mfooterTop{
+    display: flex;
+    justify-content: space-between;
+}
+.mfooter .mfooterWrap .mfooterBtm{
+    /* text-align: center; */
+}
