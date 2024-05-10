@@ -217,13 +217,13 @@ export default {
   text-align: center;
   font-weight: bold; /* 글씨를 굵게 설정 */
   margin-top: 5px;
+  margin-bottom: 10px
 }
 
 .event-banner{
   width: 1370px;
   height: 350px;
   margin: 80px 0 40px 25px;
-  background-color: #4CAF50;
 }
 
 .AppFooter {
