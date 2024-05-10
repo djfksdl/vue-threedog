@@ -23,8 +23,7 @@
                         <img src="@/assets/images/spy.jpg">
                         <img src="@/assets/images/dog.jpg">
                         <img src="@/assets/images/dog.jpg">
-                        <!-- <img src="@/assets/images/dog.jpg">
-                        <img src="@/assets/images/dog.jpg"> -->
+                        <img src="@/assets/images/dog.jpg">
                     </div>
                 </div>
 
@@ -34,17 +33,20 @@
                     <div class="eDesignerContentsBox">
                         <!-- 디자이너소개 왼쪽 -->
                         <div class="eDLeftBox">
-                            <h2>미용고문 이서현 원장</h2>
-                            <p>- 2000년 애견미용 입문</p>
-                            <p>- 전 애견미용 학원강사</p>
-                            <p>- 2000년 애견미용 입문</p>
-                            <p>- 2000년 애견미용 입문</p>
-                            <p>- 2000년 애견미용 입문</p>
-                            <p>- 2000년 애견미용 입문</p>
+                            <h2>이서현 원장</h2>
+                            <div class="eCareerBox">
+                                <h3>경력</h3>
+                                <p>- 2000년 애견미용 입문</p>
+                                <p>- 전 애견미용 학원강사</p>
+                                <p>- 2000년 애견미용 입문</p>
+                                <p>- 2000년 애견미용 입문</p>
+                                <p>- 2000년 애견미용 입문</p>
+                                <p>- 2000년 애견미용 입문</p>
+                            </div>
                         </div>
                         <!-- 디자이너소개 오른쪽 -->
                         <div class="edRightBox">
-                            프로필 이미지
+                            <img src="@/assets/images/profile.png">
                         </div>
                     </div>
                 </div>
@@ -57,7 +59,7 @@
                         <table border="1">
                             <!-- 소형견 -->
                             <tr>
-                                <th colspan="7">소형견(말티즈, 요크셔, 시츄, 푸들 등...)</th>
+                                <th colspan="7" class="eNonBorder">소형견(말티즈, 요크셔, 시츄, 푸들 등...)</th>
                             </tr>
                             <tr>
                                 <th>몸무게</th>
@@ -101,7 +103,7 @@
                             </tr>
                             <!-- 중형견 -->
                             <tr>
-                                <th colspan="7">중형견(슈나, 코카 등...)</th>
+                                <th colspan="7" class="eNonBorder">중형견(슈나, 코카 등...)</th>
                             </tr>
                             <tr>
                                 <th>5kg이하</th>
@@ -142,7 +144,7 @@
                             </tr>
                             <!-- 특수견 -->
                             <tr>
-                                <th colspan="7">특수견(비숑. 베들링턴 등...)</th>
+                                <th colspan="7" class="eNonBorder">특수견(비숑. 베들링턴 등...)</th>
                             </tr>
                             <tr>
                                 <th>몸무게</th>
@@ -185,7 +187,7 @@
                                 <th colspan="7">&nbsp;</th>
                             </tr>
                             <tr>
-                                <th rowspan="4">추가요금</th>
+                                <th rowspan="4" class="eNonBorder2">추가요금</th>
                                 <th>가위컷</th>
                                 <td>25,000</td>
                                 <th>특수얼굴컷</th>
@@ -207,16 +209,19 @@
                     </div>
                     <!-- 후기 -->
                     <div class="eReviewBox">
-                        <h1>후기</h1>
+                        <div class="eReviewBoxTitle">
+                            <h1>후기</h1>
+                            <router-link to="" >더보기 +</router-link>
+                        </div>
                         <!-- 후기 슬라이드 -->
                         <div class="eReviewSlide">
-                            <div class="eMoreBtn">
-                                <router-link to="" >더보기 +</router-link>
-                            </div>
                             <img src="@/assets/images/spy.jpg">
                             <!-- 후기 슬라이드 내용 -->
                             <div class="eReviewSlideContentBox">
-                                <h2>썬글라스 착용샷</h2>
+                                <div class="eReviewSlideContentBoxTop">
+                                    <h2>썬글라스컷</h2>
+                                    <p>보리집사님</p>
+                                </div>
                                 <p>1960년대에 앤 베이커(Ann Baker)는 조세핀(Josephine)이라는 이름을 가진 앙고라 계열이지만 여러 혈통이 섞인 하얀 장모종을 발견했다. 조세핀이라는 고양이는 자동차 사고를 당해 다쳐서 캘리포니아 대학에 있었는데, 베이커는 조세핀이 비밀 정부기관에서 유전자 실험으로 생겨났다고 믿고 있었고, 베이커는 이 고양이와 버만 고양이를 교배시켜 랙돌을 탄생시켰다. 역사가 짧은데다가 한동안 앤 베이커가 랙돌 브리딩계를 아주 꽉 잡고 있었기 때문에[2] 유전자풀이 굉장히 좁다. 현재 랙돌의 유전자 중 약 40% 정도가 앤 베이커의 랙돌 한 마리에게서 왔다고 한다. 그럼에도 불구하고 아직까지 알려진 종특 유전병은 없다. 물론 HCM은 조심해야 하지만, 제대로 된 캐터리라면 먼저 유전자 검사를 한 뒤에 브리딩을 하니 고양이 분양시에 제대로 확인을 하면 된다.</p>
                             </div>
                         </div>
