@@ -1,10 +1,11 @@
 <template>
     <div class="header">
-        <img class="logo" src="../assets/images/logo.png">
-
+        <router-link to="/">
+            <img class="logo" src="../assets/images/logo.png">
+        </router-link>
         <div class="head">
             <ul>
-                <li><a href="">로그인</a></li>
+                <li><router-link to="/login">로그인</router-link></li>
             </ul>
 
             <!-- <ul>
@@ -45,6 +46,7 @@ export default {
     height: 138px;
     position: relative; /* 부모 요소로부터의 상대적 위치 지정 */
     /* background-color: #d6d6d6; */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
 }
 
 .logo {

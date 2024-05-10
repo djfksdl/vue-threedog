@@ -28,14 +28,14 @@ export default {
 <style>
 .footer {
     width: 100%;
-    height: 350px;
+    height: 300px;
     background-color: #252525;
 }
 
 .footer-name{
     width: 300px;
     height: 80px;
-    margin: 100px 20px 20px 300px;
+    margin: 70px 20px 20px 300px;
 }
 
 .app{

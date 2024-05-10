@@ -17,20 +17,6 @@
                         </div>
                         <button type="submit" class="loginBtn">로그인</button>
                         <button type="submit" class="signinBtn">회원가입</button>
-
-                        
-                        <p class="signup-link">직원 간편 로그인은 <a href="/mlogin" class="manager-signup">여기</a>를 클릭!</p>
-                        <div class="sns">
-                            <router-link to="">
-                                <img class="kakao" src="../../assets/images/kakao.png">
-                            </router-link>
-                            <router-link to="">
-                                <img class="naver" src="../../assets/images/naver.png">
-                            </router-link>
-                        </div>
-                        <div class="sns">
-                            
-                        </div>
                     </form>
                 </div>
             </div><!-- login-box -->
@@ -44,7 +30,7 @@ import AppFooter from "@/components/AppFooter.vue"
 import AppHeader from "@/components/AppHeader.vue"
 
 export default {
-    name: "LoginView",
+    name: "ManagerLoginView",
     components: {
         AppFooter,
         AppHeader
@@ -134,7 +120,6 @@ export default {
     cursor: pointer;
 }
 
-
 .toggle-password i {
     color: #999; /* 회색 계열 */
 }
@@ -152,16 +137,6 @@ export default {
     margin-top: 15px;
 }
 
-.signup-link {
-    font-size: 14px;
-    color: #666;
-}
-
-.manager-signup{
-    color: #236C3F;
-    font-weight: bold;
-}
-
 .signinBtn {
     width: calc(100% - 40px);
     padding: 10px;
@@ -172,27 +147,6 @@ export default {
     cursor: pointer;
     transition: background-color 0.3s ease;
     margin-bottom: 7px;
-}
-
-.sns {
-    display: flex;
-    justify-content: center;
-    margin-top: 30px;
-}
-
-.sns img {
-    height: 40px;
-    width: 140px;
-}
-
-.kakao,
-.naver {
-    width: 120px;
-    margin: 0 5px;
-}
-
-.kakao {
-    margin-right: 5px;
 }
 
 </style>
