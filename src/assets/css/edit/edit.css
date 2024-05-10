@@ -19,14 +19,14 @@
     width: 100%;
 }
 
-/* ==============중간 내용부분============= */
+/* ===================== 중간 내용부분 ===================== */
 
 .eMidContainer{
     padding: 30px 0;
     background-color: cornflowerblue;
 }
 
-/* 미용사진 */
+/* ============= 미용사진 ============= */
 .eMidContainer .eCutImgContainer{
     background-color: sandybrown;
     margin-bottom: 30px;
@@ -42,7 +42,7 @@
     margin-right: 20px;
 }
 
-/* 디자이너 소개 */
+/*============= 디자이너 소개 =============*/
 .eMidContainer .eDesignerSlideContainer{
     background-color: forestgreen;
     margin-bottom: 30px;
@@ -75,22 +75,100 @@
     background-color: red;
 }
 
-/* 가격 + 후기 */
+/*============= 가격 + 후기 =============*/
 .eMidContainer .ePriceReviewContainer{
     display: flex;
-    /* justify-content: space-between; */
+    justify-content: space-between;
     background-color: darkgoldenrod;
     /* padding: 0 30px; */
     width: 1800px;
-    margin: 0 auto;
+    margin: 0 auto 30px;
 }
 /* 가격 */
 .eMidContainer .ePriceReviewContainer .ePriceBox{
     background-color: tomato;
-    
+    padding: 10px 10px 10px 30px;
+    /* margin-right: 30px; */
+
+}
+.eMidContainer .ePriceReviewContainer .ePriceBox h1{
+    margin-bottom: 30px;
+}
+.eMidContainer .ePriceReviewContainer .ePriceBox table{
+    border-collapse: collapse;
+    width: 850px;
+}
+.eMidContainer .ePriceReviewContainer .ePriceBox table th{
+    height: 50px;
+}
+.eMidContainer .ePriceReviewContainer .ePriceBox table td{
+    padding-left: 5px;
 }
 
 /* 후기 */
 .eMidContainer .ePriceReviewContainer .eReviewBox{
     background-color: navy;
+    width: 850px;
+    padding: 10px;
 }
+.eMidContainer .ePriceReviewContainer .eReviewBox h1{
+    margin-bottom: 30px;
+}
+/* 후기 슬라이드 */
+.eMidContainer .ePriceReviewContainer .eReviewBox .eReviewSlide{
+    width: 700px;
+    background-color: darkorchid;
+    margin: 0 auto;
+}
+/* 후기 슬라이드 더보기버튼 */
+.eMidContainer .ePriceReviewContainer .eReviewBox .eReviewSlide .eMoreBtn{
+    text-align: right;
+}
+.eMidContainer .ePriceReviewContainer .eReviewBox .eReviewSlide .eMoreBtn a{
+    font-weight: bold;
+}
+
+/* 후기 슬라이드 이미지 */
+.eMidContainer .ePriceReviewContainer .eReviewBox .eReviewSlide img{
+    width: 700px;
+    margin-bottom: 30px;
+}
+/* 후기 슬라이드 내용 */
+.eMidContainer .ePriceReviewContainer .eReviewBox .eReviewSlide .eReviewSlideContentBox{
+   background-color: darkorange;
+   padding: 10px;
+   /* width: 700px; */
+}
+.eMidContainer .ePriceReviewContainer .eReviewBox .eReviewSlide .eReviewSlideContentBox h2{
+    margin-bottom: 10px;
+ }
+
+ /*============= 위치 =============*/
+ .eMidContainer .ePositionContainer{
+    background-color: skyblue;
+    width: 1800px;
+    margin: 0 auto 30px;
+ }
+ .eMidContainer .ePositionContainer h1{
+    margin-left: 30px;
+ }
+ .eMidContainer .ePositionContainer .ePositionBox{
+    background-color: yellowgreen;
+    display: flex;
+ }
+ 
+ /* 위치 왼쪽 */
+ .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft{
+    background-color: orangered;
+    width: 900px;
+ }
+ .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime{}
+ .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eRoad{}
+ .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eReserv{}
+ 
+ /* 위치 오른쪽 */
+ .eMidContainer .ePositionContainer .ePositionBox .ePositionLRight{
+    background-color: lightcoral;
+    width: 900px;
+
+ }
