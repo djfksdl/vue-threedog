@@ -1,11 +1,17 @@
+#petAddForm {
+    display: flex;
+
+}
+
 /* 반려견 등록페이지 */
 .sidebar {
     width: 320px;
     height: 750px;
-    /* background-color: green; */
-    position: fixed;
+    background-color: green;
+    /* position: fixed; */
 }
 
+/* 사이드바 */
 .profile {
     width: 250px;
     height: 200px;
@@ -28,8 +34,152 @@
 .profileId label:first-child {
     font-weight: bold;
 }
-.profilePet img{
+
+
+.profilePet img {
     width: 150px;
     height: 150px;
     border-radius: 20%;
+}
+
+/* 입력폼 */
+.container{
+    width: 1400px;
+}
+#petAddForm{
+    /* border: 1px solid black; */
+    width: 1400px;
+    height: 1400px;
+    margin: 0 auto;
+}
+
+#petAddForm .container form div {
+    margin: 0 auto;
+    width: 400px;
+    /* background-color: red; */
+}
+
+#petAddForm .container form label:first-child {
+    /* background-color: red; */
+    display: block;
+    font-weight: bold;
+}
+
+#petAddForm .container form .petPhoto {
+    margin-top: 40px;
+    margin-bottom: 100px;
+    width: 200px;
+    height: 200px;
+    border: 1px solid #a7a4a4;
+    border-radius: 50%;
+    background-image: url('@/assets/images/profile_sample.png');
+    background-repeat: no-repeat;
+    background-size :cover;
+}
+#petAddForm .container form .petPhoto .cameraBtn{
+    background-color: #dddddd;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin: 140px 140px ;
+    text-align: center;
+    border: none;
+}
+
+#petAddForm .container form .petPhoto img{
+    width: 40px;
+    margin-top: 2px;
+    opacity: 0.5;
+    
+}
+
+#petAddForm .container .detail{
+   padding-left: 30px;
+}
+
+#petAddForm .container .detail label{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+
+#petAddForm .container .detail input:nth-child(2) {
+    width: 340px;
+    height: 40px;
+    border: 1px solid #a7a4a4;
+    border-radius: 5px;
+    padding-left: 5px;
+    font-size: 15px;
+    /* margin-top: 10px;
+    margin-bottom: 10px; */
+}
+
+
+#petAddForm .detail button{
+    background-color: white;
+    border: 1px solid #a7a4a4;
+    margin-right: 30px;
+    width: 155px;
+    height: 40px;
+    border-radius: 5px;
+
+}
+#petAddForm .detail button:hover{
+    background-color: green;
+    color: white;
+    border: none;
+    font-weight: bold;
+}
+
+#petAddForm #feature .bite label:first-child{
+    width: 80px;
+    height: 40px;
+    padding-top: 10px;
+    display: inline-block;
+    font-size: 14px;
+    /* border: 1px solid #a7a4a4; */
+    border-radius: 5px;
+    text-align: center;
+    /* font-weight: lighter; */
+    margin-right: 15px;
+}
+
+#petAddForm #feature .bite input{
+    width: 40px;
+    margin-left:-5px;
+    margin-right: 10px;
+}
+
+#petAddForm #feature button{
+    width: 80px;
+    margin-right: 7px;
+}
+
+
+#petAddForm #feature textarea{
+    text-align: start;
+    width: 340px;
+    height: 100px;
+    padding-left: 5px;
+    padding-top: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #a7a4a4;
+    border-radius: 5px;
+    resize: none;
+    outline: #236C3F;
+}
+
+.insertBtnBox{
+    text-align: center;
+}
+
+#petAddForm .container .insertBtn{
+    width: 340px;
+    height: 50px;
+    border: 1px solid #236C3F;
+    border-radius: 5px;
+    background-color: white;
+    color: #236C3F;
+    font-weight: bolder;
+    font-size: 16px;
 }
