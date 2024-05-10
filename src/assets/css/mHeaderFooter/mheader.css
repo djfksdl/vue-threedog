@@ -2,13 +2,26 @@
 
 .mheader{
     height: 80px;
-    background-color: aquamarine;
+    /* background-color: aquamarine; */
+    position: relative;
+    top: 0;
+}
+.mheader::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 10px 0 rgba(0, 0,0, 0.1);
+    pointer-events: none;
+    transform: translateX(-50%);
 }
 .mheader .mheaderWrap{
     width: 1400px;
     height: 80px;
     margin: 0 auto;
-    background-color: paleturquoise;
+    /* background-color: paleturquoise; */
     display: flex;
     justify-content: space-between;
     padding-right: 20px;
@@ -22,7 +35,7 @@
 .mheader .mheaderWrap .mheaderLeft .mlogo{
     width: 150px;
     height: 80px;
-    background-color: plum;
+    /* background-color: plum; */
     display: flex;
     align-items: center;
 }

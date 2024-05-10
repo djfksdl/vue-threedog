@@ -1,5 +1,5 @@
 <template>
-    <div class="mheader">
+    <header class="mheader">
         <div class="mheaderWrap">
             <!-- 헤더 왼쪽(로고+메뉴) -->
             <div class="mheaderLeft">
@@ -22,7 +22,7 @@
                 <p><router-link to=""><strong>보리최고</strong>님</router-link></p>
             </div>
         </div>
-    </div>
+    </header>
 </template>
 
 <script>
