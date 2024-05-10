@@ -46,6 +46,48 @@
       </div>
       <h2>인기짱강아지 Best</h2>
       <hr>
+      <div class="rank">
+        <div class="rank-item">
+          <img src="../../assets/images/spy.jpg">
+          <label>스파이가게</label>
+        </div>
+        <div class="rank-item">
+          <img src="../../assets/images/spy.jpg">
+          <label>다른 가게 이름</label>
+        </div>
+        <div class="rank-item">
+          <img src="../../assets/images/dog2.jpg">
+          <label>하이미디어</label>
+        </div>
+        <div class="rank-item">
+          <img src="../../assets/images/dog.jpg">
+          <label>김마리마리</label>
+        </div>
+        <div class="rank-item">
+          <img src="../../assets/images/dog.jpg">
+          <label>김마리마리</label>
+        </div>
+        <div class="rank-item">
+          <img src="../../assets/images/spy.jpg">
+          <label>스파이가게</label>
+        </div>
+        <div class="rank-item">
+          <img src="../../assets/images/spy.jpg">
+          <label>다른 가게 이름</label>
+        </div>
+        <div class="rank-item">
+          <img src="../../assets/images/dog2.jpg">
+          <label>하이미디어</label>
+        </div>
+        <div class="rank-item">
+          <img src="../../assets/images/dog.jpg">
+          <label>김마리마리</label>
+        </div>
+        <div class="rank-item">
+          <img src="../../assets/images/dog.jpg">
+          <label>김마리마리</label>
+        </div>
+      </div><!-- rank -->
     </div><!-- potal-main-container -->
     <AppFooter />           
   </div><!-- wrap --> 
@@ -95,7 +137,6 @@ export default {
   width: 1400px;
   margin: 0 auto;
   text-align: left;
-  height: 2000px; /* 임시로 준 크기임 */
 }
 
 #potal-main-container h2{
@@ -154,7 +195,10 @@ export default {
 .rank {
   display: flex;
   justify-content: flex-start;
-  margin: 20px 0 0 25px;
+  margin: 20px 0 20px 25px;
+  width: 1400px;
+  flex-wrap: wrap;
+
 }
 
 .rank-item {
@@ -180,5 +224,9 @@ export default {
   height: 350px;
   margin: 80px 0 40px 25px;
   background-color: #4CAF50;
+}
+
+.AppFooter {
+  margin-top: 40px;
 }
 </style>
