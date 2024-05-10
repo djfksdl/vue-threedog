@@ -235,7 +235,7 @@
                             <div class="eTime">
                                 <!-- 이용시간-왼쪽 -->
                                 <div class="eTimeLeft">
-                                    <h3>진료시간</h3>
+                                    <h3>이용시간</h3>
                                 </div>
                                 <!-- 이용시간-오른쪽 -->
                                 <div class="eTimeRight">
@@ -266,7 +266,7 @@
                                 </div>
                                 <!-- 오시는길-오른쪽 -->
                                 <div class="eRoadRight">
-                                    <div>
+                                    <div class="eRoadRightContents">
                                         <p>서울특별시 강남구 봉은사로 317</p>
                                     </div>
                                     <div class="eRoadRightBtnBox">
@@ -280,7 +280,7 @@
                             <div class="eReserv">
                                 <!-- 미용예약-왼쪽 -->
                                 <div class="eReservLeft">
-                                    <h3>미용예약</h3>
+                                    <h3>예약문의</h3>
                                 </div>
                                 <!-- 미용예약-오른쪽 -->
                                 <div class="eReservRight">

@@ -8,6 +8,7 @@ import ManagerLoginView from '@/views/potal/ManagerLoginView.vue'
 import SignView from '@/views/potal/SignView.vue'
 import ManagerSignView from '@/views/potal/ManagerSignView.vue'
 import ReviewFormView from '@/views/mypage/ReviewFormView.vue'
+import TotalSalesView from '@/views/manager/TotalSalesView.vue'
 
 const routes = [
   {
@@ -54,7 +55,12 @@ const routes = [
     path: '/reviewform',
     name: 'reviewform',
     component: ReviewFormView
-  }
+  },
+  {
+    path: '/totalsales',
+    name: 'totalsales',
+    component:TotalSalesView
+  },
 ]
 
 const router = createRouter({
