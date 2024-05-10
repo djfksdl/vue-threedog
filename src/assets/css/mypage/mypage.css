@@ -13,7 +13,7 @@
     border-radius: 5px;
 }
 
-.profile {
+.sidebar .profile {
     width: 220px;
     height: 150px;
     margin: 20px 0 20px 20px;
@@ -45,7 +45,7 @@
 
 
 
-.profilePet {
+.sidebar .profilePet {
     display: flex;
 }
 
@@ -89,8 +89,8 @@
 
 }
 
-#petAddForm h1{
-    margin:50px 0 0 50px;
+#petAddForm h1 {
+    margin: 50px 0 0 50px;
     font-size: 30px;
 }
 
@@ -107,7 +107,7 @@
     width: 1400px;
     height: 1900px;
     margin: 0 auto;
-    
+
 }
 
 #petAddForm .container form div {
@@ -150,7 +150,7 @@
     opacity: 0.5;
 }
 
-#petAddForm .container .detail{
+#petAddForm .container .detail {
     padding-left: 25px;
 }
 
@@ -252,11 +252,22 @@
 
 /* *********************************************************** */
 /* reviewForm */
+
 #reviewAddForm {
     width: 1400px;
     height: 1900px;
     margin: 0 auto;
-    
+    display: flex;
+
+}
+
+#reviewAddForm .container {
+    margin: 0 auto;
+}
+
+#reviewAddForm .container h1{
+    margin: 50px 0 30px 50px;
+    font-size: 30px;
 }
 
 #reviewAddForm .container form {
@@ -264,3 +275,75 @@
     width: 1000px;
     /* border: 1px solid black; */
 }
+
+
+#reviewAddForm textarea {
+    width: 500px;
+    height: 200px;
+    padding: 10px;
+    resize: none;
+
+}
+
+#reviewAddForm textarea::placeholder {
+    color: #a7a4a4;
+}
+
+
+#reviewAddForm .star-rating {
+    display: flex;
+}
+
+#reviewAddForm .star-rating img {
+    width: 50px;
+}
+
+#reviewAddForm .reviewPhoto2{
+    display: flex;
+}
+
+#reviewAddForm .reviewPhoto h2{
+    width: 120px;
+    height: 40px;
+}
+#reviewAddForm .pull {
+    position: relative;
+    width: 240px;
+    height: 40px;
+    padding: 10px 0 10px 16px;
+    color: #FFF;
+    border-radius: 20px;
+    background-color: #414141;
+    display: flex;
+    font-size: 15px;
+}
+#reviewAddForm .reviewPhoto p{
+    color: yellow;
+    font-weight: bold;
+}
+
+
+#reviewAddForm .pull::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: -6px;
+    border-right: 10px solid #414141;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+}
+
+#reviewAddForm .reviewWrite p{
+    text-align: center;
+}
+#reviewAddForm .reviewPhoto input{
+    display: none;
+}
+#reviewAddForm .reviewPhoto .input-file-button{
+    padding: 6px 25px;
+    background-color:white;
+    border: 1px solid #a7a4a4;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 30px;
+  }
