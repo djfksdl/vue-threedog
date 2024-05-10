@@ -95,10 +95,8 @@
 }
 
 
-/* 입력폼 */
-
-
-.container form {
+/* petAddForm */
+#petAddForm .container form {
     margin: 0 auto;
     width: 1000px;
     /* border: 1px solid black; */
@@ -244,4 +242,25 @@
 
 #petAddForm button:hover {
     cursor: pointer;
+}
+
+
+
+
+
+
+
+/* *********************************************************** */
+/* reviewForm */
+#reviewAddForm {
+    width: 1400px;
+    height: 1900px;
+    margin: 0 auto;
+    
+}
+
+#reviewAddForm .container form {
+    margin: 0 auto;
+    width: 1000px;
+    /* border: 1px solid black; */
 }

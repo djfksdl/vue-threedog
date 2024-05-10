@@ -28,7 +28,9 @@
                 </div>
             </div>
             <div class="container">
-                
+                <form>
+                    
+                </form>
             </div>
         </div>
         <AppFooter />
@@ -38,6 +40,7 @@
 <script>
 import AppFooter from "@/components/AppFooter.vue"
 import AppHeader from "@/components/AppHeader.vue"
+import "@/assets/css/mypage/mypage.css"
 
 export default {
     name: "ReviewFormView",
