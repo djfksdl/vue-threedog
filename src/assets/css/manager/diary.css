@@ -1,0 +1,231 @@
+@charset "UTF-8";
+
+/* 전체 레이아웃 */
+#wrap {
+    font-family: Arial, sans-serif; /* 전체 페이지의 폰트 설정 */
+}
+
+/* 일지 컨테이너 */
+.diary-container {
+    display: flex; /* 요소들을 가로로 나란히 배치 */
+    justify-content: space-between; /* 요소들 사이의 간격을 최대한 늘려서 두 요소를 양쪽에 배치 */
+    width: 1500px; /* 컨테이너 너비 */
+    margin: 30px auto; /* 페이지 중앙 정렬 */
+    padding: 20px; /* 안쪽 여백 */
+    background-color: #f0f0f0; /* 배경색 */
+    border-radius: 10px; /* 테두리 반경 */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+}
+
+/* 왼쪽 박스, 오른쪽 박스 */
+.diary-left-box,
+.diary-right-box {
+    width: 48%; /* 박스의 너비 */
+    padding: 20px; /* 안쪽 여백 */
+    background-color: #ffffff; /* 박스 배경색 */
+    border-radius: 10px; /* 테두리 반경 */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+}
+
+/* 타이틀 */
+.diary-h2 {
+    color: #333333; /* 타이틀 색상 */
+    font-size: 1.5em; /* 타이틀 폰트 크기 */
+    margin-bottom: 20px; /* 아래 여백 */
+}
+
+/* 라벨 */
+.diary-label {
+    font-weight: bold; /* 폰트 굵기 */
+}
+
+/* 입력 필드와 텍스트 영역 */
+.diary-input[type="text"],
+.diary-textarea {
+    width: 100%; /* 입력 필드와 텍스트 영역 너비 */
+    padding: 10px; /* 안쪽 여백 */
+    margin-top: 5px; /* 위 여백 */
+    margin-bottom: 20px; /* 아래 여백 */
+    border: 1px solid #cccccc; /* 테두리 스타일 */
+    border-radius: 5px; /* 테두리 반경 */
+    box-sizing: border-box; /* 너비와 높이에 패딩과 테두리를 포함 */
+}
+
+/* 파일 업로드 입력 필드 */
+.diary-input[type="file"] {
+    /* display: none; */
+}
+
+/* 이미지 컨테이너 */
+.diary-image-container {
+    display: flex; /* 이미지들을 가로로 나열 */
+    overflow-x: auto; /* 가로 스크롤이 나타날 경우 자동으로 스크롤바 생성 */
+    margin-bottom: 20px; /* 아래 여백 */
+}
+
+/* 이미지 */
+.diary-image-container img {
+    width: auto; /* 이미지 너비 */
+    height: auto; /* 이미지 높이 자동 조정 */
+    margin-right: 10px; /* 오른쪽 여백 */
+    border-radius: 5px; /* 이미지 테두리 반경 */
+    cursor: pointer; /* 포인터 커서 설정 */
+}
+
+/* 버튼 */
+.diary-save-button,
+.diary-edit-button,
+.diary-send-button {
+    display: block; /* 블록 레벨 요소로 표시 */
+    width: 100%; /* 버튼 너비 */
+    padding: 10px; /* 안쪽 여백 */
+    border: none; /* 테두리 없음 */
+    border-radius: 20px; /* 둥근 테두리 */
+    background-color: #4CAF50; /* 배경색 */
+    color: white; /* 글자색 */
+    font-size: 1.2em; /* 폰트 크기 */
+    cursor: pointer; /* 포인터 커서 설정 */
+    margin-top: 10px; /* 위 여백 */
+}
+
+/* 버튼 호버 상태 */
+.diary-save-button:hover,
+.diary-edit-button:hover,
+.diary-send-button:hover {
+    background-color: #45a049; /* 배경색 변경 */
+}
+
+/* 취소 버튼 디자인 */
+.diary-edit-button {
+    background-color: #f44336; /* 배경색 */
+}
+
+/* 취소 버튼 호버 상태 */
+.diary-edit-button:hover {
+    background-color: #d32f2f; /* 배경색 변경 */
+}
+
+/* 모달창 */
+.diary-modal {
+    text-align: center; /* 텍스트 가운데 정렬 */
+    position: fixed; /* 위치 고정 */
+    z-index: 1; /* 층위 설정 */
+    left: 0; /* 왼쪽으로부터의 거리 */
+    top: 0; /* 위쪽으로부터의 거리 */
+    width: 100%; /* 너비 */
+    height: 100%; /* 높이 */
+    overflow: auto; /* 스크롤이 필요할 경우 자동으로 스크롤 생성 */
+    background-color: rgba(0, 0, 0, 0.4); /* 배경색 */
+}
+
+/* 모달창 내용 */
+.diary-modal-content {
+    background-color: #fefefe; /* 배경색 */
+    margin: 5% auto; /* 가운데 정렬 */
+    padding: 20px; /* 안쪽 여백 */
+    border-radius: 10px; /* 테두리 반경 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* 그림자 효과 */
+    width: 600px; /* 너비 */
+}
+
+/* 모달창 닫기 버튼 */
+.diary-modal-content .diary-close {
+    color: #aaaaaa; /* 색상 */
+    font-size: 24px; /* 폰트 크기 */
+    font-weight: bold; /* 폰트 굵기 */
+    cursor: pointer; /* 포인터 커서 설정 */
+    position: absolute; /* 절대 위치 */
+    top: 10px; /* 위쪽 여백 */
+    right: 10px; /* 오른쪽 여백 */
+}
+
+/* 모달창 닫기 버튼 호버 상태 */
+.diary-modal-content .diary-close:hover {
+    color: #000; /* 색상 변경 */
+}
+
+/* 첨부된 사진들 */
+.diary-attached-photos {
+    margin-top: 20px; /* 위쪽 여백 */
+}
+
+/* 첨부된 사진들 제목 */
+.diary-attached-photos p {
+    font-weight: bold; /* 폰트 굵기 */
+    margin-bottom: 10px; /* 아래 여백 */
+}
+
+/* 첨부된 사진들 이미지 */
+.diary-attached-photos img {
+    width: 100px; /* 이미지 너비 */
+    height: auto; /* 이미지 높이 자동 조정 */
+    margin-right: 10px; /* 오른쪽 여백 */
+    border-radius: 5px; /* 테두리 반경 */
+    display: none; /* 숨김 */
+}
+
+/* 닫기 버튼 */
+.diary-close {
+    color: #aaaaaa; /* 색상 */
+    float: right; /* 오른쪽 정렬 */
+    font-size: 28px; /* 폰트 크기 */
+    font-weight: bold; /* 폰트 굵기 */
+}
+
+/* 닫기 버튼 호버 상태 */
+.diary-close:hover,
+.diary-close:focus {
+    color: #000; /* 색상 변경 */
+    text-decoration: none; /* 텍스트에 밑줄 없음 */
+    cursor: pointer; /* 포인터 커서 설정 */
+}
+
+/* 테이블 디자인 */
+.diary-table {
+    width: 100%; /* 너비 */
+    border-collapse: collapse; /* 테이블 셀 경계를 병합하여 단일 경계 선으로 설정 */
+    margin-bottom: 20px; /* 아래 여백 */
+}
+
+/* 테이블 헤더와 셀 */
+.diary-table th,
+.diary-table td {
+    border: 1px solid #dddddd; /* 테두리 스타일 */
+    padding: 8px; /* 안쪽 여백 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+}
+
+/* 테이블 헤더 */
+.diary-table th {
+    background-color: #f2f2f2; /* 배경색 */
+}
+
+/* 짝수 행 배경색 */
+.diary-table tr:nth-child(even) {
+    background-color: #f9f9f9; /* 배경색 */
+}
+
+/* 모달 내 갤러리 이미지들 */
+.diary-modal-content .image-gallery {
+    overflow-x: auto; /* 가로 스크롤 사용 */
+}
+
+/* 갤러리 이미지들을 가로로 배치 */
+.diary-modal-content .gallery-images {
+    display: flex; /* 이미지를 가로로 배치하기 위해 flex로 설정 */
+    flex-wrap: nowrap; /* 갤러리가 넘칠 경우 가로로 스크롤되도록 nowrap으로 설정 */
+}
+
+/* 갤러리 이미지 */
+.diary-modal-content .gallery-image {
+    flex-shrink: 0; /* 이미지가 넘칠 경우 크기를 줄이지 않도록 설정 */
+    margin-right: 10px; /* 이미지 사이의 간격 설정 */
+}
+
+/* 갤러리 이미지 내 실제 이미지 */
+.diary-modal-content .gallery-image img {
+    width: auto; /* 이미지의 너비를 자동으로 조정하여 가로로 배치 */
+    height: 200px; /* 이미지의 고정된 높이 설정 */
+    margin-right: 10px; /* 오른쪽 여백 */
+    border-radius: 5px; /* 테두리 반경 */
+}
