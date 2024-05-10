@@ -1,31 +1,38 @@
 <template>
     <div id="wrap">
+    
         <AppHeader />
+        
         <div id="petAddForm">
-            <!-- <div class="sidebar">
+            <div class="sidebar">
                 <div class="profile">
                     <div class="profileImg">
                         <img src="@/assets/images/dog2.jpg">
                     </div>
                     <div class="profileId">
-                        <label>엄마</label> 님 <br>
+                        <label>dddddd</label> 님 <br>
                         <label>1500</label> P
                     </div>
                 </div>
-                <div class="profilePet">
-                    <div>
-                        <img src="@/assets/images/dog.jpg">
-                        <label></label>
-                    </div>
-                    <div>
-                        <img src="@/assets/images/dog.jpg">
-                    </div>
+                <div class="profileTitle">
+                    <p>반려견</p>
+                    <button type="button">+</button>
                 </div>
-            </div> -->
+                <div class="profilePet">
+                    <img src="@/assets/images/dog.jpg">
+                    <p>마리(3세)</p>
+                </div>
+                <div class="profilePet">
+                    <img src="@/assets/images/dog.jpg">
+                    <p>마리(3세)</p>
+                </div>
+            </div>
+
             <div class="container">
+                <h1>반려견등록</h1>
                 <form>
                     <div class="petPhoto">
-                        
+
                         <input type="file" hidden>
                         <button type="button" class="cameraBtn">
                             <img src="@/assets/images/camera.png">
