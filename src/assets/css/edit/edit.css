@@ -22,17 +22,20 @@
 /* ===================== 중간 내용부분 ===================== */
 
 .eMidContainer{
-    padding: 30px 0;
+    padding: 70px 0;
     /* background-color: cornflowerblue; */
+    width: 1500px;
+    margin: 0 auto;
 }
 
 /* ============= 미용사진 ============= */
 .eMidContainer .eCutImgContainer{
     /* background-color: sandybrown; */
-    margin-bottom: 30px;
+    margin-bottom: 70px;
 }
 .eMidContainer .eCutImgContainer h1{
-    margin: 0 0 30px 30px;
+    margin-bottom: 30px;
+    /* background-color: darkorchid; */
 }
 .eMidContainer .eCutImgContainer .eCutSlide{}
 .eMidContainer .eCutImgContainer .eCutSlide img{
@@ -45,14 +48,15 @@
 /*============= 디자이너 소개 =============*/
 .eMidContainer .eDesignerSlideContainer{
     /* background-color: forestgreen; */
-    margin-bottom: 30px;
+    margin-bottom: 70px;
 }
 .eMidContainer .eDesignerSlideContainer h1{
-    margin: 0 0 30px 30px;
+    margin-bottom: 30px ;
+    /* width: 1700px; */
 }
 .eMidContainer .eDesignerSlideContainer .eDesignerContentsBox{
     background-color: darkcyan;
-    padding: 30px 350px;
+    padding: 30px 200px;
     display: flex;
     justify-content: space-around;
 }
@@ -80,23 +84,23 @@
     display: flex;
     justify-content: space-between;
     /* background-color: darkgoldenrod; */
-    /* padding: 0 30px; */
-    width: 1800px;
-    margin: 0 auto 30px;
+    /* width: 1700px; */
+    margin: 0 auto 70px;
 }
 /* 가격 */
 .eMidContainer .ePriceReviewContainer .ePriceBox{
     /* background-color: tomato; */
-    padding: 10px 10px 10px 30px;
     /* margin-right: 30px; */
 
 }
 .eMidContainer .ePriceReviewContainer .ePriceBox h1{
     margin-bottom: 30px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
 }
 .eMidContainer .ePriceReviewContainer .ePriceBox table{
     border-collapse: collapse;
-    width: 850px;
+    width: 700px;
 }
 .eMidContainer .ePriceReviewContainer .ePriceBox table th{
     height: 50px;
@@ -108,8 +112,7 @@
 /* 후기 */
 .eMidContainer .ePriceReviewContainer .eReviewBox{
     /* background-color: navy; */
-    width: 850px;
-    padding: 10px;
+    width: 700px;
 }
 .eMidContainer .ePriceReviewContainer .eReviewBox h1{
     margin-bottom: 30px;
@@ -146,11 +149,16 @@
  /*============= 위치 =============*/
  .eMidContainer .ePositionContainer{
     /* background-color: skyblue; */
-    width: 1800px;
+    /* width: 1700px; */
     margin: 0 auto 30px;
  }
  .eMidContainer .ePositionContainer h1{
-    margin-left: 30px;
+    /* margin-left: 30px; */
+    margin: 0 auto 30px ;
+    /* width: 1800px; */
+    /* line-height: 50px; */
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
  }
  .eMidContainer .ePositionContainer .ePositionBox{
     /* background-color: yellowgreen; */
@@ -161,7 +169,7 @@
  .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft{
     /* background-color: orangered; */
     width: 900px;
-    padding: 50px;
+    /* padding: 0 50px; */
  }
  /* 위치 왼쪽 - 이용시간 */
  .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime{
@@ -180,9 +188,15 @@
  }
  .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime .eTimeRight .eTimeRightContents{
     display: flex;
+    margin-bottom: 5px;
  }
  .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime .eTimeRight .eTimeRightContents p:first-child{
     font-weight: bold;
+    width: 120px;
+    /* margin-right: 20px; */
+ }
+ .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime .eTimeRight .eTimeRightContents p:nth-child(2){
+    color: #666;
  }
  /* 위치 왼쪽 - 오시는길 */
  .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eRoad{
@@ -200,18 +214,26 @@
     /* background-color: lawngreen; */
  }
  .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eRoad .eRoadRight .eRoadRightContents{
-    display: flex;
+  
  }
- .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eRoad .eRoadRight .eRoadRightContents p:first-child{
+ .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eRoad .eRoadRight .eRoadRightContents p{
     font-weight: bold;
+    font-size: 20px;
+    color: #666;
+    /* line-height: 40px; */
+    padding-bottom: 10px;
  }
  .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eRoad .eRoadRight .eRoadRightBtnBox{}
  .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eRoad .eRoadRight .eRoadRightBtnBox >button{
     border: none;
     padding: 5px 10px;
+    width: 150px;
+    height: 50px;
+    font-size: 14px;
  }
  .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eRoad .eRoadRight .eRoadRightBtnBox .kakaoMapBtn{
     background-color: #FFE500;
+    margin-right: 10px;
  }
  .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eRoad .eRoadRight .eRoadRightBtnBox .naverMapBtn{
     background-color: #2FAF2D;
@@ -234,6 +256,8 @@
  .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eReserv .eReservRight .eReservTel{
     font-size: 22px;
     font-weight: bold;
+    /* line-height: 40px; */
+    padding-bottom: 10px;
  }
  .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eReserv .eReservRight .eReservBtnBox{
     
@@ -251,9 +275,9 @@
  /* 위치 오른쪽 */
  .eMidContainer .ePositionContainer .ePositionBox .ePositionLRight{
     /* background-color: lightcoral; */
-    width: 900px;
-    display: flex;
-    justify-content: center;
+    width: 800px;
+    /* display: flex;
+    justify-content: center; */
  }
  .eMidContainer .ePositionContainer .ePositionBox .ePositionLRight >img{
 
