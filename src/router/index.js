@@ -3,6 +3,7 @@ import MainView from '@/views/potal/MainView.vue'
 import DiaryView from '@/views/manager/DiaryView.vue'
 import PetAddFormView from '@/views/mypage/PetAddFormView.vue'
 import EditView from '@/views/edit/EditView.vue'
+import LoginViewfrom '@/views/potal/LoginView.vue'
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/edit',
     name: 'edit',
     component: EditView
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: LoginView
   },
 ]
 

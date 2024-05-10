@@ -1,4 +1,5 @@
 /* 메니저 페이지 공통 헤더 */
+
 .mheader{
     height: 80px;
     background-color: aquamarine;
@@ -13,6 +14,7 @@
     padding-right: 20px;
     align-items: center;
 }
+
 /* 헤더 왼쪽(로고+메뉴) */
 .mheader .mheaderWrap .mheaderLeft{
     display: flex;
@@ -36,5 +38,6 @@
 .mheader .mheaderWrap .mheaderLeft .mMenu a li{
     margin: 0 20px;
 }
+
 /* 헤더 오른쪽 로그인 */
 .mheader .mheaderWrap .mheaderRight{}

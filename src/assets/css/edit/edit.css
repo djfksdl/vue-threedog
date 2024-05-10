@@ -1,0 +1,29 @@
+/* 편집 페이지 */
+
+/* 타이틀 */
+.container2{}
+.container2 .eTitle{
+    text-align: center;
+    margin: 50px 0;
+}
+.container2 .eTitle h1{
+    font-size: 50px;
+}
+.container2 .eTitle p{
+    font-size: 23px;
+}
+
+/* 이미지 슬라이드 */
+.container2 .eImgSlide{}
+.container2 .eImgSlide img{
+    width: 100%;
+}
+
+/* ==============내용부분============= */
+/* 미용사진 */
+.cutImgBox{}
+.cutImgBox h1{}
+.cutImgBox .cutSlide{}
+.cutImgBox .cutSlide img{
+    width: 300px;
+}
