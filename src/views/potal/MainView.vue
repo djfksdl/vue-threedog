@@ -2,7 +2,7 @@
   <div id="wrap">
          <AppHeader />
          <div class="potal-main-slide">
-                <img class="main-slide" src="../../assets/images/main-slide.png">
+                <SlideView />
          </div><!-- potal-main-slide -->
          <div id="potal-main-container" class="clearfix">
                 힛
@@ -13,6 +13,7 @@
 
 
 <script>
+ import SlideView from '@/components/SlideView.vue';
  import AppFooter from "@/components/AppFooter.vue"
  import AppHeader from "@/components/AppHeader.vue"
 
@@ -20,7 +21,8 @@
      name: "MainView",
      components: {
          AppFooter,
-         AppHeader
+         AppHeader,
+         SlideView,
      },
      data() {
          return {
@@ -32,9 +34,10 @@
      },
  };
 </script>
+
 <style>
 #potal-main-container{
-    width: 1200px;
+    width: 1400px;
     margin: 0 auto;
     text-align: center;
     background-color: antiquewhite;
@@ -43,7 +46,7 @@
 
 .potal-main-slide, .main-slide{
     width: 100%;
-    height: 540px;
-    background-color: antiquewhite;
+    height: 560px;
+    /* background-color: antiquewhite; */
 }
 </style>

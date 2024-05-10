@@ -3,6 +3,11 @@ import MainView from '@/views/potal/MainView.vue'
 import DiaryView from '@/views/manager/DiaryView.vue'
 import PetAddFormView from '@/views/mypage/PetAddFormView.vue'
 import EditView from '@/views/edit/EditView.vue'
+import LoginView from '@/views/potal/LoginView.vue'
+import ManagerLoginView from '@/views/potal/ManagerLoginView.vue'
+import SignView from '@/views/potal/SignView.vue'
+import ManagerSignView from '@/views/potal/ManagerSignView.vue'
+import ReviewFormView from '@/views/mypage/ReviewFormView.vue'
 
 const routes = [
   {
@@ -25,6 +30,31 @@ const routes = [
     name: 'edit',
     component: EditView
   },
+  {
+    path: '/login',
+    name: 'login',
+    component: LoginView
+  },
+  {
+    path: '/mlogin',
+    name: 'mlogin',
+    component: ManagerLoginView
+  },
+  {
+    path: '/signup',
+    name: 'signup',
+    component: SignView
+  },
+  {
+    path: '/msignup',
+    name: 'msignup',
+    component: ManagerSignView
+  },
+  {
+    path: '/reviewform',
+    name: 'reviewform',
+    component: ReviewFormView
+  }
 ]
 
 const router = createRouter({
