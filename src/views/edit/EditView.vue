@@ -227,8 +227,10 @@
                 <div class="ePositionContainer">
                     <h1>위치</h1>
                     <div class="ePositionBox">
+
                         <!-- 위치 왼쪽 -->
                         <div class="ePositionLeft">
+
                             <!-- 이용시간 -->
                             <div class="eTime">
                                 <!-- 이용시간-왼쪽 -->
@@ -237,33 +239,61 @@
                                 </div>
                                 <!-- 이용시간-오른쪽 -->
                                 <div class="eTimeRight">
-                                    <div>
+                                    <div class="eTimeRightContents">
                                         <p>평일</p>
                                         <p>am 9:00~ pm18:00</p>
                                     </div>
-                                    <div>
+                                    <div class="eTimeRightContents">
                                         <p>토요일</p>
                                         <p>am 9:00~ pm15:00</p>
                                     </div>
-                                    <div>
+                                    <div class="eTimeRightContents">
                                         <p>점심시간</p>
                                         <p>pm 12:00~ pm13:00</p>
                                     </div>
-                                    <div>
+                                    <div class="eTimeRightContents">
                                         <p>공휴일/주말</p>
                                         <p>영업종료</p>
                                     </div>
                                 </div>
                             </div>
-                            <!-- 오시는 길 -->
+
+                            <!-- 오시는길 -->
                             <div class="eRoad">
-
+                                <!-- 오시는길-왼쪽 -->
+                                <div class="eRoadLeft">
+                                    <h3>오시는길</h3>
+                                </div>
+                                <!-- 오시는길-오른쪽 -->
+                                <div class="eRoadRight">
+                                    <div>
+                                        <p>서울특별시 강남구 봉은사로 317</p>
+                                    </div>
+                                    <div class="eRoadRightBtnBox">
+                                        <button class="kakaoMapBtn">카카오 지도보기</button>
+                                        <button class="naverMapBtn">네이버 지도보기</button>
+                                    </div>
+                                </div>
                             </div>
-                            <!-- 미용 예약 -->
-                            <div class="eReserv">
 
+                            <!-- 미용예약 -->
+                            <div class="eReserv">
+                                <!-- 미용예약-왼쪽 -->
+                                <div class="eReservLeft">
+                                    <h3>미용예약</h3>
+                                </div>
+                                <!-- 미용예약-오른쪽 -->
+                                <div class="eReservRight">
+                                    <div>
+                                        <p class="eReservTel">02-1234-5678</p>
+                                    </div>
+                                    <div class="eReservBtnBox">
+                                        <button class="eReservBtn">예약하러 가기</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                         <!-- 위치 오른쪽 -->
                         <div class="ePositionLRight">
                             <img src="@/assets/images/eMap.png">
