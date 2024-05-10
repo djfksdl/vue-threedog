@@ -6,18 +6,19 @@
                 <img class="con-logo" src="../../assets/images/logo.png" alt="Logo">
                 <div class="login-form">
                     <form>
-                        <div class="form-group">
+                        <div class="form-group-login">
                             <input type="text" id="id" name="id" placeholder="아이디">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group-login">
                                 <input type="password" id="password" name="password" placeholder="비밀번호">
                                 <span class="toggle-password" @click="togglePasswordVisibility">
                                     <i :class="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
                                 </span>
                         </div>
                         <button type="submit" class="loginBtn">로그인</button>
-                        <button type="submit" class="signinBtn">회원가입</button>
-
+                        <router-link to="/signup">
+                            <button class="signinBtn">회원가입</button>
+                        </router-link>
                         
                         <p class="signup-link">직원 간편 로그인은 <a href="/mlogin" class="manager-signup">여기</a>를 클릭!</p>
                         <div class="sns">
@@ -76,7 +77,6 @@ export default {
     margin: 0 auto;
     text-align: center;
     flex: 1;
-    /* 남은 공간을 차지하도록 설정 */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -106,14 +106,14 @@ export default {
     width: 100%;
 }
 
-.form-group {
+.form-group-login {
     margin-bottom: 10px;
     width: 100%;
-    text-align: cen;
+    text-align: center;
     position: relative;
 }
 
-.form-group input {
+.form-group-login input {
     width: calc(100% - 40px);
     padding: 10px;
     border: 1px solid #ccc;

@@ -6,17 +6,20 @@
                 <img class="con-logo" src="../../assets/images/logo.png" alt="Logo">
                 <div class="login-form">
                     <form>
-                        <div class="form-group">
+                        <div class="form-group-login">
                             <input type="text" id="id" name="id" placeholder="아이디">
                         </div>
-                        <div class="form-group">
-                                <input type="password" id="password" name="password" placeholder="비밀번호">
-                                <span class="toggle-password" @click="togglePasswordVisibility">
-                                    <i :class="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
-                                </span>
+                        <div class="form-group-login">
+                            <input type="password" id="password" name="password" placeholder="비밀번호">
+                            <span class="toggle-password" @click="togglePasswordVisibility">
+                                <i :class="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
+                            </span>
                         </div>
                         <button type="submit" class="loginBtn">로그인</button>
-                        <button type="submit" class="signinBtn">회원가입</button>
+                        <router-link to="/msignup">
+                            <button class="signinBtn">회원가입</button>
+                        </router-link>
+                        
                     </form>
                 </div>
             </div><!-- login-box -->
@@ -92,14 +95,14 @@ export default {
     width: 100%;
 }
 
-.form-group {
+.form-group-login {
     margin-bottom: 10px;
     width: 100%;
     text-align: cen;
     position: relative;
 }
 
-.form-group input {
+.form-group-login input {
     width: calc(100% - 40px);
     padding: 10px;
     border: 1px solid #ccc;
