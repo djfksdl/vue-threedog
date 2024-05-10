@@ -8,6 +8,14 @@
             <a href="" target="_blank" data-testid="SocialLink-KakaoStory" class="app"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="css-8n6bc3"><circle cx="12" cy="12" r="11" fill="currentColor"></circle><path d="M14.6548 6.5H9.34617C8.98953 6.5 8.70036 6.77492 8.70036 7.11427V12.4991C8.70036 12.8382 8.98953 13.1132 9.34617 13.1132H11.7936C11.7768 13.7122 11.5225 14.3691 11.1359 14.9432C10.7632 15.4965 10.1507 16.0415 9.81838 16.3021C9.80983 16.3089 9.80136 16.3154 9.79337 16.3217C9.72167 16.3871 9.66939 16.4632 9.66826 16.5686C9.66714 16.6486 9.71075 16.7105 9.75928 16.7761L9.77173 16.7896L11.4662 18.6074C11.4662 18.6074 11.549 18.6908 11.6175 18.7066C11.6948 18.7243 11.7823 18.7265 11.8429 18.6818C14.7987 16.5067 15.2256 13.7794 15.2999 12.3034C15.3001 12.295 15.3004 7.11427 15.3004 7.11427C15.3004 6.77492 15.0114 6.5 14.6548 6.5Z" fill="white"></path></svg></a>
         </div>
         
+        <div class="footer-info">
+            <p>회사명: 개개개</p>
+            <p>대표자: 이연수</p>
+            <p>주소: 서울특별시 강남구 역삼동 123번지</p>
+            <p>전화번호: 02-1234-5678</p>
+            <p>Email: info@example.com</p>
+            <p>© 2024 개개개 주식회사. All Rights Reserved.</p>
+        </div>
     </div>
 </template>
 
@@ -30,20 +38,32 @@ export default {
     width: 100%;
     height: 300px;
     background-color: #252525;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
 }
 
 .footer-name{
     width: 300px;
     height: 80px;
-    margin: 70px 20px 20px 300px;
+}
+
+.footer-sns{
+    display: flex;
+    align-items: center;
 }
 
 .app{
     margin-right: 10px;
 }
 
-.footer-sns{
-    margin: 0px 5px 5px 280px;
-    padding-left: 100px;
+.footer-info {
+    color: white;
+    text-align: left;
+}
+
+.footer-info p {
+    margin-bottom: 5px;
 }
 </style>

@@ -1,8 +1,8 @@
 <template>
-  <div class="wrapper-slide">
-    <Carousel :autoplay="7000" :wrap-around="true" :show-arrows="false" ref="carouselRef">
+  <div class="wrapper-slide-ban">
+    <Carousel :autoplay="4000" :wrap-around="true" :show-arrows="false" ref="carouselRef">
       <Slide v-for="slide in slides" :key="slide">
-        <div class="img-slide">
+        <div class="img-slide-ban">
           <img class="slideImg" :src="slide" />
         </div>
       </Slide>
@@ -19,8 +19,8 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { Carousel, Slide } from "vue3-carousel";
-import img1 from "@/assets/images/main-slide.png";
-import img2 from "@/assets/images/dog.jpg";
+import img1 from "@/assets/images/banner01.png";
+import img2 from "@/assets/images/banner02.png";
 
 import "vue3-carousel/dist/carousel.css";
 
@@ -57,15 +57,15 @@ export default defineComponent({
 </script>
 
 <style>
-.wrapper-slide {
+.wrapper-slide-ban {
   position: relative;
   width: 100%;
-  height: 600px;
+  height: 350px;
 }
 
-.img-slide {
-  width: 100%;
-  height: 600px;
+.img-slide-ban {
+  width: 1370px;
+  height: 350px;
   overflow: hidden;
 }
 

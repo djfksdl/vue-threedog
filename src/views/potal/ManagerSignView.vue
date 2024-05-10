@@ -27,7 +27,11 @@
                             </small>
                         </div>
                         <div class="form-group-man">
-                            <input type="text" id="num" name="num" placeholder="사업자번호">
+                            <div class="input-container">
+                                <input type="text" id="num" name="num" placeholder="사업자등록번호">
+                                <input type="file" id="numFile" name="numFile" style="display: none;" @change="handleFileChange">
+                                <label for="numFile" class="btn00">첨부하기</label>
+                            </div>
                         </div>
                         <div class="form-group-man">
                             <div class="input-container">
@@ -79,29 +83,36 @@ export default {
     },
     methods: {
         handleSubmit() {
-            console.log("회원가입 버튼이 클릭되었습니다.");
+            console.log("회원가입");
         },
         checkDuplicate() {
-            console.log("아이디 중복확인 버튼이 클릭되었습니다.");
+            console.log("아이디 중복확인");
             // 아이디 중복 여부를 확인하는 비즈니스 로직 수행
             this.isDuplicate = true;
         },
         searchAddress() {
-            console.log("주소 검색 버튼이 클릭되었습니다.");
+            console.log("주소 검색");
         },
         sendVerificationCode() {
-            console.log("인증번호 전송 버튼이 클릭되었습니다.");
+            console.log("인증번호 전송.");
             this.showVerificationInput = true;
         },
         verifyCode() {
-            console.log("인증번호 확인 버튼이 클릭되었습니다.");
+            console.log("인증번호 확인");
         },
         checkPasswordMatch() {
             this.isPasswordMatch = this.password === this.confirmPassword;
             this.isPasswordValid = this.isPasswordMatch;
+        },
+        numCheck() {
+            console.log("첨부파일");
+            // 파일 입력(input type="file") 클릭
+            document.getElementById("numFile").click();
+        },
+        handleFileChange(event) {
+            // 파일 변경 시 실행되는 로직
+            console.log("파일 첨부됨:", event.target.files[0]);
         }
-
-
     }
 };
 </script>
@@ -172,6 +183,20 @@ export default {
     border-radius: 5px;
     cursor: pointer;
     margin-left: 10px;
+}
+
+
+.btn00{
+    background-color: #4CAF50;
+    width: 80px;
+    padding: 10px;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    margin-left: 10px;
+    text-align: center;
 }
 
 .green-btn {

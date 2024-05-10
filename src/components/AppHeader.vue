@@ -52,7 +52,7 @@ export default {
 .logo {
     width: 400px;
     height: auto;
-    margin: 20px 10px 10px 300px;
+    margin: 20px 10px 10px 330px;
     object-fit: contain;
     float: left;
 }
