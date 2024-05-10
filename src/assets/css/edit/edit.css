@@ -22,17 +22,22 @@
 /* ===================== 중간 내용부분 ===================== */
 
 .eMidContainer{
-    padding: 30px 0;
+    padding: 70px 0;
     /* background-color: cornflowerblue; */
+    width: 1500px;
+    margin: 0 auto;
 }
 
 /* ============= 미용사진 ============= */
 .eMidContainer .eCutImgContainer{
     /* background-color: sandybrown; */
-    margin-bottom: 30px;
+    margin-bottom: 70px;
 }
 .eMidContainer .eCutImgContainer h1{
-    margin: 0 0 30px 30px;
+    /* margin: 0 auto 30px ; */
+    margin-bottom: 30px;
+    /* width: 1700px; */
+    /* background-color: darkorchid; */
 }
 .eMidContainer .eCutImgContainer .eCutSlide{}
 .eMidContainer .eCutImgContainer .eCutSlide img{
@@ -45,14 +50,15 @@
 /*============= 디자이너 소개 =============*/
 .eMidContainer .eDesignerSlideContainer{
     /* background-color: forestgreen; */
-    margin-bottom: 30px;
+    margin-bottom: 70px;
 }
 .eMidContainer .eDesignerSlideContainer h1{
-    margin: 0 0 30px 30px;
+    margin: 0 auto 30px ;
+    width: 1700px;
 }
 .eMidContainer .eDesignerSlideContainer .eDesignerContentsBox{
     background-color: darkcyan;
-    padding: 30px 350px;
+    padding: 30px 200px;
     display: flex;
     justify-content: space-around;
 }
@@ -80,14 +86,12 @@
     display: flex;
     justify-content: space-between;
     /* background-color: darkgoldenrod; */
-    /* padding: 0 30px; */
-    width: 1800px;
-    margin: 0 auto 30px;
+    /* width: 1700px; */
+    margin: 0 auto 70px;
 }
 /* 가격 */
 .eMidContainer .ePriceReviewContainer .ePriceBox{
     /* background-color: tomato; */
-    padding: 10px 10px 10px 30px;
     /* margin-right: 30px; */
 
 }
@@ -96,7 +100,7 @@
 }
 .eMidContainer .ePriceReviewContainer .ePriceBox table{
     border-collapse: collapse;
-    width: 850px;
+    width: 700px;
 }
 .eMidContainer .ePriceReviewContainer .ePriceBox table th{
     height: 50px;
@@ -108,8 +112,7 @@
 /* 후기 */
 .eMidContainer .ePriceReviewContainer .eReviewBox{
     /* background-color: navy; */
-    width: 850px;
-    padding: 10px;
+    width: 700px;
 }
 .eMidContainer .ePriceReviewContainer .eReviewBox h1{
     margin-bottom: 30px;
@@ -146,11 +149,16 @@
  /*============= 위치 =============*/
  .eMidContainer .ePositionContainer{
     /* background-color: skyblue; */
-    width: 1800px;
+    /* width: 1700px; */
     margin: 0 auto 30px;
  }
  .eMidContainer .ePositionContainer h1{
-    margin-left: 30px;
+    /* margin-left: 30px; */
+    margin: 0 auto 30px ;
+    /* width: 1800px; */
+    /* line-height: 50px; */
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
  }
  .eMidContainer .ePositionContainer .ePositionBox{
     /* background-color: yellowgreen; */
@@ -161,7 +169,7 @@
  .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft{
     /* background-color: orangered; */
     width: 900px;
-    padding: 50px;
+    padding: 0 50px;
  }
  /* 위치 왼쪽 - 이용시간 */
  .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime{

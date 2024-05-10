@@ -23,8 +23,8 @@
                         <img src="@/assets/images/spy.jpg">
                         <img src="@/assets/images/dog.jpg">
                         <img src="@/assets/images/dog.jpg">
-                        <img src="@/assets/images/dog.jpg">
-                        <img src="@/assets/images/dog.jpg">
+                        <!-- <img src="@/assets/images/dog.jpg">
+                        <img src="@/assets/images/dog.jpg"> -->
                     </div>
                 </div>
 
@@ -182,7 +182,7 @@
                             </tr>
                             <!-- 추가요금 -->
                             <tr>
-                                <th colspan="7">.</th>
+                                <th colspan="7">&nbsp;</th>
                             </tr>
                             <tr>
                                 <th rowspan="4">추가요금</th>

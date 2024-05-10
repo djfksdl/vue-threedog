@@ -18,13 +18,13 @@
     transform: translateX(-50%);
 }
 .mheader .mheaderWrap{
-    width: 1400px;
+    width: 1500px;
     height: 80px;
     margin: 0 auto;
     /* background-color: paleturquoise; */
     display: flex;
     justify-content: space-between;
-    padding-right: 20px;
+    /* padding-right: 20px; */
     align-items: center;
 }
 
