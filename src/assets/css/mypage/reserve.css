@@ -1,0 +1,180 @@
+/* 예약확인 페이지 */
+
+/* ========= 예약상세 내역 ========= */
+.reserveCheckForm{
+    width: 700px;
+    background-color: #fff;
+    margin: 0 auto;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+/* 예약정보 */
+.reserveCheckForm .rcfInfo{
+    margin-bottom: 20px;
+}
+.reserveCheckForm .rcfInfo >div{
+    display: flex;
+    margin: 10px 0;
+}
+.reserveCheckForm .rcfInfo >div p:first-child{
+    color: #aaa;
+    width: 100px;
+}
+
+/* 결제금액 */
+.reserveCheckForm .rcfSum{
+    margin-bottom: 20px;
+}
+.reserveCheckForm .rcfSum >div{
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+.reserveCheckForm .rcfSum >div:nth-child(2){
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+}
+.reserveCheckForm .rcfSum >div p{
+    font-size: 17px;
+    font-weight: bold;
+}
+
+/* 최종금액 */
+.reserveCheckForm .rcfChange{}
+.reserveCheckForm .rcfChange button{
+    display: block;
+    margin: 0 auto;
+    border: none;
+    padding: 15px 0;
+    border-radius: 10px;
+    width: 100%;
+    font-size: 16px;
+    color: #aaa;
+}
+
+/* ========= 후기 쓸 폼 ========= */
+.reserveReviewForm{
+    width: 700px;
+    background-color: #fff;
+    margin: 0 auto 30px;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+/* 예약정보 */
+.reserveReviewForm .rrfInfo{
+    margin-bottom: 20px;
+}
+.reserveReviewForm .rrfInfo >div{
+    display: flex;
+    margin: 10px 0;
+}
+.reserveReviewForm .rrfInfo >div p:first-child{
+    color: #aaa;
+    width: 100px;
+}
+
+/* 결제금액 확인 */
+.reserveReviewForm .rrfSum{
+    margin-bottom: 20px;
+}
+.reserveReviewForm .rrfSum >div{
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+.reserveReviewForm .rrfSum >div:nth-child(2){
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+}
+.reserveReviewForm .rrfSum >div p{
+    font-size: 17px;
+    font-weight: bold;
+}
+
+/* 후기 작성버튼 */
+.reserveReviewForm .rrfChange{
+    /* background-color: palegreen; */
+}
+.reserveReviewForm .rrfChange button{
+    display: block;
+    margin: 0 auto;
+    border: 1px solid #237140;
+    padding: 15px 0;
+    border-radius: 10px;
+    width: 100%;
+    font-size: 16px;
+    color: #237140;
+    background-color: white;
+}
+.reserveReviewForm .rrfChange button:hover{
+    color: #fff;
+    background-color: #237140;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* ========= 후기 보기 폼 ========= */
+.reserveReviewConfirmForm{
+    width: 700px;
+    background-color: #fff;
+    margin: 0 auto 30px;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+/* 예약정보 */
+.reserveReviewConfirmForm .rrfcInfo{
+    margin-bottom: 20px;
+}
+.reserveReviewConfirmForm .rrfcInfo >div{
+    display: flex;
+    margin: 10px 0;
+}
+.reserveReviewConfirmForm .rrfcInfo >div p:first-child{
+    color: #aaa;
+    width: 100px;
+}
+
+/* 결제금액 확인 */
+.reserveReviewConfirmForm .rrfcSum{
+    margin-bottom: 20px;
+}
+.reserveReviewConfirmForm .rrfcSum >div{
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+.reserveReviewConfirmForm .rrfcSum >div:nth-child(2){
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+}
+.reserveReviewConfirmForm .rrfcSum >div p{
+    font-size: 17px;
+    font-weight: bold;
+}
+
+/* 후기 작성버튼 */
+.reserveReviewConfirmForm .rrfConfirm{
+    /* background-color: palegreen; */
+}
+.reserveReviewConfirmForm .rrfConfirm button{
+    display: block;
+    margin: 0 auto;
+    border: 1px solid #237140;
+    padding: 15px 0;
+    border-radius: 10px;
+    width: 100%;
+    font-size: 16px;
+    color: #237140;
+    background-color: white;
+}
+.reserveReviewConfirmForm .rrfConfirm button:hover{
+    color: #fff;
+    background-color: #237140;
+    font-weight: bold;
+    cursor: pointer;
+}

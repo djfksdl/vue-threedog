@@ -309,7 +309,7 @@
           </div>
            
         <ManagerFooter />  
-       </div><!-- wrap --> 
+    </div><!-- wrap --> 
 
   </template>
   
