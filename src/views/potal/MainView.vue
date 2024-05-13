@@ -15,7 +15,7 @@
       </div>
 
       <div id="map-main">
-        <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true" style="width: 1360px; height: 400px; margin-left: 20px;">
+        <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true" style="width: 1370px; height: 400px; margin-left: 20px;">
           <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
         </KakaoMap>
       </div>
@@ -255,6 +255,6 @@ export default {
 }
 
 #AppFooter {
-  margin-top: 60px;
+  margin-top: 80px;
 }
 </style>
