@@ -1,9 +1,6 @@
 <template>
     <div id="wrap">
-    
-        <AppHeader />
-        
-        <div id="petAddForm">
+        <div class="headerSideBar">
             <div class="sidebar">
                 <div class="profile">
                     <div class="profileImg">
@@ -27,70 +24,75 @@
                     <p>마리(3세)</p>
                 </div>
             </div>
+            <div>
+                <AppHeader />
+                <div id="petAddForm">
+                    <div class="container">
+                        <h1>반려견등록</h1>
+                        <form>
+                            <div class="petPhoto">
+                                <input type="file">
+                            </div>
+                            <div>
+                                <div class="detail">
+                                    <label>펫 이름</label>
+                                    <input type="text" placeholder="펫 이름을 입력해주세요.">
+                                </div>
+                                <div class="detail">
+                                    <label>품종</label>
+                                    <input type="text" placeholder="품종을 입력해 주세요.">
+                                </div>
+                                <div class="detail">
+                                    <label class="title">몸무게</label>
+                                    <input type="text"> kg
+                                </div>
+                                <div class="detail" id="petAge">
+                                    <label>나이</label>
+                                    <input type="text"> 살
 
-            <div class="container">
-                <h1>반려견등록</h1>
-                <form>
-                    <div class="petPhoto">
-
-                        <input type="file" hidden>
-                        <button type="button" class="cameraBtn">
-                            <img src="@/assets/images/camera.png">
-                        </button>
-                    </div>
-                    <div class="detail">
-                        <label>펫 이름</label>
-                        <input type="text" placeholder="펫 이름을 입력해주세요.">
-                    </div>
-                    <div class="detail">
-                        <label>품종</label>
-                        <input type="text" placeholder="품종을 입력해 주세요.">
-                    </div>
-                    <div class="detail">
-                        <label class="title">몸무게</label>
-                        <input type="text"> kg
-                    </div>
-                    <div class="detail" id="petAge">
-                        <label>나이</label>
-                        <input type="text"> 살
-
-                    </div>
-                    <div class="detail">
-                        <label for="">성별</label>
-                        <button type="button">남아</button>
-                        <button type="button">여아</button>
-                    </div>
-                    <div class="detail">
-                        <label>중성화</label>
-                        <button type="button">O</button>
-                        <button type="button">X</button>
-                    </div>
-                    <div class="detail">
-                        <label>미용경험</label>
-                        <button type="button">O</button>
-                        <button type="button">X</button>
-                    </div>
-                    <div class="detail" id="feature">
-                        <label>특이사항</label>
-                        <button type="button">피부병</button>
-                        <button type="button">심장질환</button>
-                        <button type="button">마킹</button>
-                        <button type="button">마운팅</button>
-                        <div class="bite">
-                            <label>입질정도</label>
-                            <label for="top">상</label><input type="radio" id="top" value="top" name="bite">
-                            <label for="middle">중</label><input type="radio" id="middle" value="middle" name="bite">
-                            <label for="under">하</label><input type="radio" id="under" value="under" name="bite">
+                                </div>
+                                <div class="detail">
+                                    <label for="">성별</label>
+                                    <button type="button">남아</button>
+                                    <button type="button">여아</button>
+                                </div>
+                                <div class="detail">
+                                    <label>중성화</label>
+                                    <button type="button">O</button>
+                                    <button type="button">X</button>
+                                </div>
+                                <div class="detail">
+                                    <label>미용경험</label>
+                                    <button type="button">O</button>
+                                    <button type="button">X</button>
+                                </div>
+                                <div class="detail" id="feature">
+                                    <label>특이사항</label>
+                                    <button type="button">피부병</button>
+                                    <button type="button">심장질환</button>
+                                    <button type="button">마킹</button>
+                                    <button type="button">마운팅</button>
+                                    <div class="bite">
+                                        <label>입질정도</label>
+                                        <label for="top">상</label><input type="radio" id="top" value="top" name="bite">
+                                        <label for="middle">중</label><input type="radio" id="middle" value="middle"
+                                            name="bite">
+                                        <label for="under">하</label><input type="radio" id="under" value="under"
+                                            name="bite">
+                                    </div>
+                                    <textarea placeholder="기타 특이사항을 적어주세요."></textarea>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="insertBtnBox">
+                            <button class="insertBtn" type="">등록</button>
                         </div>
-                        <textarea placeholder="기타 특이사항을 적어주세요."></textarea>
                     </div>
-
-                </form>
-                <div class="insertBtnBox">
-                    <button class="insertBtn" type="">등록</button>
                 </div>
             </div>
         </div>
+
+
         <AppFooter />
     </div><!-- wrap -->
 </template>
@@ -107,9 +109,13 @@ export default {
         AppFooter
     },
     data() {
-        return {};
+        return {
+        };
     },
-    methods: {},
+    methods: {
+
+
+    },
 };
 </script>
 
