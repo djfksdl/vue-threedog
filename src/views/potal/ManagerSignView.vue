@@ -1,10 +1,11 @@
 <template>
     <div id="wrap">
-        <AppHeader />
-        <div id="signup-container">
-            <div class="signup-box">
-                <img class="con-logo" src="../../assets/images/logo.png" alt="Logo">
-                <div class="signup-form">
+        <div id="msignup-container">
+            <div class="msignup-box">
+                <router-link to="/">
+                    <img class="con-logo" src="../../assets/images/logo.png" alt="Logo">
+                </router-link>
+                <div class="msignup-form">
                     <form @submit.prevent="handleSubmit">
                         <div class="form-group-man">
                             <div class="input-container">
@@ -57,20 +58,23 @@
                     </form>
                 </div>
             </div><!-- signup-box -->
+            <div class="signup-footer">
+                <ul class="signup-footer-ul">
+                    <li>이용약관</li>
+                    <li>개인정보처리방침</li>
+                    <li>책임의 한계와 법적고지</li>
+                    <li>회원정보 고객센터</li>
+                </ul>
+                <p>© 2024 개개개 주식회사. All Rights Reserved.</p>
+            </div>
         </div><!-- signup-container -->
-        <AppFooter />
     </div><!-- wrap -->
 </template>
 
 <script>
-import AppFooter from "@/components/AppFooter.vue"
-import AppHeader from "@/components/AppHeader.vue"
-
 export default {
     name: "ManagerSignView",
     components: {
-        AppFooter,
-        AppHeader
     },
     data() {
         return {
@@ -118,7 +122,7 @@ export default {
 </script>
 
 <style>
-#signup-container {
+#msignup-container {
     width: 100%;
     margin: 0 auto;
     text-align: left;
@@ -126,10 +130,11 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
-.signup-box {
-    margin: 70px 0 100px 0;
+.msignup-box {
+    margin: 70px 0 20px 0;
     width: 450px;
     padding: 60px;
     background-color: white;
@@ -140,7 +145,7 @@ export default {
     flex-direction: column;
 }
 
-.signup-form {
+.msignup-form {
     margin-top: 20px;
     width: 100%;
 }

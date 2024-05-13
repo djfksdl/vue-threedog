@@ -4,10 +4,18 @@
             <img class="logo" src="../assets/images/logo.png">
         </router-link>
         <div class="head">
-            <ul>
+            <ul class="categories">
+                <li>
+                    <button class="category-btn"><router-link to="/nearby">내 주변</router-link></button>
+                </li>
+                <li>
+                    <button class="category-btn"><router-link to="/announcements">공지사항</router-link></button>
+                </li>
+            </ul>
+            <ul class="user-options">
                 <li><router-link to="/login">로그인</router-link></li>
             </ul>
-
+            
             <!-- <ul>
                 <li><a href="">ㅇㅇㅇ 님</a></li>
                 <li><a href="">내 정보</a></li>
@@ -26,33 +34,18 @@
     </div>
 </template>
 
-<script>
-export default {
-    name: "AppHeader",
-    components: {},
-    data() {
-        return {};
-    },
-    methods: {
-
-    },
-    created() { }
-};
-</script>
-
 <style>
 .header {
     width: 100%;
     height: 138px;
-    position: relative; /* 부모 요소로부터의 상대적 위치 지정 */
-    /* background-color: #d6d6d6; */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .logo {
     width: 400px;
     height: auto;
-    margin: 20px 10px 10px 330px;
+    margin: 20px 10px 10px 200px;
     object-fit: contain;
     float: left;
 }
@@ -65,37 +58,34 @@ export default {
     top: 0;
     right: 0;
     bottom: 0;
-    /* font-family: 'Noto Sans KR', sans-serif; 왜 안 먹지 */
 }
 
-.head ul>li{
+.head ul>li {
     float: left;
-    margin-right: 15px;
+    margin-right: 30px;
 }
 
 .head ul {
     list-style-type: none;
-    margin-right: 315px;
 }
 
-/* a:link {
-    text-decoration: none;
-    color: #000000;
+.categories {
+    margin-right: 950px; /* 수정: 이동 거리 변경 */
 }
 
-a:visited {
-    text-decoration: none;
-    color: #000000;
+.category-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
 }
 
-a:active {
-    text-decoration: none;
-    color: #000000;
+.category-btn:hover {
+    color: #666;
 }
 
-a:hover {
-    text-decoration: none;
-    color: #000000;
-} */
-
+.user-options {
+    margin-right: 20px;
+}
 </style>

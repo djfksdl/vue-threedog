@@ -1,9 +1,10 @@
 <template>
     <div id="wrap">
-        <AppHeader />
         <div id="signup-container">
             <div class="signup-box">
-                <img class="con-logo" src="../../assets/images/logo.png" alt="Logo">
+                <router-link to="/">
+                    <img class="con-logo" src="../../assets/images/logo.png" alt="Logo">
+                </router-link>
                 <div class="signup-form">
                     <form @submit.prevent="handleSubmit">
                         <div class="form-group">
@@ -53,20 +54,23 @@
                     </form>
                 </div>
             </div><!-- signup-box -->
+            <div class="signup-footer">
+                <ul class="signup-footer-ul">
+                    <li>이용약관</li>
+                    <li>개인정보처리방침</li>
+                    <li>책임의 한계와 법적고지</li>
+                    <li>회원정보 고객센터</li>
+                </ul>
+                <p>© 2024 개개개 주식회사. All Rights Reserved.</p>
+            </div>
         </div><!-- signup-container -->
-        <AppFooter />
     </div><!-- wrap -->
 </template>
 
 <script>
-import AppFooter from "@/components/AppFooter.vue"
-import AppHeader from "@/components/AppHeader.vue"
-
 export default {
     name: "SignView",
     components: {
-        AppFooter,
-        AppHeader
     },
     data() {
         return {
@@ -110,15 +114,15 @@ export default {
 #signup-container {
     width: 100%;
     margin: 0 auto;
-    text-align: left;
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
 .signup-box {
-    margin: 70px 0 100px 0;
+    margin: 70px 0 20px 0;
     width: 450px;
     padding: 60px;
     background-color: white;
@@ -199,5 +203,29 @@ export default {
 .success-message {
     color: blue;
     font-size: 12px;
+}
+
+.signup-footer-ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 10px 0;
+    font-size: 14px;
+}
+
+.signup-footer-ul li {
+    display: inline;
+    margin-right: 10px;
+    color: #666;
+}
+
+.signup-footer-ul li::after {
+    content: "|";
+    margin-left: 10px;
+}
+
+.signup-footer p {
+    font-size: 14px;
+    color: #666; 
+    text-align: center;
 }
 </style>
