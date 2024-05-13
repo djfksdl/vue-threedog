@@ -51,17 +51,22 @@
               <li @click="toggleWeight('~2kg')" :class="{ 'selected': selectedWeights.includes('~2kg') }">2kg 이하 <span
                   v-if="selectedWeights.includes('~2kg')" @click="cancelWeight('~2kg')" class="cancel-btn">X</span></li>
               <li @click="toggleWeight('2~5kg')" :class="{ 'selected': selectedWeights.includes('2~5kg') }">2~5kg <span
-                  v-if="selectedWeights.includes('2~5kg')" @click="cancelWeight('2~5kg')" class="cancel-btn">X</span></li>
+                  v-if="selectedWeights.includes('2~5kg')" @click="cancelWeight('2~5kg')" class="cancel-btn">X</span>
+              </li>
               <li @click="toggleWeight('5~8kg')" :class="{ 'selected': selectedWeights.includes('5~8kg') }">5~8kg <span
-                  v-if="selectedWeights.includes('5~8kg')" @click="cancelWeight('5~8kg')" class="cancel-btn">X</span></li>
+                  v-if="selectedWeights.includes('5~8kg')" @click="cancelWeight('5~8kg')" class="cancel-btn">X</span>
+              </li>
               <li @click="toggleWeight('8~10kg')" :class="{ 'selected': selectedWeights.includes('8~10kg') }">8~10kg
-                <span v-if="selectedWeights.includes('8~10kg')" @click="cancelWeight('8~10kg')" class="cancel-btn">X</span>
+                <span v-if="selectedWeights.includes('8~10kg')" @click="cancelWeight('8~10kg')"
+                  class="cancel-btn">X</span>
               </li>
               <li @click="toggleWeight('10~12kg')" :class="{ 'selected': selectedWeights.includes('10~12kg') }">10~12kg
-                <span v-if="selectedWeights.includes('10~12kg')" @click="cancelWeight('10~12kg')" class="cancel-btn">X</span>
+                <span v-if="selectedWeights.includes('10~12kg')" @click="cancelWeight('10~12kg')"
+                  class="cancel-btn">X</span>
               </li>
               <li @click="toggleWeight('12kg~')" :class="{ 'selected': selectedWeights.includes('12kg~') }">12kg~
-                <span v-if="selectedWeights.includes('12kg~')" @click="cancelWeight('12kg~')" class="cancel-btn">X</span>
+                <span v-if="selectedWeights.includes('12kg~')" @click="cancelWeight('12kg~')"
+                  class="cancel-btn">X</span>
               </li>
             </ul>
           </div>
@@ -84,12 +89,81 @@
           </div>
         </div>
       </div>
-    </div><!-- potal-search-container -->
-    <div class="selected-items">
-      <div v-for="(item, index) in selectedItems" :key="index" class="selected-item">
-        {{ item }} <span @click="cancelSelected(item)">X</span>
+      <div class="search-category">
+        <div class="location-box">
+          <div>
+            가격
+          </div>
+        </div>
+        <div class="city-box">
+          <ul class="city-list">
+            <li @click="togglePrice('~20,000')" :class="{ 'selected': selectedPrices.includes('~20,000') }">~20,000
+              <span v-if="selectedPrices.includes('~20,000')" @click="cancelPrice('~20,000')"
+                class="cancel-btn">X</span>
+            </li>
+            <li @click="togglePrice('20,000~40,000')" :class="{ 'selected': selectedPrices.includes('20,000~40,000') }">
+              20,000~40,000 <span v-if="selectedPrices.includes('20,000~40,000')" @click="cancelPrice('20,000~40,000')"
+                class="cancel-btn">X</span>
+            </li>
+            <li @click="togglePrice('40,000~60,000')" :class="{ 'selected': selectedPrices.includes('40,000~60,000') }">
+              40,000~60,000 <span v-if="selectedPrices.includes('40,000~60,000')" @click="cancelPrice('40,000~60,000')"
+                class="cancel-btn">X</span>
+            </li>
+            <li @click="togglePrice('60,000~')" :class="{ 'selected': selectedPrices.includes('60,000~') }">60,000~
+              <span v-if="selectedPrices.includes('60,000~')" @click="cancelPrice('60,000~')"
+                class="cancel-btn">X</span>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
+      <div class="selected-items">
+        <div v-for="(item, index) in selectedItems" :key="index" class="selected-item">
+          {{ item }}
+          <button @click="cancelSelected(item)" class="cancel-btn">X</button>
+        </div>
+      </div>
+      <div class="bottom">
+        <h2>검색 결과</h2>
+        <hr>
+        <div class="search-result">
+          <div class="search-item">
+            <img src="../../assets/images/spy.jpg">
+            <label>스파이가게</label>
+          </div>
+          <div class="search-item">
+            <img src="../../assets/images/dog2.jpg">
+            <label>하이미디어</label>
+          </div>
+          <div class="search-item">
+            <img src="../../assets/images/spy.jpg">
+            <label>스파이가게</label>
+          </div>
+          <div class="search-item">
+            <img src="../../assets/images/dog2.jpg">
+            <label>하이미디어</label>
+          </div>
+        </div>
+        <div class="popular-search">
+            <h2>인기 검색어</h2>
+            <div class="popular-items">
+              <ul>
+                <li>1. dddddd</li>
+                <li>2. dddddd</li>
+                <li>3. dddddd</li>
+                <li>4. dddddd</li>
+                <li>5. dddddd</li>
+                <li>6. dddddd</li>
+                <li>7. dddddd</li>
+                <li>8. dddddd</li>
+                <li>9. dddddd</li>
+                <li>10. dddddd</li>
+              </ul>
+            </div>
+          </div>
+
+      </div>
+    </div><!-- potal-search-container -->
+
     <AppFooter id="AppFooter" />
   </div><!-- wrap -->
 </template>
@@ -109,6 +183,7 @@ export default {
       selectedCities: [],
       selectedWeights: [],
       selectedTypes: [],
+      selectedPrices: [],
       selectedItems: []
     };
   },
@@ -142,6 +217,16 @@ export default {
         this.selectedItems.splice(this.selectedItems.indexOf(type), 1);
       }
     },
+    togglePrice(price) {
+      const index = this.selectedPrices.indexOf(price);
+      if (index === -1) {
+        this.selectedPrices.push(price);
+        this.selectedItems.push(price);
+      } else {
+        this.selectedPrices.splice(index, 1);
+        this.selectedItems.splice(this.selectedItems.indexOf(price), 1);
+      }
+    },
     cancelCity(city) {
       this.selectedCities = this.selectedCities.filter(item => item !== city);
       this.selectedItems = this.selectedItems.filter(item => item !== city);
@@ -153,6 +238,10 @@ export default {
     cancelType(type) {
       this.selectedTypes = this.selectedTypes.filter(item => item !== type);
       this.selectedItems = this.selectedItems.filter(item => item !== type);
+    },
+    cancelPrice(price) {
+      this.selectedPrices = this.selectedPrices.filter(item => item !== price);
+      this.selectedItems = this.selectedItems.filter(item => item !== price);
     },
     cancelSelected(item) {
       if (this.selectedCities.includes(item)) {
@@ -169,11 +258,10 @@ export default {
 
 <style>
 #potal-search-container {
-  width: max-content;
+  width: 1400px;
   margin: 0 auto;
   text-align: left;
   /* background-color: antiquewhite; */
-  height: 1000px;
 }
 
 .search-search-container {
@@ -215,18 +303,19 @@ export default {
   display: flex;
   align-items: center;
   margin-right: 20px;
-  border: 1px solid;
   margin-left: 25px;
-  position: relative; /* 부모 요소에 상대적 위치 설정 */
+  position: relative;
+  /* 부모 요소에 상대적 위치 설정 */
 }
 
-.search-category:first-child{
+.search-category:first-child {
   margin-top: 20px;
 }
 
 .city-list {
   list-style: none;
-  padding: 10px; /* 패딩 추가 */
+  padding: 10px;
+  /* 패딩 추가 */
   margin: 0;
   display: flex;
   flex-wrap: wrap;
@@ -236,21 +325,24 @@ export default {
 .city-list li {
   margin-right: 10px;
   cursor: pointer;
-  padding: 10px 20px; /* 패딩 추가 */
-  position: relative; /* 엑스 아이콘에 대해 상대적 위치 설정 */
+  padding: 10px 20px;
+  /* 패딩 추가 */
+  position: relative;
+  /* 엑스 아이콘에 대해 상대적 위치 설정 */
 }
 
 .city-list li.selected {
   background-color: lightblue;
+  border-radius: 20px;
 }
 
 .city-list li span {
   cursor: pointer;
   margin-left: 10px;
-  position: absolute; /* 엑스 아이콘의 절대적 위치 설정 */
-  right: 10px; /* 우측 여백 조절 */
-  top: 50%; /* 수직 정렬 */
-  transform: translateY(-50%); /* 수직 정렬 */
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .location-box div {
@@ -259,7 +351,10 @@ export default {
 }
 
 .cancel-btn {
-  font-size: 12px; /* 엑스 아이콘 크기 조절 */
+  font-size: 12px;
+  background-color: lightblue;
+  border: none;
+  /* 엑스 아이콘 크기 조절 */
 }
 
 .selected-items {
@@ -272,12 +367,66 @@ export default {
   background-color: lightblue;
   border-radius: 20px;
   padding: 5px 10px;
-  margin-right: 10px;
-  margin-bottom: 10px;
+  margin: 10px 10px 10px 30px;
 }
 
 .selected-item span {
   margin-left: 5px;
   cursor: pointer;
+}
+
+.bottom {
+  margin: 20px 20px 20px 20px;
+}
+
+
+.search-result {
+  display: flex;
+  margin: 20px 0 15px 15px;
+  width: 980px;
+}
+
+.search-item {
+  margin-right: 20px;
+}
+
+.search-item img {
+  width: 470px;
+  height: 250px;
+  margin-right: 10px;
+  object-fit: cover;
+}
+
+.search-item label {
+  display: block;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 5px;
+  margin-bottom: 10px
+}
+
+.search-result-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.search-result {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.popular-search {
+  width: 300px;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 15px; /* 둥근 테두리 반경 설정 */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+  position: sticky; /* 고정 위치 */
+  top: 0; /* 상단에 고정 */
+}
+
+.popular-search>h2 {
+  text-align: center;
+  margin-bottom: 7px;
 }
 </style>

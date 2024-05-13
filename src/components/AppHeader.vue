@@ -62,7 +62,7 @@
 
 .head ul>li {
     float: left;
-    margin-right: 30px;
+    margin-right: 40px;
 }
 
 .head ul {
@@ -70,7 +70,7 @@
 }
 
 .categories {
-    margin-right: 950px; /* 수정: 이동 거리 변경 */
+    margin-right: 710px; /* 수정: 이동 거리 변경 */
 }
 
 .category-btn {
@@ -86,6 +86,6 @@
 }
 
 .user-options {
-    margin-right: 20px;
+    margin-right: 280px;
 }
 </style>
