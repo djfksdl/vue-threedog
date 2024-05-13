@@ -1,14 +1,11 @@
-#petAddForm {
+.headerSideBar {
     display: flex;
 }
 
 /* 반려견 등록페이지 */
 /* 사이드바 */
 .sidebar {
-    margin-top: 3px;
-    margin-left: -135px;
     width: 280px;
-    height: 800px;
     background-color: #ddeee4;
     border-radius: 5px;
 }
@@ -97,58 +94,46 @@
 
 /* petAddForm */
 #petAddForm .container form {
-    margin: 0 auto;
+    /* margin: 0 auto; */
     width: 1000px;
     /* border: 1px solid black; */
 }
 
 #petAddForm {
-    /* border: 1px solid black; */
     width: 1400px;
     height: 1900px;
-    margin: 0 auto;
 
 }
 
+#petAddForm .container form {
+    display: flex;
+}
+
+
 #petAddForm .container form div {
-    margin: 0 auto;
     width: 450px;
-    /* background-color: red; */
 }
 
 #petAddForm .container form label:first-child {
-    /* background-color: red; */
     display: block;
     font-weight: bold;
 }
 
 #petAddForm .container form .petPhoto {
-    margin-top: 40px;
-    margin-bottom: 100px;
     width: 290px;
     height: 290px;
     border: 1px solid #a7a4a4;
-    border-radius: 50%;
     background-image: url('@/assets/images/profile_sample.png');
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-#petAddForm .container form .petPhoto .cameraBtn {
-    background-color: #dddddd;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin: 200px 200px;
-    text-align: center;
-    border: none;
-}
 
-#petAddForm .container form .petPhoto img {
+/* #petAddForm .container form .petPhoto img {
     width: 60px;
     margin-top: 2px;
     opacity: 0.5;
-}
+} */
 
 #petAddForm .container .detail {
     padding-left: 25px;
@@ -167,8 +152,6 @@
     border-radius: 5px;
     padding-left: 10px;
     font-size: 15px;
-    /* margin-top: 10px;
-    margin-bottom: 10px; */
 }
 
 
@@ -265,7 +248,7 @@
     margin: 0 auto;
 }
 
-#reviewAddForm .container h1{
+#reviewAddForm .container h1 {
     margin: 50px 0 30px 50px;
     font-size: 30px;
 }
@@ -298,14 +281,15 @@
     width: 50px;
 }
 
-#reviewAddForm .reviewPhoto2{
+#reviewAddForm .reviewPhoto2 {
     display: flex;
 }
 
-#reviewAddForm .reviewPhoto h2{
+#reviewAddForm .reviewPhoto h2 {
     width: 120px;
     height: 40px;
 }
+
 #reviewAddForm .pull {
     position: relative;
     width: 240px;
@@ -317,7 +301,8 @@
     display: flex;
     font-size: 15px;
 }
-#reviewAddForm .reviewPhoto p{
+
+#reviewAddForm .reviewPhoto p {
     color: yellow;
     font-weight: bold;
 }
@@ -333,17 +318,68 @@
     border-bottom: 10px solid transparent;
 }
 
-#reviewAddForm .reviewWrite p{
+#reviewAddForm .reviewWrite p {
     text-align: center;
 }
-#reviewAddForm .reviewPhoto input{
+
+#reviewAddForm .reviewPhoto input {
     display: none;
 }
-#reviewAddForm .reviewPhoto .input-file-button{
+
+#reviewAddForm .reviewPhoto .input-file-button {
     padding: 6px 25px;
-    background-color:white;
+    background-color: white;
     border: 1px solid #a7a4a4;
     border-radius: 3px;
     cursor: pointer;
     font-size: 30px;
-  }
+}
+
+
+
+
+/* *********************************************************** */
+/* Mydiary */
+.myDiary02 {
+    display: flex;
+    width: 1200px;
+    margin: 0 auto;
+    border-top: 1px solid black;
+    /* border-bottom: 1px solid black; */
+    margin-bottom: 100px;
+}
+
+#myDiary h1 {
+    font-size: 26px;
+    padding-top: 50px;
+    margin-left: 100px;
+    width: 1000px;
+}
+
+.mypetImgSlider img {
+    width: 400px;
+    height: 350px;
+    border-radius: 30px;
+}
+
+#myDiary .context {
+    width: 500px;
+    height: 350px;
+    /* border: 1px solid #dddddd; */
+    border-radius: 20px;
+    padding-top: 60px;
+    padding-left: 100px;
+}
+
+#myDiary .context div{
+    height: 50px;
+}
+
+#myDiary .context div p {
+    display: inline-block;
+    width: 200px;
+    font-weight: bold;
+}
+
+
+
