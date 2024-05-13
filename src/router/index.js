@@ -9,6 +9,7 @@ import SignView from '@/views/potal/SignView.vue'
 import ManagerSignView from '@/views/potal/ManagerSignView.vue'
 import ReviewFormView from '@/views/mypage/ReviewFormView.vue'
 import TotalSalesView from '@/views/manager/TotalSalesView.vue'
+import MyDiaryView from '@/views/mypage/MyDiaryView.vue'
 
 const routes = [
   {
@@ -60,6 +61,11 @@ const routes = [
     path: '/totalsales',
     name: 'totalsales',
     component:TotalSalesView
+  },
+  {
+    path: '/mydiary',
+    name: 'mydiary',
+    component:MyDiaryView
   },
 ]
 
