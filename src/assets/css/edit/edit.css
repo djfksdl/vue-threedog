@@ -294,10 +294,14 @@
  .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eRoad .eRoadRight .eRoadRightBtnBox .kakaoMapBtn{
     background-color: #FFE500;
     margin-right: 10px;
+    cursor: pointer;
+    font-weight: bold;
  }
  .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eRoad .eRoadRight .eRoadRightBtnBox .naverMapBtn{
     background-color: #2FAF2D;
     color: #fff;
+    cursor: pointer;
+    font-weight: bold;
  }
  /* 위치 왼쪽 - 미용예약 */
  .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eReserv{
@@ -329,6 +333,10 @@
     width: 200px;
     height: 70px;
     font-size: 18px;
+    cursor: pointer;
+ }
+ .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eReserv .eReservRight .eReservBtnBox .eReservBtn:hover{
+    background-color: #1d5e35;
  }
 
  

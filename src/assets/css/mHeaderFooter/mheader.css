@@ -38,6 +38,7 @@
     /* background-color: plum; */
     display: flex;
     align-items: center;
+    margin-right: 30px;
 }
 .mheader .mheaderWrap .mheaderLeft .mlogo a img{
     width: 150px;
@@ -47,10 +48,50 @@
     display: flex;
     align-items: center;
 }
-.mheader .mheaderWrap .mheaderLeft .mMenu a{}
-.mheader .mheaderWrap .mheaderLeft .mMenu a li{
+.mheader .mheaderWrap .mheaderLeft .mMenu li{
     margin: 0 20px;
+    position: relative;
+    display: inline-block;
+}
+.mheader .mheaderWrap .mheaderLeft .mMenu li::after{
+    content: '';
+    position: absolute;
+    bottom: -5px; /* 아이템 아래에 밑줄을 위치시킵니다. */
+    left: 0;
+    width: 0;
+    height: 3px;
+    background-color: #237140;
+    transition: width 0.3s ease;
+}
+.mheader .mheaderWrap .mheaderLeft .mMenu li:hover::after {
+    width: 100%;
+    border-radius: 10px;
+}
+.mheader .mheaderWrap .mheaderLeft .mMenu li a {
+    font-weight: bold;
+}
+.mheader .mheaderWrap .mheaderLeft .mMenu li:hover a {
+    color: #237140;
 }
 
 /* 헤더 오른쪽 로그인 */
-.mheader .mheaderWrap .mheaderRight{}
+.mheader .mheaderWrap .mheaderRight{
+    display: flex;
+}
+.mheader .mheaderWrap .mheaderRight p{}
+
+.mheader .mheaderWrap .mheaderRight p::after{
+    content: '|';
+    padding: 0 10px;
+    color: #d6d6d6;
+}
+.mheader .mheaderWrap .mheaderRight p strong{
+    color: #237140;
+}
+.mheader .mheaderWrap .mheaderRight p:hover a{
+    color: #237140;
+}
+
+.mheader .mheaderWrap .mheaderRight a img{
+    width: 20px;
+}

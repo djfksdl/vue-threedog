@@ -44,7 +44,9 @@
                     </div>
                     <!-- 취소/변경안내버튼 -->
                     <div class="rcfChange">
-                        <button>예약 변경/취소는 매장으로 전화주세요.</button>
+                        <button>
+                            예약 변경/취소는 매장<span>(02-1234-5678)</span>으로 전화주세요.
+                        </button>
                     </div>
                 </div>
 
@@ -78,7 +80,7 @@
                     </div>
                     <!-- 후기 작성버튼 -->
                     <div class="rrfChange">
-                        <button>후기 작성</button>
+                        <router-link to="reviewform">후기 작성</router-link>
                     </div>
                 </div>
 
@@ -112,7 +114,7 @@
                     </div>
                     <!-- 후기 확인버튼 -->
                     <div class="rrfConfirm">
-                        <button>후기 확인</button>
+                        <router-link to="/review">후기 확인</router-link>
                     </div>
                 </div>
             </div>

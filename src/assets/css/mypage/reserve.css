@@ -234,6 +234,10 @@
     font-size: 16px;
     color: #aaa;
 }
+.reserveCheckForm .rcfChange button span{
+    font-size: 20px;
+    /* font-weight: bold; */
+}
 
 /* ========= 후기 쓸 폼 ========= */
 .reserveReviewForm{
@@ -247,6 +251,8 @@
 /* 예약정보 */
 .reserveReviewForm .rrfInfo{
     margin-bottom: 20px;
+    border-bottom: 1px solid #237140;
+    padding-bottom: 10px;
 }
 .reserveReviewForm .rrfInfo >div{
     display: flex;
@@ -280,23 +286,23 @@
 .reserveReviewForm .rrfChange{
     /* background-color: palegreen; */
 }
-.reserveReviewForm .rrfChange button{
+.reserveReviewForm .rrfChange >a{
     display: block;
     margin: 0 auto;
-    border: 1px solid #237140;
     padding: 15px 0;
     border-radius: 10px;
     width: 100%;
     font-size: 16px;
-    color: #237140;
-    background-color: white;
-    font-weight: bold;
-}
-.reserveReviewForm .rrfChange button:hover{
     color: #fff;
     background-color: #237140;
     font-weight: bold;
-    cursor: pointer;
+    text-align: center;
+    border: 1px solid #237140;
+}
+.reserveReviewForm .rrfChange >a:hover{
+    background-color: #1d5e35;
+    font-weight: bold;
+    border: 1px solid #237140;
 }
 
 /* ========= 후기 보기 폼 ========= */
@@ -311,6 +317,8 @@
 /* 예약정보 */
 .reserveReviewConfirmForm .rrfcInfo{
     margin-bottom: 20px;
+    border-bottom: 1px solid #237140;
+    padding-bottom: 10px;
 }
 .reserveReviewConfirmForm .rrfcInfo >div{
     display: flex;
@@ -344,7 +352,7 @@
 .reserveReviewConfirmForm .rrfConfirm{
     /* background-color: palegreen; */
 }
-.reserveReviewConfirmForm .rrfConfirm button{
+.reserveReviewConfirmForm .rrfConfirm >a{
     display: block;
     margin: 0 auto;
     border: 1px solid #237140;
@@ -355,8 +363,9 @@
     color: #237140;
     background-color: white;
     font-weight: bold;
+    text-align: center;
 }
-.reserveReviewConfirmForm .rrfConfirm button:hover{
+.reserveReviewConfirmForm .rrfConfirm >a:hover{
     color: #fff;
     background-color: #237140;
     font-weight: bold;
