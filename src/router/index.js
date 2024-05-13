@@ -14,6 +14,7 @@ import ReservationFormView from '@/views/mypage/ReservationFormView.vue'
 import ReviewView from '@/views/mypage/ReviewView.vue'
 import ReserveView from '@/views/mypage/ReserveView.vue'
 import MypageView from '@/views/mypage/MypageView.vue'
+import SearchView from '@/views/potal/SearchView.vue'
 
 const routes = [
   {
@@ -91,6 +92,11 @@ const routes = [
     name: 'mypage',
     component:MypageView
   },
+  {
+    path: '/search',
+    name: 'search',
+    component: SearchView
+  }
 ]
 
 const router = createRouter({
