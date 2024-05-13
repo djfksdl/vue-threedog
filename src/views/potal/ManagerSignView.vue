@@ -54,7 +54,7 @@
                                 <button type="button" @click="searchAddress" class="small-btn green-btn">검색</button>
                             </div>
                         </div>
-                        <button type="submit" class="signupBtn">회원가입</button>
+                        <button type="submit" class="msignupBtn">회원가입</button>
                     </form>
                 </div>
             </div><!-- signup-box -->
@@ -208,7 +208,7 @@ export default {
     background-color: #4CAF50;
 }
 
-.signupBtn {
+.msignupBtn {
     width: 320px;
     padding: 15px;
     background-color: #236C3F;

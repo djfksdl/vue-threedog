@@ -44,12 +44,20 @@
                                     style="margin-left: 10px;">확인</button>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="margin-bottom: 10px;">
                             <div class="input-container">
-                                <input type="text" id="address" name="address" placeholder="주소">
-                                <button type="button" @click="searchAddress" class="small-btn green-btn">검색</button>
+                                <input type="text" id="postalCode" placeholder="우편번호" v-model="zonecode" readonly>
+                                <button id="postcode" type="button" @click="openPostcode"
+                                    class="small-btn green-btn">검색</button>
                             </div>
                         </div>
+                        <div class="form-group" style="margin-bottom: 10px;">
+                            <input type="text" v-model="roadAddress" placeholder="주소" readonly>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 10px;">
+                            <input type="text" v-model="detailAddress" placeholder="상세 주소">
+                        </div>
+
                         <button type="submit" class="signupBtn">회원가입</button>
                     </form>
                 </div>
@@ -78,7 +86,10 @@ export default {
             isDuplicate: false, // 아이디 중복 여부
             confirmPassword: "", // 비밀번호 확인 값
             isPasswordMatch: true, // 비밀번호 일치 여부
-            isPasswordValid: false // 사용 가능한 비밀번호 여부
+            isPasswordValid: false, // 사용 가능한 비밀번호 여부
+            zonecode: "",
+            roadAddress: "",
+            detailAddress: "",
         };
     },
     methods: {
@@ -90,8 +101,13 @@ export default {
             // 아이디 중복 여부를 확인하는 비즈니스 로직 수행
             this.isDuplicate = true;
         },
-        searchAddress() {
-            console.log("주소 검색 버튼이 클릭되었습니다.");
+        openPostcode() {
+            new window.daum.Postcode({
+                oncomplete: (data) => {
+                    this.zonecode = data.zonecode;
+                    this.roadAddress = data.roadAddress;
+                },
+            }).open();
         },
         sendVerificationCode() {
             console.log("인증번호 전송 버튼이 클릭되었습니다.");
@@ -191,8 +207,7 @@ export default {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-bottom: 15px;
-    margin-top: 30px;
+    margin-top: 10px;
 }
 
 .error-message {
@@ -225,7 +240,7 @@ export default {
 
 .signup-footer p {
     font-size: 14px;
-    color: #666; 
+    color: #666;
     text-align: center;
 }
 </style>

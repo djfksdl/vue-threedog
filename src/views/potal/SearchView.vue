@@ -431,19 +431,10 @@ export default {
   top: calc(100% - 230px);
   right: 16%;
   transform: translateY(-50%);
+  background-color: white;
 }
 
-@media (min-height: 1080px) {
-  .popular-search {
-    top: 30%; /* 상단에 고정 */
-  }
-}
 
-@media (max-height: 600px) {
-  .popular-search {
-    top: 70%; /* 상단에 고정 */
-  }
-}
 .popular-search>h2 {
   text-align: center;
   margin-bottom: 7px;
