@@ -8,8 +8,18 @@
                 <p>부제목이 들어갈 자리</p>
             </div>
             <!-- 이미지 슬라이드 -->
-            <div class="eImgSlide">
-                <img src="@/assets/images/main-slide.png">
+            <div class="eImgSlide wrapper">
+                <Carousel :autoplay="5000" :wrap-around="true" :show-arrows="true" ref="carouselRef">
+                    <Slide v-for="slide in slides" :key="slide">
+                        <div class="img-slide">
+                            <img class="slideImg" :src="slide" />
+                        </div>
+                    </Slide>
+                    <template #addons>
+                        <Navigation />
+                        <Pagination />
+                    </template>
+                </Carousel>
             </div>
             <!-- 중간내용부분 -->
             <div class="eMidContainer">
@@ -314,28 +324,60 @@
   </template>
   
   
-  <script>
+<script>
+   import { defineComponent} from "vue";
+   import { Carousel, Navigation, Pagination, Slide } from "vue3-carousel";
    import '@/assets/css/edit/edit.css'
    import ManagerFooter from "@/components/ManagerFooter.vue"
    import ManagerHeader from "@/components/ManagerHeader.vue"
    import TopButton from "@/components/TopButton.vue"
+
+   import slide01 from "@/assets/images/main-slide.png";
+   import slide02 from "@/assets/images/main-slide02.jpg";
   
-   export default {
+   export default defineComponent({
        name: "EditView",
        components: {
             ManagerFooter,
             ManagerHeader,
-            TopButton
+            TopButton,
+            Carousel,
+            Slide,
+            Pagination,
+            Navigation,
        },
        data() {
            return {
-  
-           };
+            slides: [slide01, slide02],
+            productList: [],
+            productList2: [],
+            productList3: [],
+            settings: {
+                itemsToShow: 2,
+                snapAlign: 'center',
+            },
+            breakpoints: {
+                1024: {
+                    itemsToShow: 4,
+                    snapAlign: 'start',
+                },
+            },
+        };
        },
        methods: {
         
   
        },
-   };
+   })
   </script>
+<style>
+    .slider01 .carousel__prev,
+    .slider01 .carousel__next {
+        color: white;
+        opacity: 0.9;
+    }
+    .carousel__slide{
+        align-items: start;
+    }
+</style>
   
