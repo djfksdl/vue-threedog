@@ -89,7 +89,7 @@
         </div>
       </div><!-- rank -->
     </div><!-- potal-main-container -->
-    <AppFooter />           
+    <AppFooter id="AppFooter"/>           
   </div><!-- wrap --> 
 </template>
 
@@ -226,7 +226,7 @@ export default {
   margin: 80px 0 40px 25px;
 }
 
-.AppFooter {
-  margin-top: 40px;
+#AppFooter {
+  margin-top: 100px;
 }
 </style>
