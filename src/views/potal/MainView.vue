@@ -13,7 +13,12 @@
         <!-- 검색 버튼 -->
         <button class="search-button">검색</button>
       </div>
-      <div id="map" style="width: 100%; height: 400px;"></div>
+
+      <div id="map-main">
+        <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true" style="width: 1360px; height: 400px; margin-left: 20px;">
+          <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
+        </KakaoMap>
+      </div>
 
       <h2>동네 랭킹 Best</h2>
       <hr>
@@ -88,9 +93,17 @@
       </div><!-- rank -->
     </div><!-- potal-main-container -->
     <TopButton />
-    <AppFooter id="AppFooter"/>           
-  </div><!-- wrap --> 
+    <AppFooter id="AppFooter" />
+  </div><!-- wrap -->
 </template>
+
+<script setup>
+import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
+const coordinate = {
+  lat: 37.498085,
+  lng: 127.027978
+};
+</script>
 
 <script>
 import SlideView from '@/components/SlideView.vue';
@@ -98,32 +111,34 @@ import SlideViewBanner from '@/components/SlideViewBanner.vue';
 import AppFooter from "@/components/AppFooter.vue"
 import AppHeader from "@/components/AppHeader.vue"
 import TopButton from "@/components/TopButton.vue"
-import { initializeMap } from './KakaoMap.js';
 
 export default {
-   name: "MainView",
-   components: {
-       AppFooter,
-       AppHeader,
-       SlideView,
-       SlideViewBanner,
-       TopButton
-   },
-   mounted() {
-    initializeMap(); 
-   },
-   data() {
-       return {
+  name: "MainView",
+  components: {
+    AppFooter,
+    AppHeader,
+    SlideView,
+    SlideViewBanner,
+    TopButton
+  },
+  mounted() {
+  },
+  data() {
+    return {
 
-       };
-   },
-   methods: {
-    
-   },
+    };
+  },
+  methods: {
+
+  },
 };
 </script>
 
 <style>
+.main-map{
+  margin: 20px 20px 20px 20px;
+}
+
 .fa-map-marker-alt {
   position: absolute;
   right: 13px;
@@ -134,8 +149,10 @@ export default {
 }
 
 .search-input-wrapper {
-  position: relative; /* 자식 요소의 위치를 상대적으로 설정 */
-  width: 400px; /* 인풋 너비 지정 */
+  position: relative;
+  /* 자식 요소의 위치를 상대적으로 설정 */
+  width: 400px;
+  /* 인풋 너비 지정 */
 }
 
 #potal-main-container {
@@ -144,17 +161,18 @@ export default {
   text-align: left;
 }
 
-#potal-main-container h2{
+#potal-main-container h2 {
   margin-left: 20px;
   margin-top: 60px;
   margin-bottom: 10px;
 }
 
-#potal-main-container hr{
+#potal-main-container hr {
   margin-left: 20px;
 }
 
-.potal-main-slide, .main-slide {
+.potal-main-slide,
+.main-slide {
   width: 100%;
   height: 600px;
 }
@@ -165,16 +183,19 @@ export default {
   display: flex;
   align-items: left;
   justify-content: left;
+  margin-bottom: 20px;
 }
 
 .search-input {
-  width: 100%; /* 인풋 너비 100%로 지정 */
+  width: 100%;
+  /* 인풋 너비 100%로 지정 */
   padding: 12px;
   border: 2px solid #ccc;
   border-radius: 15px;
   outline: none;
   font-size: 16px;
-  padding-right: 40px; /* 오른쪽 패딩은 아이콘의 너비만큼 */
+  padding-right: 40px;
+  /* 오른쪽 패딩은 아이콘의 너비만큼 */
 }
 
 .search-button {
@@ -214,18 +235,20 @@ export default {
   width: 250px;
   height: 250px;
   margin-right: 10px;
-  object-fit: cover; /* 정사각형으로 자르기 */
+  object-fit: cover;
+  /* 정사각형으로 자르기 */
 }
 
 .rank-item label {
   display: block;
   text-align: center;
-  font-weight: bold; /* 글씨를 굵게 설정 */
+  font-weight: bold;
+  /* 글씨를 굵게 설정 */
   margin-top: 5px;
   margin-bottom: 10px
 }
 
-.event-banner{
+.event-banner {
   width: 1370px;
   height: 350px;
   margin: 80px 0 40px 25px;
