@@ -1,0 +1,19 @@
+.ReviewContainer{
+    width: 1400px;
+    margin: 0 auto;
+    /* background-color: pink; */
+    padding: 30px 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+.ReviewContainer .cutName{
+    width: 100px;
+}
+
+.ReviewContainer .reContext{
+    /* background-color: red; */
+    width: 250px;
+    font-size: 15px;
+    margin: 0 auto;
+}
