@@ -15,6 +15,7 @@
     border-bottom: 1px solid #237140;
     display: flex;
     justify-content: space-between;
+    align-items: end;
     padding-bottom: 10px;
     margin-bottom: 30px;
 }
@@ -31,13 +32,13 @@
     border-radius: 10px;
     padding: 30px;
 }
-.mypageContainer .mpReserveConfirmContainer .mprcContents>div{
+.mypageContainer .mpReserveConfirmContainer .mprcContents a>div{
     display: flex;
     margin: 10px 0;
 }
-.mypageContainer .mpReserveConfirmContainer .mprcContents>div p:first-child{
+.mypageContainer .mpReserveConfirmContainer .mprcContents a>div p:first-child{
     color: #237140;
-    width: 100px;
+    width: 90px;
     font-weight: bold;
 }
 
@@ -55,6 +56,7 @@
     border-bottom: 1px solid #237140;
     display: flex;
     justify-content: space-between;
+    align-items: end;
     padding-bottom: 10px;
     margin-bottom: 30px;
 }
@@ -76,31 +78,32 @@
     border-bottom: 1px solid #ccc;
     padding-bottom: 10px;
     margin-bottom: 10px;
-    /* display: flex; */
-    /* justify-content: space-between; */
+    display: flex;
+}
+.mypageContainer .mpReviewConfirmContainer .mprvcContents .mprvcContentsInfo >img{
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
 }
 /* 후기 내용 예약정보부분 - 이용정보 */
 .mypageContainer .mpReviewConfirmContainer .mprvcContents .mprvcContentsInfo .mprvcContentsInfos{
     display: flex;
+    margin-bottom: 5px;
 }
-.mypageContainer .mpReviewConfirmContainer .mprvcContents .mprvcContentsInfo .mprvcContentsInfos >img{
-    width: 40px;
-    margin-right: 20px;
-}
+
 .mypageContainer .mpReviewConfirmContainer .mprvcContents .mprvcContentsInfo .mprvcContentsInfos p{
     margin-right: 30px;
 }
 .mypageContainer .mpReviewConfirmContainer .mprvcContents .mprvcContentsInfo .mprvcContentsInfos p span{
     font-weight: bold;
-
+    color: #237140;
 }
 /* 후기 내용 예약정보부분 - 별점 */
-.mypageContainer .mpReviewConfirmContainer .mprvcContents .mprvcContentsInfo .star-rating {
-    display: flex;
-}
+.mypageContainer .mpReviewConfirmContainer .mprvcContents .mprvcContentsInfo .star-rating {}
 
 .mypageContainer .mpReviewConfirmContainer .mprvcContents .mprvcContentsInfo .star-rating img {
     width: 20px;
+    margin-right: 5px;
 }
 
 /* 후기내용 내가 쓴부분 */
@@ -121,6 +124,7 @@
     border-bottom: 1px solid #237140;
     display: flex;
     justify-content: space-between;
+    align-items: end;
     padding-bottom: 10px;
     margin-bottom: 30px;
 }
@@ -152,21 +156,24 @@
     margin-right: 30px;
     border-right: 1px solid #ddd;
     padding-right: 30px;
+    width: 240px;
 }
 .mypageContainer .mpDiaryConfirmContainer .mpdcContents .mpdcInfo1 p{
     line-height: 30px;
 }
 .mypageContainer .mpDiaryConfirmContainer .mpdcContents .mpdcInfo1 p span{
     font-weight: bold;
+    color: #237140;
 }
 .mypageContainer .mpDiaryConfirmContainer .mpdcContents .mpdcInfo2{
-    width: 50%;
+    width: 540px;
 }
 .mypageContainer .mpDiaryConfirmContainer .mpdcContents .mpdcInfo2 p{
     line-height: 30px
 }
 .mypageContainer .mpDiaryConfirmContainer .mpdcContents .mpdcInfo2 p span{
     font-weight: bold;
+    color: #237140;
 }
 
 
@@ -193,7 +200,7 @@
 }
 .reserveCheckForm .rcfInfo >div p:first-child{
     color: #237140;
-    width: 100px;
+    width: 90px;
     font-weight: bold;
 }
 
@@ -247,7 +254,7 @@
 }
 .reserveReviewForm .rrfInfo >div p:first-child{
     color: #237140;
-    width: 100px;
+    width: 90px;
     font-weight: bold;
 }
 
@@ -312,7 +319,7 @@
 .reserveReviewConfirmForm .rrfcInfo >div p:first-child{
     color: #237140;
     font-weight: bold;
-    width: 100px;
+    width: 90px;
 }
 
 /* 결제금액 확인 */
