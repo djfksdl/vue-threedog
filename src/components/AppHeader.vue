@@ -6,7 +6,7 @@
         <div class="head">
             <ul class="categories">
                 <li>
-                    <button class="category-btn"><router-link to="/nearby">내 주변</router-link></button>
+                    <button class="category-btn"><router-link to="/search">검색</router-link></button>
                 </li>
                 <li>
                     <button class="category-btn"><router-link to="/announcements">공지사항</router-link></button>

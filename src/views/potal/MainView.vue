@@ -227,6 +227,6 @@ export default {
 }
 
 #AppFooter {
-  margin-top: 100px;
+  margin-top: 60px;
 }
 </style>
