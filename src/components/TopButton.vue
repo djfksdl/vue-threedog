@@ -1,0 +1,49 @@
+<template>
+    <div>
+        <router-link to="#" class="toScrollButton" v-on:click="scrollToTop" v-show="showButton">
+            <div class="arrowUp"></div>
+        </router-link>
+    </div>
+</template>
+<script>
+export default {
+    name: "TopButton",
+    components: {},
+    data() {
+        return {
+            showButton:false
+        };
+    },
+    methods: {
+        scrollToTop(){
+            // console.log("페이지 맨위로")
+            window.scrollTo({
+                top:0,
+                behavior:"smooth"
+            });
+        },
+        handleScroll(){
+            //현재 스크롤 위치 확인
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop; //현재 스크롤 위치를 가져오는 2가지인데, 둘중 하나라도 존재하면 변수에 할당됨. 2가지 차이는 브라우저마다 작용하는게 달라서(크로스브라우징)
+
+            //일정 높이 이상 스크롤 되었는지 확인
+            if(scrollPosition > 200){
+                this.showButton = true;
+            }else{
+                this.showButton = false;
+            }
+        }
+    },
+    created(){
+
+    },
+    mounted(){
+        window.addEventListener("scroll", this.handleScroll);
+    },
+    unmounted() {
+        // 컴포넌트 파기 시 스크롤 이벤트 리스너 제거
+        window.removeEventListener("scroll", this.handleScroll);
+    }
+};
+</script>
+<style></style>

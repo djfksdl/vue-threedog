@@ -14,10 +14,10 @@
                 </div>
                 <!-- 푸터 sns -->
                 <div class="mfooterSns">
-                    <router-link to="https://www.instagram.com/ottogi_daily/"><img src="@/assets/images/footer_sns_instargram.png"></router-link>
-                    <router-link to="https://pf.kakao.com/_paQtC"><img src="@/assets/images/footer_sns_kakao.png"></router-link>
-                    <router-link to="https://www.youtube.com/user/Ottogimkt"><img src="@/assets/images/footer_sns_youtobe.png"></router-link>
-                    <router-link to="https://www.youtube.com/user/Ottogimkt"><img src="@/assets/images/footer_sns_facebook.png"></router-link>
+                    <a href="https://www.youtube.com/@mujimakji"><img src="@/assets/images/footer_sns_instargram.png"></a>
+                    <a href="https://www.youtube.com/@mujimakji"><img src="@/assets/images/footer_sns_kakao.png"></a>
+                    <a href="https://www.youtube.com/@mujimakji"><img src="@/assets/images/footer_sns_youtobe.png"></a>
+                    <a href="https://www.youtube.com/@mujimakji"><img src="@/assets/images/footer_sns_facebook.png"></a>
                 </div>
             </div>
             

@@ -307,7 +307,7 @@
                 </div>
             </div>
           </div>
-           
+        <TopButton />  
         <ManagerFooter />  
     </div><!-- wrap --> 
 
@@ -318,12 +318,14 @@
    import '@/assets/css/edit/edit.css'
    import ManagerFooter from "@/components/ManagerFooter.vue"
    import ManagerHeader from "@/components/ManagerHeader.vue"
+   import TopButton from "@/components/TopButton.vue"
   
    export default {
        name: "EditView",
        components: {
             ManagerFooter,
-            ManagerHeader
+            ManagerHeader,
+            TopButton
        },
        data() {
            return {
@@ -331,6 +333,7 @@
            };
        },
        methods: {
+        
   
        },
    };

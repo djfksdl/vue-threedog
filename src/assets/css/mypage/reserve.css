@@ -150,6 +150,9 @@
 }
 .mypageContainer .mpDiaryConfirmContainer .mpdcContents .mpdcImg img{
     width: 200px;
+    height: 200px;
+    object-fit: contain;
+    border-radius: 15px;
 }
 /* 알림장 내용 -알림장 내용 */
 .mypageContainer .mpDiaryConfirmContainer .mpdcContents .mpdcInfo1 {
