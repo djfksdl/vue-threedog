@@ -32,7 +32,6 @@
                             <div>
                                 <h2>📅날짜와 시간을 선택해주세요</h2>
                                 <div>
-                                    달력놓는자리
                                 </div>
                                 <div>
                                     시간선택자리
@@ -245,11 +244,14 @@
 <script>
 import AppFooter from "@/components/AppFooter.vue"
 import AppHeader from "@/components/AppHeader.vue"
+
+
 export default {
     name: "ReservationFormView",
     components: {
         AppHeader,
         AppFooter,
+
     },
     data() {
         return {
