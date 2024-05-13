@@ -13,9 +13,7 @@
         <!-- 검색 버튼 -->
         <button class="search-button">검색</button>
       </div>
-      <div class="main-map">
-        <img src="../../assets/images/eMap.png">
-      </div>
+      <div id="map" style="width: 100%; height: 400px;"></div>
 
       <h2>동네 랭킹 Best</h2>
       <hr>
@@ -89,6 +87,7 @@
         </div>
       </div><!-- rank -->
     </div><!-- potal-main-container -->
+    <TopButton />
     <AppFooter id="AppFooter"/>           
   </div><!-- wrap --> 
 </template>
@@ -98,6 +97,8 @@ import SlideView from '@/components/SlideView.vue';
 import SlideViewBanner from '@/components/SlideViewBanner.vue';
 import AppFooter from "@/components/AppFooter.vue"
 import AppHeader from "@/components/AppHeader.vue"
+import TopButton from "@/components/TopButton.vue"
+import { initializeMap } from './KakaoMap.js';
 
 export default {
    name: "MainView",
@@ -105,7 +106,11 @@ export default {
        AppFooter,
        AppHeader,
        SlideView,
-       SlideViewBanner
+       SlideViewBanner,
+       TopButton
+   },
+   mounted() {
+    initializeMap(); 
    },
    data() {
        return {
@@ -113,7 +118,7 @@ export default {
        };
    },
    methods: {
-
+    
    },
 };
 </script>

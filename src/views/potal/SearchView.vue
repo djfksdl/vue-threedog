@@ -163,7 +163,7 @@
 
       </div>
     </div><!-- potal-search-container -->
-
+    <TopButton />
     <AppFooter id="AppFooter" />
   </div><!-- wrap -->
 </template>
@@ -171,12 +171,14 @@
 <script>
 import AppFooter from "@/components/AppFooter.vue"
 import AppHeader from "@/components/AppHeader.vue"
+import TopButton from "@/components/TopButton.vue"
 
 export default {
   name: "SearchView",
   components: {
     AppFooter,
     AppHeader,
+    TopButton
   },
   data() {
     return {
@@ -261,6 +263,8 @@ export default {
   width: 1400px;
   margin: 0 auto;
   text-align: left;
+  flex-wrap: wrap;
+  justify-content: space-between;
   /* background-color: antiquewhite; */
 }
 
@@ -377,13 +381,15 @@ export default {
 
 .bottom {
   margin: 20px 20px 20px 20px;
+  position: relative;
 }
-
 
 .search-result {
   display: flex;
+  flex-wrap: wrap;
+  width: 100%; /* 부모 요소의 가로폭을 꽉 채우도록 크기 조절 */
+  justify-content: flex-start; /* 리스트가 가로로 넘치는 경우 줄바꿈하여 표시 */
   margin: 20px 0 15px 15px;
-  width: 980px;
 }
 
 .search-item {
@@ -421,12 +427,26 @@ export default {
   padding: 20px;
   border-radius: 15px; /* 둥근 테두리 반경 설정 */
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
-  position: sticky; /* 고정 위치 */
-  top: 0; /* 상단에 고정 */
+  position: fixed;
+  top: calc(100% - 230px);
+  right: 16%;
+  transform: translateY(-50%);
 }
 
+@media (min-height: 1080px) {
+  .popular-search {
+    top: 30%; /* 상단에 고정 */
+  }
+}
+
+@media (max-height: 600px) {
+  .popular-search {
+    top: 70%; /* 상단에 고정 */
+  }
+}
 .popular-search>h2 {
   text-align: center;
   margin-bottom: 7px;
 }
+
 </style>
