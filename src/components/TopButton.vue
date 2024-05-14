@@ -1,6 +1,6 @@
 <template>
     <div>
-        <router-link to="#" class="toScrollButton" v-on:click="scrollToTop" v-show="showButton">
+        <router-link to="#" class="toScrollButton" v-on:click="scrollToTop" :class="{ 'show': showButton }">
             <div class="arrowUp"></div>
         </router-link>
     </div>
@@ -28,16 +28,28 @@ export default {
 
             //일정 높이 이상 스크롤 되었는지 확인
             if(scrollPosition > 200){
-                this.showButton = true;
+                this.fadeIn();
             }else{
-                this.showButton = false;
+                this.fadeOut();
             }
+        },
+        fadeIn() {
+            const scrollButton = document.querySelector('.toScrollButton');
+            scrollButton.style.transition = 'opacity 0.3s ease';
+            scrollButton.style.opacity = '1';
+        },
+        fadeOut() {
+            const scrollButton = document.querySelector('.toScrollButton');
+            scrollButton.style.transition = 'opacity 0.3s ease';
+            scrollButton.style.opacity = '0';
         }
+        
     },
     created(){
 
     },
     mounted(){
+        this.handleScroll(); //페이지 로드시 한번 호출하여 초기 상태 설정
         window.addEventListener("scroll", this.handleScroll);
     },
     unmounted() {
