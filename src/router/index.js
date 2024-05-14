@@ -16,6 +16,7 @@ import ReserveView from '@/views/mypage/ReserveView.vue'
 import MypageView from '@/views/mypage/MypageView.vue'
 import SearchView from '@/views/potal/SearchView.vue'
 import EditFormView from '@/views/edit/EditFormView.vue'
+import ScheduleView from '@/views/manager/ScheduleView.vue'
 
 const routes = [
   {
@@ -103,6 +104,11 @@ const routes = [
     name: 'editform',
     component: EditFormView
   },
+  {
+    path: '/schedule',
+    name: 'schedule',
+    component: ScheduleView
+  }
 ]
 
 const router = createRouter({

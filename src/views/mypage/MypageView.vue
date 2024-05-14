@@ -3,6 +3,7 @@
         <AppHeader />
         <div class="mypageContainer">
             <!-- 사이드 바 자리 -->
+            <SideBar />
             <div class="container">
                 <!-- 예약 내역 -->
                 <div class="mpReserveConfirmContainer">
@@ -124,11 +125,13 @@
  import '@/assets/css/mypage/reserve.css'
  import AppHeader from "@/components/AppHeader.vue"
  import AppFooter from "@/components/AppFooter.vue"
+ import SideBar from "@/components/SideBar.vue"
  export default {
     name: "MypageView",
     components: {
         AppHeader,
-        AppFooter
+        AppFooter,
+        SideBar
     },
     data() {
         return {};
