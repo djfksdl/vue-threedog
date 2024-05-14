@@ -465,3 +465,59 @@ datalist {
     /* background-color: red; */
     /* text-align: center; */
 }
+
+
+
+
+
+
+/* ****************************************************** */
+/* reservationForm */
+#reservationForm{
+    width: 1400px;
+    margin: 0 auto;
+}
+#reservationForm h2{
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+#reservationForm .choiceBox{
+    margin-left: 50px;
+    margin-bottom: 50px;
+    display: flex;
+    
+}
+#reservationForm .choiceBox .calendar{
+    width: 400px;
+    height: 350px;
+    background-color: blue;
+}
+#reservationForm .choiceBox .time{
+    width: 400px;
+    height: 350px;
+    background-color: red;
+    margin-left: 100px;
+}
+#reservationForm .petChoice{
+    margin-left: 80px;
+}
+#reservationForm .petKgChoice{
+    display: flex;
+    margin-left: 80px;
+}
+#reservationForm .character{
+    margin-left: 80px;
+}
+
+#reservationForm .point{
+    margin-left: 80px;
+}
+#reservationForm .cal{
+    margin-left: 80px;
+    font-size: 15px;
+}
+#reservationForm .price{
+    /* background-color: red; */
+    /* width: 500px; */
+    margin: 0 auto;
+}
