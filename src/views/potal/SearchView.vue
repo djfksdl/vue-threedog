@@ -222,7 +222,7 @@ export default {
     popularStyle() {
       return {
         position: this.isFixed ? 'fixed' : 'fixed',
-        top: this.isFixed ? '200px' : '670px',
+        top: this.isFixed ? '200px' : '710px',
         right: this.isFixed ? '300px' : '300px',
         transition: 'top 0.3s ease',
       };
