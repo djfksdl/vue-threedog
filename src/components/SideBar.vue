@@ -57,6 +57,7 @@ export default {
             return{
                 position: this.isFixed ? 'fixed' : 'fixed',
                 top: this.isFixed ? '0': '138px',
+                transition: 'top 0.3s ease',
             };
         },
     },
