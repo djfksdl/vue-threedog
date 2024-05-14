@@ -15,6 +15,7 @@
                     <li><router-link to="/diary">알림창</router-link></li>
                     <li><router-link to="">예약스케쥴</router-link></li>
                     <li><router-link to="/totalsales">매출/통계</router-link></li>
+                    <li><router-link to="/editform">홈페이지 설정</router-link></li>
                 </ul>
             </div>
             <!-- 헤더 오른쪽 로그인 -->
