@@ -1,24 +1,53 @@
-@charset "UTF-8";
-
+/* total-container 스타일 */
+.total-container {
+    width: 1500px;
+    display: flex; /* Flexbox 사용 */
+    justify-content: space-between; /* 요소들을 양쪽에 배치 */
+    gap: 20px; /* 요소들 간의 간격 설정 */
+    flex-direction: row; /* 요소들을 세로 정렬 */
+}
 
 /* 그래프 컨테이너 스타일 */
-/* .chart-container {
-    margin-top: 20px;
+.chart-container {
+    width: 1000px; /* 그래프 컨테이너의 너비를 반으로 설정 */
+    max-width: 400px;
+    display: block; /* Flexbox 사용 */
+    margin-bottom: 20px; /* 아래 여백 추가 */
+    padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    padding: 10px;
-} */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-/* 그래프 제목 스타일 */
-/* .chart-title {
-    font-size: 18px;
+/* 엑셀 표 스타일 */
+.sales-table {
+    width: calc(50% - 20px); /* 표의 너비를 반으로 설정 */
+    margin-left: auto; /* 왼쪽 여백을 최대화하여 오른쪽으로 정렬 */
+}
+
+.sales-table table {
+    width: 100%; /* 표 전체 너비로 설정 */
+    border-collapse: collapse;
+    border-radius: 5px;
+}
+
+.sales-table th,
+.sales-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+.sales-table th {
+    background-color: #f2f2f2;
     font-weight: bold;
-    margin-bottom: 10px;
-} */
+}
 
-/* 그래프 스타일 */
-/* canvas {
-    width: 100%;
-    height: auto;
-} */
-
+/* Total Sales 스타일 */
+.total-sales {
+    width: calc(50% - 20px); /* 총 매출 컨테이너의 너비를 반으로 설정 */
+    max-width: 400px;
+    margin-top: 20px; /* 위쪽 여백 추가 */
+    margin-left: auto; /* 왼쪽 여백을 최대화하여 오른쪽으로 정렬 */
+    text-align: center;
+}
