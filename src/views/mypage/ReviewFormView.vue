@@ -1,34 +1,7 @@
 <template>
     <div id="wrap">
-
         <AppHeader />
-
         <div id="reviewAddForm">
-            <div class="sidebar">
-                <div class="profile">
-                    <div class="profileImg">
-                        <img src="@/assets/images/dog2.jpg">
-                    </div>
-                    <div class="profileId">
-                        <label>dddddd</label> 님 <br>
-                        <label>1500</label> P
-                    </div>
-                </div>
-                <div class="profilePetBox">
-                    <div class="profileTitle">
-                        <p>반려견</p>
-                        <router-link to="/petaddform">➕</router-link>
-                    </div>
-                    <div class="profilePet">
-                        <img src="@/assets/images/dog.jpg">
-                        <p>dddd(3세)</p>
-                    </div>
-                    <div class="profilePet">
-                        <img src="@/assets/images/dog.jpg">
-                        <p>마리(3세)</p>
-                    </div>
-                </div>
-            </div>
             <div class="container">
                 <h1>후기등록</h1>
                 <form>
@@ -47,8 +20,7 @@
                     </div>
                     <div class="reviewWrite">
                         <h2>후기작성</h2>
-                        <textarea v-model="reviewText"
-                            placeholder="남겨신 후기는 다른 고객들에게 큰 도움이 됩니다."
+                        <textarea v-model="reviewText" placeholder="남겨신 후기는 다른 고객들에게 큰 도움이 됩니다."
                             @input="checkByte"></textarea>
                         <div class="add_area">
                             <p class="txt_count">
@@ -61,14 +33,26 @@
                             <h2>사진등록</h2>
                             <div class="pull">포토후기 작성하면 <p> 1000P </p>지급!</div>
                         </div>
-                        <div class="reviewPhotoInput">
-                            <label className="input-file-button" for="input-file">+</label>
-                            <input type="file" id="input-file">
+                        <p class="pBox1">* 사진은 최대 3장까지 첨부할수있습니다.</p>
+                        <!-- https://velog.io/@sagesrkim/next.js-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%8B%A4%EC%A4%91-%EC%97%85%EB%A1%9C%EB%93%9C-%EB%AF%B8%EB%A6%AC%EB%B3%B4%EA%B8%B0%EC%82%AD%EC%A0%9C-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84 -->
+                        <div class="photoBox">
+                            <div id="photoBox2">
+
+                            </div>
+                            <div id="photoBox2">
+
+                            </div>
+                            <div id="photoBox2">
+
+                            </div>
                         </div>
                     </div>
-                    <p>포토 후기 이벤트로 지급되는 포인트는 매달 1회만 지급됩니다.</p>
+
+                    <p class="pBox2">º 포토 후기 이벤트로 지급되는 포인트는 매달 1회만 지급됩니다.</p>
                 </form>
-                <button type="submit">저장하기</button>
+                <div class="submitBtn">
+                    <button type="submit">저장하기</button>
+                </div>
             </div>
         </div>
         <TopButton />
@@ -96,6 +80,7 @@ export default {
             score: 0,  //별점
             reviewText: "", //후기내용
             byteCount: 0,   // 후기내용의 바이트수
+            images: [], // 이미지배열
         };
     },
     methods: {
@@ -109,6 +94,7 @@ export default {
         checkByte() {
             this.byteCount = this.reviewText.length;
         },
+
     },
 
 };

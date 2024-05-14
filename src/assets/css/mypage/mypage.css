@@ -1,106 +1,10 @@
 /* 반려견 등록페이지 */
-#petAddForm {
-    display: flex;
-}
-
-/* 사이드바 */
-.sidebar {
-    width: 250px;
-    /* height: 1000px; */
-    box-shadow: 15px 15px 5px -15px gray;
-    border-bottom: 1px solid black;
-}
-
-.sidebar .profile {
-    width: 150px;
-    height: 150px;
-    margin: 100px 0 20px 20px;
-}
-
-.sidebar .profile img {
-    width: 170px;
-    height: 170px;
-    border-radius: 50%;
-}
-
-
-.sidebar .profileId {
-    /* background-color: red; */
-    width: 170px;
-    height: 30px;
-    text-align: center;
-}
-
-.sidebar .profileId label {
-    padding: 7px;
-}
-
-.sidebar .profileId label:first-child {
-    font-weight: bold;
-}
-
-.sidebar .profileId img {
-    width: 10px;
-    height: 10px;
-}
-
-.sidebar .profilePetBox {
-    background-color: #e6e5e5;
-    border-radius: 20px;
-    padding-bottom: 100px;
-    position: relative;
-}
-
-
-.sidebar .profilePet {
-    display: flex;
-}
-
-.sidebar .profileTitle {
-    display: flex;
-    margin-bottom: 20px;
-    margin-top: 120px;
-    padding-top: 30px;
-}
-
-.sidebar .profileTitle p {
-    font-weight: bold;
-    margin-left: 20px;
-}
-
-
-.sidebar .profilePet {
-    margin: 20px 0 20px 20px;
-    width: 180px;
-    border-bottom: 1px solid #236C3F;
-}
-
-.sidebar .profilePet img {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 20px;
-    border-radius: 10%;
-}
-
-.sidebar .profilePet p {
-    width: 90px;
-    margin-left: 10px;
-    margin-top: 30px;
-    /* background-color: red; */
-
-}
 /* ********************************************************* */
 /* petAddForm */
-#petAddForm .sidebar {
-    margin-left: -100px;
-}
-
 #petAddForm h1 {
-    margin: 30px 0 50px 50px;
+    margin: 30px 0 50px 200px;
     font-size: 30px;
 }
-
-
 
 
 #petAddForm .container form {
@@ -138,7 +42,7 @@
     background-size: cover;
     
 } */
-.filebox input[type="file"] {
+#petAddForm .filebox input[type="file"] {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -147,7 +51,7 @@
     /* border: 1px solid black; */
 }
 
-.filebox label {
+#petAddForm .filebox label {
     margin-left: 330px;
     display: inline-block;
     padding: .5em .75em;
@@ -160,7 +64,7 @@
 }
 
 /* named upload */
-.filebox .upload-name {
+#petAddForm .filebox .upload-name {
     display: inline-block;
     padding: .5em .75em;
     /* label의 패딩값과 일치 */
@@ -321,28 +225,30 @@ datalist {
 /* *********************************************************** */
 /* reviewForm */
 
-#reviewAddForm {
+#reviewAddForm{
     width: 1400px;
-    height: 1900px;
-    display: flex;
+    /* height: 1900px; */
+    margin: 0 auto;
+    
 }
 
+
 #reviewAddForm h1 {
-    margin: 30px 0 50px 50px;
+    margin: 30px 0 50px 400px;
     font-size: 30px;
+    text-align: left;
 }
 
 
 #reviewAddForm .container form {
     width: 1000px;
-    margin-left: 100px;
+    margin-left: 400px;
 }
 
-#reviewAddForm h2{
+#reviewAddForm h2 {
     margin-bottom: 20px;
 }
-
-#reviewAddForm .reviewScore p{
+#reviewAddForm .reviewScore p {
     margin-left: 20px;
     margin-top: 20px;
     font-size: 25px;
@@ -350,7 +256,7 @@ datalist {
 
 #reviewAddForm .star-rating {
     display: flex;
-    margin-bottom: 30px;
+    margin-bottom: 60px;
 
 }
 
@@ -371,8 +277,10 @@ datalist {
 #reviewAddForm .reviewWrite textarea::placeholder {
     color: #a7a4a4;
 }
-#reviewAddForm .reviewWrite .add_area{
+
+#reviewAddForm .reviewWrite .add_area {
     margin-left: 300px;
+    margin-bottom: 80px;
 }
 
 #reviewAddForm .reviewPhoto2 {
@@ -381,7 +289,6 @@ datalist {
 
 #reviewAddForm .reviewPhoto h2 {
     width: 120px;
-    height: 40px;
 }
 
 /* 사진등록  말풍선 */
@@ -397,7 +304,7 @@ datalist {
     font-size: 15px;
 }
 
-#reviewAddForm .reviewPhoto p {
+#reviewAddForm .reviewPhoto .pull p{
     color: yellow;
     font-weight: bold;
 }
@@ -417,8 +324,34 @@ datalist {
     text-align: center;
 }
 
+
 #reviewAddForm .reviewPhoto input {
     display: none;
+}
+#reviewAddForm .pBox1{
+    color: gray;
+    font-size: 14px;
+}
+
+/* 사진첨부 미리보기 */
+#reviewAddForm .reviewPhoto .photoBox{
+    width: 650px;
+    display: flex;
+    justify-content: space-between;
+}
+#reviewAddForm .reviewPhoto #photoBox2{
+    width: 200px;
+    height: 200px;
+    border: 1px solid #a7a4a4;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+
+#reviewAddForm .pBox2{
+    color: gray;
+    font-size: 14px;
+    margin-bottom: 50px;
 }
 
 #reviewAddForm .reviewPhoto .input-file-button {
@@ -429,6 +362,21 @@ datalist {
     cursor: pointer;
     font-size: 30px;
 }
+#reviewAddForm .submitBtn{
+    margin-left: 50px;
+    text-align: center;
+}
+#reviewAddForm .submitBtn button{
+    padding: 20px;
+    width: 300px;
+    margin-bottom: 100px;
+    background-color: #236C3F;
+    border: none;
+    border-radius: 20px;
+    color: white;
+    font-size: 18px;
+}
+
 
 
 
