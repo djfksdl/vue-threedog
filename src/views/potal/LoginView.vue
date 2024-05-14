@@ -22,16 +22,22 @@
                         </router-link>
 
                         <p class="signup-link">직원 간편 로그인은 <a href="/mlogin" class="manager-signup">여기</a>를 클릭!</p>
-                        <div class="sns">
+                        <div class="sns01">
                             <a id="" @click="kakaoLogin()">
                                 <img class="kakao" src="../../assets/images/kakao.png">
                             </a>
-                            <router-link to="">
+                            <a id="">
                                 <img class="naver" src="../../assets/images/naver.png">
-                            </router-link>
+                            </a>
+                            
                         </div>
-                        <div class="sns">
-
+                        <div class="sns02">
+                            <a id="">
+                                <img class="google" src="../../assets/images/google.png">
+                            </a>
+                            <a id="">
+                                <img class="facebook" src="../../assets/images/facebook.png">
+                            </a>
                         </div>
                     </form>
                 </div>
@@ -210,25 +216,37 @@ export default {
     margin-bottom: 7px;
 }
 
-.sns {
+.sns01 {
     display: flex;
     justify-content: center;
     margin-top: 30px;
 }
 
-.sns img {
+.sns02 {
+    display: flex;
+    justify-content: center;
+    object-fit: contain;
+}
+
+.sns01 img, .sns02 img {
     height: 40px;
     width: 140px;
+    border-radius: 5px;
 }
 
 .kakao,
-.naver {
-    width: 120px;
-    margin: 0 5px;
+.naver,
+.google {
+    cursor: pointer;
 }
 
+.google{
+    border: 1px solid;
+    border-color: #999;
+    margin-right: 10px;
+}
 .kakao {
-    margin-right: 5px;
+    margin-right: 10px;
 }
 
 .login-image-container {
