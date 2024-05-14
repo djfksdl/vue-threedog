@@ -4,6 +4,7 @@ import router from './router'
 import store from "./store/storage"
 import { useKakao } from 'vue3-kakao-maps/@utils';
 
+window.Kakao.init("57e9df8ad65dc994e5c28c552418428b");
 useKakao('57e9df8ad65dc994e5c28c552418428b');
 createApp(App).use(router)
     .use(store)
