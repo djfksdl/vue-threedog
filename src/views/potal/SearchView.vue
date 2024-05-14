@@ -53,15 +53,18 @@
               <td>
                 <div class="city-box">
                   <ul class="city-list">
-                    <li @click="toggleWeight('~2kg')" :class="{ 'selected': selectedWeights.includes('~2kg') }">2kg 이하 &nbsp;
+                    <li @click="toggleWeight('~2kg')" :class="{ 'selected': selectedWeights.includes('~2kg') }">2kg 이하
+                      &nbsp;
                       <span v-if="selectedWeights.includes('~2kg')" @click="cancelWeight('~2kg')"
                         class="cancel-btn">X</span>
                     </li>
-                    <li @click="toggleWeight('2~5kg')" :class="{ 'selected': selectedWeights.includes('2~5kg') }">2~5kg &nbsp;
+                    <li @click="toggleWeight('2~5kg')" :class="{ 'selected': selectedWeights.includes('2~5kg') }">2~5kg
+                      &nbsp;
                       <span v-if="selectedWeights.includes('2~5kg')" @click="cancelWeight('2~5kg')"
                         class="cancel-btn">X</span>
                     </li>
-                    <li @click="toggleWeight('5~8kg')" :class="{ 'selected': selectedWeights.includes('5~8kg') }">5~8kg &nbsp;
+                    <li @click="toggleWeight('5~8kg')" :class="{ 'selected': selectedWeights.includes('5~8kg') }">5~8kg
+                      &nbsp;
                       <span v-if="selectedWeights.includes('5~8kg')" @click="cancelWeight('5~8kg')"
                         class="cancel-btn">X</span>
                     </li>
@@ -88,12 +91,15 @@
               <td>
                 <div class="city-box">
                   <ul class="city-list">
-                    <li @click="toggleType('소형견')" :class="{ 'selected': selectedTypes.includes('소형견') }">소형견 &nbsp; <span
-                        v-if="selectedTypes.includes('소형견')" class="cancel-btn" @click="cancelType('소형견')">X</span></li>
-                    <li @click="toggleType('중형견')" :class="{ 'selected': selectedTypes.includes('중형견') }">중형견 &nbsp; <span
-                        v-if="selectedTypes.includes('중형견')" class="cancel-btn" @click="cancelType('중형견')">X</span></li>
-                    <li @click="toggleType('특수견')" :class="{ 'selected': selectedTypes.includes('특수견') }">특수견 &nbsp; <span
-                        v-if="selectedTypes.includes('특수견')" class="cancel-btn" @click="cancelType('특수견')">X</span></li>
+                    <li @click="toggleType('소형견')" :class="{ 'selected': selectedTypes.includes('소형견') }">소형견 &nbsp;
+                      <span v-if="selectedTypes.includes('소형견')" class="cancel-btn" @click="cancelType('소형견')">X</span>
+                    </li>
+                    <li @click="toggleType('중형견')" :class="{ 'selected': selectedTypes.includes('중형견') }">중형견 &nbsp;
+                      <span v-if="selectedTypes.includes('중형견')" class="cancel-btn" @click="cancelType('중형견')">X</span>
+                    </li>
+                    <li @click="toggleType('특수견')" :class="{ 'selected': selectedTypes.includes('특수견') }">특수견 &nbsp;
+                      <span v-if="selectedTypes.includes('특수견')" class="cancel-btn" @click="cancelType('특수견')">X</span>
+                    </li>
                   </ul>
                 </div>
               </td>
@@ -138,42 +144,51 @@
       <div class="bottom">
         <h2 class="result-h2">검색 결과</h2>
         <hr>
-        <div class="search-result">
-          <div class="search-item">
-            <img src="../../assets/images/spy.jpg">
-            <label>스파이가게</label>
+        <div class="bottom-bottom">
+          <div class="search-result">
+            <div class="search-item">
+              <img src="../../assets/images/spy.jpg">
+              <label>스파이가게</label>
+            </div>
+            <div class="search-item">
+              <img src="../../assets/images/dog2.jpg">
+              <label>하이미디어</label>
+            </div>
+            <div class="search-item">
+              <img src="../../assets/images/spy.jpg">
+              <label>스파이가게</label>
+            </div>
+            <div class="search-item">
+              <img src="../../assets/images/dog2.jpg">
+              <label>하이미디어</label>
+            </div>
+            <div class="search-item">
+              <img src="../../assets/images/spy.jpg">
+              <label>스파이가게</label>
+            </div>
+            <div class="search-item">
+              <img src="../../assets/images/dog2.jpg">
+              <label>하이미디어</label>
+            </div>
           </div>
-          <div class="search-item">
-            <img src="../../assets/images/dog2.jpg">
-            <label>하이미디어</label>
-          </div>
-          <div class="search-item">
-            <img src="../../assets/images/spy.jpg">
-            <label>스파이가게</label>
-          </div>
-          <div class="search-item">
-            <img src="../../assets/images/dog2.jpg">
-            <label>하이미디어</label>
+          <div class="popular-search" :style="popularStyle">
+            <h2>인기 검색어</h2>
+            <div class="popular-items">
+              <ul>
+                <li>1. dddddd</li>
+                <li>2. dddddd</li>
+                <li>3. dddddd</li>
+                <li>4. dddddd</li>
+                <li>5. dddddd</li>
+                <li>6. dddddd</li>
+                <li>7. dddddd</li>
+                <li>8. dddddd</li>
+                <li>9. dddddd</li>
+                <li>10. dddddd</li>
+              </ul>
+            </div>
           </div>
         </div>
-        <div class="popular-search">
-          <h2>인기 검색어</h2>
-          <div class="popular-items">
-            <ul>
-              <li>1. dddddd</li>
-              <li>2. dddddd</li>
-              <li>3. dddddd</li>
-              <li>4. dddddd</li>
-              <li>5. dddddd</li>
-              <li>6. dddddd</li>
-              <li>7. dddddd</li>
-              <li>8. dddddd</li>
-              <li>9. dddddd</li>
-              <li>10. dddddd</li>
-            </ul>
-          </div>
-        </div>
-
       </div>
     </div><!-- potal-search-container -->
     <TopButton />
@@ -199,8 +214,25 @@ export default {
       selectedWeights: [],
       selectedTypes: [],
       selectedPrices: [],
-      selectedItems: []
+      selectedItems: [],
+      isFixed: false,
     };
+  },
+  computed: {
+    popularStyle() {
+      return {
+        position: this.isFixed ? 'fixed' : 'fixed',
+        top: this.isFixed ? '200px' : '670px',
+        right: this.isFixed ? '300px' : '300px',
+        transition: 'top 0.3s ease',
+      };
+    },
+  },
+  mounted() {
+    window.addEventListener('scroll', this.handleScroll);
+  },
+  beforeUnmount() {
+    window.removeEventListener('scroll', this.handleScroll); // 컴포넌트가 소멸되기 전에 리스너 제거
   },
   methods: {
     toggleCity(city) {
@@ -268,7 +300,15 @@ export default {
       } else if (item.type === 'price') {
         this.cancelPrice(item.label);
       }
-    }
+    },
+    handleScroll() {
+      const scrollTop = window.scrollY || window.pageYOffset; // 현재 스크롤 위치
+      if (scrollTop > 350) {
+        this.isFixed = true; // 사이드바를 고정 상태로 변경
+      } else {
+        this.isFixed = false; // 그렇지 않으면 사이드바를 고정 해제
+      }
+    },
   }
 }
 </script>
@@ -400,10 +440,14 @@ export default {
   position: relative;
 }
 
+.bottom-bottom {
+  display: flex;
+}
+
 .search-result {
   display: flex;
   flex-wrap: wrap;
-  width: 100%;
+  width: 1000px;
   justify-content: flex-start;
   margin: 20px 0 15px 15px;
 }
@@ -432,11 +476,9 @@ export default {
   padding: 15px;
   border-radius: 15px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  position: fixed;
-  top: calc(100% - 110px);
-  right: 16%;
-  transform: translateY(-50%);
   background-color: white;
+  margin-top: 20px;
+  height: 320px;
 }
 
 .popular-search>h2 {
@@ -455,14 +497,15 @@ export default {
   font-size: 14px;
 }
 
+
 .search-category {
   display: flex;
   align-items: center;
   position: relative;
 }
 
-.search-table{
-  margin:20px 0 0 20px;
+.search-table {
+  margin: 20px 0 0 20px;
   border-collapse: collapse;
   padding-left: 20px;
   border: 1px solid #d6d6d6;
@@ -476,9 +519,8 @@ export default {
   background-color: #9bd89d;
 }
 
-.result-h2{
+.result-h2 {
   text-align: left;
   margin: 50px 0 15px 0;
 }
-
 </style>
