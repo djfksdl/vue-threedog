@@ -30,8 +30,8 @@
                         <div class="form-group-man">
                             <div class="input-container">
                                 <input type="text" id="num" name="num" placeholder="사업자등록번호">
-                                <input type="file" id="numFile" name="numFile" style="display: none;" @change="handleFileChange">
-                                <label for="numFile" class="btn00">첨부하기</label>
+                                <button type="button" @click="code_send"
+                                    class="small-btn green-btn">확인</button>
                             </div>
                         </div>
                         <div class="form-group-man">
@@ -135,6 +135,9 @@ export default {
                 },
             }).open();
         },
+        code_send(){
+
+        }
     }
 };
 </script>
