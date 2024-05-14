@@ -28,7 +28,7 @@
 
 /* 로고 */
 .header .headerContainer .logo {
-    width: 400px;
+    width: 300px;
     height: auto;
     object-fit: contain;
     margin-right: 30px;
@@ -38,6 +38,7 @@
 .header .headerContainer .head {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     /* background-color: darkblue; */
     width: 100%;
 }
@@ -47,19 +48,38 @@
     display: flex;
 }
 .header .headerContainer .head .categories>li {
+    margin-right: 20px;
+}
+.header .headerContainer .head .categories>li a{
     margin-right: 40px;
+    font-weight: bold;
 }
 
 /* 오른쪽 메뉴 */
-.header .headerContainer .head .user-options{}
-.header .headerContainer .head .user-options a{}
-.header .headerContainer .head .user-options a::after{
-    content: '|';
-    padding-right: 10px;
-    padding-left: 10px;
+.header .headerContainer .head .user-options{
+    display: flex;
+    /* background-color: yellowgreen; */
 }
-.header .headerContainer .head .user-options a:last-child:after{
-    content: '';
-    padding-right: 0px;
-    padding-left: 0px;
+.header .headerContainer .head .user-options{
+    display: flex;
 }
+.header .headerContainer .head .user-options a{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 10px;
+}
+.header .headerContainer .head .user-options a img{
+    width: 25px;
+}
+.header .headerContainer .head .user-options a p{
+    font-size: 13px;
+    margin-top: 6px;
+}
+.header .headerContainer .head .user-options a:hover p{
+    color: #237140;
+}
+.header .headerContainer .head .user-options a:hover img{
+    filter: invert(26%) sepia(100%) saturate(459%) hue-rotate(132deg) brightness(60%) contrast(94%);
+}
+

@@ -16,9 +16,14 @@
 
                 <!-- 오른쪽 메뉴 -->
                 <div class="user-options">
-                    <router-link to="/login">로그인</router-link>
-                    <router-link to="/signup">회원가입</router-link>
-                    <router-link to="/signup">마이페이지</router-link>
+                    <router-link to="/login">
+                        <img src="@/assets/images/icon_login.svg">
+                        <p>로그인</p>
+                    </router-link>
+                    <router-link to="/mypage">
+                        <img src="@/assets/images/icon_my.svg">
+                        <p>마이페이지</p>
+                    </router-link>
                 </div>
                 
                 <!-- <ul>
