@@ -3,55 +3,59 @@
   <div class="total-container">
 
     <!-- 일 매출통계 -->
-<div class="chart-container">
-  <div style="display: flex;">
-    <div>
-      <canvas width="418" height="410" ref="dailyChartCanvas"></canvas> <!-- 일별 매출 그래프 -->
-      <div class="total-sales">일별 매출 합계: {{ dailyTotal }}</div>
+    <div class="chart-container">
+      <div style="display: flex;">
+        <div>
+          <!-- 일별 매출 그래프 -->
+          <canvas width="418" height="410" ref="dailyChartCanvas"></canvas>
+          <div class="total-sales">일별 매출 합계: {{ dailyTotal }}</div>
+        </div>
+        <!-- 엑셀 표 -->
+        <div class="sales-table">
+          <table>
+            <thead>
+              <tr>
+                <th>날짜</th>
+                <th>가위 컷</th>
+                <th>부분 미용</th>
+                <th>전체 미용</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(sales, index) in dailySales" :key="index">
+                <td>{{ index + 1 }}일</td>
+                <td>{{ sales.scissor }}</td>
+                <td>{{ sales.partial }}</td>
+                <td>{{ sales.full }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-    <!-- 엑셀 표 -->
-    <div class="sales-table">
-      <table>
-        <thead>
-          <tr>
-            <th>날짜</th>
-            <th>가위 컷</th>
-            <th>부분 미용</th>
-            <th>전체 미용</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(sales, index) in dailySales" :key="index">
-            <td>{{ index + 1 }}일</td>
-            <td>{{ sales.scissor }}</td>
-            <td>{{ sales.partial }}</td>
-            <td>{{ sales.full }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
 
     <!-- 주 매출통계 -->
     <div class="chart-container">
-      <canvas width="300" height="200" ref="weeklyChartCanvas"></canvas> <!-- 주별 매출 그래프 -->
+      <!-- 주별 매출 그래프 -->
+      <canvas width="300" height="200" ref="weeklyChartCanvas"></canvas>
       <div class="total-sales">주별 매출 합계: {{ weeklyTotal }}</div>
     </div>
 
     <!-- 월 매출통계 -->
     <div class="chart-container">
-      <canvas width="621" height="200" ref="monthlyChartCanvas"></canvas> <!-- 월별 매출 그래프 -->
+      <!-- 월별 매출 그래프 -->
+      <canvas width="621" height="200" ref="monthlyChartCanvas"></canvas>
       <div class="total-sales">월별 매출 합계: {{ monthlyTotal }}</div>
     </div>
 
     <!-- 년도별 매출통계 -->
     <div class="chart-container">
-      <canvas width="300" height="200" ref="yearlyChartCanvas"></canvas> <!-- 년도별 매출 그래프 -->
+      <!-- 년도별 매출 그래프 -->
+      <canvas width="300" height="200" ref="yearlyChartCanvas"></canvas>
       <div class="total-sales">년도별 매출 합계: {{ yearlyTotal }}</div>
     </div>
 
-     </div>
+  </div>
   <ManagerFooter /> <!-- 매니저 푸터 컴포넌트 -->
 </template>
 
@@ -101,7 +105,7 @@ export default {
   methods: {
     // 각 기간별 매출 데이터를 가져오는 메서드
     fetchDailySales() {
-      this.dailySales = [100, 200, 300, 400, 500, 600, 700]; //일
+      this.dailySales = [100, 200, 300, 400, 500, 600, 700]; // 일
     },
     fetchWeeklySales() {
       this.weeklySales = [500, 600, 700, 800]; // 주
@@ -157,3 +161,7 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+/* 여기에 스타일링 코드 추가 */
+</style>
