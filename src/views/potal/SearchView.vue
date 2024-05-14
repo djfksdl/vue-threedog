@@ -132,7 +132,7 @@
       <div class="selected-items">
         <div v-for="(item, index) in selectedItems" :key="index" class="selected-item" @click="cancelSelected(item)">
           {{ item.label }}
-          <button @click="cancelSelected(item)" class="cancel-btn">X</button>
+          <button @click="cancelSelected(item)" class="lcancel-btn">X</button>
         </div>
       </div>
       <div class="bottom">
@@ -362,6 +362,13 @@ export default {
 }
 
 .cancel-btn {
+  font-size: 12px;
+  padding: 5px;
+  background-color: #9bd89d;
+  border: none;
+}
+
+.lcancel-btn {
   font-size: 12px;
   padding: 5px;
   background-color: #9bd89d;

@@ -48,11 +48,18 @@
                                     style="margin-left: 10px;">확인</button>
                             </div>
                         </div>
-                        <div class="form-group-man">
+                        <div class="form-group" style="margin-bottom: 10px;">
                             <div class="input-container">
-                                <input type="text" id="address" name="address" placeholder="주소">
-                                <button type="button" @click="searchAddress" class="small-btn green-btn">검색</button>
+                                <input type="text" id="postalCode" placeholder="우편번호" v-model="zonecode" readonly>
+                                <button id="postcode" type="button" @click="openPostcode"
+                                    class="small-btn green-btn">검색</button>
                             </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 10px;">
+                            <input type="text" v-model="roadAddress" placeholder="주소" readonly>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 10px;">
+                            <input type="text" v-model="detailAddress" placeholder="상세 주소">
                         </div>
                         <button type="submit" class="msignupBtn">회원가입</button>
                     </form>
@@ -82,7 +89,10 @@ export default {
             isDuplicate: false, // 아이디 중복 여부
             confirmPassword: "", // 비밀번호 확인 값
             isPasswordMatch: true, // 비밀번호 일치 여부
-            isPasswordValid: false // 사용 가능한 비밀번호 여부
+            isPasswordValid: false, // 사용 가능한 비밀번호 여부
+            zonecode: "",
+            roadAddress: "",
+            detailAddress: "",
         };
     },
     methods: {
@@ -116,7 +126,15 @@ export default {
         handleFileChange(event) {
             // 파일 변경 시 실행되는 로직
             console.log("파일 첨부됨:", event.target.files[0]);
-        }
+        },
+        openPostcode() {
+            new window.daum.Postcode({
+                oncomplete: (data) => {
+                    this.zonecode = data.zonecode;
+                    this.roadAddress = data.roadAddress;
+                },
+            }).open();
+        },
     }
 };
 </script>
