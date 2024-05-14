@@ -89,24 +89,31 @@
     /* background-color: red; */
 
 }
+/* ********************************************************* */
+/* petAddForm */
+#petAddForm .sidebar {
+    margin-left: -100px;
+}
 
 #petAddForm h1 {
-    margin: 50px 0 50px 50px;
+    margin: 30px 0 50px 50px;
     font-size: 30px;
 }
 
 
-/* petAddForm */
+
+
 #petAddForm .container form {
-    margin: 0 auto;
+    margin: 20px auto;
     width: 1000px;
     /* border: 1px solid black; */
+
 }
 
 #petAddForm {
     width: 1400px;
     height: 1900px;
-
+    margin: 0 auto;
 }
 
 #petAddForm .container form {
@@ -176,6 +183,11 @@
     height: 500px;
 }
 
+#petAddForm .container .detailBox {
+    margin-top: -30px;
+    margin-left: 50px;
+}
+
 #petAddForm .container .detail {
     padding-left: 25px;
 }
@@ -213,19 +225,51 @@
     font-weight: bold;
 }
 
-#petAddForm .container #feature .bite label:first-child {
-    width: 80px;
-    height: 40px;
-    padding-top: 10px;
-    display: inline-block;
-    text-align: center;
-    font-weight: lighter;
-    margin-right: 15px;
-    font-size: 16px;
+#petAddForm .container #feature .biteRange {
+    display: flex;
 }
 
-#petAddForm .container #feature .bite input, datalist {
+#petAddForm .container #feature .biteRange2 {
+    margin-top: 20px;
+}
+
+
+#petAddForm .container #feature .bite label:first-child {
+    width: 100px;
+    /* height: 40px; */
+    /* display: inline-block; */
+    text-align: center;
+    font-weight: lighter;
+    font-size: 16px;
+    margin-right: 30px;
+}
+
+#petAddForm .container #feature .bite input,
+datalist {
     width: 200px;
+    accent-color: #236C3F;
+}
+
+#petAddForm .container #feature .bite .pbox {
+    display: flex;
+}
+
+#petAddForm .container #feature .bite p {
+    width: 40px;
+    font-size: 14px;
+    margin-top: -14px;
+}
+
+#petAddForm .container #feature .bite p:first-child {
+    margin-left: 108px;
+}
+
+#petAddForm .container #feature .bite p:nth-child(2) {
+    margin-left: 52px;
+}
+
+#petAddForm .container #feature .bite p:nth-child(3) {
+    margin-left: 52px;
 }
 
 #petAddForm .container #feature button {
@@ -235,12 +279,13 @@
 
 
 #petAddForm .container #feature textarea {
+    margin-top: 20px;
     text-align: start;
     width: 400px;
     height: 130px;
     padding-left: 5px;
     padding-top: 5px;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
     border: 1px solid #a7a4a4;
     border-radius: 5px;
     resize: none;
@@ -248,7 +293,8 @@
 }
 
 .insertBtnBox {
-    text-align: center;
+    margin-left: 660px;
+    /* text-align: center; */
 }
 
 #petAddForm .container .insertBtn {
@@ -278,46 +324,55 @@
 #reviewAddForm {
     width: 1400px;
     height: 1900px;
-    margin: 0 auto;
     display: flex;
-
 }
 
-#reviewAddForm .container {
-    margin: 0 auto;
-}
-
-#reviewAddForm .container h1 {
-    margin: 50px 0 30px 50px;
+#reviewAddForm h1 {
+    margin: 30px 0 50px 50px;
     font-size: 30px;
 }
 
+
 #reviewAddForm .container form {
-    margin: 0 auto;
     width: 1000px;
-    /* border: 1px solid black; */
+    margin-left: 100px;
 }
 
-
-#reviewAddForm textarea {
-    width: 500px;
-    height: 200px;
-    padding: 10px;
-    resize: none;
-
+#reviewAddForm h2{
+    margin-bottom: 20px;
 }
 
-#reviewAddForm textarea::placeholder {
-    color: #a7a4a4;
+#reviewAddForm .reviewScore p{
+    margin-left: 20px;
+    margin-top: 20px;
+    font-size: 25px;
 }
-
 
 #reviewAddForm .star-rating {
     display: flex;
+    margin-bottom: 30px;
+
 }
 
 #reviewAddForm .star-rating img {
     width: 50px;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+#reviewAddForm .reviewWrite textarea {
+    width: 700px;
+    height: 300px;
+    padding: 10px;
+    resize: none;
+    border-radius: 20px;
+}
+
+#reviewAddForm .reviewWrite textarea::placeholder {
+    color: #a7a4a4;
+}
+#reviewAddForm .reviewWrite .add_area{
+    margin-left: 300px;
 }
 
 #reviewAddForm .reviewPhoto2 {
@@ -329,6 +384,7 @@
     height: 40px;
 }
 
+/* 사진등록  말풍선 */
 #reviewAddForm .pull {
     position: relative;
     width: 240px;
