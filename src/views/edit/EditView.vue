@@ -8,18 +8,24 @@
                 <p>부제목이 들어갈 자리</p>
             </div>
             <!-- 이미지 슬라이드 -->
-            <div class="eImgSlide wrapper">
-                <Carousel :autoplay="5000" :wrap-around="true" :show-arrows="true" ref="carouselRef">
+            <div class="eImgSlide wrapper-slide">
+                <Carousel :autoplay="5000" :wrap-around="true" :show-arrows="false" ref="carouselRef">
                     <Slide v-for="slide in slides" :key="slide">
                         <div class="img-slide">
                             <img class="slideImg" :src="slide" />
                         </div>
                     </Slide>
                     <template #addons>
-                        <Navigation />
+                        <!-- <Navigation /> -->
                         <Pagination />
                     </template>
                 </Carousel>
+                <div class="arrow left" @click="prevSlide">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                <div class="arrow right" @click="nextSlide">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
             </div>
             <!-- 중간내용부분 -->
             <div class="eMidContainer">
@@ -325,8 +331,8 @@
   
   
 <script>
-   import { defineComponent} from "vue";
-   import { Carousel, Navigation, Pagination, Slide } from "vue3-carousel";
+   import { defineComponent,ref} from "vue";
+   import { Carousel, Pagination, Slide } from "vue3-carousel";
    import '@/assets/css/edit/edit.css'
    import ManagerFooter from "@/components/ManagerFooter.vue"
    import ManagerHeader from "@/components/ManagerHeader.vue"
@@ -334,6 +340,7 @@
 
    import slide01 from "@/assets/images/main-slide.png";
    import slide02 from "@/assets/images/main-slide02.jpg";
+   import "vue3-carousel/dist/carousel.css";
   
    export default defineComponent({
        name: "EditView",
@@ -344,26 +351,34 @@
             Carousel,
             Slide,
             Pagination,
-            Navigation,
+            // Navigation,
        },
        data() {
-           return {
-            slides: [slide01, slide02],
-            productList: [],
-            productList2: [],
-            productList3: [],
-            settings: {
-                itemsToShow: 2,
-                snapAlign: 'center',
-            },
-            breakpoints: {
-                1024: {
-                    itemsToShow: 4,
-                    snapAlign: 'start',
-                },
-            },
-        };
+           
        },
+       setup() {
+            const slides = ref([slide01, slide02]);
+            const carouselRef = ref(null);
+
+            const nextSlide = () => {
+            if (carouselRef.value && carouselRef.value.next) {
+                carouselRef.value.next();
+            }
+            };
+
+            const prevSlide = () => {
+            if (carouselRef.value && carouselRef.value.prev) {
+                carouselRef.value.prev();
+            }
+            };
+
+            return {
+            slides,
+            nextSlide,
+            prevSlide,
+            carouselRef,
+            };
+        },
        methods: {
         
   
@@ -371,13 +386,45 @@
    })
   </script>
 <style>
-    .slider01 .carousel__prev,
-    .slider01 .carousel__next {
-        color: white;
-        opacity: 0.9;
-    }
-    .carousel__slide{
-        align-items: start;
-    }
+.wrapper-slide {
+  position: relative;
+  width: 100%;
+  height: 600px;
+}
+
+.img-slide {
+  width: 100%;
+  height: 600px;
+  overflow: hidden;
+}
+
+.slideImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 24px;
+  color: rgba(224, 217, 217, 0.986); /* 더 밝은 회색 */
+  cursor: pointer;
+  z-index: 100;
+}
+
+.left {
+  left: 20px;
+}
+
+.right {
+  right: 20px;
+}
+
+.fas.fa-chevron-left,
+.fas.fa-chevron-right {
+  font-size: 36px;
+}
 </style>
   
