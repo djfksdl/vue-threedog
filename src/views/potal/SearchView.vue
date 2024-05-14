@@ -53,23 +53,23 @@
               <td>
                 <div class="city-box">
                   <ul class="city-list">
-                    <li @click="toggleWeight('~2kg')" :class="{ 'selected': selectedWeights.includes('~2kg') }">2kg 이하
+                    <li @click="toggleWeight('~2kg')" :class="{ 'selected': selectedWeights.includes('~2kg') }">2kg 이하 &nbsp;
                       <span v-if="selectedWeights.includes('~2kg')" @click="cancelWeight('~2kg')"
                         class="cancel-btn">X</span>
                     </li>
-                    <li @click="toggleWeight('2~5kg')" :class="{ 'selected': selectedWeights.includes('2~5kg') }">2~5kg
+                    <li @click="toggleWeight('2~5kg')" :class="{ 'selected': selectedWeights.includes('2~5kg') }">2~5kg &nbsp;
                       <span v-if="selectedWeights.includes('2~5kg')" @click="cancelWeight('2~5kg')"
                         class="cancel-btn">X</span>
                     </li>
-                    <li @click="toggleWeight('5~8kg')" :class="{ 'selected': selectedWeights.includes('5~8kg') }">5~8kg
+                    <li @click="toggleWeight('5~8kg')" :class="{ 'selected': selectedWeights.includes('5~8kg') }">5~8kg &nbsp;
                       <span v-if="selectedWeights.includes('5~8kg')" @click="cancelWeight('5~8kg')"
                         class="cancel-btn">X</span>
                     </li>
                     <li @click="toggleWeight('8~10kg')" :class="{ 'selected': selectedWeights.includes('8~10kg') }">
-                      8~10kg <span v-if="selectedWeights.includes('8~10kg')" @click="cancelWeight('8~10kg')"
+                      8~10kg &nbsp; <span v-if="selectedWeights.includes('8~10kg')" @click="cancelWeight('8~10kg')"
                         class="cancel-btn">X</span></li>
                     <li @click="toggleWeight('10~12kg')" :class="{ 'selected': selectedWeights.includes('10~12kg') }">
-                      10~12kg <span v-if="selectedWeights.includes('10~12kg')" @click="cancelWeight('10~12kg')"
+                      10~12kg &nbsp; <span v-if="selectedWeights.includes('10~12kg')" @click="cancelWeight('10~12kg')"
                         class="cancel-btn">X</span></li>
                     <li @click="toggleWeight('12kg~')" :class="{ 'selected': selectedWeights.includes('12kg~') }">12kg~
                       <span v-if="selectedWeights.includes('12kg~')" @click="cancelWeight('12kg~')"
@@ -88,11 +88,11 @@
               <td>
                 <div class="city-box">
                   <ul class="city-list">
-                    <li @click="toggleType('소형견')" :class="{ 'selected': selectedTypes.includes('소형견') }">소형견 <span
+                    <li @click="toggleType('소형견')" :class="{ 'selected': selectedTypes.includes('소형견') }">소형견 &nbsp; <span
                         v-if="selectedTypes.includes('소형견')" class="cancel-btn" @click="cancelType('소형견')">X</span></li>
-                    <li @click="toggleType('중형견')" :class="{ 'selected': selectedTypes.includes('중형견') }">중형견 <span
+                    <li @click="toggleType('중형견')" :class="{ 'selected': selectedTypes.includes('중형견') }">중형견 &nbsp; <span
                         v-if="selectedTypes.includes('중형견')" class="cancel-btn" @click="cancelType('중형견')">X</span></li>
-                    <li @click="toggleType('특수견')" :class="{ 'selected': selectedTypes.includes('특수견') }">특수견 <span
+                    <li @click="toggleType('특수견')" :class="{ 'selected': selectedTypes.includes('특수견') }">특수견 &nbsp; <span
                         v-if="selectedTypes.includes('특수견')" class="cancel-btn" @click="cancelType('특수견')">X</span></li>
                   </ul>
                 </div>
@@ -108,18 +108,18 @@
                 <div class="city-box">
                   <ul class="city-list">
                     <li @click="togglePrice('~20,000')" :class="{ 'selected': selectedPrices.includes('~20,000') }">
-                      ~20,000 <span v-if="selectedPrices.includes('~20,000')" @click="cancelPrice('~20,000')"
+                      ~20,000 &nbsp; <span v-if="selectedPrices.includes('~20,000')" @click="cancelPrice('~20,000')"
                         class="cancel-btn">X</span></li>
                     <li @click="togglePrice('20,000~40,000')"
-                      :class="{ 'selected': selectedPrices.includes('20,000~40,000') }">20,000~40,000 <span
+                      :class="{ 'selected': selectedPrices.includes('20,000~40,000') }">20,000~40,000 &nbsp; <span
                         v-if="selectedPrices.includes('20,000~40,000')" @click="cancelPrice('20,000~40,000')"
                         class="cancel-btn">X</span></li>
                     <li @click="togglePrice('40,000~60,000')"
-                      :class="{ 'selected': selectedPrices.includes('40,000~60,000') }">40,000~60,000 <span
+                      :class="{ 'selected': selectedPrices.includes('40,000~60,000') }">40,000~60,000 &nbsp; <span
                         v-if="selectedPrices.includes('40,000~60,000')" @click="cancelPrice('40,000~60,000')"
                         class="cancel-btn">X</span></li>
                     <li @click="togglePrice('60,000~')" :class="{ 'selected': selectedPrices.includes('60,000~') }">
-                      60,000~ <span v-if="selectedPrices.includes('60,000~')" @click="cancelPrice('60,000~')"
+                      60,000~ &nbsp; <span v-if="selectedPrices.includes('60,000~')" @click="cancelPrice('60,000~')"
                         class="cancel-btn">X</span></li>
                   </ul>
                 </div>
@@ -136,7 +136,7 @@
         </div>
       </div>
       <div class="bottom">
-        <h2>검색 결과</h2>
+        <h2 class="result-h2">검색 결과</h2>
         <hr>
         <div class="search-result">
           <div class="search-item">
@@ -433,7 +433,7 @@ export default {
   border-radius: 15px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   position: fixed;
-  top: calc(100% - 160px);
+  top: calc(100% - 110px);
   right: 16%;
   transform: translateY(-50%);
   background-color: white;
@@ -474,6 +474,11 @@ export default {
 
 .search-table .search-location {
   background-color: #9bd89d;
+}
+
+.result-h2{
+  text-align: left;
+  margin: 50px 0 15px 0;
 }
 
 </style>
