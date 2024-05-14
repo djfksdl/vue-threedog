@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import "@/assets/css/mHeaderFooter/mfooter.css"
+import "@/assets/css/headerFooter/mfooter.css"
 export default {
     name: "ManagerFooter",
     components: {},

@@ -1,0 +1,65 @@
+/* AppHeader */
+
+.header {
+    width: 100%;
+    height: 138px;
+    position: relative;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+}
+.header::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 10px 0 rgba(0, 0,0, 0.1);
+    pointer-events: none;
+    transform: translateX(-50%);
+}
+.header .headerContainer{
+    /* background-color: peru; */
+    width: 1400px;
+    margin: 0 auto;
+    height: 138px;
+    display: flex;
+    align-items: center;
+}
+
+/* 로고 */
+.header .headerContainer .logo {
+    width: 400px;
+    height: auto;
+    object-fit: contain;
+    margin-right: 30px;
+}
+
+/* 메뉴 */
+.header .headerContainer .head {
+    display: flex;
+    justify-content: space-between;
+    /* background-color: darkblue; */
+    width: 100%;
+}
+
+/* 왼쪽 메뉴 */
+.header .headerContainer .head .categories{
+    display: flex;
+}
+.header .headerContainer .head .categories>li {
+    margin-right: 40px;
+}
+
+/* 오른쪽 메뉴 */
+.header .headerContainer .head .user-options{}
+.header .headerContainer .head .user-options a{}
+.header .headerContainer .head .user-options a::after{
+    content: '|';
+    padding-right: 10px;
+    padding-left: 10px;
+}
+.header .headerContainer .head .user-options a:last-child:after{
+    content: '';
+    padding-right: 0px;
+    padding-left: 0px;
+}
