@@ -118,6 +118,7 @@
                 </div>
             </div>
         </div>
+        <TopButton />
         <AppFooter />
     </div>
  </template>
@@ -126,12 +127,15 @@
  import AppHeader from "@/components/AppHeader.vue"
  import AppFooter from "@/components/AppFooter.vue"
  import SideBar from "@/components/SideBar.vue"
+ import TopButton from "@/components/TopButton.vue"
+
  export default {
     name: "MypageView",
     components: {
         AppHeader,
         AppFooter,
-        SideBar
+        SideBar,
+        TopButton
     },
     data() {
         return {};

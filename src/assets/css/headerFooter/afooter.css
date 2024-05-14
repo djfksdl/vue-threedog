@@ -1,0 +1,74 @@
+/* AppFooter */
+
+.footer {
+    width: 100%;
+    height: 300px;
+    background-color: #252525;
+    /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: space-between; */
+    padding: 30px 20px 20px 20px;
+    /* margin-top: 300px; */
+}
+.footer .footerWrap{
+    /* background-color: pink; */
+    margin: 0 auto;
+    width: 1400px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+/* 왼쪽 내용 */
+.footer-content {
+    /* background-color: darkgray; */
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 25%; /* 전체의 1/4 차지 */
+}
+
+.footer-name{
+    width: 300px;
+    height: 80px;
+}
+
+/* 오른쪽 내용 */
+.footer-info {
+    color: white;
+    text-align: left;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    text-align: left;
+    margin-right: 20px;
+    width: 75%; /* 나머지 공간을 차지 */
+}
+
+.footer-column {
+    width: calc(33.33% - 20px);
+    margin-bottom: 30px;
+}
+
+.footer-address {
+    font-size: 14px;
+    color: white;
+}
+
+.span-head{
+    font-size: 18px;
+    font-weight: bold;
+    display: block; 
+}
+
+.footer-sns{
+    display: flex;
+    align-items: center;
+}
+
+.app{
+    margin-right: 10px;
+}
+
+.footer-info span {
+    line-height: 1.1; /* Adjust line-height for spacing between lines */
+}
