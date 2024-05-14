@@ -225,11 +225,11 @@ datalist {
 /* *********************************************************** */
 /* reviewForm */
 
-#reviewAddForm{
+#reviewAddForm {
     width: 1400px;
     /* height: 1900px; */
     margin: 0 auto;
-    
+
 }
 
 
@@ -248,6 +248,7 @@ datalist {
 #reviewAddForm h2 {
     margin-bottom: 20px;
 }
+
 #reviewAddForm .reviewScore p {
     margin-left: 20px;
     margin-top: 20px;
@@ -304,7 +305,7 @@ datalist {
     font-size: 15px;
 }
 
-#reviewAddForm .reviewPhoto .pull p{
+#reviewAddForm .reviewPhoto .pull p {
     color: yellow;
     font-weight: bold;
 }
@@ -328,18 +329,20 @@ datalist {
 #reviewAddForm .reviewPhoto input {
     display: none;
 }
-#reviewAddForm .pBox1{
+
+#reviewAddForm .pBox1 {
     color: gray;
     font-size: 14px;
 }
 
 /* 사진첨부 미리보기 */
-#reviewAddForm .reviewPhoto .photoBox{
+#reviewAddForm .reviewPhoto .photoBox {
     width: 650px;
     display: flex;
     justify-content: space-between;
 }
-#reviewAddForm .reviewPhoto #photoBox2{
+
+#reviewAddForm .reviewPhoto #photoBox2 {
     width: 200px;
     height: 200px;
     border: 1px solid #a7a4a4;
@@ -348,7 +351,7 @@ datalist {
 }
 
 
-#reviewAddForm .pBox2{
+#reviewAddForm .pBox2 {
     color: gray;
     font-size: 14px;
     margin-bottom: 50px;
@@ -362,11 +365,13 @@ datalist {
     cursor: pointer;
     font-size: 30px;
 }
-#reviewAddForm .submitBtn{
+
+#reviewAddForm .submitBtn {
     margin-left: 50px;
     text-align: center;
 }
-#reviewAddForm .submitBtn button{
+
+#reviewAddForm .submitBtn button {
     padding: 20px;
     width: 300px;
     margin-bottom: 100px;
@@ -383,43 +388,80 @@ datalist {
 
 /* *********************************************************** */
 /* Mydiary */
-.myDiary02 {
-    display: flex;
-    width: 1200px;
+#myDiary {
+    width: 1400px;
     margin: 0 auto;
-    border-top: 1px solid black;
-    /* border-bottom: 1px solid black; */
-    margin-bottom: 100px;
 }
 
 #myDiary h1 {
-    font-size: 26px;
-    padding-top: 50px;
-    margin-left: 100px;
-    width: 1000px;
+    margin: 30px 0 20px 200px;
+    font-size: 30px;
+
 }
 
-.mypetImgSlider img {
-    width: 400px;
-    height: 350px;
+#myDiary .container .dateBox {
+    /* background-color: red; */
+    border-top: 1px solid #a7a4a4;
+    padding-top: 20px;
+    width: 1100px;
+    text-align: right;
+    margin: 0 0 30px 200px;
+}
+
+#myDiary .container .dateBox label {
+    padding: 10px;
+    background-color: #e2e2e2;
+    border-radius: 10px;
+}
+
+#myDiary .container .dateBox input {
+    width: 150px;
+    height: 40px;
+    border: 1px solid #236C3F;
     border-radius: 30px;
+    font-size: 16px;
+    padding: 8px;
+    margin-bottom: 10px;
 }
 
-#myDiary .context {
-    width: 500px;
-    height: 350px;
-    /* border: 1px solid #dddddd; */
+.myDiary02 {
+    width: 300px;
+    background-color: #e2e2e2;
     border-radius: 20px;
-    padding-top: 60px;
-    padding-left: 100px;
+    margin-left: 200px;
 }
-
-#myDiary .context div {
-    height: 50px;
-}
-
-#myDiary .context div p {
-    display: inline-block;
-    width: 200px;
+.myDiary02  .relevantDate{
+    padding: 5px;
+    text-align: center;
+    font-size: 18px;
     font-weight: bold;
+    color: #414141;
+}
+.myDiary02  .relevantDate span{
+    font-size: 16px;
+    font-weight: lighter;
+}
+
+.myDiary02 .mypetImgSlider img {
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 280px;
+    height: 250px;
+    border-radius: 20px;
+}
+.myDiary02 .context div {
+    display: flex;
+    padding: 3px;
+    margin-left: 20px;
+}
+.myDiary02 .context{
+    width: 250px;
+    /* background-color: red; */
+    margin-left: 20px;
+}
+.myDiary02 .context div p:first-child{
+    font-weight: bold;
+    width: 130px;
+    /* background-color: red; */
+    /* text-align: center; */
 }

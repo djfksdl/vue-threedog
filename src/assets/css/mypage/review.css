@@ -1,19 +1,52 @@
-.ReviewContainer{
+#reviewCon{
     width: 1400px;
     margin: 0 auto;
-    /* background-color: pink; */
-    padding: 30px 0;
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-}
-.ReviewContainer .cutName{
-    width: 100px;
 }
 
-.ReviewContainer .reContext{
-    /* background-color: red; */
+#reviewCon h1{
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #dddddd;
+}
+
+#reviewCon .reviewBox{
+    display: flex;
+    margin-left: 50px;
+    /* justify-content: space-between; */
+}
+
+.reviewCon02 {
+    width: 300px;
+    background-color: #efeeee;
+    border-radius: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+}
+
+.reviewCon02  .cutName{
+    font-weight: bold;
+    font-size: 20px;
+    width: 300px;
+    text-align: center;
+    margin-top: 20px;
+}
+.reviewCon02 .cutInfor{
+    margin-top: 10px;
+    margin-left: 20px;
+}
+.reviewCon02 .mypetImgSlider img {
+    margin-top: 10px;
+    margin-left: 10px;
     width: 250px;
-    font-size: 15px;
-    margin: 0 auto;
+    height: 280px;
+    border-radius: 20px;
+}
+.reviewCon02 .context{
+    width: 260px;
+    height: 200px;
+    /* background-color: red; */
+    margin-top: 10px;
+    margin-left: 20px;
+    border-top: 1px solid black;
+    padding-top: 5px;
 }
