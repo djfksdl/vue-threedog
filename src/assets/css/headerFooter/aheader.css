@@ -1,0 +1,85 @@
+/* AppHeader */
+
+.header {
+    width: 100%;
+    height: 138px;
+    position: relative;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+}
+.header::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 10px 0 rgba(0, 0,0, 0.1);
+    pointer-events: none;
+    transform: translateX(-50%);
+}
+.header .headerContainer{
+    /* background-color: peru; */
+    width: 1400px;
+    margin: 0 auto;
+    height: 138px;
+    display: flex;
+    align-items: center;
+}
+
+/* 로고 */
+.header .headerContainer .logo {
+    width: 300px;
+    height: auto;
+    object-fit: contain;
+    margin-right: 30px;
+}
+
+/* 메뉴 */
+.header .headerContainer .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* background-color: darkblue; */
+    width: 100%;
+}
+
+/* 왼쪽 메뉴 */
+.header .headerContainer .head .categories{
+    display: flex;
+}
+.header .headerContainer .head .categories>li {
+    margin-right: 20px;
+}
+.header .headerContainer .head .categories>li a{
+    margin-right: 40px;
+    font-weight: bold;
+}
+
+/* 오른쪽 메뉴 */
+.header .headerContainer .head .user-options{
+    display: flex;
+    /* background-color: yellowgreen; */
+}
+.header .headerContainer .head .user-options{
+    display: flex;
+}
+.header .headerContainer .head .user-options a{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 10px;
+}
+.header .headerContainer .head .user-options a img{
+    width: 25px;
+}
+.header .headerContainer .head .user-options a p{
+    font-size: 13px;
+    margin-top: 6px;
+}
+.header .headerContainer .head .user-options a:hover p{
+    color: #237140;
+}
+.header .headerContainer .head .user-options a:hover img{
+    filter: invert(26%) sepia(100%) saturate(459%) hue-rotate(132deg) brightness(60%) contrast(94%);
+}
+

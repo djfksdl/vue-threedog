@@ -36,7 +36,7 @@
                         <input type="file" id="input-file" class="upload-hidden" @change="handleFileUpload">
                     </div>
 
-                    <div>
+                    <div class="detailBox">
                         <div class="detail">
                             <label>펫 이름</label>
                             <input type="text" placeholder="펫 이름을 입력해주세요.">
@@ -76,13 +76,24 @@
                             <button type="button">마킹</button>
                             <button type="button">마운팅</button>
                             <div class="bite">
-                                <label>입질정도</label>
-                                <input type="range" min="1" max="3" step="1" list="tickmarks">
-                                <datalist id="tickmarks">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                </datalist>
+                                <div class="biteRange">
+                                    <label>입질정도</label>
+                                    <div class="biteRange2">
+                                        <input type="range" min="1" max="3" step="1" list="tickmarks">
+                                        <datalist id="tickmarks">
+                                            <option value="1"></option>
+                                            <option value="2"></option>
+                                            <option value="3"></option>
+                                        </datalist>
+                                    </div>
+                                </div>
+                                <div class="pbox">
+                                    <p>하</p>
+                                    <p>중</p>
+                                    <p>상</p>
+                                </div>
+
+
 
                             </div>
                             <textarea placeholder="기타 특이사항을 적어주세요."></textarea>
@@ -96,7 +107,7 @@
         </div>
 
 
-
+        <TopButton />
         <AppFooter />
     </div><!-- wrap -->
 </template>
@@ -104,11 +115,13 @@
 <script>
 import AppFooter from "@/components/AppFooter.vue"
 import AppHeader from "@/components/AppHeader.vue"
+import TopButton from "@/components/TopButton.vue";
 import "@/assets/css/mypage/mypage.css"
 
 export default {
     name: "PetAddFormView",
     components: {
+        TopButton,
         AppHeader,
         AppFooter
     },

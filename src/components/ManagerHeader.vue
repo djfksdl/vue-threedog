@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import "@/assets/css/mHeaderFooter/mheader.css"
+import "@/assets/css/headerFooter/mheader.css"
 export default {
     name: "ManagerHeader",
     components: {},
