@@ -13,7 +13,7 @@
                     <li><router-link to="/review">후기게시판</router-link></li>
                     <!-- 원장 로그인했을때 보이는것 -->
                     <li><router-link to="/diary">알림창</router-link></li>
-                    <li><router-link to="">예약스케쥴</router-link></li>
+                    <li><router-link to="/schedule">예약스케쥴</router-link></li>
                     <li><router-link to="/totalsales">매출/통계</router-link></li>
                     <li><router-link to="/editform">홈페이지 설정</router-link></li>
                 </ul>

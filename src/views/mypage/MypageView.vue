@@ -1,9 +1,9 @@
 <template>
     <div id="wrap">
         <AppHeader />
+        <!-- 사이드 바 자리 -->
+        <SideBar />
         <div class="mypageContainer">
-            <!-- 사이드 바 자리 -->
-            <SideBar />
             <div class="container">
                 <!-- 예약 내역 -->
                 <div class="mpReserveConfirmContainer">

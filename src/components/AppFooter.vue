@@ -61,12 +61,13 @@ export default {
 <style>
 .footer {
     width: 100%;
-    height: 300PX;
+    height: 300px;
     background-color: #252525;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 30px 20px 20px 20px;
+    /* margin-top: 300px; */
 }
 
 .footer-content {

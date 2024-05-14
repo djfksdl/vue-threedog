@@ -1,5 +1,5 @@
 <template>
-    <div class="sidebar">
+    <div class="sidebar" :style="sidebarStyle">
         <!-- 유저 프로필 -->
         <div class="profile">
             <!-- 프로필 사진 -->
@@ -48,11 +48,39 @@ export default {
 
     data() {
         return {
+            isFixed: false,
         };
     },
-    methods: {
-
+    computed:{
+        //동적으로 적용할 사이드바 스타일
+        sidebarStyle(){
+            return{
+                position: this.isFixed ? 'fixed' : 'fixed',
+                top: this.isFixed ? '0': '138px',
+            };
+        },
     },
+    mounted(){
+        window.addEventListener('scroll', this.handleScroll);
+    },
+    beforeUnmount() {
+        window.removeEventListener('scroll', this.handleScroll); // 컴포넌트가 소멸되기 전에 리스너 제거
+    },
+    methods: {
+        //스크롤 이벤트 핸들러
+        handleScroll(){
+            const scrollTop = window.scrollY || window.pageYOffset; // 현재 스크롤 위치
+            if (scrollTop > 138) {
+                // 스크롤 위치가 138px 이상이면
+                this.isFixed = true; // 사이드바를 고정 상태로 변경
+            } else {
+                this.isFixed = false; // 그렇지 않으면 사이드바를 고정 해제
+            }
+        },
+    },
+    created(){
+        
+    }
 };
 </script>
 
