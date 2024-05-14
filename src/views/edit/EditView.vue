@@ -317,7 +317,10 @@
 
                         <!-- 위치 오른쪽 -->
                         <div class="ePositionLRight">
-                            <img src="@/assets/images/eMap.png">
+                            <!-- <img src="@/assets/images/eMap.png"> -->
+                            <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true" style="width: 636px; height: 410px;">
+                                <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
+                            </KakaoMap>
                         </div>
                     </div>
                 </div>
@@ -327,20 +330,45 @@
         <ManagerFooter />  
     </div><!-- wrap --> 
 
-  </template>
+</template>
   
-  
+<script setup>
+import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
+import { defineComponent, ref } from "vue";
+import { Carousel, Pagination, Slide } from "vue3-carousel";
+import slide01 from "@/assets/images/main-slide.png";
+import slide02 from "@/assets/images/main-slide02.jpg";
+import "vue3-carousel/dist/carousel.css";
+    const coordinate = {
+        lat: 37.498085,
+        lng: 127.027978
+    };
+    const slides = ref([slide01, slide02]);
+    const carouselRef = ref(null);
+
+    const nextSlide = () => {
+        if (carouselRef.value && carouselRef.value.next) {
+            carouselRef.value.next();
+        }
+    };
+
+    const prevSlide = () => {
+        if (carouselRef.value && carouselRef.value.prev) {
+            carouselRef.value.prev();
+        }
+    };
+</script>
 <script>
-   import { defineComponent,ref} from "vue";
-   import { Carousel, Pagination, Slide } from "vue3-carousel";
+//    import { defineComponent,ref} from "vue";
+//    import { Carousel, Pagination, Slide } from "vue3-carousel";
    import '@/assets/css/edit/edit.css'
    import ManagerFooter from "@/components/ManagerFooter.vue"
    import ManagerHeader from "@/components/ManagerHeader.vue"
    import TopButton from "@/components/TopButton.vue"
 
-   import slide01 from "@/assets/images/main-slide.png";
-   import slide02 from "@/assets/images/main-slide02.jpg";
-   import "vue3-carousel/dist/carousel.css";
+//    import slide01 from "@/assets/images/main-slide.png";
+//    import slide02 from "@/assets/images/main-slide02.jpg";
+//    import "vue3-carousel/dist/carousel.css";
   
    export default defineComponent({
        name: "EditView",
@@ -357,34 +385,34 @@
            
        },
        setup() {
-            const slides = ref([slide01, slide02]);
-            const carouselRef = ref(null);
+            // const slides = ref([slide01, slide02]);
+            // const carouselRef = ref(null);
 
-            const nextSlide = () => {
-            if (carouselRef.value && carouselRef.value.next) {
-                carouselRef.value.next();
-            }
-            };
+            // const nextSlide = () => {
+            // if (carouselRef.value && carouselRef.value.next) {
+            //     carouselRef.value.next();
+            // }
+            // };
 
-            const prevSlide = () => {
-            if (carouselRef.value && carouselRef.value.prev) {
-                carouselRef.value.prev();
-            }
-            };
+            // const prevSlide = () => {
+            // if (carouselRef.value && carouselRef.value.prev) {
+            //     carouselRef.value.prev();
+            // }
+            // };
 
-            return {
-            slides,
-            nextSlide,
-            prevSlide,
-            carouselRef,
-            };
+            // return {
+            // slides,
+            // nextSlide,
+            // prevSlide,
+            // carouselRef,
+            // };
         },
        methods: {
         
   
        },
    })
-  </script>
+</script>
 <style>
 .wrapper-slide {
   position: relative;
