@@ -391,86 +391,119 @@ datalist {
 /* 알림장 */
 /* Mydiary */
 #myDiary {
-    width: 1400px;
+    width: 1200px;
     margin: 0 auto;
+    /* background-color: red; */
+}
+
+#myDiary .title {
+    display: flex;
 }
 
 #myDiary h1 {
-    margin: 30px 0 20px 200px;
     font-size: 30px;
-
+    /* width: 1400px; */
+    /* border-bottom: 1px solid black; */
+    margin: 20px 20px 0 20px;
 }
 
-#myDiary .container .dateBox {
-    /* background-color: red; */
-    border-top: 1px solid #a7a4a4;
-    padding-top: 20px;
-    width: 1100px;
+#myDiary .title .searchBox {
+    width: 1260px;
     text-align: right;
-    margin: 0 0 30px 200px;
+    padding-top: 20px;
 }
 
-#myDiary .container .dateBox label {
-    padding: 10px;
-    background-color: #e2e2e2;
-    border-radius: 10px;
-}
-
-#myDiary .container .dateBox input {
-    width: 150px;
-    height: 40px;
-    border: 1px solid #236C3F;
-    border-radius: 30px;
-    font-size: 16px;
-    padding: 8px;
-    margin-bottom: 10px;
-}
-
-.myDiary02 {
-    width: 300px;
-    background-color: #e2e2e2;
-    border-radius: 20px;
-    margin-left: 200px;
-}
-
-.myDiary02 .relevantDate {
-    padding: 5px;
-    text-align: center;
-    font-size: 18px;
-    font-weight: bold;
-    color: #414141;
-}
-
-.myDiary02 .relevantDate span {
-    font-size: 16px;
-    font-weight: lighter;
-}
-
-.myDiary02 .mypetImgSlider img {
-    margin-top: 10px;
-    margin-left: 10px;
-    width: 280px;
-    height: 250px;
-    border-radius: 20px;
-}
-
-.myDiary02 .context div {
-    display: flex;
-    padding: 3px;
-    margin-left: 20px;
-}
-
-.myDiary02 .context {
+#myDiary .title .search-input {
     width: 250px;
-    /* background-color: red; */
+    height: 50px;
+}
+
+#myDiary .title .searchBox button {
+    margin-left: 5px;
+    width: 80px;
+    padding: 14px;
+    border: 2px solid #cac6c6;
+    cursor: pointer;
+    border-radius: 12px;
+}
+
+#myDiary .dateLook{
+    border-top: 1px solid #a7a4a4;
+    margin: 20px 0 40px 0;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 30px;
+}
+
+#myDiary .myDiary02 {
+    display: flex;
+    background-color: #236C3F;
+    padding: 20px;
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-bottom: 100px;
+}
+
+#myDiary .myDiary02 .petProfile {
+    background-color: white;
+    border-radius: 20px;
+    font-size: 20px;
+}
+
+#myDiary .myDiary02 .petProfile p:last-child {
+    margin-top: 15px;
+    padding-left: 30px;
+}
+
+#myDiary .myDiary02 .petProfile .store {
+    padding-top: 25px;
+    padding-left: 25px;
+}
+
+#myDiary .myDiary02 .petProfile .date {
+    padding: 25px;
+}
+
+#myDiary .myDiary02 .petProfile .petName {
+    padding-left: 25px;
+}
+
+#myDiary .myDiary02 .petProfile img {
+    width: 600px;
+    height: 500px;
+    border-radius: 20px;
+    margin: 20px;
+}
+
+
+#myDiary .myDiary02 .context {
+    width: 700px;
+    margin-left: 30px;
+    border-radius: 20px;
+    background-color: white;
+    font-size: 20px;
+    padding: 25px;
+}
+
+#myDiary .myDiary02 .context .weight {
+    margin-top: 60px;
+}
+
+#myDiary .myDiary02 .context p {
     margin-left: 20px;
 }
 
-.myDiary02 .context div p:first-child {
+#myDiary .myDiary02 .context p:first-child {
     font-weight: bold;
-    width: 130px;
-    /* background-color: red; */
-    /* text-align: center; */
+}
+
+#myDiary .myDiary02 .context p:last-child {
+    border-bottom: 1px dashed #236C3F;
+    padding-bottom: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding-left: 30px;
 }
 
 
@@ -490,8 +523,9 @@ datalist {
 #reservationForm .managerInfor {
     display: flex;
     margin-bottom: 15px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #a7a4a4;
+    padding: 15px;
+    border: 1px solid #a7a4a4;
+    border-radius: 10px;
 }
 
 #reservationForm .managerInfor .managerInfor2 {
@@ -513,27 +547,79 @@ datalist {
     font-size: 25px;
     margin-bottom: 15px;
 }
-#reservationForm form h2{
+
+#reservationForm .reservationBox {
+    width: 1100px;
+    /* background-color: pink; */
+    margin: 0 auto;
+}
+
+
+#reservationForm form h2 {
     font-size: 25px;
     margin: 30px 0 30px 0;
 }
+
 #reservationForm .choiceBox {
-    margin: 30px 0 0 30px;
+    margin: 50px 0 0 50px;
     display: flex;
     /* background-color: red; */
     /* border-bottom: 1px solid #a7a4a4; */
+    justify-content: space-between;
 }
 
 
 #reservationForm .choiceBox .time {
-    width: 400px;
-    height: 350px;
-    margin: 0 0 20px 100px;
+    width: 500px;
+    height: 400px;
+    /* background-color: red; */
+    margin: 70px 150px 0 0;
+
 }
-#reservationForm .choiceBox .time p{
-    margin: 15px;
+
+#reservationForm .choiceBox .time p {
+    margin: 23px;
 }
+
 #reservationForm .choiceBox .time button {
+    padding: 15px;
+    margin: 8px;
+    width: 100px;
+    background-color: white;
+    border: 1px solid #236C3F;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+#reservationForm .choiceBox .time button:hover {
+    background-color: #236C3F;
+    color: white;
+}
+
+
+
+#reservationForm .petKgChoice {
+    display: flex;
+}
+
+#reservationForm .price {
+    width: 720px;
+    /* background-color: red; */
+    height: 600px;
+}
+
+#reservationForm .price table {
+    border: none;
+    font-size: 16px;
+}
+
+#reservationForm .price table th {
+    /* background-color: red; */
+    width: 40px;
+}
+
+#reservationForm .price table button {
     padding: 15px;
     margin: 5px;
     width: 90px;
@@ -543,17 +629,19 @@ datalist {
     font-size: 16px;
     cursor: pointer;
 }
-#reservationForm .choiceBox .time button:hover{
+
+#reservationForm .price table td:hover {
+    background-color: red;
+    cursor: pointer;
+}
+
+/* #reservationForm .price table button:active,
+#reservationForm .price table button:hover {
     background-color: #236C3F;
     color: white;
-}
+} */
 
-#reservationForm .petKgChoice {
-    display: flex;
-}
-
-
-#reservationForm .signBox .sign{
+#reservationForm .signBox .sign {
     width: 625px;
     height: 200px;
 }
