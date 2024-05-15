@@ -432,14 +432,16 @@ datalist {
     border-radius: 20px;
     margin-left: 200px;
 }
-.myDiary02  .relevantDate{
+
+.myDiary02 .relevantDate {
     padding: 5px;
     text-align: center;
     font-size: 18px;
     font-weight: bold;
     color: #414141;
 }
-.myDiary02  .relevantDate span{
+
+.myDiary02 .relevantDate span {
     font-size: 16px;
     font-weight: lighter;
 }
@@ -451,17 +453,20 @@ datalist {
     height: 250px;
     border-radius: 20px;
 }
+
 .myDiary02 .context div {
     display: flex;
     padding: 3px;
     margin-left: 20px;
 }
-.myDiary02 .context{
+
+.myDiary02 .context {
     width: 250px;
     /* background-color: red; */
     margin-left: 20px;
 }
-.myDiary02 .context div p:first-child{
+
+.myDiary02 .context div p:first-child {
     font-weight: bold;
     width: 130px;
     /* background-color: red; */
@@ -476,49 +481,79 @@ datalist {
 /* ****************************************************** */
 /* 예약폼 */
 /* reservationForm */
-#reservationForm{
-    width: 1400px;
-    margin: 0 auto;
-}
-#reservationForm h2{
+#reservationForm {
+    width: 1200px;
+    margin: 0px auto;
     font-size: 20px;
-    margin-bottom: 30px;
-}
-#reservationForm .choiceBox{
-    margin-left: 50px;
-    margin-bottom: 50px;
-    display: flex;
-    
-}
-#reservationForm .choiceBox .calendar{
-    width: 400px;
-    height: 350px;
-}
-#reservationForm .choiceBox .time{
-    width: 400px;
-    height: 350px;
-    margin-left: 100px;
-}
-#reservationForm .petChoice{
-    margin-left: 80px;
-}
-#reservationForm .petKgChoice{
-    display: flex;
-    margin-left: 80px;
-}
-#reservationForm .character{
-    margin-left: 80px;
 }
 
-#reservationForm .point{
-    margin-left: 80px;
+#reservationForm .managerInfor {
+    display: flex;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #a7a4a4;
 }
-#reservationForm .cal{
-    margin-left: 80px;
-    font-size: 15px;
+
+#reservationForm .managerInfor .managerInfor2 {
+    margin-left: 50px;
 }
-#reservationForm .price{
+
+#reservationForm .managerInfor .managerInfor2 p {
+    margin: 18px auto;
+}
+
+#reservationForm .managerInfor .managerInfor2 p label {
+    color: #236C3F;
+    font-weight: bold;
+    padding: 3px;
     /* background-color: red; */
-    /* width: 500px; */
-    margin: 0 auto;
+}
+
+#reservationForm .h2Box1 h2 {
+    font-size: 25px;
+    margin-bottom: 15px;
+}
+#reservationForm form h2{
+    font-size: 25px;
+    margin: 30px 0 30px 0;
+}
+#reservationForm .choiceBox {
+    margin: 30px 0 0 30px;
+    display: flex;
+    /* background-color: red; */
+    /* border-bottom: 1px solid #a7a4a4; */
+}
+
+
+#reservationForm .choiceBox .time {
+    width: 400px;
+    height: 350px;
+    margin: 0 0 20px 100px;
+}
+#reservationForm .choiceBox .time p{
+    margin: 15px;
+}
+#reservationForm .choiceBox .time button {
+    padding: 15px;
+    margin: 5px;
+    width: 90px;
+    background-color: white;
+    border: 1px solid #236C3F;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+#reservationForm .choiceBox .time button:hover{
+    background-color: #236C3F;
+    color: white;
+}
+
+#reservationForm .petKgChoice {
+    display: flex;
+}
+
+
+#reservationForm .signBox .sign{
+    width: 625px;
+    height: 200px;
 }

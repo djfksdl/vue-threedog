@@ -2,36 +2,54 @@
     <div id="wrap">
         <AppHeader />
         <div id="reservationForm">
+            <SideBar />
             <div class="container">
-                <div>
-                    
+                <div class="h2Box1">
+                    <h2>가게정보</h2>
+                </div>
+                <div class="managerInfor">
+                    <div>
+                        <img src="@/assets/images/profile.jpg"
+                            style="margin-left:30px; width: 200px;height: 200px; border-radius: 5%; border: 1px solid #a7a4a4;">
+                    </div>
+                    <div class="managerInfor2">
+                        <p><label>매장명</label>하이미디어</p>
+                        <p><label>전화번호</label>02-1111-1111</p>
+                        <p><label>장소</label>서울특별시 마포구</p>
+                        <p><label>평균별점</label>⭐⭐⭐⭐⭐ 5.0</p>
+                    </div>
                 </div>
                 <form>
-                    <h2>📅날짜와 시간을 선택해주세요</h2>
+                    <h2>📅 날짜와 시간을 선택해주세요</h2>
                     <div class="choiceBox">
                         <div class="calendar">
                             <DatePicker />
                         </div>
                         <div class="time">
+                            <p>오전</p>
                             <button type="button">10:00</button>
+                            <button type="button">10:30</button>
                             <button type="button">11:00</button>
-                            <button type="button">12:00</button>
-                            <button type="button">13:00</button>
+                            <button type="button">11:30</button>
+                            <p>오후</p>
                             <button type="button">14:00</button>
+                            <button type="button">14:30</button>
                             <button type="button">15:00</button>
+                            <button type="button">15:30</button>
                             <button type="button">16:00</button>
+                            <button type="button">16:30</button>
                             <button type="button">17:00</button>
 
                         </div>
                     </div>
                     <div class="petChoice">
-                        <label>반려견 선택</label>
-                        <button type="button">코코</button>
-                        <button type="button">구름이</button>
+                        반려견 선택
+                        마리<input type="radio" name="pet">
+                        보리<input type="radio" name="pet">
                     </div>
                     <div class="petKgChoice">
                         <label>몸무게</label>
-                        <p>3.2kg</p>
+                        <input type="text" value="3.2">kg
                     </div>
                     <div class="character">
                         <button type="button">피부병</button>
@@ -232,20 +250,22 @@
                         <p>예상가격 30,000원</p>
                     </div>
                     <div class="notice">
-                        안내문어쩌구저쩌구
+                        동의서
                     </div>
                     <div class="signBox">
                         <label>전자서명</label>
-                        <div class="sign"></div>
+                        <div class="sign">
+                            <SignaturePad />
+                        </div>
                     </div>
                 </form>
-                <div  >
+                <div>
                     <button type="submit">예약</button>
                 </div>
             </div>
         </div>
 
-
+        <TopButton />
         <AppFooter />
     </div><!-- wrap -->
 </template>
@@ -255,8 +275,10 @@ import AppFooter from "@/components/AppFooter.vue"
 import AppHeader from "@/components/AppHeader.vue"
 
 import '@/assets/css/mypage/mypage.css'
-
+import SideBar from '@/components/SideBar.vue'
 import DatePicker from '@/components/DatePicker.vue'
+import TopButton from "@/components/TopButton.vue"
+import SignaturePad from "@/components/SignaturePad.vue"
 
 
 
@@ -266,12 +288,15 @@ export default {
     components: {
         AppHeader,
         AppFooter,
-        DatePicker
+        DatePicker,
+        SideBar,
+        TopButton,
+        SignaturePad,
 
     },
     data() {
         return {
-            date:null,
+            date: null,
         };
     },
     methods: {
