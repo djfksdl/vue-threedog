@@ -323,17 +323,15 @@
     /* line-height: 40px; */
     padding-bottom: 10px;
  }
- .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eReserv .eReservRight .eReservBtnBox{
-    
- }
  .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eReserv .eReservRight .eReservBtnBox .eReservBtn{
-    border: none;
     background-color: #237140;
     color: #fff;
+    display: block;
     width: 200px;
     height: 70px;
     font-size: 18px;
-    cursor: pointer;
+    text-align: center;
+    line-height: 70px;
  }
  .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eReserv .eReservRight .eReservBtnBox .eReservBtn:hover{
     background-color: #1d5e35;

@@ -4,7 +4,7 @@
         <div class="reseerveContainer">
             
             <!-- 사이드 바 자리 -->
-
+            <SideBar />
             <div class="container">
                 <!-- 예약상세 내역 -->
                 <div class="reserveCheckForm">
@@ -126,11 +126,13 @@
  import '@/assets/css/mypage/reserve.css'
  import AppHeader from "@/components/AppHeader.vue"
  import AppFooter from "@/components/AppFooter.vue"
+ import SideBar from "@/components/SideBar.vue"
  export default {
     name: "ReserveView",
     components: {
         AppHeader,
-        AppFooter
+        AppFooter,
+        SideBar
     },
     data() {
         return {};

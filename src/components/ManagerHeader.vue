@@ -5,7 +5,7 @@
             <div class="mheaderLeft">
                 <!-- 로고 -->
                 <div class="mlogo">
-                    <router-link to="/"><img src="@/assets/images/logo.png" alt=""></router-link>
+                    <router-link to="/edit"><img src="@/assets/images/logo2.png" alt=""></router-link>
                 </div>
                 <!-- 메뉴 -->
                 <ul class="mMenu">
@@ -20,6 +20,7 @@
             </div>
             <!-- 헤더 오른쪽 로그인 -->
             <div class="mheaderRight">
+                <p><router-link to="/"><small>메인화면돌아가기</small></router-link></p>
                 <p><strong>보리최고</strong>님</p>
                 <p><router-link to="">로그아웃</router-link></p>
                 <router-link to="/mypage"><img src="@/assets/images/icon_mypage.png"></router-link>

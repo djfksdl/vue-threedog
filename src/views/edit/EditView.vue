@@ -309,7 +309,7 @@
                                         <p class="eReservTel">02-1234-5678</p>
                                     </div>
                                     <div class="eReservBtnBox">
-                                        <button class="eReservBtn">예약하러 가기</button>
+                                        <router-link to="/reservationform" class="eReservBtn">예약하러 가기</router-link>
                                     </div>
                                 </div>
                             </div>

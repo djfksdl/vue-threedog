@@ -1,1 +1,112 @@
 /* 홈페이지 설정 폼 */
+
+.editformContainer{
+    width: 1000px;
+    /* background-color: darkkhaki; */
+    margin: 0 auto;
+}
+
+/* 타이틀 */
+.editformContainer h1{
+    margin-bottom: 30px;
+}
+
+/* 등록내용 */
+.editformContainer .efInputBox{
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 30px;
+}
+
+.editformContainer .efInputBox label{
+    font-weight: bold;
+    margin-right: 10px;
+    line-height: 60px;
+}
+.editformContainer .efInputBox input{
+    font-size: 20px;
+    padding: 5px;
+}
+/* 메인슬라이드 사진 등록 */
+.editformContainer  .efInputBox .efSlidePhotoBox{
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 30px;
+}
+.editformContainer  .efInputBox .efSlidePhotoBox .efSlideAddPhoto{
+    border: 1px dashed #ddd;
+    width: 100px;
+    height: 100px;
+    font-size: 50px;
+    text-align: center;
+    line-height: 85px;
+}
+
+/* 미용사진 등록 */
+.editformContainer  .efInputBox .efPhotoBox{
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 30px;
+}
+.editformContainer  .efInputBox .efPhotoBox .efAddPhoto{
+    border: 1px dashed #ddd;
+    width: 100px;
+    height: 100px;
+    font-size: 50px;
+    text-align: center;
+    line-height: 85px;
+}
+
+/* 디자이너 소개 */
+.editformContainer  .efInputBox .efDesignerBox{
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 30px;
+}
+.editformContainer  .efInputBox .efDesignerBox button{
+    border: none;
+    background-color: #237140;
+    color: #fff;
+    width: 100px;
+    height: 38px;
+    margin-left: 10px;
+    border-radius: 7px;
+    cursor: pointer;
+}
+.editformContainer  .efInputBox .efDesignerBox button:hover{
+    background-color: #1d5e35;
+}
+/* 가격 */
+.editformContainer  .efInputBox .efPrice{
+    background-color: aqua;
+    height: 500px;
+}
+/* 운영시간 */
+.editformContainer  .efInputBox .efTime .efTimeBox{
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 30px;
+}
+
+/* 가게정보 */
+.editformContainer  .efInputBox .efInfo .efInfoBox{
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 30px;
+}
+
+.efInputBox button.efBtn{
+    border: none;
+    font-size: 20px;
+    padding: 20px ;
+    width: 300px;
+    border-radius: 10px;
+    background-color: #237140;
+    color: #fff;
+    cursor: pointer;
+    margin: 50px auto 0;
+    display: block;
+}
+.efInputBox button.efBtn:hover{
+    background-color: #1d5e35;
+}
