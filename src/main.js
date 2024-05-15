@@ -3,10 +3,13 @@ import App from './App.vue'
 import router from './router'
 import store from "./store/storage"
 import { useKakao } from 'vue3-kakao-maps/@utils';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 
 window.Kakao.init("c0e61a675067767007fc527e42495678");
 useKakao('c0e61a675067767007fc527e42495678');
 createApp(App).use(router)
     .use(store)
     .use(router)
+    .component('VueDatePicker', VueDatePicker)
     .mount('#app');

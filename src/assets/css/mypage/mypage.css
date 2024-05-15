@@ -223,6 +223,7 @@ datalist {
 
 
 /* *********************************************************** */
+/* 리뷰폼 */
 /* reviewForm */
 
 #reviewAddForm {
@@ -387,6 +388,7 @@ datalist {
 
 
 /* *********************************************************** */
+/* 알림장 */
 /* Mydiary */
 #myDiary {
     width: 1400px;
@@ -472,6 +474,7 @@ datalist {
 
 
 /* ****************************************************** */
+/* 예약폼 */
 /* reservationForm */
 #reservationForm{
     width: 1400px;
@@ -490,12 +493,10 @@ datalist {
 #reservationForm .choiceBox .calendar{
     width: 400px;
     height: 350px;
-    background-color: blue;
 }
 #reservationForm .choiceBox .time{
     width: 400px;
     height: 350px;
-    background-color: red;
     margin-left: 100px;
 }
 #reservationForm .petChoice{

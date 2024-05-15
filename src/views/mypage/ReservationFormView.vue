@@ -3,14 +3,25 @@
         <AppHeader />
         <div id="reservationForm">
             <div class="container">
+                <div>
+                    
+                </div>
                 <form>
                     <h2>📅날짜와 시간을 선택해주세요</h2>
                     <div class="choiceBox">
                         <div class="calendar">
-                            캘린더자리
+                            <DatePicker />
                         </div>
                         <div class="time">
-                            시간선택자리
+                            <button type="button">10:00</button>
+                            <button type="button">11:00</button>
+                            <button type="button">12:00</button>
+                            <button type="button">13:00</button>
+                            <button type="button">14:00</button>
+                            <button type="button">15:00</button>
+                            <button type="button">16:00</button>
+                            <button type="button">17:00</button>
+
                         </div>
                     </div>
                     <div class="petChoice">
@@ -242,7 +253,12 @@
 <script>
 import AppFooter from "@/components/AppFooter.vue"
 import AppHeader from "@/components/AppHeader.vue"
+
 import '@/assets/css/mypage/mypage.css'
+
+import DatePicker from '@/components/DatePicker.vue'
+
+
 
 
 export default {
@@ -250,11 +266,12 @@ export default {
     components: {
         AppHeader,
         AppFooter,
+        DatePicker
 
     },
     data() {
         return {
-
+            date:null,
         };
     },
     methods: {
