@@ -44,15 +44,16 @@
                     </div>
                     <div class="reservationBox">
                         <div class="petChoice">
-                            반려견 선택
-                            마리<input type="radio" name="pet">
-                            보리<input type="radio" name="pet">
+                            <span>반려견 선택</span>
+                            <label>마리</label><input type="radio" name="pet">
+                            <label>보리</label><input type="radio" name="pet">
                         </div>
-                        <div class="petKgChoice">
+                        <div class="petKg">
                             <label>몸무게</label>
-                            <input type="text" value="3.2">kg
+                            <input type="text" value="3.2" style="text-align: right;"> kg
                         </div>
                         <div class="character">
+                            <label>특이사항</label>
                             <button type="button">피부병</button>
                             <button type="button">심장질환</button>
                             <button type="button">마킹</button>
@@ -80,18 +81,13 @@
                             </div>
                             <textarea placeholder="기타 특이사항을 적어주세요."></textarea>
                         </div>
-                        <div class="point">
-                            <label>포인트</label>
-                            <input type="text">
-                            <button type="button">사용</button>
-                            <p>1500P 사용가능</p>
-                        </div>
-                        <div class="cal">
-                            <p>노쇼방지를 위해 예약금 20,000원을 받고 있습니다.</p>
-                            <button type="button">휴대폰</button>
-                            <button type="button">무통장입금</button>
-                        </div>
+
+
                         <div class="price">
+                            <div class="expectPrice">
+                                <p>예상가격 {{ estimatedPrice }}원</p>
+                            </div>
+                            <span>크기선택</span>
                             <label for="small">소형견</label><input id="small" type="radio" name="size" value="small"
                                 v-model="selectedSize">
                             <label for="middle">중형견</label><input id="middle" type="radio" name="size" value="middle"
@@ -100,7 +96,7 @@
                                 v-model="selectedSize">
 
                             <!-- 소형견 -->
-                            <table v-if="selectedSize == 'small'" border="1">
+                            <table v-if="selectedSize == 'small'">
                                 <!-- <tr>
                                 <th colspan="7" class="eNonBorder">소형견(말티즈, 요크셔, 시츄, 푸들 등...)</th>
                             </tr> -->
@@ -145,13 +141,13 @@
                                     <td colspan="2">40,000</td>
                                 </tr>
                                 <!-- 추가요금 -->
-                                <tr>
+                                <!-- <tr>
                                     <th colspan="7">&nbsp;</th>
-                                </tr>
+                                </tr> -->
                                 <tr>
                                     <th rowspan="4" class="eNonBorder2">추가요금</th>
                                     <th>가위컷</th>
-                                    <td><button type="button">25,000</button></td>
+                                    <td>25,000</td>
                                     <th>특수얼굴컷</th>
                                     <td colspan="3">5,000</td>
                                 </tr>
@@ -173,9 +169,6 @@
                             <!-- 중형견 -->
                             <table v-if="selectedSize == 'middle'" border="1">
                                 <!-- 중형견 -->
-                                <tr>
-                                    <th colspan="7" class="eNonBorder">중형견(슈나, 코카 등...)</th>
-                                </tr>
                                 <tr>
                                     <th>몸무게</th>
                                     <th>목욕</th>
@@ -224,9 +217,6 @@
                                 </tr>
                                 <!-- 추가요금 -->
                                 <tr>
-                                    <th colspan="7">&nbsp;</th>
-                                </tr>
-                                <tr>
                                     <th rowspan="4" class="eNonBorder2">추가요금</th>
                                     <th>가위컷</th>
                                     <td>25,000</td>
@@ -252,16 +242,12 @@
                             <table v-if="selectedSize == 'big'" border="1">
                                 <!-- 특수견 -->
                                 <tr>
-                                    <th colspan="7" class="eNonBorder">특수견(비숑. 베들링턴 등...)</th>
-                                </tr>
-                                <tr>
                                     <th>몸무게</th>
                                     <th>목욕</th>
                                     <th>부분</th>
                                     <th>목욕+부분</th>
                                     <th>얼굴+부분+목욕</th>
                                     <th>스포팅</th>
-                                    <th>가위컷</th>
                                 </tr>
                                 <tr>
                                     <th>5kg이하</th>
@@ -270,7 +256,6 @@
                                     <td>25,000</td>
                                     <td>30,000</td>
                                     <td>35,000</td>
-                                    <td>60,000</td>
                                 </tr>
                                 <tr>
                                     <th>5kg~8kg</th>
@@ -279,7 +264,6 @@
                                     <td>30,000</td>
                                     <td>35,000</td>
                                     <td>40,000</td>
-                                    <td>60,000</td>
                                 </tr>
                                 <tr>
                                     <th>8kg이상</th>
@@ -288,12 +272,8 @@
                                     <td>35,000</td>
                                     <td>40,000</td>
                                     <td>45,000</td>
-                                    <td>60,000</td>
                                 </tr>
                                 <!-- 추가요금 -->
-                                <tr>
-                                    <th colspan="7">&nbsp;</th>
-                                </tr>
                                 <tr>
                                     <th rowspan="4" class="eNonBorder2">추가요금</th>
                                     <th>가위컷</th>
@@ -315,13 +295,24 @@
                                 </tr>
 
                             </table>
-
+                           
                         </div>
-                        <div class="expectPrice">
-                            <p>예상가격 {{ estimatedPrice }}원</p>
+
+                       
+                        <div class="point">
+                            <label>포인트</label>
+                            <input type="text">
+                            <button type="button">사용</button>
+                            <p>1500P 사용가능</p>
+                        </div>
+                        <div class="cal">
+                            <p>노쇼방지를 위해 예약금 20,000원을 받고 있습니다.</p>
+                            <button type="button">휴대폰</button>
+                            <button type="button">무통장입금</button>
                         </div>
                         <div class="notice">
-                            동의서
+                            <label for="notice">주의사항</label>
+                            <div id="notice"></div>
                         </div>
                         <div class="signBox">
                             <label>전자서명</label>
@@ -331,7 +322,7 @@
                         </div>
                     </div>
                 </form>
-                <div>
+                <div class="subBtn">
                     <button type="submit">예약</button>
                 </div>
             </div>

@@ -2,6 +2,7 @@
     <div id="wrap">
         <AppHeader />
         <div id="reviewAddForm">
+            <SideBar />
             <div class="container">
                 <h1>후기등록</h1>
                 <form>
@@ -33,9 +34,12 @@
                             <h2>사진등록</h2>
                             <div class="pull">포토후기 작성하면 <p> 1000P </p>지급!</div>
                         </div>
-                        <p class="pBox1">* 사진은 최대 3장까지 첨부할수있습니다.</p>
+           
                         <!-- https://velog.io/@sagesrkim/next.js-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%8B%A4%EC%A4%91-%EC%97%85%EB%A1%9C%EB%93%9C-%EB%AF%B8%EB%A6%AC%EB%B3%B4%EA%B8%B0%EC%82%AD%EC%A0%9C-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84 -->
                         <div class="photoBox">
+                            <label for="photo"><img src="@/assets/images/plus.png" style="width: 230px; border: 1px solid #a7a4a4;"></label>
+                            <input type="file" id="photo">
+                          
                             <div id="photoBox2">
 
                             </div>
@@ -46,9 +50,10 @@
 
                             </div>
                         </div>
+                                     <p class="pBox1">* 사진은 최대 3장까지 첨부할수있습니다.</p>
+                        <p class="pBox2">º 포토 후기 이벤트로 지급되는 포인트는 매달 1회만 지급됩니다.</p>
                     </div>
 
-                    <p class="pBox2">º 포토 후기 이벤트로 지급되는 포인트는 매달 1회만 지급됩니다.</p>
                 </form>
                 <div class="submitBtn">
                     <button type="submit">저장하기</button>
@@ -65,6 +70,8 @@
 import AppFooter from "@/components/AppFooter.vue"
 import AppHeader from "@/components/AppHeader.vue"
 import TopButton from "@/components/TopButton.vue";
+import SideBar from "@/components/SideBar.vue";
+
 import "@/assets/css/mypage/mypage.css"
 
 
@@ -73,7 +80,8 @@ export default {
     components: {
         TopButton,
         AppHeader,
-        AppFooter
+        AppFooter,
+        SideBar,
     },
     data() {
         return {

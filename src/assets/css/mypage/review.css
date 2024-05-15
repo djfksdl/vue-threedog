@@ -1,54 +1,82 @@
-#reviewCon{
+#reviewCon {
     width: 1400px;
     margin: 0 auto;
 }
 
-#reviewCon h1{
-    margin-bottom: 30px;
+#reviewCon h1 {
+    margin-bottom: 10px;
     padding-bottom: 20px;
     border-bottom: 1px solid #dddddd;
 }
 
-#reviewCon .reviewBox{
+#reviewCon .filter {
+    text-align: end;
+    margin-right: 10px;
+}
+
+#reviewCon .filter button {
+    padding: 10px;
+    margin: 30px 5px 0px 0;
+    font-size: 16px;
+    background-color: white;
+    border: 1px solid #236C3F;
+    color: #236C3F;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+#reviewCon .filter button:hover {
+    background-color: #236C3F;
+    color: white;
+    cursor: pointer;
+}
+
+
+#reviewCon .reviewBox {
     display: flex;
     margin-left: 50px;
     /* justify-content: space-between; */
 }
 
-.reviewCon02 {
-    width: 300px;
+
+
+
+.reviewCon03 {
+    width: 1300px;
     /* background-color: #efeeee; */
-    border: 1px solid #dddddd;
-    border-radius: 20px;
-    margin-right: 20px;
-    margin-top: 20px;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    display: flex;
+    font-size: 18px;
+    margin: 20px 0 20px 80px;
+    padding-bottom: 20px;
 }
 
-.reviewCon02  .cutName{
+.reviewCon03 .cutName {
     font-weight: bold;
-    font-size: 20px;
+    font-size: 25px;
     width: 300px;
-    text-align: center;
-    margin-top: 20px;
+    margin-top: 30px;
+    margin-left: 20px;
 }
-.reviewCon02 .cutInfor{
+
+.reviewCon03 .cutInfor,
+.date {
     margin-top: 10px;
     margin-left: 20px;
 }
-.reviewCon02 .mypetImgSlider img {
+
+.reviewCon03 .mypetImgSlider img {
     margin-top: 25px;
     margin-left: 25px;
-    width: 250px;
-    height: 280px;
+    width: 300px;
+    height: 360px;
     border-radius: 20px;
 }
-.reviewCon02 .context{
-    width: 260px;
-    height: 200px;
-    /* background-color: red; */
-    margin-top: 10px;
-    margin-left: 20px;
-    border-top: 1px solid black;
-    padding-top: 5px;
-}
 
+.reviewCon03 .context {
+    width: 900px;
+    margin: 20px 0 0 20px;
+    padding: 30px 0 0 20px;
+    border-top: 1px solid #dddddd;
+}

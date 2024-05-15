@@ -2,6 +2,7 @@
     <div id="wrap">
         <AppHeader />
         <div id="petAddForm">
+            <SideBar />
             <div class="container">
                 <h1>반려견등록</h1>
                 <form>
@@ -89,6 +90,8 @@
 import AppFooter from "@/components/AppFooter.vue"
 import AppHeader from "@/components/AppHeader.vue"
 import TopButton from "@/components/TopButton.vue";
+import SideBar from "@/components/SideBar.vue";
+
 import "@/assets/css/mypage/mypage.css"
 
 export default {
@@ -96,7 +99,8 @@ export default {
     components: {
         TopButton,
         AppHeader,
-        AppFooter
+        AppFooter,
+        SideBar,
     },
 
     data() {

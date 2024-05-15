@@ -2,7 +2,7 @@
     <div id="wrap">
         <div class="headerSideBar">
             <div>
-                <ManagerHeader />
+                <AppHeader />
                 <div id="myDiary">
                     <SideBar />
                     <div class="container">
@@ -174,14 +174,14 @@
 
         <TopButton />
 
-        <ManagerFooter />
+        <AppFooter />
     </div><!-- wrap -->
 </template>
 
 
 <script>
-import ManagerHeader from "@/components/ManagerHeader.vue"
-import ManagerFooter from "@/components/ManagerFooter.vue"
+import AppHeader from "@/components/AppHeader.vue"
+import AppFooter from "@/components/AppFooter.vue"
 import SideBar from '@/components/SideBar.vue'
 import TopButton from "@/components/TopButton.vue"
 
@@ -190,8 +190,8 @@ import '@/assets/css/mypage/mypage.css'
 export default {
     name: "MyDiaryView",
     components: {
-        ManagerHeader,
-        ManagerFooter,
+        AppHeader,
+        AppFooter,
         SideBar,
         TopButton,
     },
