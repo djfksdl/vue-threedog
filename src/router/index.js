@@ -17,6 +17,7 @@ import MypageView from '@/views/mypage/MypageView.vue'
 import SearchView from '@/views/potal/SearchView.vue'
 import EditFormView from '@/views/edit/EditFormView.vue'
 import ScheduleView from '@/views/manager/ScheduleView.vue'
+import NaverLogin from '@/views/potal/NaverLogin.vue'
 
 const routes = [
   {
@@ -108,6 +109,11 @@ const routes = [
     path: '/schedule',
     name: 'schedule',
     component: ScheduleView
+  },
+  {
+    path: '/naverlogin',
+    name: 'naverlogin',
+    component: NaverLogin
   }
 ]
 
