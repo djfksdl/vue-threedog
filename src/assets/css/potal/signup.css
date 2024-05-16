@@ -6,10 +6,11 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    
 }
 
 .signup-box {
-    margin: 70px 0 20px 0;
+    margin: 50px 0 20px 0;
     width: 450px;
     padding: 60px;
     background-color: white;
@@ -117,4 +118,8 @@
     font-size: 14px;
     color: #666;
     text-align: center;
+}
+
+.signup-footer{
+    margin-bottom: 10px;
 }
