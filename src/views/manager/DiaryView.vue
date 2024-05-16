@@ -154,6 +154,7 @@
                     <div>
                         <button @click="closeModal" class="diary-edit-button">취소</button>
                         <button @click="sendNotification" class="diary-send-button">보내기</button>
+                        <button @click="kakaosendNotification" class="diary-send-button">카카오톡 공유하기</button>
                     </div>
                 </div>
             </div>
@@ -163,7 +164,7 @@
     </div>
 </template>
 
-<script>
+<script >
 import ManagerFooter from "@/components/ManagerFooter.vue";
 import ManagerHeader from "@/components/ManagerHeader.vue";
 import "@/assets/css/manager/diary.css"
@@ -216,6 +217,19 @@ export default {
             this.attachedPhotos = [...this.attachedPhotos, ...Array.from(files)];
         },
         saveNotification() {
+            // 미용 기록 저장
+            this.savedDate = this.date;
+            this.savedGroomingEtiquette = this.groomingEtiquette;
+            this.savedCondition = this.condition;
+            this.savedMattedArea = this.mattedArea;
+            this.savedDislikedArea = this.dislikedArea;
+            this.savedBathDry = this.bathDry;
+            this.savedAdditionalFee = this.additionalFee;
+            this.savedNote = this.note;
+            this.savedAttachedPhotos = this.attachedPhotos.map(file => URL.createObjectURL(file));
+            this.showModal = true;
+        },
+        kakaosaveNotification() {
             // 미용 기록 저장
             this.savedDate = this.date;
             this.savedGroomingEtiquette = this.groomingEtiquette;
