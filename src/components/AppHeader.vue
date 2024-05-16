@@ -11,6 +11,7 @@
                 <!-- 왼쪽 메뉴 -->
                 <ul class="categories">
                     <li><router-link to="/search">검색</router-link></li>
+                    <li><router-link to="/reservationform">예약하기</router-link></li>
                     <li><router-link to="/announcements">공지사항</router-link></li>
                 </ul>
 

@@ -826,7 +826,7 @@ datalist {
 }
 
 
-#reservationForm .price table td,th{
+#reservationForm .price table td,#reservationForm .price table th{
     border: 1px solid black;
 
 }

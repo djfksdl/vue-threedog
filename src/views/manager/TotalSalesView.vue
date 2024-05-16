@@ -44,7 +44,7 @@
     <!-- 월 매출통계 -->
     <div class="chart-container">
       <!-- 월별 매출 그래프 -->
-      <canvas width="621" height="200" ref="monthlyChartCanvas"></canvas>
+      <canvas width="300" height="200" ref="monthlyChartCanvas"></canvas>
       <div class="total-sales">월별 매출 합계: {{ monthlyTotal }}</div>
     </div>
 
@@ -147,9 +147,9 @@ export default {
   },
   mounted() {
     // 각 그래프를 그립니다.
-    this.drawChart(this.$refs.dailyChartCanvas, ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], this.dailySales, 'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 1)', '일별 매출', 'bar');
+    this.drawChart(this.$refs.dailyChartCanvas, ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], this.dailySales, 'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 1)', '일별 매출', 'doughnut');
     this.drawChart(this.$refs.weeklyChartCanvas, ['1주', '2주', '3주', '4주'], this.weeklySales, 'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 1)', '주별 매출', 'line');
-    this.drawChart(this.$refs.monthlyChartCanvas, ['1월', '2월', '3월', '4월', '5월', '6월'], this.monthlySales, 'rgba(255, 206, 86, 0.2)', 'rgba(255, 206, 86, 1)', '월별 매출', 'doughnut');
+    this.drawChart(this.$refs.monthlyChartCanvas, ['1월', '2월', '3월', '4월', '5월', '6월'], this.monthlySales, 'rgba(255, 206, 86, 0.2)', 'rgba(255, 206, 86, 1)', '월별 매출', 'bar');
     this.drawChart(this.$refs.yearlyChartCanvas, ['2021', '2022', '2023', '2024'], this.yearlySales, 'rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 1)', '년도별 매출', 'bar');
   },
   created() {

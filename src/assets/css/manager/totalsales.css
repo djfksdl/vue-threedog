@@ -1,7 +1,7 @@
 /* total-container 스타일 */
 .total-container {
     margin: 0 auto; /* 가운데 정렬 */
-    width: 1500px; /* 너비 설정 */
+    width: 1400px; /* 너비 설정 */
     display: flex; /* Flexbox 레이아웃 적용 */
     justify-content: space-around; /* 주변 여백을 공간으로 나누어 요소를 가운데 정렬 */
     flex-wrap: wrap; /* 요소들이 넘치면 자동으로 줄바꿈 */
@@ -13,9 +13,9 @@
     margin-top: 20px; /* 위쪽 여백 */
     margin-bottom: 20px; /* 아래쪽 여백 */
     width: 48%; /* 너비 설정 */
-    height: 500px; /* 높이 설정 */
     padding: 40px; /* 내부 여백 */
-    border: 1px solid #ccc; /* 테두리 설정 */
+    border: 5px solid hsl(37, 91%, 67%); /* 연한 노란색으로 변경 */
+    /* border: 1px solid #ccc; 테두리 설정 */
     border-radius: 20px; /* 테두리 둥글게 설정 */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
     display: flex; /* Flexbox 레이아웃 적용 */
@@ -30,19 +30,25 @@
 /* 엑셀 표 스타일 */
 .sales-table {
     width: 100%; /* 너비 100%로 설정 */
-    border-collapse: collapse; /* 테두리가 서로 겹치도록 설정 */
+    height: 200px;
+    border-collapse: collapse;  /*테두리가 서로 겹치도록 설정 */
 }
 
 .sales-table th,
 .sales-table td {
+    height: 30px;
     border: 1px solid #ddd; /* 테두리 설정 */
-    padding: 13px; /* 내부 여백 */
+    padding: 10px; /* 내부 여백 */
+}
+
+.sales-table td {
     font-size: 10px; /* 글꼴 크기 설정 */
 }
 
 .sales-table th {
     background-color: #f2f2f2; /* 배경색 설정 */
     font-weight: bold; /* 굵은 글꼴 설정 */
+    font-size: 13px; /* 글꼴 크기 설정 */
 }
 
 /* Total Sales 스타일 */

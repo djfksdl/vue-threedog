@@ -15,7 +15,7 @@
                     <li><router-link to="/diary">알림창</router-link></li>
                     <li><router-link to="/schedule">예약스케쥴</router-link></li>
                     <li><router-link to="/totalsales">매출/통계</router-link></li>
-                    <li><router-link to="/editform">홈페이지 설정</router-link></li>
+                    <!-- <li><router-link to="/editform">홈페이지 설정</router-link></li> -->
                 </ul>
             </div>
             <!-- 헤더 오른쪽 로그인 -->
@@ -24,6 +24,7 @@
                 <p><strong>보리최고</strong>님</p>
                 <p><router-link to="">로그아웃</router-link></p>
                 <router-link to="/mypage"><img src="@/assets/images/icon_mypage.png"></router-link>
+                <router-link to="/editform"><img src="@/assets/images/icon_setting.png"></router-link>
             </div>
         </div>
     </header>

@@ -26,7 +26,7 @@
             <div class="petProfileBox">
                 <!-- 반려견 1 -->
                 <div class="profilePet">
-                    <img src="@/assets/images/dog.jpg">
+                    <img src="@/assets/images/spy.jpg">
                     <p>보리(4세)</p>
                 </div>
                 <!-- 반려견 2 -->
