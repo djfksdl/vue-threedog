@@ -1,6 +1,8 @@
 <template>
     <div>
-        <canvas ref="signatureCanvas" v-on:mousedown="onBegin" v-on:mouseup="onEnd"></canvas>
+        <canvas ref="signatureCanvas" v-on:mousedown="onBegin" v-on:mouseup="onEnd" width="620" height="250"
+            style="border: 1px solid #000;">
+        </canvas>
     </div>
     <div class="sign0">
         <button @click.prevent="clearCanvas">지우기</button>
