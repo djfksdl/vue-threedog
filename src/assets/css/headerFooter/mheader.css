@@ -39,6 +39,7 @@
     display: flex;
     align-items: center;
     margin-right: 30px;
+    overflow: hidden;
 }
 .mheader .mheaderWrap .mheaderLeft .mlogo a img{
     width: 150px;
