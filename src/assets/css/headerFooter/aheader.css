@@ -4,7 +4,12 @@
     width: 100%;
     height: 138px;
     position: relative;
-    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+    /* position: fixed; */
+    /* top: 0; */
+    /* z-index: 999; */
+    /* background-color:rgba(0, 49, 37,.5); */
+    /* background-color: rgba(35, 113, 64,.6); */
+    /* background-color: rgba(221, 221, 221,.8); */
 }
 .header::before{
     content: '';
@@ -50,9 +55,28 @@
 .header .headerContainer .head .categories>li {
     margin-right: 20px;
 }
+
 .header .headerContainer .head .categories>li a{
     margin-right: 40px;
     font-weight: bold;
+    position: relative;
+}
+.header .headerContainer .head .categories>li a::before {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: #237140;
+    transition: width 0.3s, transform 0.3s; /* 변환 효과를 추가 */
+    transform: translateX(-50%);
+}
+
+
+
+.header .headerContainer .head .categories>li a:hover::before {
+    width: 100%;
 }
 
 /* 오른쪽 메뉴 */
