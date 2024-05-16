@@ -554,7 +554,8 @@ datalist {
 }
 
 #reservationForm .choiceBox {
-    margin: 50px 0 100px 50px;
+    margin: 0 auto;
+    width: 500px;
     display: flex;
     /* background-color: red; */
     justify-content: space-between;
@@ -807,12 +808,18 @@ datalist {
 #reservationForm .price input {
     margin-right: 30px;
 }
+#reservationForm .price .tableBox{
+    height: 500px;
+    padding: 20px;
+    margin-top: 30px;
+    border: 1px solid black;
+}
 
 #reservationForm .price table {
     border: none;
     text-align: center;
     border-spacing: 0px;
-    margin-top: 30px;
+   
     font-size: 16px;
 }
 

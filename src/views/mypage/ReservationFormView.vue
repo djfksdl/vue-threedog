@@ -29,7 +29,7 @@
                         <div class="calendar">
                             <DatePicker />
                         </div>
-                        <div class="time">
+                        <!-- <div class="time">
                             <p>오전</p>
                             <button type="button">10:00</button>
                             <button type="button">10:30</button>
@@ -44,7 +44,7 @@
                             <button type="button">16:30</button>
                             <button type="button">17:00</button>
 
-                        </div>
+                        </div> -->
                     </div>
                     <div class="reservationBox">
                         <div class="petChoice">
@@ -96,208 +96,208 @@
                                 v-model="selectedSize">
                             <label for="big">대형견</label><input id="big" type="radio" name="size" value="big"
                                 v-model="selectedSize">
-
-                            <!-- 소형견 -->
-                            <table v-if="selectedSize == 'small'">
-                                <!-- <tr>
+                            <div class="tableBox">
+                                <!-- 소형견 -->
+                                <table v-if="selectedSize == 'small'">
+                                    <!-- <tr>
                                 <th colspan="7" class="eNonBorder">소형견(말티즈, 요크셔, 시츄, 푸들 등...)</th>
                             </tr> -->
-                                <tr>
-                                    <th>몸무게</th>
-                                    <th>목욕</th>
-                                    <th>부분</th>
-                                    <th>목욕+부분</th>
-                                    <th>얼굴+부분+목욕</th>
-                                    <th colspan="2">기본전체미용</th>
-                                </tr>
-                                <tr>
-                                    <th>2kg이하</th>
-                                    <td>12,000</td>
-                                    <td>12,000</td>
-                                    <td>15,000</td>
-                                    <td>20,000</td>
-                                    <td colspan="2">25,000</td>
-                                </tr>
-                                <tr>
-                                    <th>2kg~5kg</th>
-                                    <td>15,000</td>
-                                    <td>15,000</td>
-                                    <td>20,000</td>
-                                    <td>25,000</td>
-                                    <td colspan="2">30,000</td>
-                                </tr>
-                                <tr>
-                                    <th>5kg~8kg</th>
-                                    <td>20,000</td>
-                                    <td>20,000</td>
-                                    <td>25,000</td>
-                                    <td>30,000</td>
-                                    <td colspan="2">35,000</td>
-                                </tr>
-                                <tr>
-                                    <th>8kg~10kg</th>
-                                    <td>25,000</td>
-                                    <td>25,000</td>
-                                    <td>30,000</td>
-                                    <td>35,000</td>
-                                    <td colspan="2">40,000</td>
-                                </tr>
-                                <!-- 추가요금 -->
-                                <!-- <tr>
+                                    <tr>
+                                        <th>몸무게</th>
+                                        <th>목욕</th>
+                                        <th>부분</th>
+                                        <th>목욕+부분</th>
+                                        <th>얼굴+부분+목욕</th>
+                                        <th colspan="2">기본전체미용</th>
+                                    </tr>
+                                    <tr>
+                                        <th>2kg이하</th>
+                                        <td>12,000</td>
+                                        <td>12,000</td>
+                                        <td>15,000</td>
+                                        <td>20,000</td>
+                                        <td colspan="2">25,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>2kg~5kg</th>
+                                        <td>15,000</td>
+                                        <td>15,000</td>
+                                        <td>20,000</td>
+                                        <td>25,000</td>
+                                        <td colspan="2">30,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>5kg~8kg</th>
+                                        <td>20,000</td>
+                                        <td>20,000</td>
+                                        <td>25,000</td>
+                                        <td>30,000</td>
+                                        <td colspan="2">35,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>8kg~10kg</th>
+                                        <td>25,000</td>
+                                        <td>25,000</td>
+                                        <td>30,000</td>
+                                        <td>35,000</td>
+                                        <td colspan="2">40,000</td>
+                                    </tr>
+                                    <!-- 추가요금 -->
+                                    <!-- <tr>
                                     <th colspan="7">&nbsp;</th>
                                 </tr> -->
-                                <tr>
-                                    <th rowspan="4" class="eNonBorder2">추가요금</th>
-                                    <th>가위컷</th>
-                                    <td>25,000</td>
-                                    <th>특수얼굴컷</th>
-                                    <td colspan="3">5,000</td>
-                                </tr>
-                                <tr>
-                                    <th>엉킴</th>
-                                    <td>5,000</td>
-                                    <th>투톤 염색</th>
-                                    <td colspan="3">10,000</td>
-                                </tr>
-                                <tr>
-                                    <th>기장</th>
-                                    <td>5,000</td>
-                                    <th>염색</th>
-                                    <td colspan="3">5,000</td>
-                                </tr>
+                                    <tr>
+                                        <th rowspan="4" class="eNonBorder2">추가요금</th>
+                                        <th>가위컷</th>
+                                        <td>25,000</td>
+                                        <th>특수얼굴컷</th>
+                                        <td colspan="3">5,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>엉킴</th>
+                                        <td>5,000</td>
+                                        <th>투톤 염색</th>
+                                        <td colspan="3">10,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>기장</th>
+                                        <td>5,000</td>
+                                        <th>염색</th>
+                                        <td colspan="3">5,000</td>
+                                    </tr>
 
-                            </table>
+                                </table>
 
-                            <!-- 중형견 -->
-                            <table v-if="selectedSize == 'middle'" border="1">
                                 <!-- 중형견 -->
-                                <tr>
-                                    <th>몸무게</th>
-                                    <th>목욕</th>
-                                    <th>부분</th>
-                                    <th>목욕+부분</th>
-                                    <th>얼굴+부분+목욕</th>
-                                    <th colspan="2">기본전체미용</th>
-                                </tr>
+                                <table v-if="selectedSize == 'middle'" border="1">
+                                    <!-- 중형견 -->
+                                    <tr>
+                                        <th>몸무게</th>
+                                        <th>목욕</th>
+                                        <th>부분</th>
+                                        <th>목욕+부분</th>
+                                        <th>얼굴+부분+목욕</th>
+                                        <th colspan="2">기본전체미용</th>
+                                    </tr>
 
-                                <tr>
-                                    <th>5kg이하</th>
-                                    <td>20,000</td>
-                                    <td>20,000</td>
-                                    <td>25,000</td>
-                                    <td>30,000</td>
-                                    <td colspan="2">35,000</td>
-                                </tr>
-                                <tr>
-                                    <th>5kg~8kg</th>
-                                    <td>25,000</td>
-                                    <td>25,000</td>
-                                    <td>30,000</td>
-                                    <td>35,000</td>
-                                    <td colspan="2">40,000</td>
-                                </tr>
-                                <tr>
-                                    <th>8kg~10kg</th>
-                                    <td>30,000</td>
-                                    <td>30,000</td>
-                                    <td>35,000</td>
-                                    <td>40,000</td>
-                                    <td colspan="2">45,000</td>
-                                </tr>
-                                <tr>
-                                    <th>10kg~12kg</th>
-                                    <td>35,000</td>
-                                    <td>35,000</td>
-                                    <td>40,000</td>
-                                    <td>45,000</td>
-                                    <td colspan="2">50,000</td>
-                                </tr>
-                                <tr>
-                                    <th>12kg이상</th>
-                                    <td colspan="6">초과 1kg당 5,000원 추가</td>
+                                    <tr>
+                                        <th>5kg이하</th>
+                                        <td>20,000</td>
+                                        <td>20,000</td>
+                                        <td>25,000</td>
+                                        <td>30,000</td>
+                                        <td colspan="2">35,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>5kg~8kg</th>
+                                        <td>25,000</td>
+                                        <td>25,000</td>
+                                        <td>30,000</td>
+                                        <td>35,000</td>
+                                        <td colspan="2">40,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>8kg~10kg</th>
+                                        <td>30,000</td>
+                                        <td>30,000</td>
+                                        <td>35,000</td>
+                                        <td>40,000</td>
+                                        <td colspan="2">45,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>10kg~12kg</th>
+                                        <td>35,000</td>
+                                        <td>35,000</td>
+                                        <td>40,000</td>
+                                        <td>45,000</td>
+                                        <td colspan="2">50,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>12kg이상</th>
+                                        <td colspan="6">초과 1kg당 5,000원 추가</td>
 
-                                </tr>
-                                <!-- 추가요금 -->
-                                <tr>
-                                    <th rowspan="4" class="eNonBorder2">추가요금</th>
-                                    <th>가위컷</th>
-                                    <td>25,000</td>
-                                    <th>특수얼굴컷</th>
-                                    <td colspan="3">5,000</td>
-                                </tr>
-                                <tr>
-                                    <th>엉킴</th>
-                                    <td>5,000</td>
-                                    <th>투톤 염색</th>
-                                    <td colspan="3">10,000</td>
-                                </tr>
-                                <tr>
-                                    <th>기장</th>
-                                    <td>5,000</td>
-                                    <th>염색</th>
-                                    <td colspan="3">5,000</td>
-                                </tr>
+                                    </tr>
+                                    <!-- 추가요금 -->
+                                    <tr>
+                                        <th rowspan="4" class="eNonBorder2">추가요금</th>
+                                        <th>가위컷</th>
+                                        <td>25,000</td>
+                                        <th>특수얼굴컷</th>
+                                        <td colspan="3">5,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>엉킴</th>
+                                        <td>5,000</td>
+                                        <th>투톤 염색</th>
+                                        <td colspan="3">10,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>기장</th>
+                                        <td>5,000</td>
+                                        <th>염색</th>
+                                        <td colspan="3">5,000</td>
+                                    </tr>
 
-                            </table>
+                                </table>
 
-                            <!-- 대형견 -->
-                            <table v-if="selectedSize == 'big'" border="1">
-                                <!-- 특수견 -->
-                                <tr>
-                                    <th>몸무게</th>
-                                    <th>목욕</th>
-                                    <th>부분</th>
-                                    <th>목욕+부분</th>
-                                    <th>얼굴+부분+목욕</th>
-                                    <th>스포팅</th>
-                                </tr>
-                                <tr>
-                                    <th>5kg이하</th>
-                                    <td>20,000</td>
-                                    <td>20,000</td>
-                                    <td>25,000</td>
-                                    <td>30,000</td>
-                                    <td>35,000</td>
-                                </tr>
-                                <tr>
-                                    <th>5kg~8kg</th>
-                                    <td>25,000</td>
-                                    <td>25,000</td>
-                                    <td>30,000</td>
-                                    <td>35,000</td>
-                                    <td>40,000</td>
-                                </tr>
-                                <tr>
-                                    <th>8kg이상</th>
-                                    <td>30,000</td>
-                                    <td>30,000</td>
-                                    <td>35,000</td>
-                                    <td>40,000</td>
-                                    <td>45,000</td>
-                                </tr>
-                                <!-- 추가요금 -->
-                                <tr>
-                                    <th rowspan="4" class="eNonBorder2">추가요금</th>
-                                    <th>가위컷</th>
-                                    <td>25,000</td>
-                                    <th>특수얼굴컷</th>
-                                    <td colspan="3">5,000</td>
-                                </tr>
-                                <tr>
-                                    <th>엉킴</th>
-                                    <td>5,000</td>
-                                    <th>투톤 염색</th>
-                                    <td colspan="3">10,000</td>
-                                </tr>
-                                <tr>
-                                    <th>기장</th>
-                                    <td>5,000</td>
-                                    <th>염색</th>
-                                    <td colspan="3">5,000</td>
-                                </tr>
+                                <!-- 대형견 -->
+                                <table v-if="selectedSize == 'big'" border="1">
+                                    <!-- 특수견 -->
+                                    <tr>
+                                        <th>몸무게</th>
+                                        <th>목욕</th>
+                                        <th>부분</th>
+                                        <th>목욕+부분</th>
+                                        <th>얼굴+부분+목욕</th>
+                                        <th>스포팅</th>
+                                    </tr>
+                                    <tr>
+                                        <th>5kg이하</th>
+                                        <td>20,000</td>
+                                        <td>20,000</td>
+                                        <td>25,000</td>
+                                        <td>30,000</td>
+                                        <td>35,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>5kg~8kg</th>
+                                        <td>25,000</td>
+                                        <td>25,000</td>
+                                        <td>30,000</td>
+                                        <td>35,000</td>
+                                        <td>40,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>8kg이상</th>
+                                        <td>30,000</td>
+                                        <td>30,000</td>
+                                        <td>35,000</td>
+                                        <td>40,000</td>
+                                        <td>45,000</td>
+                                    </tr>
+                                    <!-- 추가요금 -->
+                                    <tr>
+                                        <th rowspan="4" class="eNonBorder2">추가요금</th>
+                                        <th>가위컷</th>
+                                        <td>25,000</td>
+                                        <th>특수얼굴컷</th>
+                                        <td colspan="3">5,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>엉킴</th>
+                                        <td>5,000</td>
+                                        <th>투톤 염색</th>
+                                        <td colspan="3">10,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>기장</th>
+                                        <td>5,000</td>
+                                        <th>염색</th>
+                                        <td colspan="3">5,000</td>
+                                    </tr>
 
-                            </table>
-
+                                </table>
+                            </div>
                         </div>
                         <div class="expectPrice">
                             <p>예상가격 {{ estimatedPrice }}원</p>
@@ -329,11 +329,14 @@
                                 미용을 반복하다 보면 점차 좋아지기도 합니다. 푹 쉬게 안정을 취해주시고, 좋아하는 간식을 챙겨주시기 바랍니다.<br>
                                 3. 항문 주위의 털 정리와 항문낭 제거로 엉덩이를 끌고 다닐 수 있습니다.<br>
                                 4. 이중모(포메라니안, 스피츠, 폼피츠, 페키, 웰시 등) 아이들은 클리퍼로 몸을 미용했을 시 알로페이사증후군이 올 수 있으며,
-                                그로인해 털이 나지 않을 수 있습니다. <br>이를 숙지하시고 아이들의 미용스타일을 결정해주시기 바랍니다.<br>
+                                그로인해 털이 나지 않을 수 있습니다. 이를 숙지하시고 아이들의 미용스타일을 결정해주시기 바랍니다.<br>
                                 - 가급적 가위컷 추천드립니다.<br>
                                 5. 평소엔 털에 가려져 보이지 않았던 피부병이 미용 후에 발견될 수 있습니다.<br>
                                 6. 귀 질환이나 피부 질환이 있는 경우는 반드시 병원 치료를 받길 바랍니다.<br>
                                 7. 생식기 및 귀털 제거에서 자극을 최소화하기 위해 지저분해 보일 수 있는 점 양해 부탁드립니다.<br>
+                            </div>
+                            <div>
+                                <input type="checkbox">안내사항 및 미용시 주의사항에 동의합니다.
                             </div>
                         </div>
 

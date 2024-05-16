@@ -49,4 +49,18 @@ const date = ref();
 .dp__calendar_header_item{
     margin: 20px 0 20px 0;
 }
+:root{
+    --dp-cell-size: 46px;
+}
+/* .dp__month_year_wrap button:nth-child(1){
+    order: 3;
+}
+.dp__month_year_wrap button:nth-child(2){
+    order: 2;
+} */
+
+
+/* .dp__instance_calendar{
+    display: flex;
+} */
 </style>
