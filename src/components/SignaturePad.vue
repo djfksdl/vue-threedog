@@ -37,8 +37,9 @@ export default {
 <style scoped>
 canvas {
     border: 1px solid #a7a4a4;
-    width: 100%;
-    height: 200px
+    width: 620px;
+    height: 250px;
+    border-radius: 10px;
 }
 
 .sign0 {
