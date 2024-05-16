@@ -26,10 +26,13 @@
                             <a id="" @click="kakaoLogin()">
                                 <img class="kakao" src="../../assets/images/kakao.png">
                             </a>
-                            <a id="">
-                                <img class="naver" src="../../assets/images/naver.png">
-                            </a>
-                            
+                            <div id="naver_id_login">
+                                <a id="">
+                                    <img class="naver" src="../../assets/images/naver.png">
+                                </a>
+                            </div>
+
+
                         </div>
                         <div class="sns02">
                             <a id="">
@@ -60,6 +63,9 @@
 
 <script>
 import "@/assets/css/potal/login.css"
+
+const clientId = "dc1j0BkcYhtjZfREkzlH";
+
 export default {
     name: "LoginView",
     components: {
@@ -105,6 +111,17 @@ export default {
                 },
             });
         },
+    },
+    mounted() {
+        this.naverLogin = new window.naver_id_login(
+            clientId,
+            "http://localhost:8080/login"  // 개발자센터에서 등록한 Callback URL
+        );
+        var state = this.naverLogin.getUniqState();
+        this.naverLogin.setButton("green", 2, 40); // 버튼설정
+        this.naverLogin.setDomain("http://localhost:8080");
+        this.naverLogin.setState(state);
+        this.naverLogin.init_naver_id_login();
     },
 };
 </script>
