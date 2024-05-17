@@ -11,7 +11,10 @@
           <i class="fas fa-map-marker-alt"></i>
         </div>
         <!-- 검색 버튼 -->
-        <button class="search-button">검색</button>
+        <router-link to="/searchmap">
+          <button class="search-button">검색</button>
+        </router-link>
+        
       </div>
 
       <div id="map-main">
