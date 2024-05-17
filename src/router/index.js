@@ -18,6 +18,7 @@ import SearchView from '@/views/potal/SearchView.vue'
 import EditFormView from '@/views/edit/EditFormView.vue'
 import ScheduleView from '@/views/manager/ScheduleView.vue'
 import NaverLogin from '@/views/potal/NaverLogin.vue'
+import SearchMap from '@/views/potal/SearchMap.vue'
 
 const routes = [
   {
@@ -114,6 +115,11 @@ const routes = [
     path: '/naverlogin',
     name: 'naverlogin',
     component: NaverLogin
+  },
+  {
+    path: '/searchmap',
+    name: 'searchmap',
+    component: SearchMap
   }
 ]
 

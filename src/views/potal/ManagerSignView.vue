@@ -35,18 +35,7 @@
                             </div>
                         </div>
                         <div class="form-group-man">
-                            <div class="input-container">
-                                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="전화번호">
-                                <button type="button" @click="sendVerificationCode"
-                                    class="small-btn green-btn">전송</button>
-                            </div>
-                        </div>
-                        <div v-if="showVerificationInput" class="form-group-man">
-                            <div class="input-container">
-                                <input type="text" id="verificationCode" name="verificationCode" placeholder="인증번호 입력">
-                                <button type="button" @click="verifyCode" class="small-btn green-btn"
-                                    style="margin-left: 10px;">확인</button>
-                            </div>
+                                <input type="tel" id="storeNumber" name="storeNumber" placeholder="사업장 전화번호">
                         </div>
                         <div class="form-group" style="margin-bottom: 10px;">
                             <div class="input-container">
