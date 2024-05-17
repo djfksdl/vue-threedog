@@ -9,12 +9,12 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transform: scaleY(1.1);
+    /* transform: scale(1.1); */
 }
 
 .login-box {
     margin: 70px 0 20px 0;
-    width: 450px;
+    width: 500px;
     padding: 40px 60px 30px 60px;
     background-color: white;
     border-radius: 10px;
@@ -24,19 +24,19 @@
     flex-direction: column;
 }
 
-.con-logo {
+.login-box .con-logo {
     /* width: 300px; */
     height: 90px;
     object-fit: contain;
     margin-bottom: 20px;
 }
 
-.login-form {
+.login-box .login-form {
     margin-top: 20px;
     width: 100%;
 }
 
-.form-group-login {
+.login-box .form-group-login {
     margin-bottom: 5px;
     width: 100%;
     text-align: center;
@@ -44,7 +44,7 @@
 
 }
 
-.form-group-login input {
+.login-box .form-group-login input {
     width: calc(100% - 40px);
     padding: 10px;
     border: 1px solid #ccc;
@@ -52,12 +52,12 @@
     display: inline-block;
 }
 
-.password-input input {
+.login-box .password-input input {
     width: 100%;
     padding-right: 30px;
 }
 
-.toggle-password {
+.login-box .toggle-password {
     position: absolute;
     right: 30px;
     top: 50%;
@@ -66,12 +66,12 @@
 }
 
 
-.toggle-password i {
+.login-box .toggle-password i {
     color: #999;
     /* 회색 계열 */
 }
 
-.loginBtn {
+.login-box .loginBtn {
     width: calc(100% - 40px);
     padding: 10px;
     background-color: #236C3F;
@@ -84,17 +84,17 @@
     margin-top: 15px;
 }
 
-.signup-link {
+.login-box .signup-link {
     font-size: 14px;
     color: #666;
 }
 
-.manager-signup {
+.login-box .manager-signup {
     color: #236C3F;
     font-weight: bold;
 }
 
-.signinBtn {
+.login-box .signinBtn {
     width: calc(100% - 40px);
     padding: 10px;
     background-color: white;
@@ -106,19 +106,19 @@
     margin-bottom: 7px;
 }
 
-.sns01 {
+.login-box .sns01 {
     display: flex;
     justify-content: center;
     margin-top: 30px;
 }
 
-.sns02 {
+.login-box .sns02 {
     display: flex;
     justify-content: center;
     object-fit: contain;
 }
 
-.sns01 img, .sns02 img {
+.login-box .sns01 img, .sns02 img {
     height: 40px;
     width: 140px;
     border-radius: 5px;

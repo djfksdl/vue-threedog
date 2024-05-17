@@ -23,10 +23,10 @@
                     </form>
                 </div>
             </div><!-- login-box -->
-            <div class="login-image-container">
+            <div class="mlogin-image-container">
                 <img src="../../assets/images/banner02.png" alt="Image">
             </div>
-            <div class="login-footer">
+            <div class="mlogin-footer">
                 <ul class="login-footer-ul">
                     <li>이용약관</li>
                     <li>개인정보처리방침</li>
