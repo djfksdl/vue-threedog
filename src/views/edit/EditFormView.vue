@@ -7,7 +7,9 @@
                 <input type="text" placeholder="타이틀">
                 <input type="text" placeholder="부제목 들어갈 곳">
             </div>
+
             <!-- 이미지 슬라이드 -->
+            <input type="file" class="eFileAddBtn">
             <div class="eImgSlide wrapper-slide">
                 <Carousel :autoplay="5000" :wrap-around="true" :show-arrows="false" ref="carouselRef">
                     <Slide v-for="slide in slides" :key="slide">
@@ -329,6 +331,9 @@
         <TopButton />  
         <ManagerFooter />  
     </div><!-- wrap --> 
+
+    <!-- 모달창 -->
+
 
 </template>
   
