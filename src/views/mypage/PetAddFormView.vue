@@ -22,7 +22,7 @@
             <SideBar />
             <div class="container">
                 <h1>반려견등록</h1>
-                <form v-on:submit.prevent="petInsert"> <!-- enctype="multipart/form-data" -->
+                <form v-on:submit.prevent="petInsert" enctype="multipart/form-data">
                     <div class="petAddFormUnder">
                         <div class="filebox preview-image">
                             <img id="preview-image">
@@ -68,7 +68,7 @@
                             <!-- 생일 -->
                             <div class="detail" id="petAge">
                                 <label>생일</label>
-                                <input type="date" value="birth" v-model="dogVo.birth">
+                                <input type="date" value="birth" v-model="dogVo.birth"  :max=now>
                             </div>
 
                             <!-- 성별 -->
@@ -181,6 +181,7 @@ export default {
                 mounting: false,
                 bite: 0,
             },
+            now: new Date().toISOString().substr(0, 10),    // 오늘날짜
 
         };
     },
@@ -203,6 +204,11 @@ export default {
             };
 
             reader.readAsDataURL(file);
+
+            // FormData에 파일 추가
+            this.dogVo.dogImg = file;
+
+            console.log(this.dogVo.dogImg);
         },
 
         // 모달을 보여주는 메소드
@@ -234,15 +240,21 @@ export default {
         petInsert() {
             console.log("반려견 등록");
             console.log(this.dogVo);
-            console.log(this.dogVo.dogName);   
+
+            let formData = new FormData();
+            for (let key in this.dogVo) {
+                formData.append(key, this.dogVo[key]);
+            }
+
             axios({
                 method: 'post', // put, post, delete 
                 url: `${this.$store.state.apiBaseUrl}/api/mypage/doginsert`,
-                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
-                data: this.dogVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+                headers: { "Content-Type": "multipart/form-data" },
+                data: formData, //put, post, delete 방식 자동으로 JSON으로 변환 전달
                 responseType: 'json' //수신타입
             }).then(response => {
-                console.log(response.data.apiData);
+                console.log(response.data);
+                this.$router.push('/mypage');
 
             }).catch(error => {
                 console.log(error);
@@ -264,6 +276,14 @@ export default {
     background-color: #236C3F !important;
     color: #ffffff !important;
 }
+
+
+#petAddForm input[type="number"]::-webkit-outer-spin-button,
+#petAddForm input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 
 /* 모달 콘텐츠 스타일 */
 .petAddFormModal .modal-content {
