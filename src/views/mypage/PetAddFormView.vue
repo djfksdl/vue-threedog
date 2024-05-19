@@ -22,100 +22,117 @@
             <SideBar />
             <div class="container">
                 <h1>반려견등록</h1>
-                <form>
-                    <div class="filebox preview-image">
-                        <img id="preview-image">
-                        <label for="input-file">업로드</label>
-                        <input type="file" id="input-file" class="upload-hidden" @change="handleFileUpload">
-                    </div>
-
-
-
-
-                    <div class="detailBox">
-                        <div class="detail">
-                            <label>펫 이름</label>
-                            <input type="text" placeholder="펫 이름을 입력해주세요.">
+                <form v-on:submit.prevent="petInsert"> <!-- enctype="multipart/form-data" -->
+                    <div class="petAddFormUnder">
+                        <div class="filebox preview-image">
+                            <img id="preview-image">
+                            <label for="input-file">업로드</label>
+                            <input type="file" id="input-file" class="upload-hidden" @change="handleFileUpload">
                         </div>
-                        <div class="detail">
-                            <div class="size">
-                                <span>크기선택</span>
-                                <label for="small">소형견</label><input id="small" type="radio" name="size" value="small">
-                                <label for="middle">중형견</label><input id="middle" type="radio" name="size"
-                                    value="middle">
-                                <label for="big">대형견</label><input id="big" type="radio" name="size" value="big">
+
+
+
+                        <div class="detailBox">
+
+                            <!-- 펫이름 -->
+                            <div class="detail">
+                                <label>펫 이름</label>
+                                <input type="text" placeholder="펫 이름을 입력해주세요." v-model="dogVo.dogName">
                             </div>
-                        </div>
-                        <div class="detail">
-                            <label>품종</label>
-                            <input type="text" placeholder="품종을 입력해 주세요.">
-                        </div>
-                        <div class="detail">
-                            <label class="title">몸무게</label>
-                            <input type="text"> kg
-                        </div>
-                        <div class="detail" id="petAge">
-                            <label>생일</label>
-                            <input type="date">
 
-                        </div>
-                        <div class="detail">
-                            <label>성별</label>
-                            <button type="button" @click="toggleDetail('gender', 'male', $event)">남아</button>
-                            <button type="button" @click="toggleDetail('gender', 'female', $event)">여아</button>
-                        </div>
-                        <!-- {{ selectedOptions.gender }} -->
-                        <div class="detail">
-                            <label>중성화</label>
-                            <button type="button" @click="toggleDetail('neutered', 'true', $event)">O</button>
-                            <button type="button" @click="toggleDetail('neutered', 'false', $event)">X</button>
-                        </div>
-                        <!-- {{ selectedOptions.neutered }} -->
-                        <div class="detail">
-                            <label>미용경험</label>
-                            <button type="button" @click="toggleDetail('grooming', 'true', $event)">O</button>
-                            <button type="button" @click="toggleDetail('grooming', 'false', $event)">X</button>
-                        </div>
-                        <!-- {{ selectedOptions.grooming }} -->
-                        <div class="detail" id="feature">
-                            <label>특이사항</label>
-                            <button type="button" :class="{ 'selected': selectedOptions.features.skin }"
-                                @click="toggleFeature('skin')">피부병</button>
-                            <button type="button" :class="{ 'selected': selectedOptions.features.heart }"
-                                @click="toggleFeature('heart')">심장질환</button>
-                            <button type="button" :class="{ 'selected': selectedOptions.features.marking }"
-                                @click="toggleFeature('marking')">마킹</button>
-                            <button type="button" :class="{ 'selected': selectedOptions.features.mounting }"
-                                @click="toggleFeature('mounting')">마운팅</button>
-                            <!-- {{ selectedOptions.features }} -->
-                            <div class="bite">
-                                <div class="biteRange">
-                                    <label>입질정도</label>
-                                    <div class="biteRange2">
-                                        <input type="range" min="1" max="3" step="1" list="tickmarks" v-model="bite">
-                                        <datalist id="tickmarks">
-                                            <option value="1"></option>
-                                            <option value="2"></option>
-                                            <option value="3"></option>
-                                        </datalist>
+                            <!-- 사이즈선택 -->
+                            <div class="detail">
+                                <div class="size">
+                                    <span>크기선택</span>
+                                    <label for="small">소형견</label><input id="small" type="radio" name="size"
+                                        value="small" v-model="dogVo.size">
+                                    <label for="middle">중형견</label><input id="middle" type="radio" name="size"
+                                        value="middle" v-model="dogVo.size">
+                                    <label for="big">대형견</label><input id="big" type="radio" name="size" value="big"
+                                        v-model="dogVo.size">
+                                </div>
+                            </div>
+
+                            <!-- 품종 -->
+                            <div class="detail">
+                                <label>품종</label>
+                                <input type="text" placeholder="품종을 입력해 주세요." value="kind" v-model="dogVo.kind">
+                            </div>
+
+                            <!-- 몸무게 -->
+                            <div class="detail">
+                                <label class="title">몸무게</label>
+                                <input type="number" value="weight" v-model="dogVo.weight"> kg
+                            </div>
+
+                            <!-- 생일 -->
+                            <div class="detail" id="petAge">
+                                <label>생일</label>
+                                <input type="date" value="birth" v-model="dogVo.birth">
+                            </div>
+
+                            <!-- 성별 -->
+                            <div class="detail">
+                                <label>성별</label>
+                                <button type="button" @click="toggleDetail('gender', 'male', $event)">남아</button>
+                                <button type="button" @click="toggleDetail('gender', 'female', $event)">여아</button>
+                            </div>
+
+                            <!-- 중성화유무 -->
+                            <div class="detail">
+                                <label>중성화</label>
+                                <button type="button" @click="toggleDetail('neutering', 'true', $event)">O</button>
+                                <button type="button" @click="toggleDetail('neutering', 'false', $event)">X</button>
+                            </div>
+
+                            <!-- 미용경험 -->
+                            <div class="detail">
+                                <label>미용경험</label>
+                                <button type="button" @click="toggleDetail('experience', 'true', $event)">O</button>
+                                <button type="button" @click="toggleDetail('experience', 'false', $event)">X</button>
+                            </div>
+
+                            <!-- 특이사항 -->
+                            <div class="detail" id="feature">
+                                <label>특이사항</label>
+                                <button type="button" :class="{ 'selected': dogVo.skin }"
+                                    @click="toggleFeature('skin')">피부병</button>
+                                <button type="button" :class="{ 'selected': dogVo.heart }"
+                                    @click="toggleFeature('heart')">심장질환</button>
+                                <button type="button" :class="{ 'selected': dogVo.marking }"
+                                    @click="toggleFeature('marking')">마킹</button>
+                                <button type="button" :class="{ 'selected': dogVo.mounting }"
+                                    @click="toggleFeature('mounting')">마운팅</button>
+
+                                <div class="bite">
+                                    <div class="biteRange">
+                                        <label>입질정도</label>
+                                        <div class="biteRange2">
+                                            <input type="range" min="1" max="3" step="1" list="tickmarks"
+                                                v-model="dogVo.bite">
+                                            <datalist id="tickmarks">
+                                                <option value="1"></option>
+                                                <option value="2"></option>
+                                                <option value="3"></option>
+                                            </datalist>
+                                        </div>
+                                    </div>
+                                    <div class="pbox">
+                                        <p>하</p>
+                                        <p>중</p>
+                                        <p>상</p>
                                     </div>
                                 </div>
-                                <div class="pbox">
-                                    <p>하</p>
-                                    <p>중</p>
-                                    <p>상</p>
-                                </div>
-
-                                <!-- {{ bite }} -->
-
+                                <textarea placeholder="기타 특이사항을 적어주세요." v-model="dogVo.memo"></textarea>
                             </div>
-                            <textarea placeholder="기타 특이사항을 적어주세요."></textarea>
                         </div>
                     </div>
+                    <!-- 등록버튼 -->
+                    <div>
+                        <button class="insertBtn" type="submit">등록</button>
+                    </div>
                 </form>
-                <div class="insertBtnBox">
-                    <button class="insertBtn" type="">등록</button>
-                </div>
+
 
             </div>
         </div>
@@ -132,6 +149,8 @@ import SideBar from "@/components/SideBar.vue";
 
 import "@/assets/css/mypage/mypage.css"
 
+import axios from 'axios';
+
 export default {
     name: "PetAddFormView",
     components: {
@@ -143,24 +162,26 @@ export default {
 
     data() {
         return {
-
-            // 모달이 보이는지 여부를 저장하는 변수
-            modalVisible: false,
-
-            // 버튼
-            selectedOptions: {
+            modalVisible: false,     // 모달이 보이는지 여부를 저장하는 변수
+            dogVo: {
+                dogNo: 0,
+                dogName: "",
+                kind: "",
+                weight: 0,
+                birth: "",
                 gender: null,
-                neutered: null,
-                grooming: null,
-                features: {
-                    skin: false,
-                    heart: false,
-                    marking: false,
-                    mounting: false
-                }
+                neutering: null,
+                experience: null,
+                memo: "",
+                dogImg: "",
+                size: "",
+                skin: false,
+                heart: false,
+                marking: false,
+                mounting: false,
+                bite: 0,
             },
-            // 입질정도
-            bite: 0,
+
         };
     },
     methods: {
@@ -196,31 +217,46 @@ export default {
 
         // 버튼클릭시 색상변경
         toggleDetail(type, value, event) {
-            const button = event.target;
-            const buttons = button.parentElement.querySelectorAll('button');
-
+            const buttons = event.target.parentElement.querySelectorAll('button');
             buttons.forEach(btn => {
-                if (btn === button) {
-                    btn.classList.toggle('selected', btn !== button || !btn.classList.contains('selected'));
-                } else {
-                    btn.classList.remove('selected');
-                }
+                btn.classList.toggle('selected', btn === event.target);
             });
-
-            if (this.selectedOptions[type] == value) {
-                this.selectedOptions[type] = null;
-            } else {
-                this.selectedOptions[type] = value;
-            }
+            this.dogVo[type] = (this.dogVo[type] === value) ? null : value;
         },
 
         // 특이사항 true/false
         toggleFeature(feature) {
-            this.selectedOptions.features[feature] = !this.selectedOptions.features[feature];
+            this.dogVo[feature] = !this.dogVo[feature];
+        },
+
+
+        // 반려견 등록
+        petInsert() {
+            console.log("반려견 등록");
+            console.log(this.dogVo);
+            console.log(this.dogVo.dogName);   
+            axios({
+                method: 'post', // put, post, delete 
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/doginsert`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                data: this.dogVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log(response.data.apiData);
+
+            }).catch(error => {
+                console.log(error);
+            });
+
         }
+
+
     },
 };
 </script>
+
+
+
 
 <style>
 /* 버튼색 */
@@ -253,11 +289,11 @@ export default {
     padding: 8px 0 8px 0;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    
+
 }
 
-.petAddFormModal .modal-body{
-    padding:10px 0 0 20px;
+.petAddFormModal .modal-body {
+    padding: 10px 0 0 20px;
     font-size: 18px;
 }
 
@@ -268,15 +304,16 @@ export default {
     color: white;
     margin-top: 30px;
 }
-.petAddFormModal .modal-footer button{
+
+.petAddFormModal .modal-footer button {
     float: right;
     padding: 5px;
     border: none;
     margin-bottom: 10px;
     width: 100px;
     border-radius: 10px;
-    
-    
+
+
 }
 
 .petAddFormModal .close:hover,

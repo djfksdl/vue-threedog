@@ -16,10 +16,14 @@
 }
 
 
+#petAddForm .petAddFormUnder{
+    display: flex;
+}
+
 #petAddForm .container form {
     width: 1300px;
     border-top: 1px solid #a7a4a4;
-    display: flex;
+    /* display: flex; */
     margin-left: 100px;
     padding: 50px;
 }
@@ -203,12 +207,8 @@ datalist {
     outline: #236C3F;
 }
 
-.insertBtnBox {
-    margin-left: 500px;
-    /* text-align: center; */
-}
 
-#petAddForm .container .insertBtn {
+#petAddForm .insertBtn {
     width: 500px;
     height: 60px;
     border: 1px solid #236C3F;
@@ -217,11 +217,19 @@ datalist {
     color: #236C3F;
     font-weight: bolder;
     font-size: 18px;
+    margin: 100px 0 0 300px;
+}
+
+#petAddForm button:active{
+    background-color: #236C3F;
+    color: white;
+
 }
 
 #petAddForm button:hover {
     cursor: pointer;
 }
+
 
 
 
