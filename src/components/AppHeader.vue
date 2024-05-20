@@ -20,7 +20,8 @@
                 <div class="user-options">
                     <router-link to="/login">
                         <img src="@/assets/images/icon_login.svg">
-                        <p>로그인</p>
+                        <p v-if="this.$store.state.authUser == null">로그인</p>
+                        <p v-if="this.$store.state.authUser != null">로그아웃</p>
                     </router-link>
                     <router-link to="/mypage">
                         <img src="@/assets/images/icon_my.svg">
