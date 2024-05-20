@@ -54,7 +54,6 @@
                             <input type="text" v-model="detailAddress" placeholder="상세 주소">
                         </div>
                         <button type="submit" class="msignupBtn" :disabled="isDuplicate !== false">회원가입</button>
-                        <small v-if="isDuplicate === null" class="warning-message">아이디 중복을 확인해 주세요.</small>
                     </form>
                 </div>
             </div><!-- signup-box -->

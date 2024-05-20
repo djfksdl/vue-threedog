@@ -7,12 +7,12 @@
     <div id="potal-main-container" class="clearfix">
       <div class="search-container">
         <div class="search-input-wrapper">
-          <input type="text" class="search-input" placeholder="지역을 입력하세요">
+          <input type="text" class="search-input" placeholder="지역을 입력하세요"  v-model="searchQuery">
           <i class="fas fa-map-marker-alt"></i>
         </div>
         <!-- 검색 버튼 -->
         <router-link to="/searchmap">
-          <button class="search-button">검색</button>
+          <button class="search-button" @click="searchLocation">검색</button>
         </router-link>
         
       </div>
@@ -129,11 +129,17 @@ export default {
   },
   data() {
     return {
-
+      searchQuery: ""
     };
   },
   methods: {
-
+    searchLocation() {
+      if (!this.searchQuery) {
+        alert('지역을 입력하세요.');
+        return;
+      }
+      this.$router.push({ path: '/searchmap', query: { location: this.searchQuery } });
+    }
   },
 };
 </script>
