@@ -5,14 +5,15 @@
       <div class="search-container">
         <div class="search-input-wrapper">
           <input type="text" class="search-input" placeholder="지역을 입력하세요" v-model="searchQuery">
-          <i class="fas fa-map-marker-alt"></i>
+          <i class="fas fa-map-marker-alt" @click="getCurrentLocation"></i>
         </div>
         <!-- 검색 버튼 -->
         <button class="search-button" @click="searchLocation">검색</button>
       </div>
 
       <div id="map-main">
-        <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true" style="width: 1370px; height: 400px; margin-left: 20px;">
+        <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true"
+          style="width: 1370px; height: 400px; margin-left: 20px;">
           <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
         </KakaoMap>
       </div>
@@ -90,6 +91,40 @@ watch(
   },
   { immediate: true }
 );
+
+const getCurrentLocation = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+
+      // 좌표 업데이트
+      coordinate.value.lat = lat;
+      coordinate.value.lng = lng;
+    }, (error) => {
+      handleLocationError(error);
+    });
+  } else {
+    alert('Geolocation is not supported by this browser.');
+  }
+};
+
+const handleLocationError = (error) => {
+  switch (error.code) {
+    case error.PERMISSION_DENIED:
+      alert("User denied the request for Geolocation.");
+      break;
+    case error.POSITION_UNAVAILABLE:
+      alert("Location information is unavailable.");
+      break;
+    case error.TIMEOUT:
+      alert("The request to get user location timed out.");
+      break;
+    case error.UNKNOWN_ERROR:
+      alert("An unknown error occurred.");
+      break;
+  }
+};
 </script>
 
 <script>
