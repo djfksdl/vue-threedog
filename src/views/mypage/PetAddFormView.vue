@@ -22,6 +22,7 @@
             <SideBar />
             <div class="container">
                 <h1>반려견등록</h1>
+                <!-- {{ this.$store.state.authUser.uNo }} -->
                 <form v-on:submit.prevent="petInsert" enctype="multipart/form-data">
                     <div class="petAddFormUnder">
                         <div class="filebox preview-image">
@@ -68,7 +69,7 @@
                             <!-- 생일 -->
                             <div class="detail" id="petAge">
                                 <label>생일</label>
-                                <input type="date" value="birth" v-model="dogVo.birth" :max=now>
+                                <input type="date" value="birth" v-model="dogVo.birth" :min=now>
                             </div>
 
                             <!-- 성별 -->
@@ -180,12 +181,14 @@ export default {
                 marking: false,
                 mounting: false,
                 bite: 0,
+                uNo: this.$store.state.authUser.uNo,  //유저번호
             },
             now: new Date().toISOString().substr(0, 10),    // 오늘날짜
 
         };
     },
     methods: {
+
         handleFileUpload(event) {
             const file = event.target.files[0];
             const reader = new FileReader();
@@ -211,14 +214,17 @@ export default {
             console.log(this.dogVo.file);
         },
 
+
         // 모달을 보여주는 메소드
         showModal() {
             this.modalVisible = true;
         },
+
         // 모달을 닫는 메소드
         closeModal() {
             this.modalVisible = false;
         },
+
 
 
         // 버튼클릭시 색상변경
@@ -236,15 +242,18 @@ export default {
         },
 
 
+
         // 반려견 등록
         petInsert() {
             console.log("반려견 등록");
+            console.log(this.dogVo.uNo);
             console.log(this.dogVo);
 
             let formData = new FormData();
             for (let key in this.dogVo) {
                 formData.append(key, this.dogVo[key]);
             }
+
 
             axios({
                 method: 'post', // put, post, delete 

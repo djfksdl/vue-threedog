@@ -7,7 +7,7 @@
                 <h1>후기등록</h1>
                 <form>
                     <h2>평점을 선택해주세요</h2>
-
+                    <!-- {{ this.$store.state.authUser.uNo }} -->
                     <!-- 별점 -->
                     <div class="star-rating">
                         <div class="star" v-for="index in 5" :key="index" @click="check(index)">
@@ -50,14 +50,13 @@
                             <input type='file' id='btnAtt' multiple='multiple' style="margin: 20px 0 0 20px;">
                             <div id='att_zone' data-placeholder='파일을 첨부 하려면 파일 선택 버튼을 클릭하거나 파일을 드래그앤드롭 하세요'></div>
                         </div>
-
-
                     </div>
 
                     <!-- 전송버튼 -->
                     <div class="submitBtn">
                         <button type="submit">저장하기</button>
                     </div>
+
                 </form>
             </div>
         </div>
@@ -87,6 +86,12 @@ export default {
             reviewVo: {
                 star: 0, //별점
                 rContent: "", //후기내용
+                rNo:0,
+                bNo:0,
+                uNo: this.$store.state.authUser.uNo,
+                rDate: "",
+                saveName:"",
+
             },
             byteCount: 0, // 후기내용의 바이트수
         };
@@ -103,11 +108,13 @@ export default {
         },
     },
     mounted() {
+
         // imageView 함수를 호출하여 이미지 업로드 및 미리보기를 설정
         (function imageView(att_zone, btn) {
             var attZone = document.getElementById(att_zone);
             var btnAtt = document.getElementById(btn);
             var sel_files = [];
+
 
             // 이미지와 체크박스를 감싸고 있는 div속성 
             var div_style = 'display:inline-block;position:relative;width:200px;height:200px;margin:5px;border:1px solid #a7a4a4;z-index:1';
@@ -115,8 +122,10 @@ export default {
             // 미리보기 이미지 속성
             var img_style = 'width:100%;height:100%;z-index:none';
 
+
             // 이미지안에 표시되는 체크박스의 속성
             var chk_style = 'width:30px;height:30px;position:absolute;font-size:18px;right:0px;background-color:rgba(255,255,255,0.1);color:#a7a4a4;border:none;font-weight:bold';
+
 
             btnAtt.onchange = function (e) {
                 var files = e.target.files;
@@ -150,7 +159,8 @@ export default {
             }, false);
 
 
-            // 첨부된 이미리즐을 배열에 넣고 미리보기
+
+            // 첨부된 이미리들을 배열에 넣고 미리보기
             function imageLoader(file) {
                 sel_files.push(file);
                 var reader = new FileReader();
@@ -162,6 +172,7 @@ export default {
                 };
                 reader.readAsDataURL(file);
             }
+
 
 
             //  첨부된 파일이 있는 경우 checkbox와 함께 attZone에 추가할 div를 만들어 반환
@@ -198,6 +209,8 @@ export default {
         })('att_zone', 'btnAtt');
     },
 };
+
+
 </script>
 
 <style>
