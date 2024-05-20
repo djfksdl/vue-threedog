@@ -21,12 +21,12 @@
                             <td>{{ selectedSchedule }}</td>
                         </tr>
                     </div>
-
+                    <!-- 예약 정보 표시 -->
                     <div class="diary-info-leftitem">
                         <label class="diary-label">애견명: {{ petName }}</label>
                     </div>
 
-                    <!-- 예약 정보 표시 -->
+
                     <div class="diary-info-leftitem">
                         <label class="diary-label">품종: {{ breed }}</label>
                     </div>
@@ -193,6 +193,7 @@ import ManagerHeader from "@/components/ManagerHeader.vue";
 import "@/assets/css/manager/diary.css"
 import { mapState } from 'vuex';
 
+
 export default {
     name: "DiaryView",
     components: {
@@ -201,31 +202,31 @@ export default {
     },
     data() {
         return {
-            date: "2024-05-08", // 초기 날짜
-            petName: "보리", // 애견명 데이터 추가
-            breed: "", // 품종 데이터 추가
-            groomingStyle: "", // 미용컷 데이터 추가
-            price: "", // 금액 데이터 추가
+            date: "2024-05-08", // 이용일
+            petName: "보리", // 애견 이름
+            breed: "", // 품종
+            groomingStyle: "", // 미용 스타일
+            price: "", // 금액
             additionalFee: "", // 추가 요금
             photoUrls: [], // 업로드된 사진 URL 배열
             groomingEtiquette: "", // 미용 예절
-            condition: "", // 컨디션
+            condition: "", // 애견 컨디션
             mattedArea: "", // 엉킴 부위
-            dislikedArea: "", // 싫어하는 부위
+            dislikedArea: "", // 싫어했던 부위
             bathDry: "", // 목욕/드라이
-            note: "", // 전달사항
+            note: "", // 전달 사항
             showModal: false, // 모달 표시 여부
-            savedDate: "", // 저장된 미용일
+            savedDate: "", // 저장된 이용일
             savedGroomingEtiquette: "", // 저장된 미용 예절
             savedCondition: "", // 저장된 컨디션
             savedMattedArea: "", // 저장된 엉킴 부위
-            savedDislikedArea: "", // 저장된 싫어하는 부위
+            savedDislikedArea: "", // 저장된 싫어했던 부위
             savedBathDry: "", // 저장된 목욕/드라이
             savedAdditionalFee: "", // 저장된 추가 요금
-            savedNote: "", // 저장된 전달사항
-            attachedPhotos: [], // 첨부된 사진 파일 배열
-            savedAttachedPhotos: [], // 저장된 첨부 사진 URL 배열
-            images: [], // 이미지 갤러리 배열
+            savedNote: "", // 저장된 전달 사항
+            attachedPhotos: [], // 첨부된 사진 배열
+            savedAttachedPhotos: [], // 저장된 첨부 사진 배열
+            images: [], // 이미지 배열
             currentIndex: 0, // 현재 이미지 인덱스
         };
     },
@@ -262,32 +263,44 @@ export default {
             this.savedAttachedPhotos = this.attachedPhotos.map(file => URL.createObjectURL(file));
             this.showModal = true;
         },
-        kakaosaveNotification() {
-            // 미용 기록 저장
-            this.savedDate = this.date;
-            this.savedGroomingEtiquette = this.groomingEtiquette;
-            this.savedCondition = this.condition;
-            this.savedMattedArea = this.mattedArea;
-            this.savedDislikedArea = this.dislikedArea;
-            this.savedBathDry = this.bathDry;
-            this.savedAdditionalFee = this.additionalFee;
-            this.savedNote = this.note;
-            this.savedAttachedPhotos = this.attachedPhotos.map(file => URL.createObjectURL(file));
-            this.showModal = true;
-        },
         closeModal() {
             // 모달 닫기
             this.showModal = false;
         },
         sendNotification() {
-            // 알림 보내기
-            // this.closeModal();
+            // 저장된 데이터를 다른 페이지로 전송  this.$router.push("/mydiary");
+            this.$router.push({
+                name: 'mydiary',
+                params: {
+                    savedDate: this.savedDate,
+                    savedGroomingEtiquette: this.savedGroomingEtiquette,
+                    savedCondition: this.savedCondition,
+                    savedMattedArea: this.savedMattedArea,
+                    savedDislikedArea: this.savedDislikedArea,
+                    savedBathDry: this.savedBathDry,
+                    savedAdditionalFee: this.savedAdditionalFee,
+                    savedNote: this.savedNote,
+                    savedAttachedPhotos: this.savedAttachedPhotos
+                }
+            });
+            // 모달 닫기
+            this.showModal = false;
+            //알림보내기
+            // alert('Notification Sent!');
+           
+        },
+        kakaosendNotification() {
+            // 카카오톡 알림 전송
+            alert("Notification sent via KakaoTalk!");
+            this.showModal = false;
         },
 
     },
     computed: {
         ...mapState(['selectedSchedule']), // Vuex 상태 매핑
-
+        totalAmount() {
+            return this.calculateTotalAmount();
+        }
     },
     watch: {
         selectedSchedule(newValue) {
