@@ -22,6 +22,7 @@
                         </router-link>
 
                         <p class="signup-link">직원 간편 로그인은 <a href="/mlogin" class="manager-signup">여기</a>를 클릭!</p>
+                        
                         <div class="sns01">
                             <a id="" @click="kakaoLogin()">
                                 <img class="kakao" src="../../assets/images/kakao.png">
