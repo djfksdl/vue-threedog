@@ -12,6 +12,11 @@
             <div class="schedule-modal-content">
                 <h2>일정 변경<br><br>{{ selectedEvent.title }}</h2>
                 <p>일시: {{ selectedEvent.start }}</p>
+                <!-- 추가된 예약 정보 표시 -->
+                <p>애견명: {{ selectedEvent.extendedProps.petName }}</p>
+                <p>품종: {{ selectedEvent.extendedProps.breed }}</p>
+                <p>미용컷: {{ selectedEvent.extendedProps.groomingStyle }}</p>
+                <p>금액: {{ selectedEvent.extendedProps.price }}</p>
                 <span class="schedule-edit" @click="editEvent">시간수정</span>
                 <span class="schedule-delete" @click="deleteEvent">삭제</span>
                 <span class="schedule-close" @click="closeModal">확인</span>
@@ -100,7 +105,7 @@ export default {
             >`,
                 focusConfirm: false,
                 preConfirm: () => {
-                    
+
                     const start = Swal.getPopup().querySelector('#editStart').value;
                     const end = Swal.getPopup().querySelector('#editEnd').value;
                     const title = Swal.getPopup().querySelector('#editTitle').value;
@@ -111,9 +116,9 @@ export default {
                 }
             }).then(result => {
                 if (result.isConfirmed) {
-                    const {  start, end, title} = result.value;
+                    const { start, end, title } = result.value;
                     // 수정된 일정 업데이트
-                   
+
                     this.selectedEvent.setStart(start);
                     this.selectedEvent.setEnd(end);
                     this.selectedEvent.setProp('title', title);
