@@ -17,13 +17,18 @@
                             <!-- 파일버튼 -->
                             <input type="file" id="input-file" class="upload-hidden" @change="handleFileUpload" >
                         </div>
+
+                        <!-- 아이디 중복확인 -->
                         <div class="form-group">
                             <div class="input-container">
                                 <input type="text" id="id" name="id" placeholder="아이디" v-model="userVo.uId" >
                                 <button type="button" @click="checkDuplicate" class="small-btn green-btn">중복확인</button>
                             </div>
-                            <small v-if="isDuplicate" class="error-message">중복된 아이디입니다.</small>
+                            <small v-if="isDuplicate === true" class="error-message">중복된 아이디입니다.</small>
+                            <small v-if="isDuplicate === false && userVo.uId.length > 0" class="success-message">사용 가능한 아이디입니다.</small>
                         </div>
+
+                        <!-- 비밀번호 확인 -->
                         <div class="form-group">
                             <input type="password" id="password" name="password" placeholder="비밀번호" v-model="userVo.uPw">
                         </div>
@@ -37,9 +42,13 @@
                                 {{ isPasswordValid ? '비밀번호가 일치합니다.' : '' }}
                             </small>
                         </div>
+
+                        <!-- 이름 -->
                         <div class="form-group">
                             <input type="text" id="name" name="name" placeholder="이름" v-model="userVo.uName">
                         </div>
+
+                        <!-- 전화번호 인증 -->
                         <div class="form-group">
                             <div class="input-container">
                                 <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="전화번호" v-model="userVo.uPhone">
@@ -47,6 +56,7 @@
                                     class="small-btn green-btn">전송</button>
                             </div>
                         </div>
+                        <!-- 인증번호 입력 -->
                         <div v-if="showVerificationInput" class="form-group">
                             <div class="input-container">
                                 <input type="text" id="verificationCode" name="verificationCode" placeholder="인증번호 입력">
@@ -54,6 +64,8 @@
                                     style="margin-left: 10px;">확인</button>
                             </div>
                         </div>
+
+                        <!-- 우편번호 -->
                         <div class="form-group" style="margin-bottom: 10px;">
                             <div class="input-container">
                                 <input type="text" id="postalCode" placeholder="우편번호" v-model="userVo.uZipCode" readonly>
@@ -61,6 +73,7 @@
                                     class="small-btn green-btn">검색</button>
                             </div>
                         </div>
+                        <!-- 주소 -->
                         <div class="form-group" style="margin-bottom: 10px;">
                             <input type="text" v-model="userVo.uAddress" placeholder="주소" readonly>
                         </div>
@@ -102,13 +115,13 @@ export default {
     data() {
         return {
             showVerificationInput: false, // 인증번호 입력 상자 보이기 여부
-            isDuplicate: false, // 아이디 중복 여부
+            isDuplicate: null, // 아이디 중복 여부 -> ""로 하면 빈칸인데 사용가능한 아이디라고 나옴. 
             confirmPassword: "", // 비밀번호 확인 값
             isPasswordMatch: true, // 비밀번호 일치 여부
             isPasswordValid: false, // 사용 가능한 비밀번호 여부
-            // zonecode: "",
-            // roadAddress: "",
-            // detailAddress: "",
+            zonecode: "",
+            roadAddress: "",
+            detailAddress: "",
             userVo:{
                 uId: "",
                 uPw: "",
@@ -143,6 +156,30 @@ export default {
             // FormData에 파일 추가
             this.userVo.file = file;
         },
+        // 아이디 중복확인 버튼 눌렀을때
+        checkDuplicate() {
+            // console.log("아이디 중복확인 버튼이 클릭되었습니다.");
+
+            axios({
+                method: 'post', // put, post, delete 
+                url: `${this.$store.state.apiBaseUrl}/api/su/idcheck`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: {uId: this.userVo.uId}, //get방식 파라미터로 값이 전달
+                // data: formData, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log(response.data.apiData); //수신데이타
+
+                if (response.data.apiData == 1) {
+                    this.isDuplicate = true;
+                } else {
+                    this.isDuplicate = false;
+                }
+            }).catch(error => {
+                console.log(error);
+            });
+
+        },
         // 회원가입 버튼눌렀을때
         signup() {
             console.log(this.userVo);
@@ -173,16 +210,12 @@ export default {
             });
 
         },
-        checkDuplicate() {
-            console.log("아이디 중복확인 버튼이 클릭되었습니다.");
-            // 아이디 중복 여부를 확인하는 비즈니스 로직 수행
-            this.isDuplicate = true;
-        },
+        
         openPostcode() {
             new window.daum.Postcode({
                 oncomplete: (data) => {
-                    this.userVo.uZipCode = data.uZipCode;
-                    this.userVo.uAddress = data.uAddress;
+                    this.userVo.uZipCode = data.zonecode;
+                    this.userVo.uAddress = data.roadAddress;
                 },
             }).open();
         },

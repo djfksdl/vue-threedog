@@ -6,12 +6,12 @@
                     <img class="con-logo" src="../../assets/images/logo.png" alt="Logo">
                 </router-link>
                 <div class="login-form">
-                    <form>
+                    <form @submit.prevent="login">
                         <div class="form-group-login">
-                            <input type="text" id="id" name="id" placeholder="아이디">
+                            <input type="text" id="id" name="id" placeholder="아이디" v-model="userVo.uId">
                         </div>
                         <div class="form-group-login">
-                            <input type="password" id="password" name="password" placeholder="비밀번호">
+                            <input type="password" id="password" name="password" placeholder="비밀번호" v-model="userVo.uPw">
                             <span class="toggle-password" @click="togglePasswordVisibility">
                                 <i :class="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
                             </span>
@@ -64,6 +64,7 @@
 
 <script>
 import "@/assets/css/potal/login.css"
+import axios from "axios";
 
 const clientId = "dc1j0BkcYhtjZfREkzlH";
 
@@ -73,7 +74,11 @@ export default {
     },
     data() {
         return {
-            showPassword: false // 초기에는 비밀번호 감춤
+            showPassword: false, // 초기에는 비밀번호 감춤,
+            userVo:{
+                uId: "",
+                uPw: "",
+            }, 
         };
     },
     methods: {
@@ -85,6 +90,53 @@ export default {
             } else {
                 passwordInput.type = 'password'; // 비밀번호 감추기
             }
+        },
+        // 로그인
+        login(){
+            // console.log("로그인버튼 클릭");
+            console.log(this.userVo);
+
+            axios({
+                method: 'post', // put, post, delete 
+                url: `${this.$store.state.apiBaseUrl}/api/su/login`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                // params: {uId: this.userVo.uId}, //get방식 파라미터로 값이 전달
+                data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log(response.data.apiData); //수신데이타
+
+                if(response.data.result == "success"){
+                    //로그인 사용자 정보
+                    let authUser = response.data.apiData;
+
+                    //token은 응답문서의 헤더에 있음 
+                    console.log(response.headers.authorization.split(" ")[1]);
+                    //"Authorization Bearer dajofddjaoadfklh.adfafa"
+                    const token = response.headers.authorization.split(" ")[1];
+
+                    //vuex 저장
+                    this.$store.commit("setAuthUser", authUser);
+                    this.$store.commit("setToken", token);
+
+                    // console.log(authUser);
+                    // console.log(token);
+                    // console.log("여기가 어스유저.유네임")
+                    // console.log(authUser.uName);
+
+                    this.$router.push("/");
+
+                
+                } else {
+                    console.log(response.data.message);
+                    alert("아이디 패스워드를 확인하세요.");
+                }
+                
+            }).catch(error => {
+                console.log(error);
+            });
+
+
         },
         kakaoLogin() {
             window.Kakao.Auth.login({
