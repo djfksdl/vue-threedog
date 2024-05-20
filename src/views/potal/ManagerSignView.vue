@@ -29,13 +29,13 @@
                         </div>
                         <div class="form-group-man">
                             <div class="input-container">
-                                <input type="text" id="num" name="num" placeholder="사업자등록번호">
-                                <button type="button" @click="code_send"
-                                    class="small-btn green-btn">확인</button>
+                                <input type="text" id="num" name="num" placeholder="사업자등록번호" v-model="businessNumber">
+                                <button type="button" @click="checkBusinessNumber" class="small-btn green-btn">확인</button>
                             </div>
+                            <small v-if="businessCheckMessage" class="error-message">{{ businessCheckMessage }}</small>
                         </div>
                         <div class="form-group-man">
-                                <input type="tel" id="storeNumber" name="storeNumber" placeholder="사업장 전화번호">
+                            <input type="tel" id="storeNumber" name="storeNumber" placeholder="사업장 전화번호">
                         </div>
                         <div class="form-group" style="margin-bottom: 10px;">
                             <div class="input-container">
@@ -68,11 +68,11 @@
 </template>
 
 <script>
-import "@/assets/css/potal/msignup.css"
+import "@/assets/css/potal/msignup.css";
+import axios from 'axios';
+
 export default {
     name: "ManagerSignView",
-    components: {
-    },
     data() {
         return {
             showVerificationInput: false, // 인증번호 입력 상자 보이기 여부
@@ -83,6 +83,8 @@ export default {
             zonecode: "",
             roadAddress: "",
             detailAddress: "",
+            businessNumber: "", // 사업자등록번호
+            businessCheckMessage: "", // 사업자등록번호 확인 메시지
         };
     },
     methods: {
@@ -91,31 +93,11 @@ export default {
         },
         checkDuplicate() {
             console.log("아이디 중복확인");
-            // 아이디 중복 여부를 확인하는 비즈니스 로직 수행
             this.isDuplicate = true;
-        },
-        searchAddress() {
-            console.log("주소 검색");
-        },
-        sendVerificationCode() {
-            console.log("인증번호 전송.");
-            this.showVerificationInput = true;
-        },
-        verifyCode() {
-            console.log("인증번호 확인");
         },
         checkPasswordMatch() {
             this.isPasswordMatch = this.password === this.confirmPassword;
             this.isPasswordValid = this.isPasswordMatch;
-        },
-        numCheck() {
-            console.log("첨부파일");
-            // 파일 입력(input type="file") 클릭
-            document.getElementById("numFile").click();
-        },
-        handleFileChange(event) {
-            // 파일 변경 시 실행되는 로직
-            console.log("파일 첨부됨:", event.target.files[0]);
         },
         openPostcode() {
             new window.daum.Postcode({
@@ -125,9 +107,35 @@ export default {
                 },
             }).open();
         },
-        code_send(){
+        async checkBusinessNumber() {
+    try {
+        const response = await axios.post('https://api.url/endpoint', {
+            b_no: [this.businessNumber]
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer kLwu8It5iiIWVEWui/FpNx7qI2XcPU6H6lfgnHJ1RGVI0nNAR9yfRk7eWA8m9ncjMV/SeJ2g36xCarutBsixGw==' // 여기에 서비스 키 추가
+            }
+        });
 
+        console.log('Response:', response.data); // 응답 데이터 로그
+        if (response.data && response.data.data && response.data.data.length > 0) {
+            const valid = response.data.data[0].b_stt_cd;
+            if (valid === '01') {
+                this.businessCheckMessage = "사업자 회원가입이 가능합니다.";
+            } else {
+                this.businessCheckMessage = "사업자 회원가입을 할 수 없습니다.";
+            }
+        } else {
+            this.businessCheckMessage = "올바른 번호를 입력해 주세요.";
         }
+    } catch (error) {
+        console.error('Error:', error);
+        this.businessCheckMessage = "올바른 번호를 입력해 주세요.";
+    }
+}
+
     }
 };
 </script>

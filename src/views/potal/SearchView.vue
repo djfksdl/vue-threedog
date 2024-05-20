@@ -144,56 +144,37 @@
       <div class="bottom">
         <h2 class="result-h2">검색 결과</h2>
         <hr>
-        <div class="bottom-bottom">
-          <div class="search-result">
+        <div class="search-result">
+          <div class="rank-search">
             <div class="search-item">
               <img src="../../assets/images/spy.jpg">
               <label>스파이가게</label>
+            </div>
+            <div class="search-item">
+              <img src="../../assets/images/spy.jpg">
+              <label>다른 가게 이름</label>
             </div>
             <div class="search-item">
               <img src="../../assets/images/dog2.jpg">
               <label>하이미디어</label>
             </div>
             <div class="search-item">
-              <img src="../../assets/images/spy.jpg">
-              <label>스파이가게</label>
+              <img src="../../assets/images/dog.jpg">
+              <label>김마리마리</label>
             </div>
             <div class="search-item">
-              <img src="../../assets/images/dog2.jpg">
-              <label>하이미디어</label>
-            </div>
-            <div class="search-item">
-              <img src="../../assets/images/spy.jpg">
-              <label>스파이가게</label>
-            </div>
-            <div class="search-item">
-              <img src="../../assets/images/dog2.jpg">
-              <label>하이미디어</label>
-            </div>
-          </div>
-          <div class="popular-search" :style="popularStyle">
-            <h2>인기 검색어</h2>
-            <div class="popular-items">
-              <ul>
-                <li>1. dddddd</li>
-                <li>2. dddddd</li>
-                <li>3. dddddd</li>
-                <li>4. dddddd</li>
-                <li>5. dddddd</li>
-                <li>6. dddddd</li>
-                <li>7. dddddd</li>
-                <li>8. dddddd</li>
-                <li>9. dddddd</li>
-                <li>10. dddddd</li>
-              </ul>
+              <img src="../../assets/images/dog.jpg">
+              <label>김마리마리</label>
             </div>
           </div>
         </div>
       </div>
-    </div><!-- potal-search-container -->
+
+    </div>
     <TopButton />
     <AppFooter id="AppFooter" />
-  </div><!-- wrap -->
+
+  </div>
 </template>
 
 <script>
