@@ -92,7 +92,7 @@ const routes = [
     component:ReserveView
   },
   {
-    path: '/mypage',
+    path: '/mypage/:uNo',
     name: 'mypage',
     component:MypageView
   },

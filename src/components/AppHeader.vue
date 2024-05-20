@@ -26,26 +26,11 @@
                         <img src="@/assets/images/icon_login.svg">
                         <p >로그아웃</p>
                     </router-link>
-                    <router-link to="/mypage">
+                    <router-link to="" v-on:click="loginForMypage">
                         <img src="@/assets/images/icon_my.svg">
                         <p>마이페이지</p>
                     </router-link>
                 </div>
-                
-                <!-- <ul>
-                    <li><a href="">ㅇㅇㅇ 님</a></li>
-                    <li><a href="">내 정보</a></li>
-                    <li><a href="">로그아웃</a></li>
-                </ul> -->
-                
-                <!-- <ul v-if="this.$store.state.token === null">
-                    <li><router-link to="/login">로그인</router-link></li>
-                </ul>
-                <ul v-else-if="this.$store.state.token != null && this.$store.state.authUser != null">
-                    <li>{{ this.$store.state.authUser.name }} 님</li>
-                    <li><router-link to="/mypage"> 내 정보 </router-link></li>
-                    <li><a v-on:click="logOut">로그아웃</a></li>
-                </ul> -->
             </div>
         </div>
     </div>
@@ -65,6 +50,15 @@ export default {
             this.$store.commit("setToken",null);
 
             this.$router.push("/");
+        },
+        loginForMypage(){
+            // console.log("마이페이지가려면 로그인ㄱ");
+            if (this.$store.state.authUser == null) {
+                window.alert("로그인 후 이용할 수 있습니다.");
+                this.$router.push("/login"); // 로그인 페이지로 이동
+            } else {
+                this.$router.push(`/mypage/${this.$store.state.authUser.uNo}`); // 이미 로그인되어 있으면 마이페이지로 이동
+            }
         }
         
     },
