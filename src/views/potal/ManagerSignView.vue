@@ -120,7 +120,6 @@ export default {
             });
         },
         async checkDuplicate() {
-
             axios({
                 method: 'get', // put, post, delete 
                 url: `${this.$store.state.apiBaseUrl}/api/msignup/id`,
@@ -160,7 +159,7 @@ export default {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
-                        'Authorization': 'Bearer kLwu8It5iiIWVEWui/FpNx7qI2XcPU6H6lfgnHJ1RGVI0nNAR9yfRk7eWA8m9ncjMV/SeJ2g36xCarutBsixGw==' // 여기에 서비스 키 추가
+                        'Authorization': 'Bearer YWFzc2RkMjM2QG5hdmVyLmNvbSAg'
                     }
                 });
 
@@ -168,16 +167,16 @@ export default {
                 if (response.data && response.data.data && response.data.data.length > 0) {
                     const valid = response.data.data[0].b_stt_cd;
                     if (valid === '01') {
-                        this.businessCheckMessage = "사업자 회원가입이 가능합니다.";
+                        this.businessCheckMessage = "사업자등록번호 확인";
                     } else {
-                        this.businessCheckMessage = "사업자 회원가입을 할 수 없습니다.";
+                        this.businessCheckMessage = "사업자등록번호 확인 불가능";
                     }
                 } else {
-                    this.businessCheckMessage = "올바른 번호를 입력해 주세요.";
+                    this.businessCheckMessage = "올바른 번호를 입력해 주세요. 1";
                 }
             } catch (error) {
                 console.error('Error:', error);
-                this.businessCheckMessage = "올바른 번호를 입력해 주세요.";
+                this.businessCheckMessage = "올바른 번호를 입력해 주세요. 2";
             }
         },
     },

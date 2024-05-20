@@ -37,7 +37,7 @@
 .mlogin-box .form-group-login {
     margin-bottom: 10px;
     width: 100%;
-    text-align: cen;
+    text-align: center;
     position: relative;
 }
 
@@ -127,4 +127,19 @@
 .mlogin-footer p {
     font-size: 14px;
     color: #666; 
+}
+
+.caps-lock-warning {
+    position: absolute;
+    background-color: #ffc;
+    border: 1px solid #cc0000;
+    color: #cc0000;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    margin-left: -150px; /* 왼쪽으로 위치 조정 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+    top: 50%;
+    transform: translateY(-50%);
 }
