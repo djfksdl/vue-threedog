@@ -18,13 +18,19 @@
                     <!-- <li><router-link to="/editform">홈페이지 설정</router-link></li> -->
                 </ul>
             </div>
-            <!-- 헤더 오른쪽 로그인 -->
-            <div class="mheaderRight">
+            <!-- 헤더 오른쪽 로그인- 로그인했을때 -->
+            <div class="mheaderRight" v-if="this.$store.state.authUser != null">
                 <p><router-link to="/"><small>메인화면돌아가기</small></router-link></p>
-                <p><strong>보리최고</strong>님</p>
-                <p><router-link to="">로그아웃</router-link></p>
-                <router-link to="/mypage"><img src="@/assets/images/icon_mypage.png"></router-link>
+                <p><strong>{{this.$store.state.authUser.uName}}</strong>님</p>
+                <p><router-link to="" v-on:click="logout">로그아웃</router-link></p>
+                <router-link to="" v-on:click="loginForMypage"><img src="@/assets/images/icon_mypage.png"></router-link>
                 <router-link to="/editform"><img src="@/assets/images/icon_setting.png"></router-link>
+            </div>
+            <!-- 헤더 오른쪽 로그인- 로그인 안했을때 -->
+            <div class="mheaderRight" v-if="this.$store.state.authUser == null">
+                <p><router-link to="/"><small>메인화면돌아가기</small></router-link></p>
+                <p><router-link to="/login" >로그인</router-link></p>
+                <router-link to="" v-on:click="loginForMypage"><img src="@/assets/images/icon_mypage.png"></router-link>
             </div>
         </div>
     </header>
@@ -39,7 +45,24 @@ export default {
         return {};
     },
     methods: {
-        
+        logout(){
+            // console.log("로그아웃");
+            this.$store.commit("setAuthUser",null);
+            this.$store.commit("setToken",null);
+
+            this.$router.push("/edit");
+        },
+        loginForMypage(){
+            // console.log("로그인하러 ㄱ");
+            if(this.$store.state.authUser == null){
+                window.alert("로그인 후 이용할 수 있습니다.");
+                this.$router.push("/login");
+
+            }else{
+                this.$router.push(`/mypage/${this.$store.state.authUser.uNo}`);
+            }
+
+        }
     },
     created() { }
 };

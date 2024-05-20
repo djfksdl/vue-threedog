@@ -29,7 +29,7 @@
                             </a>
                             <div id="naver_id_login">
                                 <a id="">
-                                    <img class="naver" src="../../assets/images/naver.png">
+                                    <img class="naver" src="@/assets/images/naver.png">
                                 </a>
                             </div>
 
