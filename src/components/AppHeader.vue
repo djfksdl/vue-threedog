@@ -18,10 +18,13 @@
 
                 <!-- 오른쪽 메뉴 -->
                 <div class="user-options">
-                    <router-link to="/login">
+                    <router-link to="/login" v-if="this.$store.state.authUser == null">
                         <img src="@/assets/images/icon_login.svg">
-                        <p v-if="this.$store.state.authUser == null">로그인</p>
-                        <p v-if="this.$store.state.authUser != null">로그아웃</p>
+                        <p >로그인</p>
+                    </router-link>
+                    <router-link to="" v-if="this.$store.state.authUser != null" v-on:click="logout">
+                        <img src="@/assets/images/icon_login.svg">
+                        <p >로그아웃</p>
                     </router-link>
                     <router-link to="/mypage">
                         <img src="@/assets/images/icon_my.svg">
@@ -56,6 +59,13 @@ export default {
         return {};
     },
     methods: {
+        logout(){
+            // console.log("로그아웃");
+            this.$store.commit("setAuthUser",null);
+            this.$store.commit("setToken",null);
+
+            this.$router.push("/");
+        }
         
     },
     created() { }
