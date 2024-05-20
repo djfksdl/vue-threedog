@@ -8,20 +8,53 @@
             <div class="diary-container">
                 <!-- 왼쪽 박스: 미용일 및 미용펫 정보 -->
                 <div class="diary-left-box">
-                     <!-- 미용 정보 제목 -->
+                    <!-- 미용 정보 제목 -->
                     <h2 class="diary-h2">미용 정보</h2>
                     <br>
                     <!-- 미용일 및 애견명 표시 -->
                     <div class="diary-info-leftitem">
-                        <label class="diary-label" for="date">이용일:</label>
-                        <input class="diary-input" type="text" id="date" v-model="date" disabled>
+                        <label for="date">이용일:</label>
+                        <input type="text" id="date" v-model="date" disabled>
+                        <tr>
+                            <td><strong>예약내용:</strong></td>&nbsp;&nbsp;
+                            <br><br>
+                            <td>{{ selectedSchedule }}</td>
+                        </tr>
                     </div>
 
                     <div class="diary-info-leftitem">
                         <label class="diary-label">애견명: {{ petName }}</label>
                     </div>
-                    <br>
 
+                    <!-- 예약 정보 표시 -->
+                    <div class="diary-info-leftitem">
+                        <label class="diary-label">품종: {{ breed }}</label>
+                    </div>
+
+                    <div class="diary-info-leftitem">
+                        <label class="diary-label">미용컷: {{ groomingStyle }}</label>
+                    </div>
+
+                    <div class="diary-info-leftitem">
+                        <label class="diary-label">금액: {{ price }}</label>
+                    </div>
+
+                    <div class="diary-info-leftitem">
+                        <label class="diary-label">추가요금: {{ additionalFee }}</label>
+                    </div>
+
+                    <div class="diary-info-leftitem">
+                        <label class="diary-label">총 금액: {{ totalAmount }}</label>
+                    </div>
+
+                </div>
+
+
+                <!-- 오른쪽 박스: 입력 폼 -->
+                <div class="diary-right-box">
+                    <!-- 미용 기록 제목 -->
+                    <h2>미용 기록</h2>
+                    <br>
                     <div>
                         <!-- 미용 사진 선택 -->
                         <div class="diary-info-leftitem">
@@ -30,7 +63,7 @@
                                 <!-- 파일 업로드 입력 필드 -->
                                 <input class="diary-input" type="file" id="grooming-photo" accept="image/*"
                                     @change="handleFileUploads($event)" multiple>
-                                    <!-- 업로드된 사진 미리보기 -->
+                                <!-- 업로드된 사진 미리보기 -->
                                 <img v-for="(url, index) in photoUrls" :src="url" :key="index" alt="미용 사진">
                             </div>
                         </div>
@@ -48,12 +81,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- 오른쪽 박스: 입력 폼 -->
-                <div class="diary-right-box">
-                    <!-- 미용 기록 제목 -->
-                    <h2>미용 기록</h2>
-                    <br>
                     <!-- 미용 기록 입력 폼 -->
                     <div class="diary-info-rightitem">
                         <label class="diary-label" for="grooming-etiquette">미용예절</label>
@@ -81,11 +108,6 @@
                     </div>
 
                     <div class="diary-info-rightitem">
-                        <label class="diary-label" for="additionalfee">추가요금</label>
-                        <input class="diary-input" type="text" id="additionalfee" v-model="additionalFee">
-                    </div>
-
-                    <div class="diary-info-rightitem">
                         <label class="diary-label" for="note">전달사항</label>
                         <textarea class="diary-textarea" id="note" v-model="note"></textarea>
                     </div>
@@ -109,6 +131,7 @@
                     </div>
                     <!-- 미용 기록 표 -->
                     <table class="diary-table">
+
                         <tr>
                             <th>항목</th>
                             <th>내용</th>
@@ -164,10 +187,11 @@
     </div>
 </template>
 
-<script >
+<script>
 import ManagerFooter from "@/components/ManagerFooter.vue";
 import ManagerHeader from "@/components/ManagerHeader.vue";
 import "@/assets/css/manager/diary.css"
+import { mapState } from 'vuex';
 
 export default {
     name: "DiaryView",
@@ -179,13 +203,16 @@ export default {
         return {
             date: "2024-05-08", // 초기 날짜
             petName: "보리", // 애견명 데이터 추가
+            breed: "", // 품종 데이터 추가
+            groomingStyle: "", // 미용컷 데이터 추가
+            price: "", // 금액 데이터 추가
+            additionalFee: "", // 추가 요금
             photoUrls: [], // 업로드된 사진 URL 배열
             groomingEtiquette: "", // 미용 예절
             condition: "", // 컨디션
             mattedArea: "", // 엉킴 부위
             dislikedArea: "", // 싫어하는 부위
             bathDry: "", // 목욕/드라이
-            additionalFee: "", // 추가 요금
             note: "", // 전달사항
             showModal: false, // 모달 표시 여부
             savedDate: "", // 저장된 미용일
@@ -204,6 +231,12 @@ export default {
     },
     methods: {
         // 메서드 정의
+        // 총 금액 계산
+        calculateTotalAmount() {
+            const priceValue = parseFloat(this.price) || 0;
+            const additionalFeeValue = parseFloat(this.additionalFee) || 0;
+            return priceValue + additionalFeeValue;
+        },
         handleFileUploads(event) {
             // 파일 업로드 처리
             const files = event.target.files;
@@ -249,19 +282,21 @@ export default {
         sendNotification() {
             // 알림 보내기
             // this.closeModal();
+        },
+
+    },
+    computed: {
+        ...mapState(['selectedSchedule']), // Vuex 상태 매핑
+
+    },
+    watch: {
+        selectedSchedule(newValue) {
+            // 스케줄에 있는 날짜를 이용일에 할당
+            this.date = newValue;
         }
     },
     created() {
-        const currentDate = new Date();
-        // 컴포넌트 생성 시 실행되는 로직
-        const year = currentDate.getFullYear();
-        const month = String(currentDate.getMonth() + 1).padStart(2, "0");
-        const day = String(currentDate.getDate()).padStart(2, "0");
-        const hours = String(currentDate.getHours()).padStart(2, "0");
-        const minutes = String(currentDate.getMinutes()).padStart(2, "0");
-        const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
 
-        this.date = formattedDate; // 현재 날짜 설정
     }
 };
 </script>

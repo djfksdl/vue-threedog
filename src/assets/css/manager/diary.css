@@ -35,7 +35,7 @@
 .diary-h2 {
     color: #333333; /* 타이틀 색상 */
     font-size: 1.5em; /* 타이틀 폰트 크기 */
-    margin-bottom: 20px; /* 아래 여백 */
+
 }
 
 /* 라벨 */
@@ -169,7 +169,8 @@
     height: auto; /* 이미지 높이 자동 조정 */
     margin-right: 10px; /* 오른쪽 여백 */
     border-radius: 5px; /* 테두리 반경 */
-    display: none; /* 숨김 */
+    display: none; /*숨김*/ 
+   
 }
 
 /* 닫기 버튼 */
@@ -237,3 +238,5 @@
     margin-right: 10px; /* 오른쪽 여백 */
     border-radius: 5px; /* 테두리 반경 */
 }
+
+
