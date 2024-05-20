@@ -268,7 +268,7 @@ export default {
             this.showModal = false;
         },
         sendNotification() {
-            // 저장된 데이터를 다른 페이지로 전송  this.$router.push("/mydiary");
+            // 저장된 데이터를 다른 페이지로 전송  
             this.$router.push({
                 name: 'mydiary',
                 params: {
