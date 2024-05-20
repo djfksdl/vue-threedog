@@ -68,7 +68,7 @@
                             <!-- 생일 -->
                             <div class="detail" id="petAge">
                                 <label>생일</label>
-                                <input type="date" value="birth" v-model="dogVo.birth"  :max=now>
+                                <input type="date" value="birth" v-model="dogVo.birth" :max=now>
                             </div>
 
                             <!-- 성별 -->
@@ -173,7 +173,7 @@ export default {
                 neutering: null,
                 experience: null,
                 memo: "",
-                dogImg: "",
+                file: "",
                 size: "",
                 skin: false,
                 heart: false,
@@ -206,9 +206,9 @@ export default {
             reader.readAsDataURL(file);
 
             // FormData에 파일 추가
-            this.dogVo.dogImg = file;
+            this.dogVo.file = file;
 
-            console.log(this.dogVo.dogImg);
+            console.log(this.dogVo.file);
         },
 
         // 모달을 보여주는 메소드
@@ -252,9 +252,16 @@ export default {
                 headers: { "Content-Type": "multipart/form-data" },
                 data: formData, //put, post, delete 방식 자동으로 JSON으로 변환 전달
                 responseType: 'json' //수신타입
+
             }).then(response => {
                 console.log(response.data);
-                this.$router.push('/mypage');
+
+                if (response.data.result == "success") {
+                    this.$router.push('/mypage');
+
+                } else {
+                    alert("알수없는 오류");
+                }
 
             }).catch(error => {
                 console.log(error);
