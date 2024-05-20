@@ -5,17 +5,27 @@
                 <router-link to="/">
                     <img class="con-logo" src="../../assets/images/logo.png" alt="Logo">
                 </router-link>
+                <!-- 회원가입 -->
                 <div class="signup-form">
-                    <form @submit.prevent="handleSubmit">
+                    <form @submit.prevent="signup" enctype="multipart/form-data">
+                        <!-- 프로필사진 -->
+                        <div class="form-group preview-image" > 
+                            <!-- 미리보기 이미지 -->
+                            <img id="preview-pimage">
+                            <!-- 파일 대신 버튼 -->
+                            <label for="input-file" class="pImgAddBtn"></label>
+                            <!-- 파일버튼 -->
+                            <input type="file" id="input-file" class="upload-hidden" @change="handleFileUpload" >
+                        </div>
                         <div class="form-group">
                             <div class="input-container">
-                                <input type="text" id="id" name="id" placeholder="아이디">
+                                <input type="text" id="id" name="id" placeholder="아이디" v-model="userVo.uId" >
                                 <button type="button" @click="checkDuplicate" class="small-btn green-btn">중복확인</button>
                             </div>
                             <small v-if="isDuplicate" class="error-message">중복된 아이디입니다.</small>
                         </div>
                         <div class="form-group">
-                            <input type="password" id="password" name="password" placeholder="비밀번호" v-model="password">
+                            <input type="password" id="password" name="password" placeholder="비밀번호" v-model="userVo.uPw">
                         </div>
                         <div class="form-group">
                             <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호 확인"
@@ -24,15 +34,15 @@
                             <small v-if="!isPasswordMatch" class="error-message">비밀번호가 일치하지 않습니다.</small>
                             <small v-if="isPasswordValid && confirmPassword.length > 0"
                                 :class="{ 'success-message': isPasswordValid }">
-                                {{ isPasswordValid ? '사용 가능한 비밀번호입니다.' : '' }}
+                                {{ isPasswordValid ? '비밀번호가 일치합니다.' : '' }}
                             </small>
                         </div>
                         <div class="form-group">
-                            <input type="text" id="name" name="name" placeholder="이름">
+                            <input type="text" id="name" name="name" placeholder="이름" v-model="userVo.uName">
                         </div>
                         <div class="form-group">
                             <div class="input-container">
-                                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="전화번호">
+                                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="전화번호" v-model="userVo.uPhone">
                                 <button type="button" @click="sendVerificationCode"
                                     class="small-btn green-btn">전송</button>
                             </div>
@@ -46,16 +56,16 @@
                         </div>
                         <div class="form-group" style="margin-bottom: 10px;">
                             <div class="input-container">
-                                <input type="text" id="postalCode" placeholder="우편번호" v-model="zonecode" readonly>
+                                <input type="text" id="postalCode" placeholder="우편번호" v-model="userVo.uZipCode" readonly>
                                 <button id="postcode" type="button" @click="openPostcode"
                                     class="small-btn green-btn">검색</button>
                             </div>
                         </div>
                         <div class="form-group" style="margin-bottom: 10px;">
-                            <input type="text" v-model="roadAddress" placeholder="주소" readonly>
+                            <input type="text" v-model="userVo.uAddress" placeholder="주소" readonly>
                         </div>
                         <div class="form-group" style="margin-bottom: 10px;">
-                            <input type="text" v-model="detailAddress" placeholder="상세 주소">
+                            <input type="text" v-model="userVo.uDetailAddress" placeholder="상세 주소">
                         </div>
 
                         <!-- 서버 연결한 뒤에 다시 해 보기 로봇 -->
@@ -83,6 +93,8 @@
 
 <script>
 import "@/assets/css/potal/signup.css"
+import axios from "axios";
+
 export default {
     name: "SignView",
     components: {
@@ -94,14 +106,72 @@ export default {
             confirmPassword: "", // 비밀번호 확인 값
             isPasswordMatch: true, // 비밀번호 일치 여부
             isPasswordValid: false, // 사용 가능한 비밀번호 여부
-            zonecode: "",
-            roadAddress: "",
-            detailAddress: "",
+            // zonecode: "",
+            // roadAddress: "",
+            // detailAddress: "",
+            userVo:{
+                uId: "",
+                uPw: "",
+                uName:"",
+                uPhone:"",
+                uZipCode:"",
+                uAddress:"",
+                uDetailAddress:"",
+                file:""
+            },
         };
     },
     methods: {
-        handleSubmit() {
-            console.log("회원가입 버튼이 클릭되었습니다.");
+        // 프로필 이미지 미리보기
+        handleFileUpload(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            if (!file.type.match(/image\//)) {
+                this.modalVisible = true;
+                return;
+            }
+
+            reader.onload = () => {
+                const imgSrc = reader.result;
+                const imgElement = document.getElementById('preview-pimage'); // 이미지를 표시할 <img> 요소 선택
+                imgElement.src = imgSrc; // 이미지 소스를 설정하여 이미지 표시
+            };
+
+            reader.readAsDataURL(file);
+
+            // FormData에 파일 추가
+            this.userVo.file = file;
+        },
+        // 회원가입 버튼눌렀을때
+        signup() {
+            console.log(this.userVo);
+            let formData = new FormData();
+            
+            for (let key in this.userVo) {
+                formData.append(key, this.userVo[key]);
+            }
+
+            axios({
+                method: 'post', // put, post, delete 
+                url: `${this.$store.state.apiBaseUrl}/api/su/signup`,
+                headers: { "Content-Type": "multipart/form-data" }, //전송타입
+                //params: usersVo, //get방식 파라미터로 값이 전달
+                data: formData, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log(response.data.apiData); //수신데이타
+
+                if (response.data.apiData == 1) {
+                    alert("환영합니다. 회원가입에 성공하셨습니다.");
+                    this.$router.push({ path: '/', query: { name: this.userVo.uName } });
+                } else {
+                    alert("회원가입에 실패하였습니다.");
+                }
+            }).catch(error => {
+                console.log(error);
+            });
+
         },
         checkDuplicate() {
             console.log("아이디 중복확인 버튼이 클릭되었습니다.");
@@ -111,8 +181,8 @@ export default {
         openPostcode() {
             new window.daum.Postcode({
                 oncomplete: (data) => {
-                    this.zonecode = data.zonecode;
-                    this.roadAddress = data.roadAddress;
+                    this.userVo.uZipCode = data.uZipCode;
+                    this.userVo.uAddress = data.uAddress;
                 },
             }).open();
         },
@@ -124,9 +194,10 @@ export default {
             console.log("인증번호 확인 버튼이 클릭되었습니다.");
         },
         checkPasswordMatch() {
-            this.isPasswordMatch = this.password === this.confirmPassword;
+            this.isPasswordMatch = this.userVo.uPw === this.confirmPassword;
             this.isPasswordValid = this.isPasswordMatch;
-        }
+        },
+        
     },
     mounted(){
         const script = document.createElement('script');

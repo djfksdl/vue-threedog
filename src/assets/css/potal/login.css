@@ -73,7 +73,7 @@
 
 .login-box .loginBtn {
     width: calc(100% - 40px);
-    padding: 10px;
+    padding: 11px 0;
     background-color: #236C3F;
     color: white;
     border: none;
@@ -92,6 +92,7 @@
 .login-box .manager-signup {
     color: #236C3F;
     font-weight: bold;
+    border-bottom: 1px solid #236C3F;
 }
 
 .login-box .signinBtn {
@@ -121,6 +122,7 @@
 .login-box .sns01 img, .sns02 img {
     height: 40px;
     width: 140px;
+    object-fit: cover;
     border-radius: 5px;
 }
 
@@ -149,8 +151,9 @@
 
 /* 이미지 스타일 */
 .login-image-container img {
-    width: 100%;
-    max-width: 450px;
+    width: 500px;
+    /* max-width: 450px; */
+    /* object-fit: cover; */
     height: 100px;
 }
 

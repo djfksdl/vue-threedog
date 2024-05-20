@@ -1,0 +1,121 @@
+@charset "UTF-8";
+
+/* *********************************************************** */
+/* 알림장 */
+/* Mydiary */
+#myDiary {
+    width: 1200px;
+    margin: 0 auto;
+    /* background-color: red; */
+}
+
+#myDiary .title {
+    display: flex;
+}
+
+#myDiary h1 {
+    font-size: 30px;
+    /* width: 1400px; */
+    /* border-bottom: 1px solid black; */
+    margin: 20px 20px 0 20px;
+}
+
+#myDiary .title .searchBox {
+    width: 1260px;
+    text-align: right;
+    padding-top: 20px;
+}
+
+#myDiary .title .search-input {
+    width: 250px;
+    height: 50px;
+}
+
+#myDiary .title .searchBox button {
+    margin-left: 5px;
+    width: 80px;
+    padding: 14px;
+    border: 2px solid #cac6c6;
+    cursor: pointer;
+    border-radius: 12px;
+}
+
+#myDiary .dateLook {
+    border-top: 1px solid #a7a4a4;
+    margin: 20px 0 40px 0;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 30px;
+}
+
+#myDiary .myDiary02 {
+    display: flex;
+    background-color: #236C3F;
+    padding: 20px;
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-bottom: 100px;
+}
+
+#myDiary .myDiary02 .petProfile {
+    background-color: white;
+    border-radius: 20px;
+    font-size: 20px;
+}
+
+#myDiary .myDiary02 .petProfile p:last-child {
+    margin-top: 15px;
+    padding-left: 30px;
+}
+
+#myDiary .myDiary02 .petProfile .store {
+    padding-top: 25px;
+    padding-left: 25px;
+}
+
+#myDiary .myDiary02 .petProfile .date {
+    padding: 25px;
+}
+
+#myDiary .myDiary02 .petProfile .petName {
+    padding-left: 25px;
+}
+
+#myDiary .myDiary02 .petProfile img {
+    width: 600px;
+    height: 500px;
+    border-radius: 20px;
+    margin: 20px;
+}
+
+
+#myDiary .myDiary02 .context {
+    width: 700px;
+    margin-left: 30px;
+    border-radius: 20px;
+    background-color: white;
+    font-size: 20px;
+    padding: 25px;
+}
+
+#myDiary .myDiary02 .context .weight {
+    margin-top: 60px;
+}
+
+#myDiary .myDiary02 .context p {
+    margin-left: 20px;
+}
+
+#myDiary .myDiary02 .context p:first-child {
+    font-weight: bold;
+}
+
+#myDiary .myDiary02 .context p:last-child {
+    border-bottom: 1px dashed #236C3F;
+    padding-bottom: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding-left: 30px;
+}
+
