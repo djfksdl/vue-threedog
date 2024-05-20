@@ -9,6 +9,11 @@
     flex-direction: column;
     
 }
+#msignup-container  .msignup-box .con-logo{
+    height: 90px;
+    object-fit: contain;
+    margin-bottom: 20px;
+}
 
 .msignup-box {
     margin: 50px 0 20px 0;
