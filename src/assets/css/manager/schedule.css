@@ -1,4 +1,12 @@
+@charset "UTF-8";
+
+.swal2-container {
+    z-index: 9999; /* 스위트알림 팝업의 z-index를 높게 설정 */
+}
+
 .calendar-container {
+    position: relative; /* 상대 위치 지정 */
+    z-index: 1; /* FullCalendar 컴포넌트의 위에 표시 */
     margin: 20px auto;
     max-width: 1400px; /* 더 작은 사이즈로 변경 */
     padding: 20px;
@@ -60,3 +68,5 @@
     margin: 0 4px; /* 외부 여백 조정 */
     font-size: 14px; /* 텍스트 크기 조정 */
 }
+
+
