@@ -184,8 +184,7 @@ import AppHeader from "@/components/AppHeader.vue"
 import AppFooter from "@/components/AppFooter.vue"
 import SideBar from '@/components/SideBar.vue'
 import TopButton from "@/components/TopButton.vue"
-
-import '@/assets/css/mypage/mypage.css'
+import '@/assets/css/manager/mydiary.css'
 
 export default {
     name: "MyDiaryView",
@@ -195,8 +194,21 @@ export default {
         SideBar,
         TopButton,
     },
+    props: {
+        // DiaryView에서 전달된 데이터를 받습니다.
+        savedDate: String,
+        savedGroomingEtiquette: String,
+        savedCondition: String,
+        savedMattedArea: String,
+        savedDislikedArea: String,
+        savedBathDry: String,
+        savedAdditionalFee: String,
+        savedNote: String,
+        savedAttachedPhotos: Array
+    },
     data() {
         return {
+            // 데이터를 저장할 변수들을 선언합니다.
         };
     },
     methods: {
