@@ -14,7 +14,6 @@
                             </div>
                             <small v-if="isDuplicate === true" class="error-message">중복된 아이디입니다.</small>
                             <small v-if="isDuplicate === false" class="success-message">가입 가능한 아이디입니다.</small>
-
                         </div>
                         <div class="form-group-man">
                             <input type="password" id="password" name="password" placeholder="비밀번호" v-model="password">
@@ -35,7 +34,8 @@
                                 <button type="button" @click="checkBusinessNumber"
                                     class="small-btn green-btn">확인</button>
                             </div>
-                            <small v-if="businessCheckMessage" class="error-message">{{ businessCheckMessage }}</small>
+                            <small v-if="businessCheckMessage" :class="businessCheckClass">{{ businessCheckMessage
+                                }}</small>
                         </div>
                         <div class="form-group-man">
                             <input type="tel" id="bPhone" name="bPhone" placeholder="사업장 전화번호" v-model="bPhone">
@@ -53,7 +53,24 @@
                         <div class="form-group-man" style="margin-bottom: 10px;">
                             <input type="text" v-model="detailAddress" placeholder="상세 주소">
                         </div>
-                        <button type="submit" class="msignupBtn" :disabled="isDuplicate !== false">회원가입</button>
+
+                        <div id="google_recaptha">
+                            <div class="g-recaptcha" data-sitekey="6LfZqNspAAAAAAze3c3G_KHi67Z2gKiF0WM58CG4"></div>
+                        </div>
+                        <div class="duplicateModal" v-if="showModal">
+                            <div class="msignup-modal-content">
+                                <span><strong>아이디</strong> 중복 체크해 주세요</span>
+                                <button @click="closeDuplicateModal">확인</button>
+                            </div>
+                        </div>
+                        <div class="duplicateModal" v-if="showModal02">
+                            <div class="msignup-modal-content">
+                                <span><strong>사업자등록번호</strong> 인증해 주세요</span>
+                                <button @click="closeDuplicateModal">확인</button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="msignupBtn">회원가입</button>
                     </form>
                 </div>
             </div><!-- signup-box -->
@@ -88,35 +105,45 @@ export default {
             roadAddress: "",
             detailAddress: "",
             businessNumber: "", // 사업자등록번호
-            businessCheckMessage: "", // 사업자등록번호 확인 메시지
+            businessCheckMessage: "", // 사업자등록번호 확인 메시지,
+            showModal: false,
+            showModal02: false,
         };
     },
     methods: {
         handleSubmit() {
             console.log("회원가입");
 
-            const formData = new FormData();
-            formData.append("bId", this.id);
-            formData.append("bPw", this.password);
-            formData.append("bNum", this.businessNumber);
-            formData.append("bZipCode", this.zonecode);
-            formData.append("bAddress", this.roadAddress);
-            formData.append("bdAddress", this.detailAddress);
-            formData.append("bPhone", this.bPhone);
+            if (this.isDuplicate == true || this.isDuplicate == null) {
+                this.showModal = true;
+            } else {
+                if (this.businessCheckClass === "success-message") {
+                    const formData = new FormData();
+                    formData.append("bId", this.id);
+                    formData.append("bPw", this.password);
+                    formData.append("bNum", this.businessNumber);
+                    formData.append("bZipCode", this.zonecode);
+                    formData.append("bAddress", this.roadAddress);
+                    formData.append("bdAddress", this.detailAddress);
+                    formData.append("bPhone", this.bPhone);
 
-            axios({
-                method: 'post', // put, post, delete 
-                url: `${this.$store.state.apiBaseUrl}/api/msignup`,
-                headers: { "Content-Type": "multipart/form-data" },
-                data: formData, // put, post, delete 방식 자동으로 JSON으로 변환 전달
-                responseType: 'json' // 수신타입
-            }).then(response => {
-                console.log(response.data);
-                this.$router.push('/mlogin');
+                    axios({
+                        method: 'post', // put, post, delete 
+                        url: `${this.$store.state.apiBaseUrl}/api/msignup`,
+                        headers: { "Content-Type": "multipart/form-data" },
+                        data: formData, // put, post, delete 방식 자동으로 JSON으로 변환 전달
+                        responseType: 'json' // 수신타입
+                    }).then(response => {
+                        console.log(response.data);
+                        this.$router.push('/mlogin');
 
-            }).catch(error => {
-                console.log(error);
-            });
+                    }).catch(error => {
+                        console.log(error);
+                    });
+                } else {
+                    this.showModal02 = true;
+                }
+            }
         },
         async checkDuplicate() {
             axios({
@@ -133,7 +160,6 @@ export default {
                 } else {
                     this.isDuplicate = false;
                 }
-
             }).catch(error => {
                 console.log(error);
             });
@@ -150,35 +176,49 @@ export default {
                 },
             }).open();
         },
-        async checkBusinessNumber() {
-            try {
-                const response = await axios.post('https://bizno.net/api/fapi', {
-                    b_no: [this.businessNumber]
-                }, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': 'Bearer YWFzc2RkMjM2QG5hdmVyLmNvbSAg'
-                    }
-                });
-
-                console.log('Response:', response.data); // 응답 데이터 로그
-                if (response.data && response.data.data && response.data.data.length > 0) {
-                    const valid = response.data.data[0].b_stt_cd;
-                    if (valid === '01') {
-                        this.businessCheckMessage = "사업자등록번호 확인";
-                    } else {
-                        this.businessCheckMessage = "사업자등록번호 확인 불가능";
-                    }
-                } else {
-                    this.businessCheckMessage = "올바른 번호를 입력해 주세요. 1";
+        checkBusinessNumber() {
+            const data = { b_no: [this.businessNumber] };
+            axios.post('https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=kLwu8It5iiIWVEWui%2FFpNx7qI2XcPU6H6lfgnHJ1RGVI0nNAR9yfRk7eWA8m9ncjMV%2FSeJ2g36xCarutBsixGw%3D%3D', data, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer YWFzc2RkMjM2QG5hdmVyLmNvbSAg'
                 }
-            } catch (error) {
-                console.error('Error:', error);
-                this.businessCheckMessage = "올바른 번호를 입력해 주세요. 2";
-            }
+            })
+                .then(response => {
+                    console.log('Response:', response.data);
+                    if (response.data && response.data.data && response.data.data.length > 0) {
+                        const valid = response.data.data[0].b_stt_cd;
+                        if (valid === '01') {
+                            this.businessCheckMessage = "사업자등록번호 확인";
+                            this.businessCheckClass = "success-message";
+                        } else {
+                            this.businessCheckMessage = "사업자등록번호 확인 불가능";
+                            this.businessCheckClass = "error-message";
+                            this.showBusinessNumberModal = true;
+                        }
+                    } else {
+                        this.businessCheckMessage = "올바른 번호를 입력해 주세요.";
+                        this.businessCheckClass = "error-message";
+                        this.showBusinessNumberModal = true;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    this.businessCheckMessage = "올바른 번호를 입력해 주세요.";
+                    this.businessCheckClass = "error-message";
+                    this.showBusinessNumberModal = true;
+                });
+        },
+        closeDuplicateModal() {
+            this.showModal = false;
+            this.showModal02 = false;
         },
     },
+    mounted() {
+        const script = document.createElement('script');
+        script.src = 'https://www.google.com/recaptcha/api.js';
+        script.async = true;
+        document.getElementById('google_recaptha').appendChild(script);
+    }
 }
 </script>
-
