@@ -7,27 +7,36 @@
                 <div class="mlogo">
                     <router-link to="/edit"><img src="@/assets/images/logo2.png" alt=""></router-link>
                 </div>
-                <!-- 메뉴 -->
-                <ul class="mMenu">
-                    <!-- 회원+원장 -->
+                <!-- 메뉴(회원+원장) -->
+                <ul class="mMenu" v-if="this.$store.state.auth == null ">
                     <li><router-link to="/review">후기게시판</router-link></li>
-                    <!-- 원장 로그인했을때 보이는것 -->
+                </ul>
+                <!-- 메뉴(원장) -->
+                <ul class="mMenu" v-if="this.$store.state.auth != null">
+                    <li><router-link to="/review">후기게시판</router-link></li>
                     <li><router-link to="/diary">알림창</router-link></li>
                     <li><router-link to="/schedule">예약스케쥴</router-link></li>
                     <li><router-link to="/totalsales">매출/통계</router-link></li>
-                    <!-- <li><router-link to="/editform">홈페이지 설정</router-link></li> -->
                 </ul>
             </div>
-            <!-- 헤더 오른쪽 로그인- 로그인했을때 -->
+            <!-- 헤더 오른쪽 로그인- 로그인 했을때(회원) -->
             <div class="mheaderRight" v-if="this.$store.state.authUser != null">
                 <p><router-link to="/"><small>메인화면돌아가기</small></router-link></p>
                 <p><strong>{{this.$store.state.authUser.uName}}</strong>님</p>
                 <p><router-link to="" v-on:click="logout">로그아웃</router-link></p>
                 <router-link to="" v-on:click="loginForMypage"><img src="@/assets/images/icon_mypage.png"></router-link>
+                <!-- <router-link to="/editform"><img src="@/assets/images/icon_setting.png"></router-link> -->
+            </div>
+            <!-- 헤더 오른쪽 로그인- 로그인 했을때(원장) -->
+            <div class="mheaderRight" v-if="this.$store.state.auth != null">
+                <p><router-link to="/"><small>메인화면돌아가기</small></router-link></p>
+                <p><strong>관리자</strong>님</p>
+                <p><router-link to="" v-on:click="logout">로그아웃</router-link></p>
+                <!-- <router-link to="" v-on:click="loginForMypage"><img src="@/assets/images/icon_mypage.png"></router-link> -->
                 <router-link to="/editform"><img src="@/assets/images/icon_setting.png"></router-link>
             </div>
             <!-- 헤더 오른쪽 로그인- 로그인 안했을때 -->
-            <div class="mheaderRight" v-if="this.$store.state.authUser == null">
+            <div class="mheaderRight" v-if="this.$store.state.authUser == null && this.$store.state.auth == null ">
                 <p><router-link to="/"><small>메인화면돌아가기</small></router-link></p>
                 <p><router-link to="/login" >로그인</router-link></p>
                 <router-link to="" v-on:click="loginForMypage"><img src="@/assets/images/icon_mypage.png"></router-link>
@@ -48,6 +57,7 @@ export default {
         logout(){
             // console.log("로그아웃");
             this.$store.commit("setAuthUser",null);
+            this.$store.commit("setAuth",null);
             this.$store.commit("setToken",null);
 
             this.$router.push("/edit");
