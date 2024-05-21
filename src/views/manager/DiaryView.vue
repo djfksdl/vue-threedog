@@ -25,31 +25,22 @@
                     <div class="diary-info-leftitem">
                         <label class="diary-label">애견명: {{ petName }}</label>
                     </div>
-
-
                     <div class="diary-info-leftitem">
                         <label class="diary-label">품종: {{ breed }}</label>
                     </div>
-
                     <div class="diary-info-leftitem">
                         <label class="diary-label">미용컷: {{ groomingStyle }}</label>
                     </div>
-
                     <div class="diary-info-leftitem">
                         <label class="diary-label">금액: {{ price }}</label>
                     </div>
-
                     <div class="diary-info-leftitem">
                         <label class="diary-label">추가요금: {{ additionalFee }}</label>
                     </div>
-
                     <div class="diary-info-leftitem">
                         <label class="diary-label">총 금액: {{ totalAmount }}</label>
                     </div>
-
                 </div>
-
-
                 <!-- 오른쪽 박스: 입력 폼 -->
                 <div class="diary-right-box">
                     <!-- 미용 기록 제목 -->
@@ -61,15 +52,13 @@
                             <label class="diary-label" for="grooming-photo">미용 사진:</label>
                             <div class="diary-image-container">
                                 <!-- 파일 업로드 입력 필드 -->
-                                <input class="diary-input" type="file" id="grooming-photo" accept="image/*"
-                                    @change="handleFileUploads($event)" multiple>
+                                <input class="diary-input" type="file" id="grooming-photo" accept="image/*" @change="handleFileUploads($event)" multiple>
                                 <!-- 업로드된 사진 미리보기 -->
                                 <img v-for="(url, index) in photoUrls" :src="url" :key="index" alt="미용 사진">
                             </div>
                         </div>
                         <!-- 첨부된 사진들 표시 -->
                         <div class="diary-attached-photos">
-                            <!-- <p>첨부된 사진들:</p> -->
                             <img v-for="(photo, index) in attachedPhotos" :src="photo" :key="index" alt="첨부된 사진">
                         </div>
                     </div>
@@ -86,32 +75,26 @@
                         <label class="diary-label" for="grooming-etiquette">미용예절</label>
                         <input class="diary-input" type="text" id="grooming-etiquette" v-model="groomingEtiquette">
                     </div>
-
                     <div class="diary-info-rightitem">
                         <label class="diary-label" for="condition">컨디션</label>
                         <input class="diary-input" type="text" id="condition" v-model="condition">
                     </div>
-
                     <div class="diary-info-rightitem">
                         <label class="diary-label" for="matted-area">엉킴(부위)</label>
                         <input class="diary-input" type="text" id="matted-area" v-model="mattedArea">
                     </div>
-
                     <div class="diary-info-rightitem">
                         <label class="diary-label" for="disliked-area">싫어했던 부위</label>
                         <input class="diary-input" type="text" id="disliked-area" v-model="dislikedArea">
                     </div>
-
                     <div class="diary-info-rightitem">
                         <label class="diary-label" for="bath-dry">목욕/드라이</label>
                         <input class="diary-input" type="text" id="bath-dry" v-model="bathDry">
                     </div>
-
                     <div class="diary-info-rightitem">
                         <label class="diary-label" for="note">전달사항</label>
                         <textarea class="diary-textarea" id="note" v-model="note"></textarea>
                     </div>
-
                     <button @click="saveNotification" class="diary-save-button">저장</button>
                 </div>
             </div>
@@ -131,7 +114,6 @@
                     </div>
                     <!-- 미용 기록 표 -->
                     <table class="diary-table">
-
                         <tr>
                             <th>항목</th>
                             <th>내용</th>
@@ -192,7 +174,7 @@ import ManagerFooter from "@/components/ManagerFooter.vue";
 import ManagerHeader from "@/components/ManagerHeader.vue";
 import "@/assets/css/manager/diary.css"
 import { mapState } from 'vuex';
-
+import Swal from 'sweetalert2'
 
 export default {
     name: "DiaryView",
@@ -269,29 +251,41 @@ export default {
         },
         sendNotification() {
             // 저장된 데이터를 다른 페이지로 전송  
-            this.$router.push({
-                name: 'mydiary',
-                params: {
-                    savedDate: this.savedDate,
-                    savedGroomingEtiquette: this.savedGroomingEtiquette,
-                    savedCondition: this.savedCondition,
-                    savedMattedArea: this.savedMattedArea,
-                    savedDislikedArea: this.savedDislikedArea,
-                    savedBathDry: this.savedBathDry,
-                    savedAdditionalFee: this.savedAdditionalFee,
-                    savedNote: this.savedNote,
-                    savedAttachedPhotos: this.savedAttachedPhotos
-                }
-            });
+            // this.$router.push({
+            //     name: 'mydiary',
+            //     params: {
+            //         savedDate: this.savedDate,
+            //         savedGroomingEtiquette: this.savedGroomingEtiquette,
+            //         savedCondition: this.savedCondition,
+            //         savedMattedArea: this.savedMattedArea,
+            //         savedDislikedArea: this.savedDislikedArea,
+            //         savedBathDry: this.savedBathDry,
+            //         savedAdditionalFee: this.savedAdditionalFee,
+            //         savedNote: this.savedNote,
+            //         savedAttachedPhotos: this.savedAttachedPhotos
+            //     }
+            // });
             // 모달 닫기
             this.showModal = false;
-            //알림보내기
-            // alert('Notification Sent!');
-           
+
+            // 모달 알림 메시지 표시
+            Swal.fire({
+                title: '전송되었습니다!',
+                icon: 'success',
+                confirmButtonText: '확인'
+            }).then(() => {
+                // schedule 화면으로 이동
+                this.$router.push({ name: 'schedule' });
+            });
         },
         kakaosendNotification() {
             // 카카오톡 알림 전송
-            alert("Notification sent via KakaoTalk!");
+            Swal.fire({
+                title: '카카오톡 공유하기',
+                text: 'Notification sent via KakaoTalk!',
+                icon: 'success',
+                confirmButtonText: '확인'
+            });
             this.showModal = false;
         },
 
