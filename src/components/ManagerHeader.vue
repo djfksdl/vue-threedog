@@ -54,6 +54,7 @@ export default {
         return {};
     },
     methods: {
+        // 로그아웃
         logout(){
             // console.log("로그아웃");
             this.$store.commit("setAuthUser",null);
@@ -62,6 +63,7 @@ export default {
 
             this.$router.push("/edit");
         },
+        // 마이페이지
         loginForMypage(){
             // console.log("로그인하러 ㄱ");
             if(this.$store.state.authUser == null){
