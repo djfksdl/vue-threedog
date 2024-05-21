@@ -23,16 +23,31 @@
                         <img src="@/assets/images/icon_login.svg">
                         <p >로그인</p>
                     </router-link>
+                    <router-link to="" v-if="this.$store.state.authUser == null && this.$store.state.auth == null" v-on:click="loginForMypage">
+                        <img src="@/assets/images/icon_my.svg">
+                        <p>마이페이지</p>
+                    </router-link>
 
-                    <!-- 로그인되어있을떄 -->
-                    <router-link to="" v-if="this.$store.state.authUser != null || this.$store.state.auth != null" v-on:click="logout">
+                    <!-- 로그인되어있을떄(회원) -->
+                    <router-link to="" v-if="this.$store.state.authUser != null" v-on:click="logout">
                         <img src="@/assets/images/icon_login.svg">
                         <p >로그아웃</p>
                     </router-link>
 
-                    <router-link to="" v-on:click="loginForMypage">
+                    <router-link to="" v-if="this.$store.state.authUser != null" v-on:click="loginForMypage">
                         <img src="@/assets/images/icon_my.svg">
                         <p>마이페이지</p>
+                    </router-link>
+
+                    <!-- 로그인되어있을떄(원장) -->
+                    <router-link to="" v-if="this.$store.state.auth != null" v-on:click="logout">
+                        <img src="@/assets/images/icon_login.svg">
+                        <p >로그아웃</p>
+                    </router-link>
+
+                    <router-link to="" v-if="this.$store.state.auth != null" v-on:click="loginForMypage">
+                        <img src="@/assets/images/icon_homepage.png">
+                        <p>홈페이지</p>
                     </router-link>
                 </div>
             </div>
