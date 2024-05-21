@@ -130,7 +130,7 @@ export default {
                 uZipCode:"",
                 uAddress:"",
                 uDetailAddress:"",
-                file:""
+                file: null
             },
         };
     },
@@ -156,6 +156,7 @@ export default {
             // FormData에 파일 추가
             this.userVo.file = file;
         },
+
         // 아이디 중복확인 버튼 눌렀을때
         checkDuplicate() {
             // console.log("아이디 중복확인 버튼이 클릭되었습니다.");
@@ -180,34 +181,58 @@ export default {
             });
 
         },
+
         // 회원가입 버튼눌렀을때
         signup() {
             console.log(this.userVo);
-            let formData = new FormData();
-            
-            for (let key in this.userVo) {
-                formData.append(key, this.userVo[key]);
-            }
 
-            axios({
-                method: 'post', // put, post, delete 
-                url: `${this.$store.state.apiBaseUrl}/api/su/signup`,
-                headers: { "Content-Type": "multipart/form-data" }, //전송타입
-                //params: usersVo, //get방식 파라미터로 값이 전달
-                data: formData, //put, post, delete 방식 자동으로 JSON으로 변환 전달
-                responseType: 'json' //수신타입
-            }).then(response => {
-                console.log(response.data.apiData); //수신데이타
-
-                if (response.data.apiData == 1) {
-                    alert("환영합니다. 회원가입에 성공하셨습니다.");
-                    this.$router.push({ path: '/', query: { name: this.userVo.uName } });
-                } else {
-                    alert("회원가입에 실패하였습니다.");
+            if(this.userVo.uId == ""){
+                window.alert("아이디를 입력해주세요");
+            }else if(this.isDuplicate== null){
+                window.alert("아이디 중복확인해주세요");
+            }else if(this.userVo.uPw == ""){
+                window.alert("비밀번호를 입력해주세요");
+            }else if(this.confirmPassword == ""){
+                window.alert("비밀번호를 확인해주세요");
+            }else if(this.userVo.uName == ""){
+                window.alert("이름을 입력해주세요");
+            }else if(this.userVo.uPhone == ""){
+                window.alert("전화번호를 입력해주세요");
+            }else if(this.userVo.uZipCode == ""){
+                window.alert("주소를 입력해주세요");
+            }else if(this.userVo.uDetailAddress == ""){
+                window.alert("상세주소를 입력해주세요");
+            }else{
+                let formData = new FormData();
+                
+                for (let key in this.userVo) {
+                    if(key == "file" &&  this.userVo["file"] == null) {
+                        // 파일이 null일때 null로 보내기
+                    }else{
+                        formData.append(key, this.userVo[key]);
+                    }
                 }
-            }).catch(error => {
-                console.log(error);
-            });
+    
+                axios({
+                    method: 'post', // put, post, delete 
+                    url: `${this.$store.state.apiBaseUrl}/api/su/signup`,
+                    headers: { "Content-Type": "multipart/form-data" }, //전송타입
+                    //params: usersVo, //get방식 파라미터로 값이 전달
+                    data: formData, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+                    responseType: 'json' //수신타입
+                }).then(response => {
+                    console.log(response.data.apiData); //수신데이타
+    
+                    if (response.data.apiData == 1) {
+                        alert("환영합니다. 회원가입에 성공하셨습니다.");
+                        this.$router.push({ path: '/', query: { name: this.userVo.uName } });
+                    } else {
+                        alert("회원가입에 실패하였습니다.");
+                    }
+                }).catch(error => {
+                    console.log(error);
+                });
+            }
 
         },
         
@@ -219,9 +244,15 @@ export default {
                 },
             }).open();
         },
+        // 인증번호 보내기
         sendVerificationCode() {
-            console.log("인증번호 전송 버튼이 클릭되었습니다.");
-            this.showVerificationInput = true;
+            // console.log("인증번호 전송 버튼이 클릭되었습니다.");
+            if(this.userVo.uPhone ==""){
+                window.alert("전화번호를 입력해주세요.")
+            }else{
+                window.alert("인증번호를 발송했습니다.")
+                this.showVerificationInput = true;
+            }
         },
         verifyCode() {
             console.log("인증번호 확인 버튼이 클릭되었습니다.");
