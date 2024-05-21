@@ -69,7 +69,7 @@
                             <!-- 생일 -->
                             <div class="detail" id="petAge">
                                 <label>생일</label>
-                                <input type="date" value="birth" v-model="dogVo.birth" :min=now>
+                                <input type="date" value="birth" v-model="dogVo.birth" :max=now>
                             </div>
 
                             <!-- 성별 -->
@@ -266,7 +266,7 @@ export default {
                 console.log(response.data);
 
                 if (response.data.result == "success") {
-                    this.$router.push('/mypage');
+                    this.$router.push(`/mypage/${this.uNo}`);
 
                 } else {
                     alert("알수없는 오류");
