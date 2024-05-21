@@ -42,6 +42,11 @@ const routes = [
     component: EditView
   },
   {
+    path: '/edit/:uNo',
+    name: 'editForOwner',
+    component: EditView
+  },
+  {
     path: '/login',
     name: 'login',
     component: LoginView
