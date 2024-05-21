@@ -40,17 +40,17 @@
                         <div class="form-group-man">
                             <input type="tel" id="bPhone" name="bPhone" placeholder="사업장 전화번호" v-model="bPhone">
                         </div>
-                        <div class="form-group" style="margin-bottom: 10px;">
+                        <div class="form-group-man" style="margin-bottom: 10px;">
                             <div class="input-container">
                                 <input type="text" id="postalCode" placeholder="우편번호" v-model="zonecode" readonly>
                                 <button id="postcode" type="button" @click="openPostcode"
                                     class="small-btn green-btn">검색</button>
                             </div>
                         </div>
-                        <div class="form-group" style="margin-bottom: 10px;">
+                        <div class="form-group-man" style="margin-bottom: 10px;">
                             <input type="text" v-model="roadAddress" placeholder="주소" readonly>
                         </div>
-                        <div class="form-group" style="margin-bottom: 10px;">
+                        <div class="form-group-man" style="margin-bottom: 10px;">
                             <input type="text" v-model="detailAddress" placeholder="상세 주소">
                         </div>
                         <button type="submit" class="msignupBtn" :disabled="isDuplicate !== false">회원가입</button>
