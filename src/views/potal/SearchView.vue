@@ -142,7 +142,7 @@
         </div>
       </div>
       <div class="bottom">
-        <h2 class="result-h2">검색 결과</h2>
+        <h2 class="result-h2">검색 결과 <span class="view-count">조회수 높은 순</span></h2>
         <hr>
         <div class="search-result">
           <div class="rank-search">

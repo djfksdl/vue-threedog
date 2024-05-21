@@ -192,4 +192,16 @@
   .star_list {
     display: flex; 
   }
+
+  .result-h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .view-count {
+    font-size: 0.7em;
+    color: #666;
+    margin-right: 20px;
+  }
   

@@ -28,8 +28,7 @@
           <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
         </KakaoMap>
       </div>
-
-      <h2>동네 랭킹 Best</h2>
+      <h2 class="result-h2">동네 랭킹 Best <span class="view-count">가까운 순</span></h2>
       <hr>
       <div class="rank">
         <div class="rank-item">
@@ -57,6 +56,7 @@
         <SlideViewBanner />
       </div>
       <h2>인기짱강아지 Best</h2>
+      <h2 class="result-h2">인기짱강아지 Best<span class="view-count">조회수 높은 순</span></h2>
       <hr>
       <div class="rank">
         <div class="rank-item" v-bind:key="i" v-for="(reviewVo, i) in reviewList">
