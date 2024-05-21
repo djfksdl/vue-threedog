@@ -134,7 +134,7 @@
     margin-right: 20px;
   }
   
-  .search-item img {
+  .search-item .list_img {
     width: 250px;
     height: 250px;
     margin-right: 10px;
@@ -176,14 +176,20 @@
     width: 1400px;
   }
 
-  /* .star img {
+  .yellowStar_list,
+  .grayStar_list {
     width: 20px; 
     height: 20px; 
-  } 
-
+  }
+  
   .star-container {
     display: flex; 
     justify-content: center; 
     align-items: center;
-  }  */
+    flex-direction: row; /* 가로 방향으로 배치 */
+  }
+  
+  .star_list {
+    display: flex; 
+  }
   
