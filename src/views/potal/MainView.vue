@@ -55,7 +55,6 @@
       <div class="event-banner">
         <SlideViewBanner />
       </div>
-      <h2>인기짱강아지 Best</h2>
       <h2 class="result-h2">인기짱강아지 Best<span class="view-count">조회수 높은 순</span></h2>
       <hr>
       <div class="rank">
