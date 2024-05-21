@@ -59,7 +59,7 @@ export default {
         loginForMypage(){
             // console.log("마이페이지가려면 로그인ㄱ");
             if (this.$store.state.auth != null) {
-                window.alert("회원전용 페이지입니다.");
+                this.$router.push(`/edit/${this.$store.state.auth.bNo}`);
             } else if (this.$store.state.authUser == null) {
                 window.alert("로그인 후 이용할 수 있습니다.");
                 this.$router.push("/login"); // 로그인 페이지로 이동
