@@ -5,10 +5,15 @@
       <SlideView />
     </div><!-- potal-main-slide -->
     <div id="potal-main-container" class="clearfix">
-      <div class="search-container">
+      <div class="search-container" ref="searchContainer">
         <div class="search-input-wrapper">
-          <input type="text" class="search-input" placeholder="지역을 입력하세요" v-model="searchQuery">
+          <input type="text" class="search-input" placeholder="지역을 입력하세요" v-model="searchQuery"
+            @input="fetchSuggestions">
           <i class="fas fa-map-marker-alt" @click="getCurrentLocation"></i>
+          <ul class="search_ul" v-if="suggestions.length">
+            <!-- <li v-for="suggestion in suggestions" :key="suggestion" @click="setSearchQuery(suggestion)">{{ suggestion }} -->
+            <li v-for="(suggestion, index) in suggestions" :key="index" @click="setSearchQuery(suggestion)">{{ suggestion }}</li>
+          </ul>
         </div>
         <!-- 검색 버튼 -->
         <router-link to="/searchmap">
@@ -54,12 +59,12 @@
       <h2>인기짱강아지 Best</h2>
       <hr>
       <div class="rank">
-        <div  class="rank-item" v-bind:key="i" v-for="(reviewVo, i) in reviewList">
-              <!-- <img  v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`"
+        <div class="rank-item" v-bind:key="i" v-for="(reviewVo, i) in reviewList">
+          <!-- <img  v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`"
                alt="Review Image"> -->
-               <img src="../../assets/images/dog.jpg">
-              <label>{{ reviewVo.title }}</label>
-            </div>
+          <img src="../../assets/images/dog.jpg">
+          <label>{{ reviewVo.title }}</label>
+        </div>
       </div><!-- rank -->
     </div><!-- potal-main-container -->
     <TopButton />
@@ -130,6 +135,10 @@ export default {
     TopButton
   },
   mounted() {
+    document.addEventListener('click', this.handleClickOutside);
+  },
+  beforeUnmount() {
+    document.removeEventListener('click', this.handleClickOutside);
   },
   data() {
     return {
@@ -141,7 +150,8 @@ export default {
         title: '',
         saveName: '',
         bNo: ''
-      }
+      },
+      suggestions: []
     };
   },
   methods: {
@@ -161,10 +171,38 @@ export default {
         responseType: 'json'
       }).then(response => {
         console.log(response.data.apiData);
-        this.reviewList  = response.data.apiData;
+        this.reviewList = response.data.apiData;
       }).catch(error => {
         console.log(error);
       });
+    },
+    async fetchSuggestions() {
+      if (!this.searchQuery.trim()) {
+        this.suggestions = []; // 빈 문자열인 경우 suggestions를 초기화합니다.
+        return; // 빈 문자열일 경우 함수를 종료합니다.
+      }
+
+      // 검색어가 비어 있지 않으면 API를 호출하여 검색 자동완성을 가져옵니다.
+      try {
+        const response = await fetch(`https://dapi.kakao.com/v2/local/search/keyword.json?query=${this.searchQuery}`, {
+          headers: {
+            'Authorization': 'KakaoAK 71cf0304d0220da3bff50ab64c5dd1ea'
+          }
+        });
+        const data = await response.json();
+        this.suggestions = data.documents.map(doc => doc.place_name);
+      } catch (error) {
+        console.error('검색 자동완성을 가져오는 중 오류가 발생했습니다:', error);
+      }
+    },
+    setSearchQuery(query) {
+      this.searchQuery = query;
+      this.suggestions = []; // 리스트 아이템 클릭시 자동완성 목록 숨기기
+    },
+    handleClickOutside(event) {
+      if (!this.$refs.searchContainer.contains(event.target)) {
+        this.suggestions = [];
+      }
     },
   },
   created() {

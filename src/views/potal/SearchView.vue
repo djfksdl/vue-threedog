@@ -150,15 +150,14 @@
               <img class="list_img" src="../../assets/images/spy.jpg">
               <div class="star-container">
                 <div class="star_list" v-for="index in 5" :key="index">
-                  <span v-if="index < reviewVo.star" class="yellowStar">
+                  <span v-if="index <= reviewVo.star" class="yellowStar">
                     <img class="yellowStar_list" src="@/assets/images/star_yellow.jpg">
                   </span>
-                  <span v-if="index >= reviewVo.star" class="grayStar">
-                    <img class="yellowStar_list" src="@/assets/images/star_gray.jpg">
+                  <span v-else class="grayStar">
+                    <img class="grayStar_list" src="@/assets/images/star_gray.jpg">
                   </span>
                 </div>
               </div>
-
               <label>{{ reviewVo.title }}</label>
             </div>
 

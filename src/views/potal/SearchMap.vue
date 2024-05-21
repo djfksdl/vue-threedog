@@ -13,7 +13,7 @@
 
       <div id="map-search">
         <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true"
-          style="width: 1370px; height: 400px; margin-left: 20px;">
+          style="width: 1370px; height: 494px; margin-left: 20px;">
           <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
         </KakaoMap>
         <DatePicker02/>
