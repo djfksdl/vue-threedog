@@ -175,3 +175,14 @@
     justify-content: flex-start;
     width: 1400px;
   }
+
+  .star img {
+    width: 20px; /* 고정된 픽셀 값으로 설정 */
+    height: 20px; /* 고정된 픽셀 값으로 설정 */
+  }
+
+  .star-container {
+    display: flex; /* 가로 정렬을 위해 flex를 사용 */
+    justify-content: center; /* 가로 가운데 정렬 */
+    align-items: center; /* 세로 가운데 정렬 */
+  }

@@ -1,0 +1,14 @@
+#map-search {
+    display: flex;
+    gap: 20px; /* Add gap between the map and the calendar */
+  }
+  
+  .map-container {
+    flex: 0 0 60%;
+    height: 400px;
+  }
+  
+  .calendar-container {
+    flex: 0 0 40%;
+    height: 400px;
+  }

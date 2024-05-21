@@ -88,10 +88,24 @@ export default {
                 data: formData,
                 responseType: 'json' // 수신 형식 지정
             }).then(response => {
-                // console.log(response.data.apiData);
+                console.log(response.data.apiData);
                 // console.log(response.data.apiData.bNo);
-                this.$router.push(`/edit/${response.data.apiData.bId}`);
+                
+                if(response.data.result == "success"){
+                    let auth = response.data.apiData;
 
+                    console.log(response.headers.authorization.split(" ")[1]);
+                    const token = response.headers.authorization.split(" ")[1];
+
+                    //vuex 저장
+                    this.$store.commit("setAuth", auth);
+                    this.$store.commit("setToken", token);
+
+                    this.$router.push(`/edit/${response.data.apiData.bId}`);
+                } else {
+                    console.log(response.data.message);
+                    alert("아이디 패스워드를 확인하세요.");
+                }
             }).catch(error => {
                 console.log(error);
                 // 오류 처리

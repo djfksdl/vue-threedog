@@ -7,7 +7,8 @@ export default createStore({
             // apiBaseUrl: "http://43.200.182.62:9033",
             authUser: null,
             token: null,
-            selectedSchedule: null
+            selectedSchedule: null,
+            auth: null
 
         };
     },
@@ -24,6 +25,9 @@ export default createStore({
         },
         setSelectedSchedule(state, schedule) {
             state.selectedSchedule = schedule;
+        },
+        setAuth(state, payload) {
+            state.auth = payload;
         },
 
     },

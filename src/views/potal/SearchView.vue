@@ -146,27 +146,25 @@
         <hr>
         <div class="search-result">
           <div class="rank-search">
-            <div class="search-item">
+            <div class="search-item" v-bind:key="i" v-for="(reviewVo, i) in reviewList">
               <img src="../../assets/images/spy.jpg">
-              <label>스파이가게</label>
+              <div class="star-container">
+                <div class="star" v-for="index in 5" :key="index">
+                  <span v-if="index < reviewVo.star" class="yellowStar">
+                    <img class="yellowStar_list" src="@/assets/images/star_yellow.jpg">
+                  </span>
+                  <span v-if="index >= reviewVo.star" class="grayStar">
+                    <img class="yellowStar_list" src="@/assets/images/star_gray.jpg">
+                  </span>
+                </div>
+              </div>
+
+              <label>{{ reviewVo.title }}</label>
             </div>
-            <div class="search-item">
-              <img src="../../assets/images/spy.jpg">
-              <label>다른 가게 이름</label>
-            </div>
-            <div class="search-item">
-              <img src="../../assets/images/dog2.jpg">
-              <label>하이미디어</label>
-            </div>
-            <div class="search-item">
-              <img src="../../assets/images/dog.jpg">
-              <label>김마리마리</label>
-            </div>
-            <div class="search-item">
-              <img src="../../assets/images/dog.jpg">
-              <label>김마리마리</label>
-            </div>
+
           </div>
+
+
         </div>
       </div>
 
@@ -182,6 +180,7 @@ import AppFooter from "@/components/AppFooter.vue"
 import AppHeader from "@/components/AppHeader.vue"
 import TopButton from "@/components/TopButton.vue"
 import "@/assets/css/potal/search.css"
+import axios from 'axios';
 
 export default {
   name: "SearchView",
@@ -198,6 +197,14 @@ export default {
       selectedPrices: [],
       selectedItems: [],
       isFixed: false,
+      reviewList: [],
+      reviewVo: {
+        rNo: '',
+        star: '',
+        title: '',
+        saveName: '',
+        bNo: ''
+      }
     };
   },
   computed: {
@@ -291,6 +298,23 @@ export default {
         this.isFixed = false; // 그렇지 않으면 사이드바를 고정 해제
       }
     },
+    getList() {
+      console.log("데이터 가져오기");
+      axios({
+        method: 'get',
+        url: `${this.$store.state.apiBaseUrl}/api/searchlist`,
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        responseType: 'json'
+      }).then(response => {
+        console.log(response.data.apiData);
+        this.reviewList = response.data.apiData;
+      }).catch(error => {
+        console.log(error);
+      });
+    },
+  },
+  created() {
+    this.getList();
   }
 }
 </script>

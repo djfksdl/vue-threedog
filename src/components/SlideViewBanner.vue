@@ -19,8 +19,8 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { Carousel, Slide } from "vue3-carousel";
-import img1 from "@/assets/images/banner01.png";
-import img2 from "@/assets/images/banner02.png";
+import img1 from "@/assets/images/banner04.png";
+import img2 from "@/assets/images/banner00.jpg";
 
 import "vue3-carousel/dist/carousel.css";
 

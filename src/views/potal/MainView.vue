@@ -54,46 +54,12 @@
       <h2>인기짱강아지 Best</h2>
       <hr>
       <div class="rank">
-        <div class="rank-item">
-          <img src="../../assets/images/spy.jpg">
-          <label>스파이가게</label>
-        </div>
-        <div class="rank-item">
-          <img src="../../assets/images/spy.jpg">
-          <label>다른 가게 이름</label>
-        </div>
-        <div class="rank-item">
-          <img src="../../assets/images/dog2.jpg">
-          <label>하이미디어</label>
-        </div>
-        <div class="rank-item">
-          <img src="../../assets/images/dog.jpg">
-          <label>김마리마리</label>
-        </div>
-        <div class="rank-item">
-          <img src="../../assets/images/dog.jpg">
-          <label>김마리마리</label>
-        </div>
-        <div class="rank-item">
-          <img src="../../assets/images/spy.jpg">
-          <label>스파이가게</label>
-        </div>
-        <div class="rank-item">
-          <img src="../../assets/images/spy.jpg">
-          <label>다른 가게 이름</label>
-        </div>
-        <div class="rank-item">
-          <img src="../../assets/images/dog2.jpg">
-          <label>하이미디어</label>
-        </div>
-        <div class="rank-item">
-          <img src="../../assets/images/dog.jpg">
-          <label>김마리마리</label>
-        </div>
-        <div class="rank-item">
-          <img src="../../assets/images/dog.jpg">
-          <label>김마리마리</label>
-        </div>
+        <div  class="rank-item" v-bind:key="i" v-for="(reviewVo, i) in reviewList">
+              <!-- <img  v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`"
+               alt="Review Image"> -->
+               <img src="../../assets/images/dog.jpg">
+              <label>{{ reviewVo.title }}</label>
+            </div>
       </div><!-- rank -->
     </div><!-- potal-main-container -->
     <TopButton />
@@ -152,6 +118,7 @@ import AppFooter from "@/components/AppFooter.vue"
 import AppHeader from "@/components/AppHeader.vue"
 import TopButton from "@/components/TopButton.vue"
 import "@/assets/css/potal/main.css"
+import axios from 'axios';
 
 export default {
   name: "MainView",
@@ -166,7 +133,15 @@ export default {
   },
   data() {
     return {
-      searchQuery: ""
+      searchQuery: "",
+      reviewList: [],
+      reviewVo: {
+        rNo: '',
+        star: '',
+        title: '',
+        saveName: '',
+        bNo: ''
+      }
     };
   },
   methods: {
@@ -176,7 +151,24 @@ export default {
         return;
       }
       this.$router.push({ path: '/searchmap', query: { location: this.searchQuery } });
-    }
+    },
+    getList() {
+      console.log("데이터 가져오기");
+      axios({
+        method: 'get',
+        url: `${this.$store.state.apiBaseUrl}/api/searchlist`,
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        responseType: 'json'
+      }).then(response => {
+        console.log(response.data.apiData);
+        this.reviewList  = response.data.apiData;
+      }).catch(error => {
+        console.log(error);
+      });
+    },
   },
+  created() {
+    this.getList();
+  }
 };
 </script>

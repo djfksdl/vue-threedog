@@ -11,11 +11,12 @@
         <button class="search-button" @click="searchLocation">검색</button>
       </div>
 
-      <div id="map-main">
+      <div id="map-search">
         <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true"
           style="width: 1370px; height: 400px; margin-left: 20px;">
           <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
         </KakaoMap>
+        <DatePicker02/>
       </div>
 
       <h2>{{ location }} 근처 가게 검색 결과 ▼・ᴥ・▼</h2>
@@ -53,6 +54,7 @@ import { ref, watch } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
+import DatePicker02 from '@/components/DatePicker02.vue';
 
 const route = useRoute();
 
@@ -132,13 +134,15 @@ import AppFooter from "@/components/AppFooter.vue";
 import AppHeader from "@/components/AppHeader.vue";
 import TopButton from "@/components/TopButton.vue";
 import "@/assets/css/potal/main.css";
+import "@/assets/css/potal/searchmap.css";
 
 export default {
   name: "SearchMap",
   components: {
     AppFooter,
     AppHeader,
-    TopButton
+    TopButton,
+    DatePicker02
   },
 };
 </script>
