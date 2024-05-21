@@ -52,16 +52,14 @@
                         <div class="form-group">
                             <div class="input-container">
                                 <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="전화번호" v-model="userVo.uPhone">
-                                <button type="button" @click="sendVerificationCode"
-                                    class="small-btn green-btn">전송</button>
+                                <button type="button" @click="sendVerificationCode" class="small-btn green-btn">전송</button>
                             </div>
                         </div>
                         <!-- 인증번호 입력 -->
                         <div v-if="showVerificationInput" class="form-group">
                             <div class="input-container">
                                 <input type="text" id="verificationCode" name="verificationCode" placeholder="인증번호 입력">
-                                <button type="button" @click="verifyCode" class="small-btn green-btn"
-                                    style="margin-left: 10px;">확인</button>
+                                <button type="button" @click="verifyCode" class="small-btn green-btn">다시받기</button>
                             </div>
                         </div>
 
@@ -69,8 +67,7 @@
                         <div class="form-group" style="margin-bottom: 10px;">
                             <div class="input-container">
                                 <input type="text" id="postalCode" placeholder="우편번호" v-model="userVo.uZipCode" readonly>
-                                <button id="postcode" type="button" @click="openPostcode"
-                                    class="small-btn green-btn">검색</button>
+                                <button id="postcode" type="button" @click="openPostcode" class="small-btn green-btn">검색</button>
                             </div>
                         </div>
                         <!-- 주소 -->
@@ -244,6 +241,7 @@ export default {
                 },
             }).open();
         },
+        
         // 인증번호 보내기
         sendVerificationCode() {
             // console.log("인증번호 전송 버튼이 클릭되었습니다.");

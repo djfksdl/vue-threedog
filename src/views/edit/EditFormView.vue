@@ -1,34 +1,24 @@
 <template>
     <div id="wrap">
         <ManagerHeader />
-          <div class="container2">
+          <div class="container3">
             <!-- 타이틀 -->
             <div class="eTitle">
                 <input type="text" placeholder="타이틀">
                 <input type="text" placeholder="부제목 들어갈 곳">
             </div>
 
-            <!-- 이미지 슬라이드 -->
-            <input type="file" class="eFileAddBtn">
-            <div class="eImgSlide wrapper-slide">
-                <Carousel :autoplay="5000" :wrap-around="true" :show-arrows="false" ref="carouselRef">
-                    <Slide v-for="slide in slides" :key="slide">
-                        <div class="img-slide">
-                            <img class="slideImg" :src="slide" />
-                        </div>
-                    </Slide>
-                    <template #addons>
-                        <!-- <Navigation /> -->
-                        <Pagination />
-                    </template>
-                </Carousel>
-                <div class="arrow left" @click="prevSlide">
-                    <i class="fas fa-chevron-left"></i>
+
+            <!-- 이미지 슬라이드 첨부파일 -->
+            <div class="eSlideImgContainer">
+                <h1>슬라이드 사진등록</h1>
+                <div class="eSlideImgInfo">
+                    <input id="btnAtt" type="file" multiple='multiple' class="eFileAddBtn" v-on:change="eFileUpload" >
+                    <p>*사진은 최대 5장까지 첨부할 수 있습니다.</p>
                 </div>
-                <div class="arrow right" @click="nextSlide">
-                    <i class="fas fa-chevron-right"></i>
-                </div>
+                <div id='att_zone' class="addImgBox" data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
             </div>
+
             <!-- 중간내용부분 -->
             <div class="eMidContainer">
 
@@ -339,125 +329,143 @@
   
 <script setup>
 import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
-import { defineComponent, ref } from "vue";
-import { Carousel, Pagination, Slide } from "vue3-carousel";
-import slide01 from "@/assets/images/main-slide.png";
-import slide02 from "@/assets/images/main-slide02.jpg";
-import "vue3-carousel/dist/carousel.css";
+import { defineComponent } from "vue";
+
     const coordinate = {
         lat: 37.498085,
         lng: 127.027978
     };
-    const slides = ref([slide01, slide02]);
-    const carouselRef = ref(null);
-
-    const nextSlide = () => {
-        if (carouselRef.value && carouselRef.value.next) {
-            carouselRef.value.next();
-        }
-    };
-
-    const prevSlide = () => {
-        if (carouselRef.value && carouselRef.value.prev) {
-            carouselRef.value.prev();
-        }
-    };
 </script>
 <script>
-//    import { defineComponent,ref} from "vue";
-//    import { Carousel, Pagination, Slide } from "vue3-carousel";
    import '@/assets/css/edit/editform.css'
    import ManagerFooter from "@/components/ManagerFooter.vue"
    import ManagerHeader from "@/components/ManagerHeader.vue"
    import TopButton from "@/components/TopButton.vue"
-
-//    import slide01 from "@/assets/images/main-slide.png";
-//    import slide02 from "@/assets/images/main-slide02.jpg";
-//    import "vue3-carousel/dist/carousel.css";
   
    export default defineComponent({
        name: "EditView",
        components: {
             ManagerFooter,
             ManagerHeader,
-            TopButton,
-            Carousel,
-            Slide,
-            Pagination,
-            // Navigation,
+            TopButton
        },
        data() {
            
        },
        setup() {
-            // const slides = ref([slide01, slide02]);
-            // const carouselRef = ref(null);
 
-            // const nextSlide = () => {
-            // if (carouselRef.value && carouselRef.value.next) {
-            //     carouselRef.value.next();
-            // }
-            // };
-
-            // const prevSlide = () => {
-            // if (carouselRef.value && carouselRef.value.prev) {
-            //     carouselRef.value.prev();
-            // }
-            // };
-
-            // return {
-            // slides,
-            // nextSlide,
-            // prevSlide,
-            // carouselRef,
-            // };
         },
        methods: {
         
   
        },
+       mounted() {
+
+            // imageView 함수를 호출하여 이미지 업로드 및 미리보기를 설정
+            (function imageView(att_zone, btn) {
+                var attZone = document.getElementById(att_zone);
+                var btnAtt = document.getElementById(btn);
+                var sel_files = [];
+
+
+                // 이미지와 체크박스를 감싸고 있는 div속성 
+                var div_style = 'display:inline-block;position:relative;width:280px;height:200px;margin:5px;border:1px solid #a7a4a4;z-index:1';
+
+                // 미리보기 이미지 속성
+                var img_style = 'width:100%;height:100%;z-index:none;object-fit:contain';
+
+
+                // 이미지안에 표시되는 체크박스의 속성
+                var chk_style = 'width:30px;height:30px;position:absolute;font-size:18px;right:0px;background-color:rgba(255,255,255,0.1);color:#a7a4a4;border:none;font-weight:bold';
+
+
+                btnAtt.onchange = function (e) {
+                    var files = e.target.files;
+                    var fileArr = Array.prototype.slice.call(files);
+                    for (let f of fileArr) {
+                        imageLoader(f);
+                    }
+                };
+
+
+                // 탐색기에서 드래그앤 드롭 사용
+                attZone.addEventListener('dragenter', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }, false);
+
+                attZone.addEventListener('dragover', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }, false);
+
+                attZone.addEventListener('drop', function (e) {
+                    var files = {};
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var dt = e.dataTransfer;
+                    files = dt.files;
+                    for (let f of files) {
+                        imageLoader(f);
+                    }
+                }, false);
+
+
+
+                // 첨부된 이미리들을 배열에 넣고 미리보기
+                function imageLoader(file) {
+                    if (sel_files.length >= 5) { // 이미 5개 이상인 경우 추가하지 않음
+                        alert("최대 5장까지만 첨부할 수 있습니다.");
+                        return;
+                    }
+                    sel_files.push(file);
+                    var reader = new FileReader();
+                    reader.onload = function (ee) {
+                        let img = document.createElement('img');
+                        img.setAttribute('style', img_style);
+                        img.src = ee.target.result;
+                        attZone.appendChild(makeDiv(img, file));
+                    };
+                    reader.readAsDataURL(file);
+                }
+
+
+
+                //  첨부된 파일이 있는 경우 checkbox와 함께 attZone에 추가할 div를 만들어 반환
+                function makeDiv(img, file) {
+                    var div = document.createElement('div');
+                    div.setAttribute('style', div_style);
+
+                    var btn = document.createElement('input');
+                    btn.setAttribute('type', 'button');
+                    btn.setAttribute('value', 'x');
+                    btn.setAttribute('delFile', file.name);
+                    btn.setAttribute('style', chk_style);
+                    btn.onclick = function (ev) {
+                        var ele = ev.srcElement;
+                        var delFile = ele.getAttribute('delFile');
+                        for (var i = 0; i < sel_files.length; i++) {
+                            if (delFile == sel_files[i].name) {
+                                sel_files.splice(i, 1);
+                            }
+                        }
+
+                        var dt = new DataTransfer();
+                        for (let f of sel_files) {
+                            dt.items.add(f);
+                        }
+                        btnAtt.files = dt.files;
+                        var p = ele.parentNode;
+                        attZone.removeChild(p);
+                    };
+                    div.appendChild(img);
+                    div.appendChild(btn);
+                    return div;
+                }
+            })('att_zone', 'btnAtt');
+            },
    })
 </script>
 <style>
-.wrapper-slide {
-  position: relative;
-  width: 100%;
-  height: 600px;
-}
-
-.img-slide {
-  width: 100%;
-  height: 600px;
-  overflow: hidden;
-}
-
-.slideImg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 24px;
-  color: rgba(224, 217, 217, 0.986); /* 더 밝은 회색 */
-  cursor: pointer;
-  z-index: 100;
-}
-
-.left {
-  left: 20px;
-}
-
-.right {
-  right: 20px;
-}
-
-.fas.fa-chevron-left,
-.fas.fa-chevron-right {
-  font-size: 36px;
-}
 </style>
   
