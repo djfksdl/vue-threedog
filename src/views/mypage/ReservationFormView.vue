@@ -62,7 +62,7 @@
                     </div>
                     <div class="reservationBox">
                         <div class="petChoice">
-                            <span>반려견 선택</span> 
+                            <span>반려견 선택</span>
                             <label>마리</label><input type="radio" name="pet">
                             <label>보리</label><input type="radio" name="pet">
                         </div>
@@ -447,12 +447,11 @@ export default {
         getBList() {
             console.log("가게정보 가져오기");
             console.log(this.businessVo);
-            let bNo=this.businessVo.bNo;
             axios({
                 method: 'get',  //put,post,delete
                 url: `${this.$store.state.apiBaseUrl}/api/mypage/getbList`,
                 headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
-                params : {bNo:bNo},
+                // params: { bNo: this.businessVo.bNo },
                 responseType: 'json' //수신타입
 
             }).then(response => {

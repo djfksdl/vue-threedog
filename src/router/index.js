@@ -82,7 +82,7 @@ const routes = [
     component:MyDiaryView
   },
   {
-    path: '/reservationform/:bNo',
+    path: '/reservationform',
     name: 'reservationform',
     component:ReservationFormView
   },
