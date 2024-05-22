@@ -27,9 +27,10 @@
                     <h2>📅 날짜와 시간을 선택해주세요</h2>
                     <div class="choiceBox">
                         <div class="calendar">
-                            <DatePicker />
+                            <DatePicker/>
+                        
                         </div>
-                        <!-- <div class="time">
+                        <div class="time">
                             <p>오전</p>
                             <button type="button">10:00</button>
                             <button type="button">10:30</button>
@@ -44,7 +45,7 @@
                             <button type="button">16:30</button>
                             <button type="button">17:00</button>
 
-                        </div> -->
+                        </div>
                     </div>
                     <div class="reservationBox">
                         <div class="petChoice">
@@ -393,12 +394,14 @@ export default {
     },
     data() {
         return {
-            date: null,
-            selectedSize: '',
+            rsDate: "", //날짜
+            selectedSize: '',   //소중대 크기
             estimatedPrice: 0, // 예상 가격을 나타내는 데이터
+
         };
     },
     methods: {
+        // 예상가격
         addPrice(price) {
             this.estimatedPrice += price;
         },

@@ -418,8 +418,8 @@ datalist {
 }
 
 #reservationForm .choiceBox {
-    margin: 0 auto;
-    width: 500px;
+    /* margin: 0 auto; */
+    width: 1300px;
     display: flex;
     /* background-color: red; */
     justify-content: space-between;
