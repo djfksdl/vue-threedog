@@ -177,12 +177,11 @@
 .eMidContainer .eDesignerSlideContainer .eDesignerContentsBox .edRightBox #att_zone3.file-attached img {
     display: block; /* 이미지 보이기 */
 }
+
 /*============= 가격 + 후기 =============*/
 .eMidContainer .ePriceReviewContainer{
     display: flex;
     justify-content: space-between;
-    /* background-color: darkgoldenrod; */
-    /* width: 1700px; */
     margin: 0 auto 70px;
 }
 /* 가격 */
@@ -216,6 +215,14 @@
 }
 .eMidContainer .ePriceReviewContainer .ePriceBox table td{
     padding-left: 5px;
+}
+.eMidContainer .ePriceReviewContainer .ePriceBox table td input{
+    width: 100px;
+    line-height: 25px;
+    padding:  0 5px;
+}
+.eMidContainer .ePriceReviewContainer .ePriceBox table td:last-child input{
+    /* width: 150px; */
 }
 
 /* 후기 */

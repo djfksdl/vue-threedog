@@ -66,77 +66,7 @@
                     <!-- 가격 -->
                     <div class="ePriceBox">
                         <h1>가격</h1>
-                        <table border="1">
-                            <!-- 소형견 -->
-                            <tr>
-                                <th colspan="7" class="eNonBorder">소형견(말티즈, 요크셔, 시츄, 푸들 등...)</th>
-                            </tr>
-                            <tr>
-                                <th>몸무게</th>
-                                <th>목욕</th>
-                                <th>부분</th>
-                                <th>목욕+부분</th>
-                                <th>얼굴+부분+목욕</th>
-                                <th colspan="2">기본전체미용</th>
-                            </tr>
-                            <tr v-for="(price, index) in smallDogPrices" :key="index">
-                                <th>{{ price.weightDiv }}</th>
-                                <td><input type="text" v-model="price.목욕"></td>
-                                <td><input type="text" v-model="price.부분"></td>
-                                <td><input type="text" v-model="price.목욕_부분"></td>
-                                <td><input type="text" v-model="price.얼굴_부분_목욕"></td>
-                                <td colspan="2"><input type="text" v-model="price.기본전체미용"></td>
-                            </tr>
-                        
-                            <!-- 중형견 -->
-                            <tr>
-                                <th colspan="7" class="eNonBorder">중형견(슈나, 코카 등...)</th>
-                            </tr>
-                            <tr v-for="(price, index) in mediumDogPrices" :key="index">
-                                <th>{{ price.weightDiv }}</th>
-                                <td><input type="text" v-model="price.목욕"></td>
-                                <td><input type="text" v-model="price.부분"></td>
-                                <td><input type="text" v-model="price.목욕_부분"></td>
-                                <td><input type="text" v-model="price.얼굴_부분_목욕"></td>
-                                <td colspan="2"><input type="text" v-model="price.기본전체미용"></td>
-                            </tr>
-                            <!-- 특수견 -->
-                            <tr>
-                                <th colspan="7" class="eNonBorder">특수견(비숑. 베들링턴 등...)</th>
-                            </tr>
-                            <tr v-for="(price, index) in specialDogPrices" :key="index">
-                                <th>{{ price.weightDiv }}</th>
-                                <td><input type="text" v-model="price.목욕"></td>
-                                <td><input type="text" v-model="price.부분"></td>
-                                <td><input type="text" v-model="price.목욕_부분"></td>
-                                <td><input type="text" v-model="price.얼굴_부분_목욕"></td>
-                                <td><input type="text" v-model="price.스포팅"></td>
-                                <td><input type="text" v-model="price.가위컷"></td>
-                            </tr>
-                            <!-- 추가요금 -->
-                            <tr>
-                                <th colspan="7">&nbsp;</th>
-                            </tr>
-                            <tr>
-                                <th rowspan="4" class="eNonBorder2">추가요금</th>
-                                <th>가위컷</th>
-                                <td>25,000</td>
-                                <th>특수얼굴컷</th>
-                                <td colspan="3">5,000</td>
-                            </tr>
-                            <tr >
-                                <th>엉킴</th>
-                                <td>5,000</td>
-                                <th>투톤 염색</th>
-                                <td colspan="3">10,000</td>
-                            </tr>
-                            <tr>
-                                <th>기장</th>
-                                <td>5,000</td>
-                                <th>염색</th>
-                                <td colspan="3">5,000</td>
-                            </tr>
-                        </table>
+                        <PriceTable/>
                     </div>
                     <!-- 후기 -->
                     <div class="eReviewBox">
@@ -264,61 +194,26 @@ import { defineComponent } from "vue";
    import ManagerFooter from "@/components/ManagerFooter.vue"
    import ManagerHeader from "@/components/ManagerHeader.vue"
    import TopButton from "@/components/TopButton.vue"
-   import axios from 'axios';
-   
+   import PriceTable from "@/components/PriceTable.vue"
+  
    export default defineComponent({
        name: "EditView",
        components: {
             ManagerFooter,
             ManagerHeader,
-            TopButton
+            TopButton,
+            PriceTable
        },
        data() {
-        return{
-            priceList:[]
-        }
+           
        },
-       computed: {
-        // 가격표 필터링
-            smallDogPrices() {
-                return this.priceList.filter(price => price.sizeDiv === '소형견');
-            },
-            mediumDogPrices() {
-                return this.priceList.filter(price => price.sizeDiv === '중형견');
-            },
-            specialDogPrices() {
-                return this.priceList.filter(price => price.sizeDiv === '특수견');
-            }
+       setup() {
+
         },
-    
-        
        methods: {
-
-        //가격표 불러오기
-        getPrice(){
-            // console.log("값 가져오기");
-            axios({
-                method: 'get', // put, post, delete 
-                url: `${this.$store.state.apiBaseUrl}/api/su/firstprice`,
-                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
-                // params: {uId: this.userVo.uId}, //get방식 파라미터로 값이 전달
-                // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
-                responseType: 'json' //수신타입
-            }).then(response => {
-                console.log(response.data.apiData); //수신데이타
-
-                this.priceList = response.data.apiData;
-
-                
-            }).catch(error => {
-                console.log(error);
-            });
-        }
+        
   
        },
-       created(){
-            this.getPrice();
-        },
        mounted() {
 
             // ==========이미지 슬라이드 5개 첨부파일==========
@@ -605,8 +500,6 @@ import { defineComponent } from "vue";
                 }
             })('att_zone3', 'btnAtt3');
             },
-        
-            
    })
 </script>
 <style>
