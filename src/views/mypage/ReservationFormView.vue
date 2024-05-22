@@ -21,7 +21,7 @@
                             <label>장소</label>
                             <p>{{ businessVo.bAddress }} {{ businessVo.bdAddress }}</p>
                             <label>평균별점</label>
-                            <p>⭐⭐⭐⭐⭐ {{ businessVo.averageStar }}</p>
+                            <p>⭐⭐⭐⭐⭐ {{ businessVo.averageStar }}</p> 
                         </div>
                     </div>
 
@@ -31,9 +31,7 @@
                     <div class="choiceBox">
                         <div class="calendar">
                             <Datepicker />
-
                         </div>
-                        {{ this.reserveVo.rsDate }}
                         <div class="time">
                             <p>오전</p>
                             <button type="button" :class="{ selected: reserveVo.rsTime === '10:00' }"
@@ -471,6 +469,8 @@ export default {
         addPrice(price) {
             this.estimatedPrice += price;
         },
+
+
         // 시간선택
         toggleTime(time) {
             console.log(time);
