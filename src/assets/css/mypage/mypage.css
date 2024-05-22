@@ -382,7 +382,6 @@ datalist {
 }
 
 #reservationForm .managerInfor {
-    display: flex;
     padding: 15px;
     border: 1px solid #a7a4a4;
     border-radius: 10px;
@@ -391,19 +390,18 @@ datalist {
 }
 
 #reservationForm .managerInfor .managerInfor2 {
-    margin-left: 50px;
-    border-left: 1px dotted #a7a4a4;
-    padding: 10px 0 0 40px;
-}
+    display: flex;
 
-#reservationForm .managerInfor .managerInfor2 p {
-    margin: 5px 0 5px 3px;
 }
-
+#reservationForm .managerInfor .managerInfor3{
+    margin: 10px 0 0 60px;
+}
+#reservationForm .managerInfor .managerInfor3 p{
+    padding-bottom: 10px;
+}
 #reservationForm .managerInfor .managerInfor2 label {
     color: #236C3F;
     font-weight: bold;
-    padding: 3px;
 }
 #reservationForm .h2Box1 h2 {
     font-size: 25px;

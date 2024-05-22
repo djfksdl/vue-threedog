@@ -8,20 +8,23 @@
                     <h2>가게정보</h2>
                 </div>
                 <div class="managerInfor">
-                    <div class="managerInfor2" v-bind:key="i" v-for="(businessVo, i) in businessList">
+                    <div class="managerInfor2">
                         <div>
-                            <img :src="businessVo.saveName"
-                                style="margin-left:30px; width: 200px;height: 200px; border-radius: 5%;">
+                            <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${businessVo.logo}`"
+                                style="margin-left:30px; width: 220px;height: 220px; border-radius: 5%;">
                         </div>
-                        <label>매장명</label>
-                        <p>{{ businessVo.title }}</p>
-                        <label>전화번호</label>
-                        <p>{{ businessVo.bPhone }}</p>
-                        <label>장소</label>
-                        <p>{{ businessVo.bAddress }} {{ businessVo.bdAddress }}</p>
-                        <label>평균별점</label>
-                        <p>⭐⭐⭐⭐⭐ {{ businessVo.averageStar }}</p>
+                        <div class="managerInfor3">
+                            <label>매장명</label>
+                            <p>{{ businessVo.title }}</p>
+                            <label>전화번호</label>
+                            <p>{{ businessVo.bPhone }}</p>
+                            <label>장소</label>
+                            <p>{{ businessVo.bAddress }} {{ businessVo.bdAddress }}</p>
+                            <label>평균별점</label>
+                            <p>⭐⭐⭐⭐⭐ {{ businessVo.averageStar }}</p>
+                        </div>
                     </div>
+
                 </div>
                 <form>
                     <h2>📅 날짜와 시간을 선택해주세요</h2>
@@ -428,7 +431,6 @@ export default {
                 message: "",
                 curruntWeight: 0,
             },
-            businessList: [],
             businessVo: {
                 saveName: "",
                 bNo: 1,
@@ -437,31 +439,32 @@ export default {
                 bAddress: "",
                 bdAddress: "",
                 averageStar: 0.0,
-
             },
         };
     },
+
     methods: {
 
         //가게정보
         getBList() {
             console.log("가게정보 가져오기");
             console.log(this.businessVo);
+            let bNo = this.businessVo.bNo;
             axios({
                 method: 'get',  //put,post,delete
                 url: `${this.$store.state.apiBaseUrl}/api/mypage/getbList`,
                 headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
-                // params: { bNo: this.businessVo.bNo },
+                params: { bNo: bNo },
                 responseType: 'json' //수신타입
-
             }).then(response => {
+                console.log("성공");
                 console.log(response.data.apiData); //수신데이타
-                this.businessList = response.data.apiData;
+                this.businessVo = response.data.apiData;
 
+                console.log(this.businessList);
             }).catch(error => {
                 console.log(error);
             });
-
         },
 
         // 예상가격
@@ -491,5 +494,39 @@ export default {
 #reservationForm .selected {
     background-color: #236C3F !important;
     color: #ffffff !important;
+}
+
+.dp__theme_light {
+    /* --dp-menu-border-color: #a7a4a4; */
+    --dp-menu-border-color:none;
+    --dp-primary-color: #236C3F;
+    
+    --dp-cell-border-radius: 50%;
+}
+
+.dp__instance_calendar {
+    width: 500px;
+    font-size: 20px;
+    padding: 10px;
+}
+
+/* select Button */
+/* .dp__action_buttons {
+    visibility: hidden;
+} */
+
+.dp__calendar_item {
+    padding: 10px;
+}
+.dp__button{
+    /* background-color: #236C3F; */
+    width: 500px;
+    height: 80px;
+}
+.dp__calendar_header_item{
+    margin: 20px 0 20px 0;
+}
+:root{
+    --dp-cell-size: 46px;
 }
 </style>
