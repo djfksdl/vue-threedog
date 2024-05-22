@@ -118,7 +118,7 @@ function startCarousel() {
   rtcarousel = setInterval(() => {
     viewcount.value = (viewcount.value + 1) % 5;
     view(viewcount.value);
-  }, 2500); // 여기서 3000 밀리초로 변경하여 전환 속도를 조절
+  }, 2000); // 여기서 3000 밀리초로 변경하여 전환 속도를 조절
 }
 
 // Carousel 정지

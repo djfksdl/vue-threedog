@@ -16,10 +16,10 @@
           style="width: 1370px; height: 494px; margin-left: 20px;">
           <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
         </KakaoMap>
-        <DatePicker02/>
+        <DatePicker02 />
       </div>
 
-      <h2>{{ location }} 근처 가게 검색 결과 ▼・ᴥ・▼</h2>
+      <h2 class="result-h2">{{ location }} 근처 가게 검색 결과 ▼・ᴥ・▼<span class="view-count">{{ searchQuery ? '가까운 순' : '별점순' }}</span></h2>
       <hr>
       <div class="rank">
         <div class="rank-item">
@@ -144,5 +144,13 @@ export default {
     TopButton,
     DatePicker02
   },
+  data() {
+
+  },
+  methods: {
+
+  },
+  created() {
+  }
 };
 </script>
