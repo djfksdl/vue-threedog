@@ -1,10 +1,7 @@
 <template>
     <div>
         <Datepicker locale="ko" v-model="date" :inline="true" :selectable="true" :showToolbar="false"
-            :displayMode="'mdy'" />
-        <!-- 옵션 시간 안보이게하기
-            :enable-time-picker="false"
-            -->
+            :displayMode="'mdy'" :enable-time-picker="false"/>
     </div>
 </template>
 
