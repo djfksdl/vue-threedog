@@ -8,48 +8,61 @@
                     <h2>가게정보</h2>
                 </div>
                 <div class="managerInfor">
-                    <div>
-                        <img src="@/assets/images/profile.jpg"
-                            style="margin-left:30px; width: 200px;height: 200px; border-radius: 5%;">
-                    </div>
-                    <div class="managerInfor2">
+                    <div class="managerInfor2" v-bind:key="i" v-for="(businessVo, i) in businessList">
+                        <div>
+                            <img :src="businessVo.saveName"
+                                style="margin-left:30px; width: 200px;height: 200px; border-radius: 5%;">
+                        </div>
                         <label>매장명</label>
-                        <p>하이미디어</p>
+                        <p>{{ businessVo.title }}</p>
                         <label>전화번호</label>
-                        <p>02-1111-1111</p>
+                        <p>{{ businessVo.bPhone }}</p>
                         <label>장소</label>
-                        <p>서울특별시 마포구</p>
+                        <p>{{ businessVo.bAddress }} {{ businessVo.bdAddress }}</p>
                         <label>평균별점</label>
-                        <p>⭐⭐⭐⭐⭐ 5.0</p>
+                        <p>⭐⭐⭐⭐⭐ {{ businessVo.averageStar }}</p>
                     </div>
                 </div>
                 <form>
                     <h2>📅 날짜와 시간을 선택해주세요</h2>
                     <div class="choiceBox">
                         <div class="calendar">
-                            <DatePicker/>
-                        
-                        </div>
-                        <div class="time">
-                            <p>오전</p>
-                            <button type="button">10:00</button>
-                            <button type="button">10:30</button>
-                            <button type="button">11:00</button>
-                            <button type="button">11:30</button>
-                            <p>오후</p>
-                            <button type="button">14:00</button>
-                            <button type="button">14:30</button>
-                            <button type="button">15:00</button>
-                            <button type="button">15:30</button>
-                            <button type="button">16:00</button>
-                            <button type="button">16:30</button>
-                            <button type="button">17:00</button>
+                            <Datepicker />
 
                         </div>
+                        {{ this.reserveVo.rsDate }}
+                        <div class="time">
+                            <p>오전</p>
+                            <button type="button" :class="{ selected: reserveVo.rsTime === '10:00' }"
+                                @click="toggleTime('10:00')">10:00</button>
+                            <button type="button" :class="{ selected: reserveVo.rsTime === '10:30' }"
+                                @click="toggleTime('10:30')">10:30</button>
+                            <button type="button" :class="{ selected: reserveVo.rsTime === '11:00' }"
+                                @click="toggleTime('11:00')">11:00</button>
+                            <button type="button" :class="{ selected: reserveVo.rsTime === '11:30' }"
+                                @click="toggleTime('11:30')">11:30</button>
+                            <p>오후</p>
+                            <button type="button" :class="{ selected: reserveVo.rsTime === '14:00' }"
+                                @click="toggleTime('14:00')">14:00</button>
+                            <button type="button" :class="{ selected: reserveVo.rsTime === '14:30' }"
+                                @click="toggleTime('14:30')">14:30</button>
+                            <button type="button" :class="{ selected: reserveVo.rsTime === '15:00' }"
+                                @click="toggleTime('15:00')">15:00</button>
+                            <button type="button" :class="{ selected: reserveVo.rsTime === '15:30' }"
+                                @click="toggleTime('15:30')">15:30</button>
+                            <button type="button" :class="{ selected: reserveVo.rsTime === '16:00' }"
+                                @click="toggleTime('16:00')">16:00</button>
+                            <button type="button" :class="{ selected: reserveVo.rsTime === '16:30' }"
+                                @click="toggleTime('16:30')">16:30</button>
+                            <button type="button" :class="{ selected: reserveVo.rsTime === '17:00' }"
+                                @click="toggleTime('17:00')">17:00</button>
+                        </div>
+                        <!-- {{ this.reserveVo.rsTime }} -->
+                        <!-- v-bind:key="i" v-for="(reserveVo, i) in reserveList" -->
                     </div>
                     <div class="reservationBox">
                         <div class="petChoice">
-                            <span>반려견 선택</span>
+                            <span>반려견 선택</span> 
                             <label>마리</label><input type="radio" name="pet">
                             <label>보리</label><input type="radio" name="pet">
                         </div>
@@ -372,9 +385,11 @@
 import AppFooter from "@/components/AppFooter.vue"
 import AppHeader from "@/components/AppHeader.vue"
 
+import axios from "axios"
+
 import '@/assets/css/mypage/mypage.css'
 import SideBar from '@/components/SideBar.vue'
-import DatePicker from '@/components/DatePicker.vue'
+import Datepicker from '@/components/DatePicker.vue'
 import TopButton from "@/components/TopButton.vue"
 import SignaturePad from "@/components/SignaturePad.vue"
 
@@ -386,7 +401,7 @@ export default {
     components: {
         AppHeader,
         AppFooter,
-        DatePicker,
+        Datepicker,
         SideBar,
         TopButton,
         SignaturePad,
@@ -394,17 +409,88 @@ export default {
     },
     data() {
         return {
-            rsDate: "", //날짜
             selectedSize: '',   //소중대 크기
-            estimatedPrice: 0, // 예상 가격을 나타내는 데이터
+            reserveList: [],
+            reserveVo: {
+                rsNo: 0,
+                bNo: 0,
+                dogNo: 0,
+                rsDate: "",
+                rsTime: null,
+                singImg: "",
+                expectedPrice: 0,
+                attitude: "",
+                rContdition: "",
+                tangle: "",
+                disliked: "",
+                bath: "",
+                surcharge: 0,
+                message: "",
+                curruntWeight: 0,
+            },
+            businessList: [],
+            businessVo: {
+                saveName: "",
+                bNo: 1,
+                title: "",
+                bPhone: "",
+                bAddress: "",
+                bdAddress: "",
+                averageStar: 0.0,
 
+            },
         };
     },
     methods: {
+
+        //가게정보
+        getBList() {
+            console.log("가게정보 가져오기");
+            console.log(this.businessVo);
+            let bNo=this.businessVo.bNo;
+            axios({
+                method: 'get',  //put,post,delete
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/getbList`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params : {bNo:bNo},
+                responseType: 'json' //수신타입
+
+            }).then(response => {
+                console.log(response.data.apiData); //수신데이타
+                this.businessList = response.data.apiData;
+
+            }).catch(error => {
+                console.log(error);
+            });
+
+        },
+
         // 예상가격
         addPrice(price) {
             this.estimatedPrice += price;
         },
+        // 시간선택
+        toggleTime(time) {
+            console.log(time);
+            if (this.reserveVo.rsTime == time) {
+                // 이미 선택된 시간을 클릭한 경우 선택 해제
+                this.reserveVo.rsTime = null;
+            } else {
+                // 클릭한 시간을 선택
+                this.reserveVo.rsTime = time;
+            }
+        },
     },
+
+    created() {
+        this.getBList();
+    }
 };
 </script>
+
+<style>
+#reservationForm .selected {
+    background-color: #236C3F !important;
+    color: #ffffff !important;
+}
+</style>
