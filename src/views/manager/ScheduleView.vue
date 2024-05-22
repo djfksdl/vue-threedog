@@ -3,8 +3,9 @@
         <ManagerHeader /> <!-- 매니저 헤더 컴포넌트 -->
 
         <div class="calendar-container">
-            <FullCalendar :options="calendarOptions" id="calendar" />
+            <FullCalendar ref="calendar" :options="calendarOptions" id="calendar" />
         </div>
+
 
         <ManagerFooter /> <!-- 매니저 푸터 컴포넌트 -->
         <!-- 일정 모달 -->
@@ -99,13 +100,13 @@ export default {
         },
         updateCalendarEvents() {
             const events = this.reservations.map(reservation => ({
-                title: `${reservation.dogName},  ${reservation.groomingStyle}, ,${reservation.expectedPrice}원`,
+                title: `${reservation.dogName},  ${reservation.beauty}, ,${reservation.expectedPrice}원`,
                 start: reservation.rsDate,
                 end: reservation.endDate,
                 extendedProps: {
                     dogName: reservation.dogName,
                     kind: reservation.kind,
-                    groomingStyle: reservation.groomingStyle,
+                    groomingStyle: reservation.beauty,
                     expectedPrice: reservation.expectedPrice
                 }
             }));
