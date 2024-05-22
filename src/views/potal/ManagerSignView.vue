@@ -53,10 +53,6 @@
                         <div class="form-group-man" style="margin-bottom: 10px;">
                             <input type="text" v-model="detailAddress" placeholder="상세 주소">
                         </div>
-
-                        <div id="google_recaptha">
-                            <div class="g-recaptcha" data-sitekey="6LfZqNspAAAAAAze3c3G_KHi67Z2gKiF0WM58CG4"></div>
-                        </div>
                         <div class="duplicateModal" v-if="showModal">
                             <div class="msignup-modal-content">
                                 <span><strong>아이디</strong> 중복 체크해 주세요</span>
@@ -68,6 +64,10 @@
                                 <span><strong>사업자등록번호</strong> 인증해 주세요</span>
                                 <button @click="closeDuplicateModal">확인</button>
                             </div>
+                        </div>
+
+                        <div id="google_recaptha">
+                            <div class="g-recaptcha" data-sitekey="6LfZqNspAAAAAAze3c3G_KHi67Z2gKiF0WM58CG4"></div>
                         </div>
 
                         <button type="submit" class="msignupBtn">회원가입</button>
@@ -240,5 +240,25 @@ const checkBusinessNumber = () => {
 const closeDuplicateModal = () => {
     showModal.value = false;
     showModal02.value = false;
+};
+</script>
+
+<script>
+export default {
+    name: "ManagerSignView",
+    components: {
+    },
+    data() {
+        return {
+        };
+    },
+    methods: {
+    },
+    mounted() {
+        const script = document.createElement('script');
+        script.src = 'https://www.google.com/recaptcha/api.js';
+        script.async = true;
+        document.getElementById('google_recaptha').appendChild(script);
+    }
 };
 </script>

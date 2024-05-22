@@ -59,8 +59,8 @@ import DatePicker02 from '@/components/DatePicker02.vue';
 const route = useRoute();
 
 const coordinate = ref({
-  lat: 37.498085,
-  lng: 127.027978
+  lat: 37.5535,
+  lng: 126.9715
 });
 
 const searchQuery = ref('');

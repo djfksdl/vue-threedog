@@ -1,6 +1,7 @@
 <template>
     <div>
       <Datepicker
+        class="a"
         locale="ko"
         v-model="date"
         :inline="true"
