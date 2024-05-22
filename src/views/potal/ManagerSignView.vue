@@ -53,10 +53,6 @@
                         <div class="form-group-man" style="margin-bottom: 10px;">
                             <input type="text" v-model="detailAddress" placeholder="상세 주소">
                         </div>
-
-                        <div id="google_recaptha">
-                            <div class="g-recaptcha" data-sitekey="6LfZqNspAAAAAAze3c3G_KHi67Z2gKiF0WM58CG4"></div>
-                        </div>
                         <div class="duplicateModal" v-if="showModal">
                             <div class="msignup-modal-content">
                                 <span><strong>아이디</strong> 중복 체크해 주세요</span>
@@ -68,6 +64,10 @@
                                 <span><strong>사업자등록번호</strong> 인증해 주세요</span>
                                 <button @click="closeDuplicateModal">확인</button>
                             </div>
+                        </div>
+
+                        <div id="google_recaptha">
+                            <div class="g-recaptcha" data-sitekey="6LfZqNspAAAAAAze3c3G_KHi67Z2gKiF0WM58CG4"></div>
                         </div>
 
                         <button type="submit" class="msignupBtn">회원가입</button>
@@ -87,132 +87,172 @@
     </div><!-- wrap -->
 </template>
 
-<script>
-import "@/assets/css/potal/msignup.css";
+<script setup>
+import "@/assets/css/potal/msignup.css"
+import { ref } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 import axios from 'axios';
 
+// State variables
+let id = ref('');
+let password = ref('');
+let confirmPassword = ref('');
+let businessNumber = ref('');
+let bPhone = ref('');
+let zonecode = ref('');
+let roadAddress = ref('');
+let detailAddress = ref('');
+let showModal = ref(false);
+let showModal02 = ref(false);
+let isDuplicate = ref(null);
+let isPasswordMatch = ref(true);
+let isPasswordValid = ref(false);
+let businessCheckMessage = ref('');
+let businessCheckClass = ref('');
+let latitude = ref(0);
+let longitude = ref(0);
+
+// Store and router instances
+const store = useStore();
+const router = useRouter();
+
+const handleSubmit = async () => {
+    console.log("회원가입");
+
+    if (isDuplicate.value === true || isDuplicate.value === null) {
+        showModal.value = true;
+    } else {
+        if (businessCheckClass.value === "success-message") {
+            const formData = new FormData();
+            formData.append("bId", id.value);
+            formData.append("bPw", password.value);
+            formData.append("bNum", businessNumber.value);
+            formData.append("bZipCode", zonecode.value);
+            formData.append("bAddress", roadAddress.value);
+            formData.append("bdAddress", detailAddress.value);
+            formData.append("bPhone", bPhone.value);
+            formData.append("latitude", latitude.value); // 위도 추가
+            formData.append("longitude", longitude.value); // 경도 추가
+
+            console.log("=======================");
+            console.log(longitude.value);
+
+            try {
+                const response = await axios.post(`${store.state.apiBaseUrl}/api/msignup`, formData, {
+                    headers: { "Content-Type": "multipart/form-data" }
+                });
+                console.log(response.data);
+                // 회원가입 성공 후 어떤 작업을 수행할지 여기에 작성
+                router.push('/mlogin');
+            } catch (error) {
+                console.error(error);
+            }
+        } else {
+            showModal02.value = true;
+        }
+    }
+};
+
+const openPostcode = () => {
+    new window.daum.Postcode({
+        oncomplete: (data) => {
+            zonecode.value = data.zonecode;
+            roadAddress.value = data.roadAddress;
+
+            // Call geocoding API to get latitude and longitude
+            getLatLng(data.roadAddress);
+        },
+    }).open();
+};
+
+const getLatLng = async (address) => {
+    const apiKey = 'AIzaSyATg5pwEAERPpd2GkNHQrtLvK1pKYZlDEk';
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
+
+    try {
+        const response = await axios.get(url);
+        if (response.data.status === 'OK') {
+            const location = response.data.results[0].geometry.location;
+            latitude.value = location.lat;
+            longitude.value = location.lng;
+            console.log(`Latitude: ${latitude.value}, Longitude: ${longitude.value}`);
+        } else {
+            console.error('Geocoding API error: ', response.data.status);
+        }
+    } catch (error) {
+        console.error('Error fetching geocoding data: ', error);
+    }
+};
+
+const checkDuplicate = () => {
+    axios.get(`${store.state.apiBaseUrl}/api/msignup/id`, {
+        params: { id: id.value }
+    })
+        .then(response => {
+            console.log(response.data);
+            isDuplicate.value = response.data.apiData === 1;
+        })
+        .catch(error => {
+            console.error(error);
+        });
+};
+
+const checkPasswordMatch = () => {
+    isPasswordMatch.value = password.value === confirmPassword.value;
+    isPasswordValid.value = isPasswordMatch.value;
+};
+
+const checkBusinessNumber = () => {
+    const data = { b_no: [businessNumber.value] };
+    axios.post('https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=kLwu8It5iiIWVEWui%2FFpNx7qI2XcPU6H6lfgnHJ1RGVI0nNAR9yfRk7eWA8m9ncjMV%2FSeJ2g36xCarutBsixGw%3D%3D', data, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer YWFzc2RkMjM2QG5hdmVyLmNvbSAg'
+        }
+    })
+        .then(response => {
+            console.log('Response:', response.data);
+            if (response.data && response.data.data && response.data.data.length > 0) {
+                const valid = response.data.data[0].b_stt_cd;
+                if (valid === '01') {
+                    businessCheckMessage.value = "사업자등록번호 확인";
+                    businessCheckClass.value = "success-message";
+                } else {
+                    businessCheckMessage.value = "사업자등록번호 확인 불가능";
+                    businessCheckClass.value = "error-message";
+                    showModal02.value = true;
+                }
+            } else {
+                businessCheckMessage.value = "올바른 번호를 입력해 주세요.";
+                businessCheckClass.value = "error-message";
+                showModal02.value = true;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            businessCheckMessage.value = "올바른 번호를 입력해 주세요.";
+            businessCheckClass.value = "error-message";
+            showModal02.value = true;
+        });
+};
+
+const closeDuplicateModal = () => {
+    showModal.value = false;
+    showModal02.value = false;
+};
+</script>
+
+<script>
 export default {
     name: "ManagerSignView",
+    components: {
+    },
     data() {
         return {
-            showVerificationInput: false, // 인증번호 입력 상자 보이기 여부
-            isDuplicate: null, // 아이디 중복 여부
-            password: "", // 비밀번호
-            confirmPassword: "", // 비밀번호 확인 값
-            isPasswordMatch: true, // 비밀번호 일치 여부
-            isPasswordValid: false, // 사용 가능한 비밀번호 여부
-            zonecode: "",
-            roadAddress: "",
-            detailAddress: "",
-            businessNumber: "", // 사업자등록번호
-            businessCheckMessage: "", // 사업자등록번호 확인 메시지,
-            showModal: false,
-            showModal02: false,
         };
     },
     methods: {
-        handleSubmit() {
-            console.log("회원가입");
-
-            if (this.isDuplicate == true || this.isDuplicate == null) {
-                this.showModal = true;
-            } else {
-                if (this.businessCheckClass === "success-message") {
-                    const formData = new FormData();
-                    formData.append("bId", this.id);
-                    formData.append("bPw", this.password);
-                    formData.append("bNum", this.businessNumber);
-                    formData.append("bZipCode", this.zonecode);
-                    formData.append("bAddress", this.roadAddress);
-                    formData.append("bdAddress", this.detailAddress);
-                    formData.append("bPhone", this.bPhone);
-
-                    axios({
-                        method: 'post', // put, post, delete 
-                        url: `${this.$store.state.apiBaseUrl}/api/msignup`,
-                        headers: { "Content-Type": "multipart/form-data" },
-                        data: formData, // put, post, delete 방식 자동으로 JSON으로 변환 전달
-                        responseType: 'json' // 수신타입
-                    }).then(response => {
-                        console.log(response.data);
-                        this.$router.push('/mlogin');
-
-                    }).catch(error => {
-                        console.log(error);
-                    });
-                } else {
-                    this.showModal02 = true;
-                }
-            }
-        },
-        async checkDuplicate() {
-            axios({
-                method: 'get', // put, post, delete 
-                url: `${this.$store.state.apiBaseUrl}/api/msignup/id`,
-                headers: { "Content-Type": "multipart/form-data" },
-                params: {
-                    id: this.id
-                },
-            }).then(response => {
-                console.log(response.data);
-                if (response.data.apiData == 1) {
-                    this.isDuplicate = true;
-                } else {
-                    this.isDuplicate = false;
-                }
-            }).catch(error => {
-                console.log(error);
-            });
-        },
-        checkPasswordMatch() {
-            this.isPasswordMatch = this.password === this.confirmPassword;
-            this.isPasswordValid = this.isPasswordMatch;
-        },
-        openPostcode() {
-            new window.daum.Postcode({
-                oncomplete: (data) => {
-                    this.zonecode = data.zonecode;
-                    this.roadAddress = data.roadAddress;
-                },
-            }).open();
-        },
-        checkBusinessNumber() {
-            const data = { b_no: [this.businessNumber] };
-            axios.post('https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=kLwu8It5iiIWVEWui%2FFpNx7qI2XcPU6H6lfgnHJ1RGVI0nNAR9yfRk7eWA8m9ncjMV%2FSeJ2g36xCarutBsixGw%3D%3D', data, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer YWFzc2RkMjM2QG5hdmVyLmNvbSAg'
-                }
-            })
-                .then(response => {
-                    console.log('Response:', response.data);
-                    if (response.data && response.data.data && response.data.data.length > 0) {
-                        const valid = response.data.data[0].b_stt_cd;
-                        if (valid === '01') {
-                            this.businessCheckMessage = "사업자등록번호 확인";
-                            this.businessCheckClass = "success-message";
-                        } else {
-                            this.businessCheckMessage = "사업자등록번호 확인 불가능";
-                            this.businessCheckClass = "error-message";
-                            this.showBusinessNumberModal = true;
-                        }
-                    } else {
-                        this.businessCheckMessage = "올바른 번호를 입력해 주세요.";
-                        this.businessCheckClass = "error-message";
-                        this.showBusinessNumberModal = true;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    this.businessCheckMessage = "올바른 번호를 입력해 주세요.";
-                    this.businessCheckClass = "error-message";
-                    this.showBusinessNumberModal = true;
-                });
-        },
-        closeDuplicateModal() {
-            this.showModal = false;
-            this.showModal02 = false;
-        },
     },
     mounted() {
         const script = document.createElement('script');
@@ -220,5 +260,5 @@ export default {
         script.async = true;
         document.getElementById('google_recaptha').appendChild(script);
     }
-}
+};
 </script>

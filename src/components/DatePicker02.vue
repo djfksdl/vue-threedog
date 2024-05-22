@@ -1,6 +1,7 @@
 <template>
     <div>
       <Datepicker
+        class="a"
         locale="ko"
         v-model="date"
         :inline="true"
@@ -9,6 +10,7 @@
         :enable-time-picker="false"
         :show-selected-date="false"
         :show-previous-month="false"
+        :min-date="minDate"
         :year-range="[new Date().getFullYear(), new Date().getFullYear()]"
       />
     </div>
@@ -20,6 +22,8 @@
   import '@vuepic/vue-datepicker/dist/main.css';
   
   const date = ref();
+
+  const minDate = ref(new Date());
   </script>
   
   <script>

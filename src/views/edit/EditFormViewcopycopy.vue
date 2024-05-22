@@ -1,5 +1,4 @@
 <template>
-    <!-- 첨부파일 2개 완료! -->
     <div id="wrap">
         <ManagerHeader />
           <div class="container3">
@@ -16,20 +15,24 @@
                 <div class="eSlideImgContainer">
                     <h1>슬라이드 사진등록</h1>
                     <div class="eSlideImgInfo">
-                        <input id="btnAtt" type="file" multiple='multiple' class="eFileAddBtn" >
+                        <input id="btnAtt1" type="file" multiple="multiple" class="eFileAddBtn" @change="handleFileChange($event, 'att_zone1')" >
                         <p>*사진은 최대 5장까지 첨부할 수 있습니다.</p>
                     </div>
-                    <div id='att_zone' class="addImgBox" data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
+                    <div id="att_zone1" class="addImgBox" 
+                        @dragover.prevent @dragenter.prevent @drop.prevent="handleDrop($event, 'att_zone1')" 
+                        data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
                 </div>
 
                 <!-- 미용사진 슬라이드 첨부파일 -->
                 <div class="eCutImgContainer">
                     <h1>미용사진 등록</h1>
                     <div class="eCutSlideImgInfo">
-                        <input id="btnAtt2" type="file" multiple='multiple' class="eCutFileAddBtn" >
+                        <input id="btnAtt2" type="file" multiple='multiple' class="eCutFileAddBtn"  @change="handleFileChange($event, 'att_zone2')" >
                         <p>*사진은 최대 20장까지 첨부할 수 있습니다.</p>
                     </div>
-                    <div id='att_zone2' class="addcImgBox" data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
+                    <div id='att_zone2' class="addcImgBox" 
+                        @dragover.prevent @dragenter.prevent @drop.prevent="handleDrop($event, 'att_zone2')" 
+                        data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
                 </div>
 
                 <!-- 디자이너 소개 -->
@@ -55,8 +58,14 @@
                         </div>
                         <!-- 디자이너소개 오른쪽 -->
                         <div class="edRightBox">
-                            <div id='att_zone3' class="addDImgBox" data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
-                            <input id="btnAtt3" type="file" class="eFileAddBtn">
+                            <div class="eDesignerImgInfo">
+                                <input id="btnAtt3" type="file"  class="eDesignerFileAddBtn" @change="handleFileChange($event, 'att_zone3')" >
+                                <!-- <p>*사진은 최대 3장까지 첨부할 수 있습니다.</p> -->
+                            </div>
+                            <!--  @dragover.prevent @dragenter.prevent 추가하면 브라우저 기본동작 막음 -->
+                            <div id="att_zone3" class="addDesignerImgBox" 
+                                @dragover.prevent @dragenter.prevent @drop="handleDrop($event, 'att_zone3')" 
+                                data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
                         </div>
                     </div>
                 </div>
@@ -333,10 +342,99 @@
 import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
 import { defineComponent } from "vue";
 
-    const coordinate = {
-        lat: 37.498085,
-        lng: 127.027978
-    };
+const coordinate = {
+    lat: 37.498085,
+    lng: 127.027978
+};
+
+// 파일 선택 버튼을 통해 파일을 선택했을 때
+const handleFileChange = (event, targetId) => {
+    const files = event.target.files;
+    const attZone = document.getElementById(targetId);
+    processFiles(files, attZone, targetId);
+};
+
+// 파일을 드롭했을 때
+const handleDrop = (event, targetId) => {
+    const files = event.dataTransfer.files;
+    const attZone = document.getElementById(targetId);
+    const filePromises = Array.from(files).map(file => new Promise(resolve => {
+        const fileReader = new FileReader();
+        fileReader.onload = (e) => {
+            resolve({ src: e.target.result, name: file.name });
+        };
+        fileReader.readAsDataURL(file);
+    }));
+    Promise.all(filePromises).then(filePaths => {
+        processFiles(filePaths, attZone, targetId);
+    }).catch(error => {
+        console.error("Error while processing files:", error);
+    });
+};
+
+// 파일을 읽고 미리보기를 생성
+const processFiles = (files, attZone, targetId) => {
+    // 기존 파일 유지
+    const existingFiles = Array.from(attZone.children).map(child => ({
+        src: child.querySelector('img').src,
+        name: child.querySelector('img').title
+    }));
+
+    const newFiles = Array.from(files).map(file => new Promise(resolve => {
+        const fileReader = new FileReader();
+        fileReader.onload = (e) => {
+            resolve({ src: e.target.result, name: file.name });
+        };
+        fileReader.readAsDataURL(file);
+    }));
+
+    // 등록갯수 설정
+    // let maxFiles = 1;
+    // if (targetId === 'att_zone1') {
+    //     maxFiles = 5;
+    // } else if (targetId === 'att_zone2') {
+    //     maxFiles = 20;
+    // }
+
+    //미리보기 스타일
+    Promise.all(newFiles).then(newFileData => {
+        const allFiles = existingFiles.concat(newFileData).slice(0, targetId === 'att_zone1' ? 5 : targetId === 'att_zone2' ? 20 : 3);
+        attZone.innerHTML = ''; // Clear the zone
+
+        allFiles.forEach(fileData => {
+            const div = document.createElement('div');
+            div.className = 'thumb';
+            let divStyle, imgStyle, chkStyle;
+
+            if (targetId === 'att_zone2') {
+                divStyle = 'display:inline-block;position:relative;width:200px;height:200px;margin:5px;border:1px solid #a7a4a4;z-index:1';
+                imgStyle = 'width:100%;height:100%;z-index:none;object-fit:contain';
+                chkStyle = 'width:30px;height:30px;position:absolute;font-size:18px;right:0px;background-color:rgba(255,255,255,0.1);color:#a7a4a4;border:none;font-weight:bold';
+            } else if (targetId === 'att_zone3') {
+                divStyle = 'display:inline-block;position:relative;width:400px;height:400px;margin:5px;border:1px solid #a7a4a4;z-index:1';
+                imgStyle = 'width:100%;height:100%;z-index:none;object-fit:contain';
+                chkStyle = 'width:30px;height:30px;position:absolute;font-size:18px;right:0px;background-color:rgba(255,255,255,0.1);color:#a7a4a4;border:none;font-weight:bold';
+            } else {
+                divStyle = 'display:inline-block;position:relative;width:280px;height:200px;margin:5px;border:1px solid #a7a4a4;z-index:1';
+                imgStyle = 'width:100%;height:100%;z-index:none;object-fit:contain';
+                chkStyle = 'width:30px;height:30px;position:absolute;font-size:18px;right:0px;background-color:rgba(255,255,255,0.1);color:#ff0000;border:none;font-weight:bold';
+            }
+
+            div.style.cssText = divStyle;
+            const img = document.createElement('img');
+            img.style.cssText = imgStyle;
+            img.src = fileData.src;
+            img.title = fileData.name;
+            const chk = document.createElement('div');
+            chk.style.cssText = chkStyle;
+            chk.innerText = 'x';
+            chk.onclick = function () { div.remove(); };
+            div.appendChild(img);
+            div.appendChild(chk);
+            attZone.appendChild(div);
+        });
+    });
+};
 </script>
 <script>
    import '@/assets/css/edit/editform.css'
@@ -357,297 +455,97 @@ import { defineComponent } from "vue";
        setup() {
 
         },
-       methods: {
-        
-  
-       },
-       mounted() {
+        methods: {
+            // 파일 선택 버튼을 통해 파일을 선택했을 때
+            // handleFileChange(event, targetId) {
+            //     const files = event.target.files;
+            //     const attZone = document.getElementById(targetId);
+            //     this.processFiles(files, attZone,targetId);
+            // },
+            // // 파일을 드롭했을 때
+            // handleDrop(event, targetId) {
+            //     const files = event.dataTransfer.files;
+            //     const attZone = document.getElementById(targetId);
+            //     const filePromises = Array.from(files).map(file => new Promise(resolve => {
+            //         const fileReader = new FileReader();
+            //         fileReader.onload = (e) => {
+            //             resolve({ src: e.target.result, name: file.name });
+            //         };
+            //         fileReader.readAsDataURL(file);
+            //     }));
+            //     Promise.all(filePromises).then(filePaths => {
+            //         this.processFiles(filePaths, attZone, targetId);
+            //     }).catch(error => {
+            //         console.error("Error while processing files:", error);
+            //     });
+            // },
+            // // 파일을 읽고 미리보기를 생성
+            // processFiles(files, attZone,targetId) {
 
-            // ==========이미지 슬라이드 5개 첨부파일==========
-            (function imageView(att_zone, btn) {
-                var attZone = document.getElementById(att_zone);
-                var btnAtt = document.getElementById(btn);
-                var sel_files = [];
+            //     // 기존 파일 유지
+            //     const existingFiles = Array.from(attZone.children).map(child => ({
+            //         src: child.querySelector('img').src,
+            //         name: child.querySelector('img').title
+            //     }));
 
+            //     const newFiles = Array.from(files).map(file => new Promise(resolve => {
+            //         const fileReader = new FileReader();
+            //         fileReader.onload = (e) => {
+            //             resolve({ src: e.target.result, name: file.name });
+            //         };
+            //         fileReader.readAsDataURL(file);
+            //     }));
 
-                // 이미지와 체크박스를 감싸고 있는 div속성 
-                var div_style = 'display:inline-block;position:relative;width:280px;height:200px;margin:5px;border:1px solid #a7a4a4;z-index:1';
+            //     // 등록갯수 설정
+            //     // let maxFiles = 1;
+            //     // if (targetId === 'att_zone1') {
+            //     //     maxFiles = 5;
+            //     // } else if (targetId === 'att_zone2') {
+            //     //     maxFiles = 20;
+            //     // }
 
-                // 미리보기 이미지 속성
-                var img_style = 'width:100%;height:100%;z-index:none;object-fit:contain';
+            //     //미리보기 스타일
+            //     Promise.all(newFiles).then(newFileData => {
+            //         const allFiles = existingFiles.concat(newFileData).slice(0, targetId === 'att_zone1' ? 5 : targetId === 'att_zone2' ? 20 : 3);
+            //         attZone.innerHTML = ''; // Clear the zone
 
+            //         allFiles.forEach(fileData => {
+            //             const div = document.createElement('div');
+            //             div.className = 'thumb';
+            //             let divStyle, imgStyle, chkStyle;
 
-                // 이미지안에 표시되는 체크박스의 속성
-                var chk_style = 'width:30px;height:30px;position:absolute;font-size:18px;right:0px;background-color:rgba(255,255,255,0.1); color:#ff0000; border:none;font-weight:bold';
+            //             if (targetId === 'att_zone2') {
+            //                 divStyle = 'display:inline-block;position:relative;width:200px;height:200px;margin:5px;border:1px solid #a7a4a4;z-index:1';
+            //                 imgStyle = 'width:100%;height:100%;z-index:none;object-fit:contain';
+            //                 chkStyle = 'width:30px;height:30px;position:absolute;font-size:18px;right:0px;background-color:rgba(255,255,255,0.1);color:#a7a4a4;border:none;font-weight:bold';
+            //             } else if (targetId === 'att_zone3') {
+            //                 divStyle = 'display:inline-block;position:relative;width:400px;height:400px;margin:5px;border:1px solid #a7a4a4;z-index:1';
+            //                 imgStyle = 'width:100%;height:100%;z-index:none;object-fit:contain';
+            //                 chkStyle = 'width:30px;height:30px;position:absolute;font-size:18px;right:0px;background-color:rgba(255,255,255,0.1);color:#a7a4a4;border:none;font-weight:bold';
+            //             } else {
+            //                 divStyle = 'display:inline-block;position:relative;width:280px;height:200px;margin:5px;border:1px solid #a7a4a4;z-index:1';
+            //                 imgStyle = 'width:100%;height:100%;z-index:none;object-fit:contain';
+            //                 chkStyle = 'width:30px;height:30px;position:absolute;font-size:18px;right:0px;background-color:rgba(255,255,255,0.1);color:#ff0000;border:none;font-weight:bold';
+            //             }
 
-
-                btnAtt.onchange = function (e) {
-                    var files = e.target.files;
-                    var fileArr = Array.prototype.slice.call(files);
-                    for (let f of fileArr) {
-                        imageLoader(f);
-                    }
-                };
-
-
-                // 탐색기에서 드래그앤 드롭 사용
-                attZone.addEventListener('dragenter', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }, false);
-
-                attZone.addEventListener('dragover', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }, false);
-
-                attZone.addEventListener('drop', function (e) {
-                    var files = {};
-                    e.preventDefault();
-                    e.stopPropagation();
-                    var dt = e.dataTransfer;
-                    files = dt.files;
-                    for (let f of files) {
-                        imageLoader(f);
-                    }
-                }, false);
-
-
-
-                // 첨부된 이미지들을 배열에 넣고 미리보기
-                function imageLoader(file) {
-                    if (sel_files.length >= 5) { // 이미 5개 이상인 경우 추가하지 않음
-                        if (!alerted) { // 이미 alert가 띄워진 경우는 추가하지 않음
-                            alert("최대 5장까지만 첨부할 수 있습니다.");
-                            alerted = true; // alert 띄움 플래그를 true로 설정
-                        }
-                        return;
-                    }
-                    sel_files.push(file);
-                    var reader = new FileReader();
-                    reader.onload = function (ee) {
-                        let img = document.createElement('img');
-                        img.setAttribute('style', img_style);
-                        img.src = ee.target.result;
-                        attZone.appendChild(makeDiv(img, file));
-                    };
-                    reader.readAsDataURL(file);
-                }
-
-
-
-                //  첨부된 파일이 있는 경우 checkbox와 함께 attZone에 추가할 div를 만들어 반환
-                function makeDiv(img, file) {
-                    var div = document.createElement('div');
-                    div.setAttribute('style', div_style);
-
-                    var btn = document.createElement('input');
-                    btn.setAttribute('type', 'button');
-                    btn.setAttribute('value', 'x');
-                    btn.setAttribute('delFile', file.name);
-                    btn.setAttribute('style', chk_style);
-                    btn.onclick = function (ev) {
-                        var ele = ev.srcElement;
-                        var delFile = ele.getAttribute('delFile');
-                        for (var i = 0; i < sel_files.length; i++) {
-                            if (delFile == sel_files[i].name) {
-                                sel_files.splice(i, 1);
-                            }
-                        }
-
-                        var dt = new DataTransfer();
-                        for (let f of sel_files) {
-                            dt.items.add(f);
-                        }
-                        btnAtt.files = dt.files;
-                        var p = ele.parentNode;
-                        attZone.removeChild(p);
-                    };
-                    div.appendChild(img);
-                    div.appendChild(btn);
-                    return div;
-                }
-                // 이미 alert가 띄워진 경우를 확인하는 플래그
-                var alerted = false;
-            })('att_zone', 'btnAtt');
-
-            // ==========미용컷 20개 첨부파일==========
-            (function imageView(att_zone2, btn) {
-                var attZone = document.getElementById(att_zone2);
-                var btnAtt2 = document.getElementById(btn);
-                var sel_files = [];
-
-
-                // 이미지와 체크박스를 감싸고 있는 div속성 
-                var div_style = 'display:inline-block;position:relative;width:200px;height:200px;margin:5px;border:1px solid #a7a4a4;z-index:1';
-
-                // 미리보기 이미지 속성
-                var img_style = 'width:100%;height:100%;z-index:none;object-fit:contain';
-
-
-                // 이미지안에 표시되는 체크박스의 속성
-                var chk_style = 'width:30px;height:30px;position:absolute;font-size:18px;right:0px;background-color:rgba(255,255,255,0.1);color:#a7a4a4;border:none;font-weight:bold';
-
-
-                btnAtt2.onchange = function (e) {
-                    var files = e.target.files;
-                    var fileArr = Array.prototype.slice.call(files);
-                    for (let f of fileArr) {
-                        imageLoader(f);
-                    }
-                };
-
-
-                // 탐색기에서 드래그앤 드롭 사용
-                attZone.addEventListener('dragenter', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }, false);
-
-                attZone.addEventListener('dragover', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }, false);
-
-                attZone.addEventListener('drop', function (e) {
-                    var files = {};
-                    e.preventDefault();
-                    e.stopPropagation();
-                    var dt = e.dataTransfer;
-                    files = dt.files;
-                    for (let f of files) {
-                        imageLoader(f);
-                    }
-                }, false);
-
-
-
-                // 첨부된 이미지들을 배열에 넣고 미리보기
-                function imageLoader(file) {
-                    if (sel_files.length >= 20) { // 이미 5개 이상인 경우 추가하지 않음
-                        if (!alerted) { // 이미 alert가 띄워진 경우는 추가하지 않음
-                            alert("최대 20장까지만 첨부할 수 있습니다.");
-                            alerted = true; // alert 띄움 플래그를 true로 설정
-                        }
-                        return;
-                    }
-                    sel_files.push(file);
-                    var reader = new FileReader();
-                    reader.onload = function (ee) {
-                        let img = document.createElement('img');
-                        img.setAttribute('style', img_style);
-                        img.src = ee.target.result;
-                        attZone.appendChild(makeDiv(img, file));
-                    };
-                    reader.readAsDataURL(file);
-                }
-
-
-
-                //  첨부된 파일이 있는 경우 checkbox와 함께 attZone에 추가할 div를 만들어 반환
-                function makeDiv(img, file) {
-                    var div = document.createElement('div');
-                    div.setAttribute('style', div_style);
-
-                    var btn = document.createElement('input');
-                    btn.setAttribute('type', 'button');
-                    btn.setAttribute('value', 'x');
-                    btn.setAttribute('delFile', file.name);
-                    btn.setAttribute('style', chk_style);
-                    btn.onclick = function (ev) {
-                        var ele = ev.srcElement;
-                        var delFile = ele.getAttribute('delFile');
-                        for (var i = 0; i < sel_files.length; i++) {
-                            if (delFile == sel_files[i].name) {
-                                sel_files.splice(i, 1);
-                            }
-                        }
-
-                        var dt = new DataTransfer();
-                        for (let f of sel_files) {
-                            dt.items.add(f);
-                        }
-                        btnAtt2.files = dt.files;
-                        var p = ele.parentNode;
-                        attZone.removeChild(p);
-                    };
-                    div.appendChild(img);
-                    div.appendChild(btn);
-                    return div;
-                }
-                // 이미 alert가 띄워진 경우를 확인하는 플래그
-                var alerted = false;
-            })('att_zone2', 'btnAtt2');
-
-            // ==========디자이너 소개 프로필 1개 첨부파일==========
-            (function imageView(att_zone3, btn) {
-                var attZone = document.getElementById(att_zone3);
-                var btnAtt3 = document.getElementById(btn);
-
-                // 이미지와 체크박스를 감싸고 있는 div 속성
-                var div_style = 'display:inline-block;position:relative;width:398px;height:398px;border:1px solid #a7a4a4;z-index:1';
-
-                // 미리보기 이미지 속성
-                var img_style = 'width:100%;height:100%;z-index:none;object-fit:contain';
-
-                // 이미지를 업로드하고 미리보기 설정
-                btnAtt3.onchange = function (e) {
-                    var file = e.target.files[0];
-                    if (!file.type.match(/image.*/)) {
-                        alert("이미지 파일만 업로드 가능합니다.");
-                        return;
-                    }
-                    imageLoader(file);
-                };
-
-                // 드래그 앤 드롭 기능 설정
-                attZone.addEventListener('dragenter', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }, false);
-
-                attZone.addEventListener('dragover', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }, false);
-
-                attZone.addEventListener('drop', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    var dt = e.dataTransfer;
-                    var file = dt.files[0];
-                    if (!file.type.match(/image.*/)) {
-                        alert("이미지 파일만 업로드 가능합니다.");
-                        return;
-                    }
-                    imageLoader(file);
-                }, false);
-
-                // 첨부된 이미지를 미리보기
-                function imageLoader(file) {
-                    var reader = new FileReader();
-                    reader.onload = function (ee) {
-                        let img = document.createElement('img');
-                        img.setAttribute('style', img_style);
-                        img.src = ee.target.result;
-                        attZone.innerHTML = '';// 기존 내용 비우기
-                        attZone.appendChild(makeDiv(img));//첨부된 div밀어넣기
-                        attZone.classList.add('file-attached'); // 파일 첨부됨을 나타내는 클래스 추가 -> 관련 css로 배경이미지 안보이게 하기
-                    };
-                    reader.readAsDataURL(file);
-                }
-
-                // 첨부된 파일이 있는 경우 미리보기를 생성하는 함수
-                function makeDiv(img) {
-                    var div = document.createElement('div');
-                    div.setAttribute('style', div_style);
-
-                    div.appendChild(img);
-                    return div;
-                }
-            })('att_zone3', 'btnAtt3');
-            },
-   })
+            //             div.style.cssText = divStyle;
+            //             const img = document.createElement('img');
+            //             img.style.cssText = imgStyle;
+            //             img.src = fileData.src;
+            //             img.title = fileData.name;
+            //             const chk = document.createElement('div');
+            //             chk.style.cssText = chkStyle;
+            //             chk.innerText = 'x';
+            //             chk.onclick = function () { div.remove(); };
+            //             div.appendChild(img);
+            //             div.appendChild(chk);
+            //             attZone.appendChild(div);
+            //         });
+            //     });
+            // }
+        }
+        },
+   )
 </script>
 <style>
 </style>

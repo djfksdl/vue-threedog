@@ -1,66 +1,30 @@
 <template>
     <div>
-        <Datepicker locale="ko" v-model="date" :inline="true" :selectable="true" :showToolbar="false"
-            :displayMode="'mdy'" />
-        <!-- 옵션 시간 안보이게하기
-            :enable-time-picker="false"
-            -->
+      <Datepicker
+        locale="ko"
+        v-model="date"
+        format="yyyy-MM-dd"
+        :enable-time-picker="false"
+        :inline="true"
+        :min-date="minDate"
+      />
     </div>
-</template>
-
-<script setup>
-import { ref } from 'vue';
-import Datepicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css';
-
-const date = ref();
-</script>
-
-<style>
-/* 캘린더 */
-
-.dp__theme_light {
-    /* --dp-menu-border-color: #a7a4a4; */
-    --dp-menu-border-color:none;
-    --dp-primary-color: #236C3F;
-    
-    --dp-cell-border-radius: 50%;
-}
-
-.dp__instance_calendar {
-    width: 500px;
-    font-size: 20px;
-    padding: 10px;
-}
-
-/* select Button */
-.dp__action_buttons {
-    visibility: hidden;
-}
-
-.dp__calendar_item {
-    padding: 10px;
-}
-.dp__button{
-    /* background-color: #236C3F; */
-    width: 500px;
-    height: 80px;
-}
-.dp__calendar_header_item{
-    margin: 20px 0 20px 0;
-}
-:root{
-    --dp-cell-size: 46px;
-}
-/* .dp__month_year_wrap button:nth-child(1){
-    order: 3;
-}
-.dp__month_year_wrap button:nth-child(2){
-    order: 2;
-} */
-
-
-/* .dp__instance_calendar{
-    display: flex;
-} */
-</style>
+  </template>
+  
+  <script setup>
+  import { ref, watch } from 'vue';
+  import Datepicker from '@vuepic/vue-datepicker';
+  import '@vuepic/vue-datepicker/dist/main.css';
+  
+  const date = ref(null);
+  const minDate = ref(new Date()); 
+  
+  // watch를 사용하여 date가 업데이트될 때마다 동작 수행
+  watch(date, (newDate) => {
+    if (newDate) {
+      const formattedDate = newDate.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' });
+      console.log('선택된 날짜:', formattedDate);
+    }
+  });
+  </script>
+  

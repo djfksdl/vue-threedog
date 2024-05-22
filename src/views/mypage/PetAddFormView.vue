@@ -63,7 +63,7 @@
                             <!-- 몸무게 -->
                             <div class="detail">
                                 <label class="title">몸무게</label>
-                                <input type="number" value="weight" v-model="dogVo.weight"> kg
+                                <input type="number" value="weight" v-model="dogVo.weight" step="0.1"> kg
                             </div>
 
                             <!-- 생일 -->
