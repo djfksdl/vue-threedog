@@ -175,6 +175,7 @@ import ManagerHeader from "@/components/ManagerHeader.vue";
 import "@/assets/css/manager/diary.css"
 import { mapState } from 'vuex';
 import Swal from 'sweetalert2'
+import axios from 'axios';
 
 export default {
     name: "DiaryView",
@@ -210,6 +211,9 @@ export default {
             savedAttachedPhotos: [], // 저장된 첨부 사진 배열
             images: [], // 이미지 배열
             currentIndex: 0, // 현재 이미지 인덱스
+            reserveVo: {
+            rsNo: null // 기본값은 null 또는 undefined로 설정
+        },
         };
     },
     methods: {
@@ -249,25 +253,24 @@ export default {
             // 모달 닫기
             this.showModal = false;
         },
-        sendNotification() {
-            // 저장된 데이터를 다른 페이지로 전송  
-            // this.$router.push({
-            //     name: 'mydiary',
-            //     params: {
-            //         savedDate: this.savedDate,
-            //         savedGroomingEtiquette: this.savedGroomingEtiquette,
-            //         savedCondition: this.savedCondition,
-            //         savedMattedArea: this.savedMattedArea,
-            //         savedDislikedArea: this.savedDislikedArea,
-            //         savedBathDry: this.savedBathDry,
-            //         savedAdditionalFee: this.savedAdditionalFee,
-            //         savedNote: this.savedNote,
-            //         savedAttachedPhotos: this.savedAttachedPhotos
-            //     }
-            // });
-            // 모달 닫기
-            this.showModal = false;
+        sendNotification(rsNo) {
+            axios({   
+                method: 'put',  //put,post,delete
+                url: `${this.$store.state.apiBaseUrl}/api/jw/`+ rsNo ,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                //params: phonebookVo, //get방식 파라미터로 값이 전달
+                data: this.reserveVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+                responseType: 'json' //수신타입
+                
+            }).then(response => {
+                console.log(response.data); //수신데이타
+                alert("수정이 완료되었습니다.");
+            }).catch(error => {
+                console.log(error);
+            });
 
+            this.showModal = false;
+    
             // 모달 알림 메시지 표시
             Swal.fire({
                 title: '전송되었습니다!',
@@ -297,6 +300,7 @@ export default {
         }
     },
     watch: {
+        //selectedSchedule 변경 시 date 업데이트
         selectedSchedule(newValue) {
             // 스케줄에 있는 날짜를 이용일에 할당
             this.date = newValue;

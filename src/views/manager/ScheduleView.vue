@@ -26,6 +26,7 @@
     </div>
 </template>
 
+
 <script>
 import ManagerFooter from "@/components/ManagerFooter.vue";
 import ManagerHeader from "@/components/ManagerHeader.vue";
@@ -35,6 +36,8 @@ import Swal from "sweetalert2";
 import interactionPlugin from "@fullcalendar/interaction"; // 드래그 앤 드롭 플러그인 추가
 import { mapMutations } from 'vuex'; // Vuex 변이 사용을 위해 mapMutations 추가
 import "@/assets/css/manager/schedule.css"; // 추가적인 스타일링을 위한 CSS 파일
+import axios from 'axios';
+
 
 export default {
     name: "ScheduleView", // 컴포넌트 이름
@@ -48,6 +51,7 @@ export default {
         return {
             showModal: false, // 모달 표시 여부
             selectedEvent: null, // 선택된 이벤트 정보
+            reservations: [], // 예약 데이터를 저장할 배열
             calendarOptions: {
                 plugins: [dayGridPlugin, interactionPlugin], // interactionPlugin 추가
                 initialView: "dayGridMonth",
@@ -60,9 +64,9 @@ export default {
                 contentHeight: 800,
                 locale: "ko",
                 events: [
-                    { title: "보리, 전체 미용, 50,000원", start: "2024-05-10T09:00:00", end: "2024-05-10T12:00:00" },
-                    { title: "예슬이, 말티푸, 전체 미용, 50,000원", start: "2024-05-14T14:00:00", end: "2024-05-13T11:00:00" },
-                    { title: "마리, 전체 미용, 50,000원", start: "2024-05-15T15:00:00", end: "2024-05-15T17:00:00" }
+                    // { title: "보리, 전체 미용, 50,000원", start: "2024-05-10T09:00:00", end: "2024-05-10T12:00:00" },
+                    // { title: "예슬이, 말티푸, 전체 미용, 50,000원", start: "2024-05-14T14:00:00", end: "2024-05-13T11:00:00" },
+                    // { title: "마리, 전체 미용, 50,000원", start: "2024-05-15T15:00:00", end: "2024-05-15T17:00:00" }
                     // 예약된 스케줄에 따라 수정
                 ],
                 eventClick: this.handleEventClick,
@@ -71,7 +75,49 @@ export default {
             }
         };
     },
+    mounted() {
+        // const bNo = this.$route.params.bNo; // URL에서 bNo 파라미터를 가져옴
+        const bNo = 2;
+        this.fetchReserveList(bNo); // bNo를 이용하여 예약 리스트를 가져옴
+    },
     methods: {
+        fetchReserveList(bNo) {
+            axios({
+                method: 'get',
+                url: `${this.$store.state.apiBaseUrl}/api/jw/${bNo}`,
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                responseType: 'json'
+            }).then(response => {
+                // 요청이 성공적으로 완료된 경우의 처리
+                console.log('불러와라:', response.data.apiData); // 응답데이터 확인
+                this.reservations = Array.isArray(response.data.apiData) ? response.data.apiData : [];
+                this.updateCalendarEvents(); // 예약 데이터로 캘린더 이벤트 업데이트
+            }).catch(error => {
+                // 오류 처리
+                console.error('Error fetching reservations:', error);
+            });
+        },
+        updateCalendarEvents() {
+            const events = this.reservations.map(reservation => ({
+                title: `${reservation.dogName},  ${reservation.groomingStyle}, ,${reservation.expectedPrice}원`,
+                start: reservation.rsDate,
+                end: reservation.endDate,
+                extendedProps: {
+                    dogName: reservation.dogName,
+                    kind: reservation.kind,
+                    groomingStyle: reservation.groomingStyle,
+                    expectedPrice: reservation.expectedPrice
+                }
+            }));
+            console.log('변화된이벤트:', events); // 변환된 이벤트 데이터 확인
+
+            // FullCalendar의 events 속성에 예약된 정보를 추가
+            this.calendarOptions.events = events;
+            console.log('할당된 이벤트:', this.calendarOptions.events); // 할당된 이벤트 확인
+
+            // FullCalendar를 갱신하여 새로운 이벤트를 반영
+            this.$refs.calendar.getApi().refetchEvents();
+        },
         ...mapMutations(['setSelectedSchedule']), // Vuex 변이 매핑
         handleEventClick(info) {
             Swal.fire({
