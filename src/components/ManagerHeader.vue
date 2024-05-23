@@ -5,7 +5,7 @@
             <div class="mheaderLeft">
                 <!-- 로고 -->
                 <div class="mlogo">
-                    <router-link to="/edit"><img src="@/assets/images/logo2.png" alt=""></router-link>
+                    <router-link v-bind:to="`/edit/${this.bNo}`"><img src="@/assets/images/logo2.png" alt=""></router-link>
                 </div>
                 <!-- 메뉴(회원+원장) -->
                 <ul class="mMenu" v-if="this.$store.state.auth == null ">
