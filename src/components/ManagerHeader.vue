@@ -51,17 +51,21 @@ export default {
     name: "ManagerHeader",
     components: {},
     data() {
-        return {};
+        return {
+            bNo: this.$route.params.bNo
+        };
     },
     methods: {
         // 로그아웃
         logout(){
-            // console.log("로그아웃");
+            console.log("여기확인");
+            console.log(this.bNo);
+
             this.$store.commit("setAuthUser",null);
             this.$store.commit("setAuth",null);
             this.$store.commit("setToken",null);
 
-            this.$router.push("/edit");
+            this.$router.push(`/edit/${this.bNo}`);
         },
         // 마이페이지
         loginForMypage(){
