@@ -5,7 +5,7 @@
             <div class="mheaderLeft">
                 <!-- 로고 -->
                 <div class="mlogo">
-                    <router-link to="/edit"><img src="@/assets/images/logo2.png" alt=""></router-link>
+                    <router-link v-bind:to="`/edit/${this.bNo}`"><img src="@/assets/images/logo2.png" alt=""></router-link>
                 </div>
                 <!-- 메뉴(회원+원장) -->
                 <ul class="mMenu" v-if="this.$store.state.auth == null ">
@@ -51,17 +51,21 @@ export default {
     name: "ManagerHeader",
     components: {},
     data() {
-        return {};
+        return {
+            bNo: this.$route.params.bNo
+        };
     },
     methods: {
         // 로그아웃
         logout(){
-            // console.log("로그아웃");
+            console.log("여기확인");
+            console.log(this.bNo);
+
             this.$store.commit("setAuthUser",null);
             this.$store.commit("setAuth",null);
             this.$store.commit("setToken",null);
 
-            this.$router.push("/edit");
+            this.$router.push(`/edit/${this.bNo}`);
         },
         // 마이페이지
         loginForMypage(){
