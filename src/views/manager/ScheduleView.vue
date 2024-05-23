@@ -64,12 +64,7 @@ export default {
                 editable: true, // 드래그 앤 드롭 및 크기 조정 활성화
                 contentHeight: 800,
                 locale: "ko",
-                events: [
-                    // { title: "보리, 전체 미용, 50,000원", start: "2024-05-10T09:00:00", end: "2024-05-10T12:00:00" },
-                    // { title: "예슬이, 말티푸, 전체 미용, 50,000원", start: "2024-05-14T14:00:00", end: "2024-05-13T11:00:00" },
-                    // { title: "마리, 전체 미용, 50,000원", start: "2024-05-15T15:00:00", end: "2024-05-15T17:00:00" }
-                    // 예약된 스케줄에 따라 수정
-                ],
+                events: [],
                 eventClick: this.handleEventClick,
                 eventDrop: this.handleEventDrop, // 이벤트 드롭 핸들러 추가
                 eventResize: this.handleEventResize // 이벤트 크기 조정 핸들러 추가
@@ -82,6 +77,7 @@ export default {
         this.fetchReserveList(bNo); // bNo를 이용하여 예약 리스트를 가져옴
     },
     methods: {
+        //-------------------- 예약내역 가져오는 리스트   ----------------------------
         fetchReserveList(bNo) {
             axios({
                 method: 'get',
@@ -98,16 +94,18 @@ export default {
                 console.error('Error fetching reservations:', error);
             });
         },
+
         updateCalendarEvents() {
             const events = this.reservations.map(reservation => ({
-                title: `${reservation.dogName},  ${reservation.beauty}, ,${reservation.expectedPrice}원`,
+                title: `${reservation.dogName},  ${reservation.beauty}, ${reservation.kind},${reservation.expectedPrice}원`,
                 start: reservation.rsDate,
                 end: reservation.endDate,
                 extendedProps: {
-                    dogName: reservation.dogName,
-                    kind: reservation.kind,
+                    petName: reservation.dogName,
+                    breed: reservation.kind,
                     groomingStyle: reservation.beauty,
-                    expectedPrice: reservation.expectedPrice
+                    price: reservation.expectedPrice,
+                    rsNo: reservation.rsNo // rsNo 추가
                 }
             }));
             console.log('변화된이벤트:', events); // 변환된 이벤트 데이터 확인
@@ -120,27 +118,55 @@ export default {
             this.$refs.calendar.getApi().refetchEvents();
         },
         ...mapMutations(['setSelectedSchedule']), // Vuex 변이 매핑
-        handleEventClick(info) {
-            Swal.fire({
-                title: "일정",
-                html: "스케줄: " + info.event.title + "<br/>일시: " + new Date(info.event.start).toLocaleString().substring(0, 20).replace("/g", ""),
-            });
-            this.selectedEvent = info.event;
-            this.showModal = true;
-            // 선택된 스케줄 정보 저장
-            this.$store.commit("setSelectedSchedule", info.event.title);
-            // 다이어리 알림장 표시
-            this.$router.push("/diary");
-        },
-        closeModal() {
-            this.selectedEvent = null;
-            this.showModal = false;
-        },
+
+        //-------------------- 드롭 이벤트  화면 ----------------------------
+
+        //드롭 일정변경
         handleEventDrop(info) {
+            console.log("handleEventDrop");
+
             // 드롭한 이벤트 정보를 저장하고 모달을 표시
             this.selectedEvent = info.event;
             this.showModal = true;
+
+            // 선택된 이벤트의 예약 번호 가져오기
+            const rsNo = info.event.extendedProps.rsNo;
+
+            // 선택된 이벤트의 일자를 변경된 값으로 업데이트
+            this.selectedEvent.setStart(info.event.start);
+            this.selectedEvent.setEnd(info.event.end);
+
+            // 서버에 변경된 예약 정보를 업데이트하는 API 호출
+            this.updateEventOnServer(rsNo, info.event);
         },
+
+        updateEventOnServer(rsNo, event) {
+            console.log("updateEventOnServer");
+
+            const start = event.start.toISOString().slice(0, 19).replace('T', ' '); // ISO 8601 형식을 MySQL 형식으로 변환
+            const end = event.end.toISOString().slice(0, 19).replace('T', ' '); // ISO 8601 형식을 MySQL 형식으로 변환
+
+
+            // 서버에 변경된 일정 정보를 업데이트하는 API 호출
+            axios({
+                method: 'put',
+                url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/date`,
+                data: { rsNo: rsNo, rsDate: start, rsTime: end }, // 데이터 전송
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                responseType: 'json'
+            }).then(response => {
+                console.log(response.data.apiData); //수신데이타
+                // 성공적으로 업데이트된 경우의 처리
+                console.log('일정이 성공적으로 업데이트되었습니다.');
+                Swal.fire('일정 업데이트', '일정이 성공적으로 업데이트되었습니다.', 'success');
+            }).catch(error => {
+                // 오류 처리
+                console.error('Error updating event:', error);
+                Swal.fire('일정 업데이트 실패', '일정을 업데이트하는 도중 오류가 발생했습니다.', 'error');
+            });
+        },
+
+        //드롭시간수정
         editEvent() {
             Swal.fire({
                 title: '일정 수정',
@@ -173,7 +199,8 @@ export default {
                 }
             });
         },
-
+        
+        //드롭삭제
         deleteEvent() {
             Swal.fire({
                 title: '일정 삭제',
@@ -194,7 +221,26 @@ export default {
                 }
             });
         },
+        //-------------------- 알림장 화면으로 이동  ----------------------------
+        //예약 일정 클릭시 
+        handleEventClick(info) {
+            Swal.fire({
+                title: "일정",
+                html: "스케줄: " + info.event.title + "<br/>일시: " + new Date(info.event.start).toLocaleString().substring(0, 20).replace("/g", ""),
+            });
+            this.selectedEvent = info.event;
+            this.showModal = true;
+            // 선택된 스케줄 정보 저장
+            this.$store.commit("setSelectedSchedule", info.event.title);
+            // 다이어리 알림장 표시
+            this.$router.push("/diary");
+        },
 
+        //확인
+        closeModal() {
+            this.selectedEvent = null;
+            this.showModal = false;
+        },
     }
 };
 </script>
