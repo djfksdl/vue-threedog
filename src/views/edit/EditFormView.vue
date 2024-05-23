@@ -116,6 +116,15 @@
                             <tr>
                                 <th colspan="7" class="eNonBorder">특수견(비숑. 베들링턴 등...)</th>
                             </tr>
+                            <tr>
+                                <th>몸무게</th>
+                                <th>목욕</th>
+                                <th>부분</th>
+                                <th>목욕+부분</th>
+                                <th>얼굴+부분+목욕</th>
+                                <th>스포팅</th>
+                                <th>가위컷</th>
+                            </tr>
                             <tr v-for="(price, index) in specialDogPrices" :key="index">
                                 <th>{{ price.weightDiv }}</th>
                                 <td><input type="text" v-model="price.목욕"></td>
@@ -139,7 +148,7 @@
                             <tr>
                                 <th>엉킴</th>
                                 <td><input type="text" v-model="additionalCharges.엉킴"></td>
-                                <th>투톤 염색</th>
+                                <th>투톤염색</th>
                                 <td colspan="3"><input type="text" v-model="additionalCharges.투톤염색"></td>
                             </tr>
                             <tr>
@@ -277,6 +286,7 @@ import { defineComponent } from "vue";
         },
         data() {
             return{
+                bNo: this.$route.params.bNo,
                 priceList:[],
                 additionalCharges: {}
             }
@@ -303,7 +313,7 @@ import { defineComponent } from "vue";
                     method: 'get', // put, post, delete 
                     url: `${this.$store.state.apiBaseUrl}/api/su/firstprice`,
                     headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
-                    // params: {uId: this.userVo.uId}, //get방식 파라미터로 값이 전달
+                    params: {bNo: this.bNo}, //get방식 파라미터로 값이 전달
                     // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
                     responseType: 'json' //수신타입
                 }).then(response => {
@@ -324,18 +334,16 @@ import { defineComponent } from "vue";
 
             // 가게 정보 불러오기
             getShopInfo(){
-                // console.log("가게 정보 불러오기");
+                // console.log(this.bNo);
                 axios({
                     method: 'get', // put, post, delete 
                     url: `${this.$store.state.apiBaseUrl}/api/su/shopInfo`,
                     headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
-                    // params: {uId: this.userVo.uId}, //get방식 파라미터로 값이 전달
+                    params: {bNo: this.bNo}, //get방식 파라미터로 값이 전달
                     // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
                     responseType: 'json' //수신타입
                 }).then(response => {
                     console.log(response.data.apiData); //수신데이타
-
-                    console.log("불러왔지롱");
 
                     
 
