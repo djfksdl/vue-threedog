@@ -78,7 +78,7 @@ export default {
     },
     mounted() {
         // const bNo = this.$route.params.bNo; // URL에서 bNo 파라미터를 가져옴
-        const bNo = 2;
+        const bNo = 1;
         this.fetchReserveList(bNo); // bNo를 이용하여 예약 리스트를 가져옴
     },
     methods: {
