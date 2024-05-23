@@ -83,7 +83,7 @@
                             <tr>
                                 <th colspan="7" class="eNonBorder">소형견(말티즈, 요크셔, 시츄, 푸들 등...)</th>
                             </tr>
-                            <tr>
+                            <tr v-if="smallDogPrices.length > 0">
                                 <th>몸무게</th>
                                 <th>목욕</th>
                                 <th>부분</th>
@@ -91,7 +91,39 @@
                                 <th>얼굴+부분+목욕</th>
                                 <th colspan="2">기본전체미용</th>
                             </tr>
-                            <tr v-for="(price, index) in smallDogPrices" :key="index">
+                            <tr v-if="!smallDogPrices.length">
+                                <th>2kg이하</th>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td colspan="2"><input type="text"></td>
+                            </tr>
+                            <tr v-if="!smallDogPrices.length">
+                                <th>2kg~5kg</th>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td colspan="2"><input type="text"></td>
+                            </tr>
+                            <tr v-if="!smallDogPrices.length">
+                                <th>5kg~8kg</th>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td colspan="2"><input type="text"></td>
+                            </tr>
+                            <tr v-if="!smallDogPrices.length">
+                                <th>8kg~10kg</th>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td colspan="2"><input type="text"></td>
+                            </tr>
+                            <tr v-else v-for="(price, index) in smallDogPrices" :key="index">
                                 <th>{{ price.weightDiv }}</th>
                                 <td><input type="text" v-model="price.목욕"></td>
                                 <td><input type="text" v-model="price.부분"></td>
@@ -104,7 +136,47 @@
                             <tr>
                                 <th colspan="7" class="eNonBorder">중형견(슈나, 코카 등...)</th>
                             </tr>
-                            <tr v-for="(price, index) in mediumDogPrices" :key="index">
+                            <tr v-if="!mediumDogPrices.length">
+                                <th>5kg이하</th>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td colspan="2"><input type="text"></td>
+                            </tr>
+                            <tr v-if="!mediumDogPrices.length">
+                                <th>5kg~8kg</th>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td colspan="2"><input type="text"></td>
+                            </tr>
+                            <tr v-if="!mediumDogPrices.length">
+                                <th>8kg~10kg</th>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td colspan="2"><input type="text"></td>
+                            </tr>
+                            <tr v-if="!mediumDogPrices.length">
+                                <th>10kg~12kg</th>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td colspan="2"><input type="text"></td>
+                            </tr>
+                            <tr v-if="!mediumDogPrices.length">
+                                <th>12kg이상</th>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td colspan="2"><input type="text"></td>
+                            </tr>
+                            <tr v-else v-for="(price, index) in mediumDogPrices" :key="index">
                                 <th>{{ price.weightDiv }}</th>
                                 <td><input type="text" v-model="price.목욕"></td>
                                 <td><input type="text" v-model="price.부분"></td>
@@ -116,7 +188,7 @@
                             <tr>
                                 <th colspan="7" class="eNonBorder">특수견(비숑. 베들링턴 등...)</th>
                             </tr>
-                            <tr>
+                            <tr v-if="specialDogPrices.length > 0">
                                 <th>몸무게</th>
                                 <th>목욕</th>
                                 <th>부분</th>
@@ -125,7 +197,31 @@
                                 <th>스포팅</th>
                                 <th>가위컷</th>
                             </tr>
-                            <tr v-for="(price, index) in specialDogPrices" :key="index">
+                            <tr v-if="!specialDogPrices.length">
+                                <th>5kg이하</th>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td colspan="2"><input type="text"></td>
+                            </tr>
+                            <tr v-if="!specialDogPrices.length">
+                                <th>5kg~8kg</th>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td colspan="2"><input type="text"></td>
+                            </tr>
+                            <tr v-if="!specialDogPrices.length">
+                                <th>8kg이상</th>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td colspan="2"><input type="text"></td>
+                            </tr>
+                            <tr v-else v-for="(price, index) in specialDogPrices" :key="index">
                                 <th>{{ price.weightDiv }}</th>
                                 <td><input type="text" v-model="price.목욕"></td>
                                 <td><input type="text" v-model="price.부분"></td>
@@ -214,7 +310,7 @@
                                 <!-- 오시는길-오른쪽 -->
                                 <div class="eRoadRight">
                                     <div class="eRoadRightContents">
-                                        <p>서울특별시 강남구 봉은사로 317(213426)</p>
+                                        <p>{{ shopInfo.bAddress }} {{ shopInfo.bdAddress}} ({{ shopInfo.bZipCode }})</p>
                                     </div>
                                     <div class="eRoadRightBtnBox">
                                         <button class="kakaoMapBtn">카카오 지도보기</button>
@@ -232,7 +328,7 @@
                                 <!-- 미용예약-오른쪽 -->
                                 <div class="eReservRight">
                                     <div>
-                                        <p class="eReservTel">02-1234-5678</p>
+                                        <p class="eReservTel">{{ shopInfo.bPhone}}</p>
                                     </div>
                                     <div class="eReservBtnBox">
                                         <router-link to="/reservationform" class="eReservBtn">예약하러 가기</router-link>
@@ -263,12 +359,47 @@
   
 <script setup>
 import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
-import { defineComponent } from "vue";
+import { defineComponent} from "vue";
+import "vue3-carousel/dist/carousel.css";
+// 코드에서 setup을 사용하고 있으므로 setup 내에서 import와 reactive를 사용할 수 있습니다.
+import { reactive, onMounted } from 'vue';
+//Composition API에서는 setup 함수 내에서 직접적으로 this를 사용할 수 없기 때문에 $store에 접근하려면 useStore 훅을 사용하여 스토어를 가져와야 함
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 
-    const coordinate = {
-        lat: 37.498085,
-        lng: 127.027978
+    //스토어 가져오기
+    const store = useStore();
+
+    //bNo가져오기
+    const { params } = useRoute();
+
+    //리액티브 변수 초기화
+    const coordinate = reactive({
+        lat: 0,
+        lng: 0
+    });
+
+    // 가게 정보 불러오기
+    const getLatLng = () => {
+        axios({
+            method: 'get',
+            url: `${store.state.apiBaseUrl}/api/su/shopInfo`, //store변수 사용
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            params: { bNo: params.bNo },
+            responseType: 'json'
+        }).then(response => {
+            // shopInfo 객체에서 위도와 경도 값을 받아와서 coordinate 객체에 할당합니다.
+            coordinate.lat = response.data.apiData.latitude;
+            coordinate.lng = response.data.apiData.longitude;
+        }).catch(error => {
+            console.log(error);
+        });
+
     };
+    // 컴포넌트가 마운트된 후에 가게 정보 가져오기
+    onMounted(() => {
+        getLatLng();
+    });
 </script>
 <script>
    import '@/assets/css/edit/editform.css'
@@ -288,7 +419,18 @@ import { defineComponent } from "vue";
             return{
                 bNo: this.$route.params.bNo,
                 priceList:[],
-                additionalCharges: {}
+                additionalCharges: {},
+                shopInfo: {
+                    bZipCode: "",
+                    bAddress: "",
+                    bdAddress: "",
+                    bPhone: "",
+                    title: "",
+                    subTitle: "",
+                    logo: "",
+                    utilTime: "",
+
+                },
             }
         },
         computed: {
@@ -343,14 +485,13 @@ import { defineComponent } from "vue";
                     // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
                     responseType: 'json' //수신타입
                 }).then(response => {
-                    console.log(response.data.apiData); //수신데이타
 
-                    
+                    this.shopInfo = response.data.apiData;
 
                 }).catch(error => {
                     console.log(error);
                 });
-            }
+            },
   
         },
         created(){

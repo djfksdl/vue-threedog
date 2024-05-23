@@ -217,7 +217,7 @@
                                     <h3>오시는길</h3>
                                 </div>
                                 <!-- 오시는길-오른쪽 -->
-                                <div class="eRoadRight">
+                                <div class="eRoadRight" >
                                     <div class="eRoadRightContents">
                                         <p>{{ shopInfo.bAddress }} {{ shopInfo.bdAddress}} ({{ shopInfo.bZipCode }})</p>
                                     </div>
@@ -270,10 +270,47 @@ import { Carousel, Pagination, Slide } from "vue3-carousel";
 import slide01 from "@/assets/images/main-slide.png";
 import slide02 from "@/assets/images/main-slide02.jpg";
 import "vue3-carousel/dist/carousel.css";
-    const coordinate = {
-        lat: 37.498085,
-        lng: 127.027978
+// 코드에서 setup을 사용하고 있으므로 setup 내에서 import와 reactive를 사용할 수 있습니다.
+import { reactive, onMounted } from 'vue';
+//Composition API에서는 setup 함수 내에서 직접적으로 this를 사용할 수 없기 때문에 $store에 접근하려면 useStore 훅을 사용하여 스토어를 가져와야 함
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
+
+    //스토어 가져오기
+    const store = useStore();
+
+    //bNo가져오기
+    const { params } = useRoute();
+
+    //리액티브 변수 초기화
+    const coordinate = reactive({
+        lat: 0,
+        lng: 0
+    });
+
+    // 가게 정보 에서 위도 경도 값 받아오기
+    const getLatLng = () => {
+        axios({
+            method: 'get',
+            url: `${store.state.apiBaseUrl}/api/su/shopInfo`, //store변수 사용
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            params: { bNo: params.bNo },
+            responseType: 'json'
+        }).then(response => {
+            // shopInfo 객체에서 위도와 경도 값을 받아와서 coordinate 객체에 할당합니다.
+            coordinate.lat = response.data.apiData.latitude;
+            coordinate.lng = response.data.apiData.longitude;
+        }).catch(error => {
+            console.log(error);
+        });
+
     };
+    // 컴포넌트가 마운트된 후에 가게 정보 가져오기
+    onMounted(() => {
+        getLatLng();
+    });
+    
+    //슬라이드
     const slides = ref([slide01, slide02]);
     const carouselRef = ref(null);
 
@@ -325,8 +362,7 @@ import axios from 'axios';
                 subTitle: "",
                 logo: "",
                 utilTime: "",
-                latitude: "",
-                longitude: ""
+
             },
             priceList:[],
             additionalCharges: {}
@@ -361,11 +397,8 @@ import axios from 'axios';
                 // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
                 responseType: 'json' //수신타입
             }).then(response => {
-                // console.log(response.data.apiData); //수신데이타
 
                 this.shopInfo = response.data.apiData;
-
-                
 
             }).catch(error => {
                 console.log(error);
