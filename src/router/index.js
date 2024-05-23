@@ -37,11 +37,6 @@ const routes = [
     component:PetAddFormView
   },
   {
-    path: '/edit',
-    name: 'edit',
-    component: EditView
-  },
-  {
     path: '/edit/:bNo',
     name: 'editForOwner',
     component: EditView
@@ -107,7 +102,7 @@ const routes = [
     component: SearchView
   },
   {
-    path: '/editform',
+    path: '/editform/:bNo',
     name: 'editform',
     component: EditFormView
   },
