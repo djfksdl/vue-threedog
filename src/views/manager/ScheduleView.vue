@@ -6,7 +6,6 @@
             <FullCalendar ref="calendar" :options="calendarOptions" id="calendar" />
         </div>
 
-
         <ManagerFooter /> <!-- 매니저 푸터 컴포넌트 -->
         <!-- 일정 모달 -->
         <div v-if="selectedEvent" class="schedule-modal" @click.self="closeModal">
@@ -27,7 +26,6 @@
     </div>
 </template>
 
-
 <script>
 import ManagerFooter from "@/components/ManagerFooter.vue";
 import ManagerHeader from "@/components/ManagerHeader.vue";
@@ -38,7 +36,6 @@ import interactionPlugin from "@fullcalendar/interaction"; // 드래그 앤 드�
 import { mapMutations } from 'vuex'; // Vuex 변이 사용을 위해 mapMutations 추가
 import "@/assets/css/manager/schedule.css"; // 추가적인 스타일링을 위한 CSS 파일
 import axios from 'axios';
-
 
 export default {
     name: "ScheduleView", // 컴포넌트 이름
@@ -72,7 +69,6 @@ export default {
         };
     },
     mounted() {
-        // const bNo = this.$route.params.bNo; // URL에서 bNo 파라미터를 가져옴
         const bNo = 1;
         this.fetchReserveList(bNo); // bNo를 이용하여 예약 리스트를 가져옴
     },
@@ -86,7 +82,8 @@ export default {
                 responseType: 'json'
             }).then(response => {
                 // 요청이 성공적으로 완료된 경우의 처리
-                console.log('불러와라:', response.data.apiData); // 응답데이터 확인
+                console.log('불러와진다 우히히:', response.data.apiData); // 응답데이터 확인
+
                 this.reservations = Array.isArray(response.data.apiData) ? response.data.apiData : [];
                 this.updateCalendarEvents(); // 예약 데이터로 캘린더 이벤트 업데이트
             }).catch(error => {
@@ -116,6 +113,7 @@ export default {
 
             // FullCalendar를 갱신하여 새로운 이벤트를 반영
             this.$refs.calendar.getApi().refetchEvents();
+
         },
         ...mapMutations(['setSelectedSchedule']), // Vuex 변이 매핑
 
@@ -142,10 +140,8 @@ export default {
 
         updateEventOnServer(rsNo, event) {
             console.log("updateEventOnServer");
-
             const start = event.start.toISOString().slice(0, 19).replace('T', ' '); // ISO 8601 형식을 MySQL 형식으로 변환
-            const end = event.end.toISOString().slice(0, 19).replace('T', ' '); // ISO 8601 형식을 MySQL 형식으로 변환
-
+            const end = event.end ? event.end.toISOString().slice(0, 19).replace('T', ' ') : null; // ISO 8601 형식을 MySQL 형식으로 변환
 
             // 서버에 변경된 일정 정보를 업데이트하는 API 호출
             axios({
@@ -166,24 +162,24 @@ export default {
             });
         },
 
-        //드롭시간수정
+        //드롭 후 시간수정
         editEvent() {
             Swal.fire({
                 title: '일정 수정',
                 html: `
-           
-            <input id="editStart" class="swal2-input" placeholder="시작 시간" value="${this.selectedEvent.start}">
-            <input id="editEnd" class="swal2-input" placeholder="종료 시간" value="${this.selectedEvent.end}">
-            <input id="editTitle" class="swal2-input" placeholder="일정명" value="${this.selectedEvent.title}"
-            >`,
+            <input id="editStart" class="swal2-input" type="datetime-local" placeholder="시작 시간" value="${this.formatDateTimeLocal(this.selectedEvent.start)}">
+             <input id="editEnd" class="swal2-input" type="datetime-local" placeholder="종료 시간" value="${this.formatDateTimeLocal(this.selectedEvent.end)}">
+            <input id="editTitle" class="swal2-input" placeholder="일정명" value="${this.selectedEvent.title}">
+            `,
                 focusConfirm: false,
                 preConfirm: () => {
+                    console.log("시간수정");
 
                     const start = Swal.getPopup().querySelector('#editStart').value;
                     const end = Swal.getPopup().querySelector('#editEnd').value;
                     const title = Swal.getPopup().querySelector('#editTitle').value;
-                    if (!title || !start || !end) {
-                        Swal.showValidationMessage('일정명과 시간을 모두 입력해주세요.');
+                    if (!title || !start) {
+                        Swal.showValidationMessage('일정명과 시작 시간을 모두 입력해주세요.');
                     }
                     return { title, start, end };
                 }
@@ -191,16 +187,54 @@ export default {
                 if (result.isConfirmed) {
                     const { start, end, title } = result.value;
                     // 수정된 일정 업데이트
-
                     this.selectedEvent.setStart(start);
-                    this.selectedEvent.setEnd(end);
+                    this.selectedEvent.setEnd(end || null);
                     this.selectedEvent.setProp('title', title);
+
+                    // 서버에 변경된 예약 정보를 업데이트하는 API 호출
+                    this.updateEventTimeOnServer(this.selectedEvent.extendedProps.rsNo, start, end);
+
                     Swal.fire('수정 완료', '일정이 수정되었습니다.', 'success');
                 }
             });
         },
-        
-        //드롭삭제
+
+        updateEventTimeOnServer(rsNo, start, end) {
+            // ISO 8601 형식을 MySQL 시간 형식으로 변환하는 함수
+            function convertToMySQLTime(isoTime) {
+                const date = new Date(isoTime); // ISO 8601 형식의 시간을 Date 객체로 변환
+                const hours = date.getHours().toString().padStart(2, '0'); // 시간
+                const minutes = date.getMinutes().toString().padStart(2, '0'); // 분
+                const seconds = date.getSeconds().toString().padStart(2, '0'); // 초
+                return `${hours}:${minutes}:${seconds}`; // MySQL 시간 형식으로 변환하여 반환
+            }
+
+            // 예약 시작 시간을 MySQL 시간 형식으로 변환
+            const startTime = convertToMySQLTime(start);
+            // 예약 종료 시간이 있는 경우 MySQL 시간 형식으로 변환, 없는 경우 null로 설정
+            const endTime = end ? convertToMySQLTime(end) : null;
+
+            // 서버에 변경된 일정 정보를 업데이트하는 API 호출
+            axios({
+                method: 'put',
+                url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/time`,
+                data: { rsNo: rsNo, rsTime: startTime, rsEndTime: endTime }, // 데이터 전송
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                responseType: 'json'
+            }).then(response => {
+                console.log(response.data.apiData); //수신데이타
+                // 성공적으로 업데이트된 경우의 처리
+                console.log('시간이 성공적으로 업데이트되었습니다.');
+                Swal.fire('시간 업데이트', '시간이 성공적으로 업데이트되었습니다.', 'success');
+
+            }).catch(error => {
+                console.error('시간 업데이트 에러:', error); // 에러 처리
+                Swal.fire('시간 업데이트 실패', '시간을 업데이트하는 도중 오류가 발생했습니다.', 'error');
+            });
+        },
+
+        // deleteEvent() 함수 내용 수정
+        //드롭 후 삭제
         deleteEvent() {
             Swal.fire({
                 title: '일정 삭제',
@@ -215,12 +249,32 @@ export default {
                 if (result.isConfirmed) {
                     // 선택된 이벤트 삭제
                     this.selectedEvent.remove();
-                    // this.selectedEvent = null;
+
+                    // 서버에 삭제 요청 보내기
+                    this.deleteEventOnServer(this.selectedEvent.extendedProps.rsNo);
+
                     this.showModal = false;
                     Swal.fire('삭제 완료', '일정이 삭제되었습니다.', 'success');
                 }
             });
         },
+
+        deleteEventOnServer(rsNo) {
+            axios({
+                method: 'delete',
+                url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}`,
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                responseType: 'json'
+            }).then(response => {
+                console.log(response.data.apiData); // 응답 데이터 확인
+                // 성공적으로 삭제된 경우의 처리
+                console.log('일정이 성공적으로 삭제되었습니다.');
+            }).catch(error => {
+                console.error('Error deleting event:', error);
+                Swal.fire('일정 삭제 실패', '일정을 삭제하는 도중 오류가 발생했습니다.', 'error');
+            });
+        },
+
         //-------------------- 알림장 화면으로 이동  ----------------------------
         //예약 일정 클릭시 
         handleEventClick(info) {
@@ -240,6 +294,14 @@ export default {
         closeModal() {
             this.selectedEvent = null;
             this.showModal = false;
+        },
+
+        // 추가: 날짜 형식을 'YYYY-MM-DDTHH:mm' 형식으로 변환하는 헬퍼 함수
+        // formatDateTimeLocal() 함수 내용 수정
+        formatDateTimeLocal(date) {
+            const d = new Date(Date.parse(date)); // 변경
+            const pad = (n) => n < 10 ? '0' + n : n;
+            return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
         },
     }
 };
