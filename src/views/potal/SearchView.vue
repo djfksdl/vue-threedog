@@ -147,7 +147,7 @@
         <div class="search-result">
           <div class="rank-search">
             <div class="search-item" v-bind:key="i" v-for="(reviewVo, i) in reviewList">
-              <img class="list_img" src="../../assets/images/spy.jpg">
+              <img class="list_img" src="../../assets/images/bori.jpg">
               <div class="star-container">
                 <div class="star_list" v-for="index in 5" :key="index">
                   <span v-if="index <= reviewVo.star" class="yellowStar">

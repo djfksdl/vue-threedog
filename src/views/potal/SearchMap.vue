@@ -16,31 +16,17 @@
           style="width: 1370px; height: 494px; margin-left: 20px;">
           <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
         </KakaoMap>
-        <DatePicker02 />
+        <DatePicker02 @update:modelValue="handleDateChange" />
       </div>
 
-      <h2 class="result-h2">{{ location }} 근처 가게 검색 결과 ▼・ᴥ・▼<span class="view-count">{{ searchQuery ? '가까운 순' : '별점순' }}</span></h2>
+      <h2 class="result-h2">{{ location }} 근처 가게 검색 결과 ▼・ᴥ・▼<span class="view-count">가까운 순</span></h2>
       <hr>
       <div class="rank">
-        <div class="rank-item">
-          <img src="../../assets/images/spy.jpg">
-          <label>스파이가게</label>
-        </div>
-        <div class="rank-item">
-          <img src="../../assets/images/spy.jpg">
-          <label>다른 가게 이름</label>
-        </div>
-        <div class="rank-item">
+        <div class="rank-item" v-bind:key="i" v-for="(storeVo, i) in storeList">
+          <!-- <img  v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${storeVo.saveName}`"
+               alt="Review Image"> -->
           <img src="../../assets/images/dog2.jpg">
-          <label>하이미디어</label>
-        </div>
-        <div class="rank-item">
-          <img src="../../assets/images/dog.jpg">
-          <label>김마리마리</label>
-        </div>
-        <div class="rank-item">
-          <img src="../../assets/images/dog.jpg">
-          <label>김마리마리</label>
+          <label>{{ storeVo.title }}</label>
         </div>
       </div><!-- rank -->
     </div><!-- potal-main-container -->
@@ -50,21 +36,28 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
 import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
 import DatePicker02 from '@/components/DatePicker02.vue';
+import AppFooter from "@/components/AppFooter.vue";
+import AppHeader from "@/components/AppHeader.vue";
+import TopButton from "@/components/TopButton.vue";
+import "@/assets/css/potal/main.css";
+import "@/assets/css/potal/searchmap.css";
 
 const route = useRoute();
-
+const store = useStore();
+const storeList = ref([]);
 const coordinate = ref({
   lat: 37.5535,
   lng: 126.9715
 });
-
 const searchQuery = ref('');
 const location = ref('');
+const rsDate = ref(null);
 
 const searchLocation = async () => {
   try {
@@ -74,6 +67,7 @@ const searchLocation = async () => {
       coordinate.value.lat = parseFloat(place.lat);
       coordinate.value.lng = parseFloat(place.lon);
       location.value = searchQuery.value;
+      getList();  // 위치 검색 후 리스트 갱신
     } else {
       alert('위치를 찾을 수 없습니다.');
     }
@@ -81,6 +75,34 @@ const searchLocation = async () => {
     console.error('Error fetching location:', error);
     alert('위치를 찾는 중 오류가 발생했습니다.');
   }
+};
+
+const getList = () => {
+  console.log("검색 리스트");
+
+  const params = {
+    lat: coordinate.value.lat,
+    lng: coordinate.value.lng,
+    rsDate: rsDate.value ?? ''
+  };
+
+  console.log(coordinate.value.lat);
+  console.log(coordinate.value.lng);
+  console.log(rsDate.value);
+
+  axios({
+    method: 'get',
+    url: `${store.state.apiBaseUrl}/api/searchmap`,
+    headers: { "Content-Type": "application/json" }, // 수정된 부분
+    params: params,
+    responseType: 'json'
+  }).then(response => {
+    console.log("-----------------------");
+    console.log(response.data.apiData);
+    storeList.value = response.data.apiData;
+  }).catch(error => {
+    console.log(error);
+  });
 };
 
 watch(
@@ -99,10 +121,9 @@ const getCurrentLocation = () => {
     navigator.geolocation.getCurrentPosition((position) => {
       const lat = position.coords.latitude;
       const lng = position.coords.longitude;
-
-      // 좌표 업데이트
       coordinate.value.lat = lat;
       coordinate.value.lng = lng;
+      getList();  // 현재 위치 가져온 후 리스트 갱신
     }, (error) => {
       handleLocationError(error);
     });
@@ -127,30 +148,13 @@ const handleLocationError = (error) => {
       break;
   }
 };
-</script>
 
-<script>
-import AppFooter from "@/components/AppFooter.vue";
-import AppHeader from "@/components/AppHeader.vue";
-import TopButton from "@/components/TopButton.vue";
-import "@/assets/css/potal/main.css";
-import "@/assets/css/potal/searchmap.css";
-
-export default {
-  name: "SearchMap",
-  components: {
-    AppFooter,
-    AppHeader,
-    TopButton,
-    DatePicker02
-  },
-  data() {
-
-  },
-  methods: {
-
-  },
-  created() {
-  }
+const handleDateChange = (newDate) => {
+  rsDate.value = newDate;
+  getList();  // 날짜 변경 후 리스트 갱신
 };
+
+onMounted(() => {
+  getList();
+});
 </script>

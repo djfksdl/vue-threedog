@@ -28,28 +28,14 @@
           <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
         </KakaoMap>
       </div>
-      <h2 class="result-h2">동네 랭킹 Best <span class="view-count">가까운 순</span></h2>
+      <h2 class="result-h2">동네 랭킹 Best <a class="view-count" href="/searchmap">더보기</a></h2>
       <hr>
       <div class="rank">
-        <div class="rank-item">
-          <img src="../../assets/images/spy.jpg">
-          <label>스파이가게</label>
-        </div>
-        <div class="rank-item">
-          <img src="../../assets/images/spy.jpg">
-          <label>다른 가게 이름</label>
-        </div>
-        <div class="rank-item">
+        <div class="rank-item" v-bind:key="i" v-for="(storeVo, i) in storeList">
+          <!-- <img  v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${storeVo.saveName}`"
+               alt="Review Image"> -->
           <img src="../../assets/images/dog2.jpg">
-          <label>하이미디어</label>
-        </div>
-        <div class="rank-item">
-          <img src="../../assets/images/dog.jpg">
-          <label>김마리마리</label>
-        </div>
-        <div class="rank-item">
-          <img src="../../assets/images/dog.jpg">
-          <label>김마리마리</label>
+          <label>{{ storeVo.title }}</label>
         </div>
       </div><!-- rank -->
       <div class="event-banner">
@@ -72,13 +58,18 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
+import { ref, onMounted } from 'vue';
+import { useStore } from 'vuex';
+import axios from 'axios';
+
+const store = useStore();
 
 const coordinate = ref({
   lat: 37.5535,
   lng: 126.9715
 });
+
+const storeList = ref([]); // storeList를 ref로 정의
 
 const getCurrentLocation = () => {
   if (navigator.geolocation) {
@@ -113,6 +104,35 @@ const handleLocationError = (error) => {
       break;
   }
 };
+
+const mainList = () => {
+  console.log("검색 리스트");
+
+  const params = {
+    lat: coordinate.value.lat,
+    lng: coordinate.value.lng,
+  };
+
+  console.log(coordinate.value.lat);
+  console.log(coordinate.value.lng);
+
+  axios({
+    method: 'get',
+    url: `${store.state.apiBaseUrl}/api/mainlist`,
+    headers: { "Content-Type": "application/json; charset=utf-8" },
+    params: params,
+    responseType: 'json'
+  }).then(response => {
+    console.log(response.data.apiData);
+    storeList.value = response.data.apiData;
+  }).catch(error => {
+    console.log(error);
+  });
+};
+
+onMounted(() => {
+  mainList();
+});
 </script>
 
 <script>
@@ -122,7 +142,7 @@ import AppFooter from "@/components/AppFooter.vue"
 import AppHeader from "@/components/AppHeader.vue"
 import TopButton from "@/components/TopButton.vue"
 import "@/assets/css/potal/main.css"
-import axios from 'axios';
+import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
 
 export default {
   name: "MainView",
@@ -150,7 +170,13 @@ export default {
         saveName: '',
         bNo: ''
       },
-      suggestions: []
+      suggestions: [],
+      storeList: [],
+      storeVo:{
+        bNo:'',
+        title: '',
+        logo: '',
+      }
     };
   },
   methods: {

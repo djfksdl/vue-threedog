@@ -45,7 +45,7 @@
   };
   </script>
   
-  <style>
+  <style> 
   .dp__selection_preview {
     display: none;
   }
