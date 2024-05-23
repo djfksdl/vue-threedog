@@ -101,7 +101,7 @@ export default {
                     this.$store.commit("setAuth", auth);
                     this.$store.commit("setToken", token);
 
-                    this.$router.push(`/edit/${response.data.apiData.bId}`);
+                    this.$router.push(`/edit/${response.data.apiData.bNo}`);
                 } else {
                     console.log(response.data.message);
                     alert("아이디 패스워드를 확인하세요.");

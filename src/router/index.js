@@ -42,7 +42,7 @@ const routes = [
     component: EditView
   },
   {
-    path: '/edit/:uNo',
+    path: '/edit/:bNo',
     name: 'editForOwner',
     component: EditView
   },

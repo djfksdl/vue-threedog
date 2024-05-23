@@ -4,8 +4,8 @@
           <div class="container2">
             <!-- 타이틀 -->
             <div class="eTitle">
-                <h1>타이틀</h1>
-                <p>부제목이 들어갈 자리</p>
+                <h1>{{ shopInfo.title }}</h1>
+                <p>{{ shopInfo.subTitle }}</p>
             </div>
             <!-- 이미지 슬라이드 -->
             <div class="eImgSlide wrapper-slide">
@@ -288,7 +288,7 @@
                                 <!-- 오시는길-오른쪽 -->
                                 <div class="eRoadRight">
                                     <div class="eRoadRightContents">
-                                        <p>서울특별시 강남구 봉은사로 317</p>
+                                        <p>{{ shopInfo.bAddress }} {{ shopInfo.bdAddress}} ({{ shopInfo.bZipCode }})</p>
                                     </div>
                                     <div class="eRoadRightBtnBox">
                                         <button class="kakaoMapBtn">카카오 지도보기</button>
@@ -306,7 +306,7 @@
                                 <!-- 미용예약-오른쪽 -->
                                 <div class="eReservRight">
                                     <div>
-                                        <p class="eReservTel">02-1234-5678</p>
+                                        <p class="eReservTel">{{ shopInfo.bPhone }}</p>
                                     </div>
                                     <div class="eReservBtnBox">
                                         <router-link to="/reservationform" class="eReservBtn">예약하러 가기</router-link>
@@ -359,6 +359,7 @@ import "vue3-carousel/dist/carousel.css";
     };
 </script>
 <script>
+import axios from 'axios';
 //    import { defineComponent,ref} from "vue";
 //    import { Carousel, Pagination, Slide } from "vue3-carousel";
    import '@/assets/css/edit/edit.css'
@@ -382,35 +383,57 @@ import "vue3-carousel/dist/carousel.css";
             // Navigation,
        },
        data() {
+        return {
+            shopInfo: {
+                bZipCode: "",
+                bAddress: "",
+                bdAddress: "",
+                bPhone: "",
+                title: "",
+                subTitle: "",
+                logo: "",
+                utilTime: "",
+                latitude: "",
+                longitude: ""
+            },
+        }
            
        },
        setup() {
-            // const slides = ref([slide01, slide02]);
-            // const carouselRef = ref(null);
-
-            // const nextSlide = () => {
-            // if (carouselRef.value && carouselRef.value.next) {
-            //     carouselRef.value.next();
-            // }
-            // };
-
-            // const prevSlide = () => {
-            // if (carouselRef.value && carouselRef.value.prev) {
-            //     carouselRef.value.prev();
-            // }
-            // };
-
-            // return {
-            // slides,
-            // nextSlide,
-            // prevSlide,
-            // carouselRef,
-            // };
         },
        methods: {
+
+        // 가게 정보 불러오기
+        getShopInfo(){
+            // console.log("가게 정보 불러오기");
+            axios({
+                method: 'get', // put, post, delete 
+                url: `${this.$store.state.apiBaseUrl}/api/su/shopInfo`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                // params: {uId: this.userVo.uId}, //get방식 파라미터로 값이 전달
+                // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+                responseType: 'json' //수신타입
+            }).then(response => {
+                // console.log(response.data.apiData); //수신데이타
+
+                this.shopInfo = response.data.apiData;
+                console.log("여기 확인하래");
+                console.log(this.shopInfo);
+                console.log(this.shopInfo.title);
+
+                
+
+            }).catch(error => {
+                console.log(error);
+            });
+        },
+        
         
   
        },
+       created(){
+        this.getShopInfo();
+       }
    })
 </script>
 <style>

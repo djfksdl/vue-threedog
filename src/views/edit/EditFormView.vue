@@ -3,10 +3,22 @@
     <div id="wrap">
         <ManagerHeader />
           <div class="container3">
-            <!-- 타이틀 -->
-            <div class="eTitle">
-                <input type="text" placeholder="타이틀">
-                <input type="text" placeholder="부제목 들어갈 곳">
+
+            <!-- 로고 + 타이틀 등록 -->
+            <div class="eLogoTitle">
+                <h1>로고, 타이틀 등록</h1>
+                <!-- 로고 -->
+                <div class="eLogoTitleInfo">
+                    <div class="eLogo">
+                        <div id='att_zone4' class="addLImgBox" data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
+                            <input id="btnAtt4" type="file" class="eFileAddBtn">
+                        </div>
+                    <!-- 타이틀 -->
+                    <div class="eTitle">
+                        <input type="text" placeholder="타이틀">
+                        <input type="text" placeholder="부제목 들어갈 곳">
+                    </div>
+                </div>
             </div>
             
             <!-- 내용부분 -->
@@ -120,21 +132,21 @@
                             <tr>
                                 <th rowspan="4" class="eNonBorder2">추가요금</th>
                                 <th>가위컷</th>
-                                <td>25,000</td>
+                                <td><input type="text" v-model="additionalCharges.컷"></td>
                                 <th>특수얼굴컷</th>
-                                <td colspan="3">5,000</td>
+                                <td colspan="3"><input type="text" v-model="additionalCharges.특수얼굴컷"></td>
                             </tr>
-                            <tr >
+                            <tr>
                                 <th>엉킴</th>
-                                <td>5,000</td>
+                                <td><input type="text" v-model="additionalCharges.엉킴"></td>
                                 <th>투톤 염색</th>
-                                <td colspan="3">10,000</td>
+                                <td colspan="3"><input type="text" v-model="additionalCharges.투톤염색"></td>
                             </tr>
                             <tr>
                                 <th>기장</th>
-                                <td>5,000</td>
+                                <td><input type="text" v-model="additionalCharges.기장"></td>
                                 <th>염색</th>
-                                <td colspan="3">5,000</td>
+                                <td colspan="3"><input type="text" v-model="additionalCharges.염색"></td>
                             </tr>
                         </table>
                     </div>
@@ -142,18 +154,12 @@
                     <div class="eReviewBox">
                         <div class="eReviewBoxTitle">
                             <h1>후기</h1>
-                            <router-link to="" >더보기 +</router-link>
+                            <!-- <router-link to="" >더보기 +</router-link> -->
                         </div>
                         <!-- 후기 슬라이드 -->
                         <div class="eReviewSlide">
-                            <img src="@/assets/images/spy.jpg">
-                            <!-- 후기 슬라이드 내용 -->
                             <div class="eReviewSlideContentBox">
-                                <div class="eReviewSlideContentBoxTop">
-                                    <h2>썬글라스컷</h2>
-                                    <p>보리집사님</p>
-                                </div>
-                                <p>1960년대에 앤 베이커(Ann Baker)는 조세핀(Josephine)이라는 이름을 가진 앙고라 계열이지만 여러 혈통이 섞인 하얀 장모종을 발견했다. 조세핀이라는 고양이는 자동차 사고를 당해 다쳐서 캘리포니아 대학에 있었는데, 베이커는 조세핀이 비밀 정부기관에서 유전자 실험으로 생겨났다고 믿고 있었고, 베이커는 이 고양이와 버만 고양이를 교배시켜 랙돌을 탄생시켰다. 역사가 짧은데다가 한동안 앤 베이커가 랙돌 브리딩계를 아주 꽉 잡고 있었기 때문에[2] 유전자풀이 굉장히 좁다. 현재 랙돌의 유전자 중 약 40% 정도가 앤 베이커의 랙돌 한 마리에게서 왔다고 한다. 그럼에도 불구하고 아직까지 알려진 종특 유전병은 없다. 물론 HCM은 조심해야 하지만, 제대로 된 캐터리라면 먼저 유전자 검사를 한 뒤에 브리딩을 하니 고양이 분양시에 제대로 확인을 하면 된다.</p>
+                               <p>후기 슬라이드 들어갈 곳</p>
                             </div>
                         </div>
                     </div>
@@ -169,28 +175,24 @@
 
                             <!-- 이용시간 -->
                             <div class="eTime">
+
                                 <!-- 이용시간-왼쪽 -->
                                 <div class="eTimeLeft">
                                     <h3>이용시간</h3>
                                 </div>
                                 <!-- 이용시간-오른쪽 -->
                                 <div class="eTimeRight">
-                                    <div class="eTimeRightContents">
+                                    <div class="eTimeRightTitle">
                                         <p>평일</p>
-                                        <p>am 9:00~ pm18:00</p>
-                                    </div>
-                                    <div class="eTimeRightContents">
                                         <p>토요일</p>
-                                        <p>am 9:00~ pm15:00</p>
-                                    </div>
-                                    <div class="eTimeRightContents">
                                         <p>점심시간</p>
-                                        <p>pm 12:00~ pm13:00</p>
+                                        <p>공휴일/주말</p>
                                     </div>
                                     <div class="eTimeRightContents">
-                                        <p>공휴일/주말</p>
-                                        <p>영업종료</p>
+                                        <textarea placeholder="ex)am 9:00~ pm18:00&#10;   am 9:00~ pm15:00&#10;   pm 12:00~ pm13:00&#10;   영업종료"></textarea>
+                                        
                                     </div>
+                                    
                                 </div>
                             </div>
 
@@ -203,7 +205,7 @@
                                 <!-- 오시는길-오른쪽 -->
                                 <div class="eRoadRight">
                                     <div class="eRoadRightContents">
-                                        <p>서울특별시 강남구 봉은사로 317</p>
+                                        <p>서울특별시 강남구 봉은사로 317(213426)</p>
                                     </div>
                                     <div class="eRoadRightBtnBox">
                                         <button class="kakaoMapBtn">카카오 지도보기</button>
@@ -266,20 +268,21 @@ import { defineComponent } from "vue";
    import TopButton from "@/components/TopButton.vue"
    import axios from 'axios';
    
-   export default defineComponent({
-       name: "EditView",
-       components: {
-            ManagerFooter,
-            ManagerHeader,
-            TopButton
-       },
-       data() {
-        return{
-            priceList:[]
-        }
-       },
-       computed: {
-        // 가격표 필터링
+    export default defineComponent({
+        name: "EditView",
+        components: {
+                ManagerFooter,
+                ManagerHeader,
+                TopButton
+        },
+        data() {
+            return{
+                priceList:[],
+                additionalCharges: {}
+            }
+        },
+        computed: {
+            // 가격표 필터링
             smallDogPrices() {
                 return this.priceList.filter(price => price.sizeDiv === '소형견');
             },
@@ -288,39 +291,134 @@ import { defineComponent } from "vue";
             },
             specialDogPrices() {
                 return this.priceList.filter(price => price.sizeDiv === '특수견');
+            },
+            
+        },
+        methods: {
+
+            //가격표 불러오기
+            getPrice(){
+                // console.log("값 가져오기");
+                axios({
+                    method: 'get', // put, post, delete 
+                    url: `${this.$store.state.apiBaseUrl}/api/su/firstprice`,
+                    headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                    // params: {uId: this.userVo.uId}, //get방식 파라미터로 값이 전달
+                    // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+                    responseType: 'json' //수신타입
+                }).then(response => {
+                    console.log(response.data.apiData); //수신데이타
+
+                    this.priceList = response.data.apiData;
+
+                    // 추가요금 데이터 설정 - priceList안에 있는 값 쓸 수 있도록
+                    const additionalCharges = this.priceList.find(price => price.sizeDiv === '추가요금');
+                    if (additionalCharges) {
+                        this.additionalCharges = additionalCharges;
+                    }
+
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
+
+            // 가게 정보 불러오기
+            getShopInfo(){
+                // console.log("가게 정보 불러오기");
+                axios({
+                    method: 'get', // put, post, delete 
+                    url: `${this.$store.state.apiBaseUrl}/api/su/shopInfo`,
+                    headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                    // params: {uId: this.userVo.uId}, //get방식 파라미터로 값이 전달
+                    // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+                    responseType: 'json' //수신타입
+                }).then(response => {
+                    console.log(response.data.apiData); //수신데이타
+
+                    console.log("불러왔지롱");
+
+                    
+
+                }).catch(error => {
+                    console.log(error);
+                });
             }
-        },
-    
-        
-       methods: {
-
-        //가격표 불러오기
-        getPrice(){
-            // console.log("값 가져오기");
-            axios({
-                method: 'get', // put, post, delete 
-                url: `${this.$store.state.apiBaseUrl}/api/su/firstprice`,
-                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
-                // params: {uId: this.userVo.uId}, //get방식 파라미터로 값이 전달
-                // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
-                responseType: 'json' //수신타입
-            }).then(response => {
-                console.log(response.data.apiData); //수신데이타
-
-                this.priceList = response.data.apiData;
-
-                
-            }).catch(error => {
-                console.log(error);
-            });
-        }
   
-       },
-       created(){
-            this.getPrice();
         },
-       mounted() {
+        created(){
+            this.getPrice();
+            this.getShopInfo();
+        },
+        mounted() {
 
+            // ==========가게 로고 1개 첨부파일==========
+            (function imageView(att_zone4, btn) {
+                var attZone = document.getElementById(att_zone4);
+                var btnAtt4 = document.getElementById(btn);
+
+                // 이미지와 체크박스를 감싸고 있는 div 속성
+                var div_style = 'display:inline-block;position:relative;width:125px;height:125px;border:1px solid #a7a4a4;z-index:1';
+
+                // 미리보기 이미지 속성
+                var img_style = 'width:100%;height:100%;z-index:none;object-fit:contain';
+
+                // 이미지를 업로드하고 미리보기 설정
+                btnAtt4.onchange = function (e) {
+                    var file = e.target.files[0];
+                    if (!file.type.match(/image.*/)) {
+                        alert("이미지 파일만 업로드 가능합니다.");
+                        return;
+                    }
+                    imageLoader(file);
+                };
+
+                // 드래그 앤 드롭 기능 설정
+                attZone.addEventListener('dragenter', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }, false);
+
+                attZone.addEventListener('dragover', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }, false);
+
+                attZone.addEventListener('drop', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var dt = e.dataTransfer;
+                    var file = dt.files[0];
+                    if (!file.type.match(/image.*/)) {
+                        alert("이미지 파일만 업로드 가능합니다.");
+                        return;
+                    }
+                    imageLoader(file);
+                }, false);
+
+                // 첨부된 이미지를 미리보기
+                function imageLoader(file) {
+                    var reader = new FileReader();
+                    reader.onload = function (ee) {
+                        let img = document.createElement('img');
+                        img.setAttribute('style', img_style);
+                        img.src = ee.target.result;
+                        attZone.innerHTML = '';// 기존 내용 비우기
+                        attZone.appendChild(makeDiv(img));//첨부된 div밀어넣기
+                        attZone.classList.add('file-attached'); // 파일 첨부됨을 나타내는 클래스 추가 -> 관련 css로 배경이미지 안보이게 하기
+                    };
+                    reader.readAsDataURL(file);
+                }
+
+                // 첨부된 파일이 있는 경우 미리보기를 생성하는 함수
+                function makeDiv(img) {
+                    var div = document.createElement('div');
+                    div.setAttribute('style', div_style);
+
+                    div.appendChild(img);
+                    return div;
+                }
+            })('att_zone4', 'btnAtt4');
+    
             // ==========이미지 슬라이드 5개 첨부파일==========
             (function imageView(att_zone, btn) {
                 var attZone = document.getElementById(att_zone);
@@ -604,7 +702,7 @@ import { defineComponent } from "vue";
                     return div;
                 }
             })('att_zone3', 'btnAtt3');
-            },
+        },
         
             
    })
