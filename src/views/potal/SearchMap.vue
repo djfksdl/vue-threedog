@@ -14,36 +14,38 @@
       <div id="map-search">
         <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true"
           style="width: 1370px; height: 494px; margin-left: 20px;">
-          <!-- addList 배열에 있는 각 가게에 대해 반복하여 마커를 표시합니다 -->
           <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
           <KakaoMapMarker v-for="(store, index) in addList" :key="index" :lat="store.latitude" :lng="store.longitude">
           </KakaoMapMarker>
+          <template #infoWindowTemplate="{ marker }">
+            <div class="info-window">
+              <h3>{{ marker.title }}</h3>
+            </div>
+          </template>
         </KakaoMap>
-        <DatePicker02 @update:modelValue="handleDateChange" />
+        <DatePicker02 @selectedDate="handleDateChange" @customAction="getList" />
       </div>
 
       <h2 class="result-h2">{{ location }} 근처 가게 검색 결과 ▼・ᴥ・▼<span class="view-count">가까운 순</span></h2>
       <hr>
       <div class="rank">
         <div class="rank-item" v-bind:key="i" v-for="(storeVo, i) in storeList">
-          <!-- <img  v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${storeVo.saveName}`"
-               alt="Review Image"> -->
           <img src="../../assets/images/dog2.jpg">
           <label>{{ storeVo.title }}</label>
         </div>
-      </div><!-- rank -->
-    </div><!-- potal-main-container -->
+      </div>
+    </div>
     <TopButton />
     <AppFooter id="AppFooter" />
-  </div><!-- wrap -->
+  </div>
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
-import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
+import { KakaoMap, KakaoMapMarker, KakaoMapInfoWindow } from 'vue3-kakao-maps';
 import DatePicker02 from '@/components/DatePicker02.vue';
 import AppFooter from "@/components/AppFooter.vue";
 import AppHeader from "@/components/AppHeader.vue";
@@ -71,7 +73,7 @@ const searchLocation = async () => {
       coordinate.value.lat = parseFloat(place.lat);
       coordinate.value.lng = parseFloat(place.lon);
       location.value = searchQuery.value;
-      getList();  // 위치 검색 후 리스트 갱신
+      getList();
     } else {
       alert('위치를 찾을 수 없습니다.');
     }
@@ -97,7 +99,7 @@ const getList = () => {
   axios({
     method: 'get',
     url: `${store.state.apiBaseUrl}/api/searchmap`,
-    headers: { "Content-Type": "application/json" }, // 수정된 부분
+    headers: { "Content-Type": "application/json" },
     params: params,
     responseType: 'json'
   }).then(response => {
@@ -127,7 +129,7 @@ const getCurrentLocation = () => {
       const lng = position.coords.longitude;
       coordinate.value.lat = lat;
       coordinate.value.lng = lng;
-      getList();  // 현재 위치 가져온 후 리스트 갱신
+      getList();
     }, (error) => {
       handleLocationError(error);
     });
@@ -155,7 +157,7 @@ const handleLocationError = (error) => {
 
 const handleDateChange = (newDate) => {
   rsDate.value = newDate;
-  getList();  // 날짜 변경 후 리스트 갱신
+  getList();
 };
 
 const markList = () => {
@@ -175,9 +177,24 @@ const markList = () => {
   });
 };
 
-
 onMounted(() => {
+  if (addList.value.length > 0) {
+    openInfoWindow(addList.value[0]);
+  }
   getList();
   markList();
 });
+
+const openInfoWindow = (store) => {
+  const latLng = new window.kakao.maps.LatLng(store.latitude, store.longitude);
+
+  const infoWindow = new KakaoMapInfoWindow({
+    map: window.map,
+    position: latLng,
+    content: `<div class="info-window"><h3>${store.title}</h3></div>`
+  });
+
+  infoWindow.open();
+};
+
 </script>

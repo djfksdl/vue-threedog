@@ -1,6 +1,5 @@
 #map-search {
     display: flex;
-    gap: 20px; /* Add gap between the map and the calendar */
   }
   
   .map-container {
