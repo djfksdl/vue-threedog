@@ -95,7 +95,7 @@ export default {
         updateCalendarEvents() {
             const events = this.reservations.map(reservation => ({
                 title: `${reservation.dogName},  ${reservation.beauty}, ${reservation.kind},${reservation.expectedPrice}원`,
-                start: reservation.rsDate,
+                start: reservation.rtDate,
                 end: reservation.endDate,
                 extendedProps: {
                     petName: reservation.dogName,
@@ -147,7 +147,7 @@ export default {
             axios({
                 method: 'put',
                 url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/date`,
-                data: { rsNo: rsNo, rsDate: start, rsTime: end }, // 데이터 전송
+                data: { rsNo: rsNo, rtDate: start, rtDateTime: end }, // 데이터 전송
                 headers: { "Content-Type": "application/json; charset=utf-8" },
                 responseType: 'json'
             }).then(response => {
@@ -218,7 +218,7 @@ export default {
             axios({
                 method: 'put',
                 url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/time`,
-                data: { rsNo: rsNo, rsTime: startTime, rsEndTime: endTime }, // 데이터 전송
+                data: { rsNo: rsNo, rtTime: startTime, rtEndTime: endTime }, // 데이터 전송
                 headers: { "Content-Type": "application/json; charset=utf-8" },
                 responseType: 'json'
             }).then(response => {
