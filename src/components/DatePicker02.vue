@@ -32,9 +32,10 @@ const emit = defineEmits(['selectedDate', 'customAction']);
 
 const handleDateUpdate = (newDate) => {
   if (newDate) {
-    const formattedDate = newDate.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' });
+    const formattedDate = newDate.toISOString().split('T')[0];
+    // const formattedDate = newDate.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' });
     console.log('선택한 날짜:', formattedDate);
-    emit('selectedDate', newDate);
+    emit('selectedDate', formattedDate);
   }
 };
 
