@@ -12,7 +12,8 @@
           <i class="fas fa-map-marker-alt" @click="getCurrentLocation"></i>
           <ul class="search_ul" v-if="suggestions.length">
             <!-- <li v-for="suggestion in suggestions" :key="suggestion" @click="setSearchQuery(suggestion)">{{ suggestion }} -->
-            <li v-for="(suggestion, index) in suggestions" :key="index" @click="setSearchQuery(suggestion)">{{ suggestion }}</li>
+            <li v-for="(suggestion, index) in suggestions" :key="index" @click="setSearchQuery(suggestion)">{{
+            suggestion }}</li>
           </ul>
         </div>
         <!-- 검색 버튼 -->
@@ -23,9 +24,16 @@
       </div>
 
       <div id="map-main">
-        <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true"
+        <!-- <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true"
           style="width: 1370px; height: 400px; margin-left: 20px;">
           <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
+        </KakaoMap> -->
+        <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true"
+          style="width: 1370px; height: 400px; margin-left: 20px;">
+          <!-- addList 배열에 있는 각 가게에 대해 반복하여 마커를 표시합니다 -->
+          <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
+          <KakaoMapMarker v-for="(store, index) in addList" :key="index" :lat="store.latitude" :lng="store.longitude">
+          </KakaoMapMarker>
         </KakaoMap>
       </div>
       <h2 class="result-h2">동네 랭킹 Best <a class="view-count" href="/searchmap">더보기</a></h2>
@@ -70,6 +78,7 @@ const coordinate = ref({
 });
 
 const storeList = ref([]); // storeList를 ref로 정의
+const addList = ref([]);
 
 const getCurrentLocation = () => {
   if (navigator.geolocation) {
@@ -130,8 +139,27 @@ const mainList = () => {
   });
 };
 
+const markList = () => {
+  console.log("전체 가게 리스트");
+
+  axios({
+    method: 'get',
+    url: `${store.state.apiBaseUrl}/api/marker`,
+    headers: { "Content-Type": "application/json; charset=utf-8" },
+    responseType: 'json'
+  }).then(response => {
+    console.log("전체 가게 리스트");
+    console.log(response.data.apiData);
+    addList.value = response.data.apiData;
+  }).catch(error => {
+    console.log(error);
+  });
+};
+
+
 onMounted(() => {
   mainList();
+  markList();
 });
 </script>
 
@@ -172,8 +200,8 @@ export default {
       },
       suggestions: [],
       storeList: [],
-      storeVo:{
-        bNo:'',
+      storeVo: {
+        bNo: '',
         title: '',
         logo: '',
       }

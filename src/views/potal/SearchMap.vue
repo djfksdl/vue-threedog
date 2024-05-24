@@ -14,7 +14,10 @@
       <div id="map-search">
         <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true"
           style="width: 1370px; height: 494px; margin-left: 20px;">
+          <!-- addList 배열에 있는 각 가게에 대해 반복하여 마커를 표시합니다 -->
           <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
+          <KakaoMapMarker v-for="(store, index) in addList" :key="index" :lat="store.latitude" :lng="store.longitude">
+          </KakaoMapMarker>
         </KakaoMap>
         <DatePicker02 @update:modelValue="handleDateChange" />
       </div>
@@ -58,6 +61,7 @@ const coordinate = ref({
 const searchQuery = ref('');
 const location = ref('');
 const rsDate = ref(null);
+const addList = ref([]);
 
 const searchLocation = async () => {
   try {
@@ -154,7 +158,26 @@ const handleDateChange = (newDate) => {
   getList();  // 날짜 변경 후 리스트 갱신
 };
 
+const markList = () => {
+  console.log("전체 가게 리스트");
+
+  axios({
+    method: 'get',
+    url: `${store.state.apiBaseUrl}/api/marker`,
+    headers: { "Content-Type": "application/json; charset=utf-8" },
+    responseType: 'json'
+  }).then(response => {
+    console.log("전체 가게 리스트");
+    console.log(response.data.apiData);
+    addList.value = response.data.apiData;
+  }).catch(error => {
+    console.log(error);
+  });
+};
+
+
 onMounted(() => {
   getList();
+  markList();
 });
 </script>
