@@ -15,6 +15,20 @@
                     <li><router-link to="/reservationform">예약하기</router-link></li>
                 </ul>
 
+                <!-- <div class="popRank" v-if="popList.length > 0">
+                    <ul id="best_search">
+                        <li v-for="(popVo, i) in popList" :key="i">
+                            <dl :class="'time' + (i + 1)" v-show="i === viewcount">
+                                <dd>
+                                    <a class="t" href="#">
+                                        <div class="num">{{ i + 1 }}</div>
+                                        {{ popVo.title }}
+                                    </a>
+                                </dd>
+                            </dl>
+                        </li>
+                    </ul>
+                </div> -->
 
                 <div class="popRank">
                     <ul id="best_search">
@@ -99,53 +113,57 @@ let rtcarousel = null;
 
 // jQuery를 사용한 보기 전환
 function view(arg) {
-  $(".time1, .time2, .time3, .time4, .time5").css("display", "none");
-  if (arg === 0) {
-    $(".time1").css("display", "block");
-  } else if (arg === 1) {
-    $(".time2").css("display", "block");
-  } else if (arg === 2) {
-    $(".time3").css("display", "block");
-  } else if (arg === 3) {
-    $(".time4").css("display", "block");
-  }else if (arg === 4) {
-    $(".time5").css("display", "block");
-  }
+    $(".time1, .time2, .time3, .time4, .time5").css("display", "none");
+    if (arg === 0) {
+        $(".time1").css("display", "block");
+    } else if (arg === 1) {
+        $(".time2").css("display", "block");
+    } else if (arg === 2) {
+        $(".time3").css("display", "block");
+    } else if (arg === 3) {
+        $(".time4").css("display", "block");
+    } else if (arg === 4) {
+        $(".time5").css("display", "block");
+    }
 }
 
 // Carousel 시작
 function startCarousel() {
-  rtcarousel = setInterval(() => {
-    viewcount.value = (viewcount.value + 1) % 5;
-    view(viewcount.value);
-  }, 2000); // 여기서 3000 밀리초로 변경하여 전환 속도를 조절
+    rtcarousel = setInterval(() => {
+        viewcount.value = (viewcount.value + 1) % 5;
+        view(viewcount.value);
+    }, 2000); // 여기서 3000 밀리초로 변경하여 전환 속도를 조절
 }
 
 // Carousel 정지
 function stopCarousel() {
-  clearInterval(rtcarousel);
+    clearInterval(rtcarousel);
 }
 
 // 마운트 후 이벤트 설정
 onMounted(() => {
-  startCarousel();
-  $("#best_search").mouseenter(stopCarousel);
-  $("#best_search").mouseleave(startCarousel);
+    startCarousel();
+    $("#best_search").mouseenter(stopCarousel);
+    $("#best_search").mouseleave(startCarousel);
 });
 
 // 컴포넌트가 파괴되기 전 정리
 onBeforeUnmount(() => {
-  stopCarousel();
+    stopCarousel();
 });
 </script>
 
 <script>
 import "@/assets/css/headerFooter/aheader.css"
+import axios from 'axios';
+
 export default {
     name: "AppHeader",
     components: {},
     data() {
-        return {};
+        return {
+            popList: [],
+        };
     },
     methods: {
         // 로그아웃
@@ -169,7 +187,23 @@ export default {
                 this.$router.push(`/mypage/${this.$store.state.authUser.uNo}`); // 이미 로그인되어 있으면 마이페이지로 이동
             }
         },
+        getList() {
+            console.log("데이터 가져오기");
+            axios({
+                method: 'get',
+                url: `${this.$store.state.apiBaseUrl}/api/poprank`,
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                responseType: 'json'
+            }).then(response => {
+                console.log(response.data.apiData);
+                this.popList = response.data.apiData;
+            }).catch(error => {
+                console.log(error);
+            });
+        }
     },
-    created() { }
+    created() {
+        this.getList();
+    }
 };
 </script>
