@@ -19,6 +19,7 @@ import EditFormView from '@/views/edit/EditFormView.vue'
 import ScheduleView from '@/views/manager/ScheduleView.vue'
 import NaverLogin from '@/views/potal/NaverLogin.vue'
 import SearchMap from '@/views/potal/SearchMap.vue'
+import ReviewDetail from '@/views/mypage/ReviewDetails.vue'
 
 const routes = [
   {
@@ -120,6 +121,10 @@ const routes = [
     path: '/searchmap',
     name: 'searchmap',
     component: SearchMap
+  },{
+    path: '/reviewdetail/:rNo',
+    name: 'reviewdetail',
+    component: ReviewDetail
   }
 ]
 

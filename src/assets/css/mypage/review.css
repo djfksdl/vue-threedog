@@ -1,79 +1,69 @@
-#reviewCon {
+#reviewBoard {
     width: 1400px;
     margin: 0 auto;
 }
 
-#reviewCon h1 {
+#reviewBoard h1 {
     margin-bottom: 10px;
     padding-bottom: 20px;
     border-bottom: 1px solid #dddddd;
 }
-
-#reviewCon .filter {
-    text-align: end;
-    margin-right: 10px;
-}
-
-#reviewCon .filter button {
-    padding: 10px;
-    margin: 30px 5px 0px 0;
-    font-size: 16px;
-    background-color: white;
-    border: 1px solid #236C3F;
-    color: #236C3F;
-    border-radius: 10px;
-    font-weight: bold;
-}
-
-#reviewCon .filter button:hover {
-    background-color: #236C3F;
-    color: white;
-    cursor: pointer;
-}
-
-
-#reviewCon .reviewBox {
+.reviewBoardContainerButton{
     display: flex;
+}
+.reviewBoardContainerButton button{
+    /* font-size: 18px;     */
+    background-color: white;
+    border: none;
+    border-right: 1px solid #dddddd;
+    padding: 5px 25px ;
+}
+.reviewBoardContainerButton button:hover{
+    cursor: pointer;
+    background-color: #e2e2e2;
+}
+
+
+
+.reviewBoardContainer{
     margin-left: 50px;
-    /* justify-content: space-between; */
+    margin-top: 30px;
+    
 }
 
 .reviewCon03 {
     width: 1300px;
-    /* background-color: #efeeee; */
-    border-top: 1px solid gray;
-    border-bottom: 1px solid gray;
     display: flex;
-    font-size: 18px;
-    margin: 20px 0 20px 80px;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
+    box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1);
+}
+.reviewCon03:hover{
+    opacity: 0.9;
+    background-color: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    filter: brightness(0.8);
+    
 }
 
-.reviewCon03 .cutName {
-    font-weight: bold;
-    font-size: 25px;
-    width: 300px;
-    margin-top: 30px;
-    margin-left: 20px;
+.reviewBoardContainer img{
+    margin-left: 40px;
+    margin-top: 20px;
 }
 
-.reviewCon03 .cutInfor,
-.date {
-    margin-top: 10px;
-    margin-left: 20px;
+.reviewBoardContainer .reviewCon03 .star,
+.reviewBoardContainer .reviewCon03 .cutInfor,
+.reviewBoardContainer .reviewCon03 .views,
+.reviewBoardContainer .reviewCon03 .date
+{
+    color: gray;
+    padding-right: 50px;
+}
+.reviewBoardContainer .reviewCon03 .userId{
+    padding-left: 30px;
+    padding-right: 20px;
 }
 
-.reviewCon03 .mypetImgSlider img {
-    margin-top: 25px;
-    margin-left: 25px;
-    width: 300px;
-    height: 360px;
-    border-radius: 20px;
-}
 
-.reviewCon03 .context {
-    width: 900px;
-    margin: 20px 0 0 20px;
-    padding: 30px 0 0 20px;
-    border-top: 1px solid #dddddd;
+.reviewBoardContainer .reviewCon03 .context{
+    padding: 20px 0 0 30px;
 }

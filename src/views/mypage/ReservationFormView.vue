@@ -412,6 +412,7 @@ export default {
         return {
             selectedSize: '',   //소중대 크기
             reserveList: [],
+            // 고객
             reserveVo: {
                 rsNo: 0,
                 bNo: 0,
@@ -429,6 +430,7 @@ export default {
                 message: "",
                 curruntWeight: 0,
             },
+            // 사업자
             businessVo: {
                 saveName: "",
                 bNo: 1,
