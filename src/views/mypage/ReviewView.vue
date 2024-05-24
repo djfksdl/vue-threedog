@@ -21,7 +21,7 @@
                                     style="width: 100px; height: 100px; border-radius: 50%;">
                             </div>
                         </div>
-                        <div style="margin-top: 20px; ">
+                        <div style="margin-top: 20px;">
                             <div>
                                 <div style="display: flex; ">
                                     <div class="userId"><strong>작성자 </strong>님</div>
