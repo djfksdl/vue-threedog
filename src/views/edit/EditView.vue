@@ -362,7 +362,10 @@ import axios from 'axios';
                 subTitle: "",
                 logo: "",
                 utilTime: "",
-
+                dName:"",
+                introduce:"",
+                dProfile:"",
+                job:"",
             },
             priceList:[],
             additionalCharges: {}
@@ -370,16 +373,16 @@ import axios from 'axios';
            
        },
        computed: {
-            // 가격표 필터링
-            smallDogPrices() {
-                return this.priceList.filter(price => price.sizeDiv === '소형견');
-            },
-            mediumDogPrices() {
-                return this.priceList.filter(price => price.sizeDiv === '중형견');
-            },
-            specialDogPrices() {
-                return this.priceList.filter(price => price.sizeDiv === '특수견');
-            },
+            // // 가격표 필터링
+            // smallDogPrices() {
+            //     return this.priceList.filter(price => price.sizeDiv === '소형견');
+            // },
+            // mediumDogPrices() {
+            //     return this.priceList.filter(price => price.sizeDiv === '중형견');
+            // },
+            // specialDogPrices() {
+            //     return this.priceList.filter(price => price.sizeDiv === '특수견');
+            // },
             
         },
        setup() {
@@ -405,31 +408,37 @@ import axios from 'axios';
             });
         },
 
-        //가격표 불러오기
+        //가격정보 불러오기
         getPrice(){
-                // console.log("값 가져오기");
-                axios({
-                    method: 'get', // put, post, delete 
-                    url: `${this.$store.state.apiBaseUrl}/api/su/firstprice`,
-                    headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
-                    params: {bNo: this.bNo}, //get방식 파라미터로 값이 전달
-                    // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
-                    responseType: 'json' //수신타입
-                }).then(response => {
-                    console.log(response.data.apiData); //수신데이타
+            // console.log(this.bNo);
+            axios({
+                method: 'get', // put, post, delete 
+                url: `${this.$store.state.apiBaseUrl}/api/su/getPriceBybNo`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: {bNo: this.bNo}, //get방식 파라미터로 값이 전달
+                // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+                responseType: 'json' //수신타입
+            }).then(response => {
+                // console.log(response.data.apiData); //수신데이타
 
-                    this.priceList = response.data.apiData;
+                // 필요한 요소 개수 (여기서는 65개로 가정) - length만큼 onePrice를 초기화애야함.
+                    const requiredLength = 65;
 
-                    // 추가요금 데이터 설정 - priceList안에 있는 값 쓸 수 있도록
-                    const additionalCharges = this.priceList.find(price => price.sizeDiv === '추가요금');
-                    if (additionalCharges) {
-                        this.additionalCharges = additionalCharges;
-                    }
+                // pList가 비어 있는 경우
+                if (!response.data.apiData || response.data.apiData.length === 0) {
+                    // beautyNo를 1부터 시작하여 +1씩 증가하며 priceList 초기화
+                    this.priceList = Array.from({ length: requiredLength }, (_, index) => ({ beautyNo: index + 1, onePrice: 0 }));
+                } else {
+                    // priceList의 각 요소가 onePrice 프로퍼티를 가지도록 초기화
+                    const receivedList = response.data.apiData.map(item => ({ beautyNo: item.beautyNo, onePrice: item.onePrice }));
+                    // 필요한 길이만큼 초기화
+                    this.priceList = [...receivedList, ...Array.from({ length: requiredLength - receivedList.length }, (_, index) => ({ beautyNo: receivedList.length + index + 1, onePrice: 0 }))];
+                }
 
-                }).catch(error => {
-                    console.log(error);
-                });
-            },
+            }).catch(error => {
+                console.log(error);
+            });
+        },
         
         
   

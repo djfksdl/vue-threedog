@@ -1,338 +1,334 @@
 <template>
-    <!-- 첨부파일 2개 완료! -->
-    <div id="wrap">
-        <ManagerHeader />
-          <div class="container3">
+    <form v-on:submit="addShopInfo" enctype="multipart/form-data">
+        <div id="wrap">
+            <ManagerHeader />
+            <div class="container3">
 
-            <!-- 로고 + 타이틀 등록 -->
-            <div class="eLogoTitle">
-                <h1>로고, 타이틀 등록</h1>
-                <!-- 로고 -->
-                <div class="eLogoTitleInfo">
-                    <div class="eLogo">
-                        <div id='att_zone4' class="addLImgBox" data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
-                            <input id="btnAtt4" type="file" class="eFileAddBtn">
-                        </div>
-                    <!-- 타이틀 -->
-                    <div class="eTitle">
-                        <input type="text" placeholder="타이틀">
-                        <input type="text" placeholder="부제목 들어갈 곳">
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 내용부분 -->
-            <div class="eMidContainer">
-
-                <!-- 이미지 슬라이드 첨부파일 -->
-                <div class="eSlideImgContainer">
-                    <h1>슬라이드 사진등록</h1>
-                    <div class="eSlideImgInfo">
-                        <input id="btnAtt" type="file" multiple='multiple' class="eFileAddBtn" >
-                        <p>*사진은 최대 5장까지 첨부할 수 있습니다.</p>
-                    </div>
-                    <div id='att_zone' class="addImgBox" data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
-                </div>
-
-                <!-- 미용사진 슬라이드 첨부파일 -->
-                <div class="eCutImgContainer">
-                    <h1>미용사진 등록</h1>
-                    <div class="eCutSlideImgInfo">
-                        <input id="btnAtt2" type="file" multiple='multiple' class="eCutFileAddBtn" >
-                        <p>*사진은 최대 20장까지 첨부할 수 있습니다.</p>
-                    </div>
-                    <div id='att_zone2' class="addcImgBox" data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
-                </div>
-
-                <!-- 디자이너 소개 -->
-                <div class="eDesignerSlideContainer">
-                    <h1>디자이너 소개</h1>
-                    <div class="eDesignerContentsBox">
-                        <!-- 디자이너소개 왼쪽 -->
-                        <div class="eDLeftBox">
-                            <div class="eNameBox">
-                                <label>이름:</label>
-                                <input type="text" placeholder="이름을 입력하세요">
+                <!-- 로고 + 타이틀 등록 -->
+                <div class="eLogoTitle">
+                    <h1>로고, 타이틀 등록</h1>
+                    <!-- 로고 -->
+                    <div class="eLogoTitleInfo">
+                        <div class="eLogo">
+                            <div id='att_zone4' class="addLImgBox" data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
+                                <input id="btnAtt4" type="file" class="eFileAddBtn">
                             </div>
-                            <div class="eJobBox">
-                                <label>직책:</label>
-                                <input type="text" placeholder="ex)원장">
-                            </div>
-                            <!-- <h2>이서현 원장</h2> -->
-                            <div class="eCareerBox">
-                                <!-- <h3>경력</h3> -->
-                                <label>경력:</label>
-                                <textarea class="eCareerBoxInfo" placeholder="ex)-2000년 애견미용강사&#10;   -2002년 '깔끔하개' 개원"></textarea>
-                            </div>
-                        </div>
-                        <!-- 디자이너소개 오른쪽 -->
-                        <div class="edRightBox">
-                            <div id='att_zone3' class="addDImgBox" data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
-                            <input id="btnAtt3" type="file" class="eFileAddBtn">
+                        <!-- 타이틀 -->
+                        <div class="eTitle">
+                            <input type="text" placeholder="타이틀" v-model="shopInfo.title">
+                            <input type="text" placeholder="부제목 들어갈 곳" v-model="shopInfo.subTitle">
                         </div>
                     </div>
                 </div>
+                
+                <!-- 내용부분 -->
+                <div class="eMidContainer">
 
-                <!-- 가격 + 후기 -->
-                <div class="ePriceReviewContainer">
-                    <!-- 가격 -->
-                    <div class="ePriceBox">
-                        <h1>가격</h1>
-                        <table border="1">
-                            <!-- 소형견 -->
-                            <tr>
-                                <th colspan="7" class="eNonBorder">소형견(말티즈, 요크셔, 시츄, 푸들 등...)</th>
-                            </tr>
-                            <tr>
-                                <th >몸무게</th>
-                                <th>목욕</th>
-                                <th>부분</th>
-                                <th>목욕+부분</th>
-                                <th>얼굴+부분+목욕</th>
-                                <th colspan="2">기본전체미용</th>
-                            </tr>
-                            <!-- smallDogPrices가 비어있는 경우 -->
-                            <template v-if="smallDogPrices.length === 0">
-                                <tr v-for="(inventory, index) in smallDogInventoryList" :key="index">
-                                    <th>{{ inventory.weightDiv }}</th>
-                                    <!-- 여기도 포문으로 돌려야함. beauty로 꺼내면 됨. -->
-                                    <td><input type="text" v-model="inventory.목욕"></td>
-                                    <td><input type="text" v-model="inventory.부분"></td>
-                                    <td><input type="text" v-model="inventory.목욕_부분"></td>
-                                    <td><input type="text" v-model="inventory.얼굴_부분_목욕"></td>
-                                    <td colspan="2"><input type="text" v-model="inventory.기본전체미용"></td>
-                                </tr>
-                            </template>
-                            <!-- smallDogPrices가 있는 경우 -->
-                            <tr v-else v-for="(price, index) in smallDogPrices" :key="index">
-                                <th>{{ price.weightDiv }}</th>
-                                <td><input type="text" v-model="price.목욕"></td>
-                                <td><input type="text" v-model="price.부분"></td>
-                                <td><input type="text" v-model="price.목욕_부분"></td>
-                                <td><input type="text" v-model="price.얼굴_부분_목욕"></td>
-                                <td colspan="2"><input type="text" v-model="price.기본전체미용"></td>
-                            </tr>
-                        
-                            <!-- 중형견 -->
-                            <tr>
-                                <th colspan="7" class="eNonBorder">중형견(슈나, 코카 등...)</th>
-                            </tr>
-                            <tr v-if="!mediumDogPrices.length">
-                                <th>5kg이하</th>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td colspan="2"><input type="text"></td>
-                            </tr>
-                            <tr v-if="!mediumDogPrices.length">
-                                <th>5kg~8kg</th>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td colspan="2"><input type="text"></td>
-                            </tr>
-                            <tr v-if="!mediumDogPrices.length">
-                                <th>8kg~10kg</th>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td colspan="2"><input type="text"></td>
-                            </tr>
-                            <tr v-if="!mediumDogPrices.length">
-                                <th>10kg~12kg</th>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td colspan="2"><input type="text"></td>
-                            </tr>
-                            <tr v-if="!mediumDogPrices.length">
-                                <th>12kg이상</th>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td colspan="2"><input type="text"></td>
-                            </tr>
-                            <tr v-else v-for="(price, index) in mediumDogPrices" :key="index">
-                                <th>{{ price.weightDiv }}</th>
-                                <td><input type="text" v-model="price.목욕"></td>
-                                <td><input type="text" v-model="price.부분"></td>
-                                <td><input type="text" v-model="price.목욕_부분"></td>
-                                <td><input type="text" v-model="price.얼굴_부분_목욕"></td>
-                                <td colspan="2"><input type="text" v-model="price.기본전체미용"></td>
-                            </tr>
-                            <!-- 특수견 -->
-                            <tr>
-                                <th colspan="7" class="eNonBorder">특수견(비숑. 베들링턴 등...)</th>
-                            </tr>
-                            <tr>
-                                <th>몸무게</th>
-                                <th>목욕</th>
-                                <th>부분</th>
-                                <th>목욕+부분</th>
-                                <th>얼굴+부분+목욕</th>
-                                <th>스포팅</th>
-                                <th>가위컷</th>
-                            </tr>
-                            <tr v-if="!specialDogPrices.length">
-                                <th>5kg이하</th>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td colspan="2"><input type="text"></td>
-                            </tr>
-                            <tr v-if="!specialDogPrices.length">
-                                <th>5kg~8kg</th>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td colspan="2"><input type="text"></td>
-                            </tr>
-                            <tr v-if="!specialDogPrices.length">
-                                <th>8kg이상</th>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
-                                <td colspan="2"><input type="text"></td>
-                            </tr>
-                            <tr v-else v-for="(price, index) in specialDogPrices" :key="index">
-                                <th>{{ price.weightDiv }}</th>
-                                <td><input type="text" v-model="price.목욕"></td>
-                                <td><input type="text" v-model="price.부분"></td>
-                                <td><input type="text" v-model="price.목욕_부분"></td>
-                                <td><input type="text" v-model="price.얼굴_부분_목욕"></td>
-                                <td><input type="text" v-model="price.스포팅"></td>
-                                <td><input type="text" v-model="price.가위컷"></td>
-                            </tr>
-                            <!-- 추가요금 -->
-                            <tr>
-                                <th colspan="7">&nbsp;</th>
-                            </tr>
-                            <tr>
-                                <th rowspan="4" class="eNonBorder2">추가요금</th>
-                                <th>가위컷</th>
-                                <td><input type="text" v-model="additionalCharges.컷"></td>
-                                <th>특수얼굴컷</th>
-                                <td colspan="3"><input type="text" v-model="additionalCharges.특수얼굴컷"></td>
-                            </tr>
-                            <tr>
-                                <th>엉킴</th>
-                                <td><input type="text" v-model="additionalCharges.엉킴"></td>
-                                <th>투톤염색</th>
-                                <td colspan="3"><input type="text" v-model="additionalCharges.투톤염색"></td>
-                            </tr>
-                            <tr>
-                                <th>기장</th>
-                                <td><input type="text" v-model="additionalCharges.기장"></td>
-                                <th>염색</th>
-                                <td colspan="3"><input type="text" v-model="additionalCharges.염색"></td>
-                            </tr>
-                        </table>
-                    </div>
-                    <!-- 후기 -->
-                    <div class="eReviewBox">
-                        <div class="eReviewBoxTitle">
-                            <h1>후기</h1>
-                            <!-- <router-link to="" >더보기 +</router-link> -->
+                    <!-- 이미지 슬라이드 첨부파일 -->
+                    <div class="eSlideImgContainer">
+                        <h1>슬라이드 사진등록</h1>
+                        <div class="eSlideImgInfo">
+                            <input id="btnAtt" type="file" multiple='multiple' class="eFileAddBtn" >
+                            <p>*사진은 최대 5장까지 첨부할 수 있습니다.</p>
                         </div>
-                        <!-- 후기 슬라이드 -->
-                        <div class="eReviewSlide">
-                            <div class="eReviewSlideContentBox">
-                               <p>후기 슬라이드 들어갈 곳</p>
-                            </div>
-                        </div>
+                        <div id='att_zone' class="addImgBox" data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
                     </div>
-                </div>
 
-                <!-- 위치  -->
-                <div class="ePositionContainer">
-                    <h1>위치</h1>
-                    <div class="ePositionBox">
+                    <!-- 미용사진 슬라이드 첨부파일 -->
+                    <div class="eCutImgContainer">
+                        <h1>미용사진 등록</h1>
+                        <div class="eCutSlideImgInfo">
+                            <input id="btnAtt2" type="file" multiple='multiple' class="eCutFileAddBtn" >
+                            <p>*사진은 최대 20장까지 첨부할 수 있습니다.</p>
+                        </div>
+                        <div id='att_zone2' class="addcImgBox" data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
+                    </div>
 
-                        <!-- 위치 왼쪽 -->
-                        <div class="ePositionLeft">
-
-                            <!-- 이용시간 -->
-                            <div class="eTime">
-
-                                <!-- 이용시간-왼쪽 -->
-                                <div class="eTimeLeft">
-                                    <h3>이용시간</h3>
+                    <!-- 디자이너 소개 -->
+                    <div class="eDesignerSlideContainer">
+                        <h1>디자이너 소개</h1>
+                        <div class="eDesignerContentsBox">
+                            <!-- 디자이너소개 왼쪽 -->
+                            <div class="eDLeftBox">
+                                <div class="eNameBox">
+                                    <label>이름:</label>
+                                    <input type="text" placeholder="이름을 입력하세요" v-model="shopInfo.dName">
                                 </div>
-                                <!-- 이용시간-오른쪽 -->
-                                <div class="eTimeRight">
-                                    <div class="eTimeRightTitle">
-                                        <p>평일</p>
-                                        <p>토요일</p>
-                                        <p>점심시간</p>
-                                        <p>공휴일/주말</p>
+                                <div class="eJobBox">
+                                    <label>직책:</label>
+                                    <input type="text" placeholder="ex)원장" v-model="shopInfo.job">
+                                </div>
+                                <!-- <h2>이서현 원장</h2> -->
+                                <div class="eCareerBox">
+                                    <!-- <h3>경력</h3> -->
+                                    <label>경력:</label>
+                                    <textarea class="eCareerBoxInfo" placeholder="ex)-2000년 애견미용강사&#10;   -2002년 '깔끔하개' 개원" v-model="shopInfo.introduce"></textarea>
+                                </div>
+                            </div>
+                            <!-- 디자이너소개 오른쪽 -->
+                            <div class="edRightBox">
+                                <div id='att_zone3' class="addDImgBox" data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
+                                <input id="btnAtt3" type="file" class="eFileAddBtn">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 가격 + 후기 -->
+                    <div class="ePriceReviewContainer">
+                        <!-- 가격 -->
+                        <div class="ePriceBox" v-if="priceList.length >= 65">
+                            <h1>가격</h1>
+                            <table border="1">
+                                <!-- 소형견 -->
+                                <tr>
+                                    <th colspan="7" class="eNonBorder">소형견(말티즈, 요크셔, 시츄, 푸들 등...)</th>
+                                </tr>
+                                <tr>
+                                    <th>몸무게</th>
+                                    <th>목욕</th>
+                                    <th>부분</th>
+                                    <th>목욕+부분</th>
+                                    <th>얼굴+부분+목욕</th>
+                                    <th colspan="2">기본전체미용</th>
+                                </tr>
+                                <tr>
+                                    <th>2kg이하</th>
+                                    <td><input type="text" v-model="priceList[0].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[1].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[2].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[3].onePrice"></td>
+                                    <td colspan="2"><input type="text" v-model="priceList[4].onePrice"></td>
+                                </tr>
+                                <tr>
+                                    <th>2kg~5kg</th>
+                                    <td><input type="text" v-model="priceList[5].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[6].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[7].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[8].onePrice"></td>
+                                    <td colspan="2"><input type="text" v-model="priceList[9].onePrice"></td>
+                                </tr>
+                                <tr>
+                                    <th>5kg~8kg</th>
+                                    <td><input type="text" v-model="priceList[10].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[11].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[12].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[13].onePrice"></td>
+                                    <td colspan="2"><input type="text" v-model="priceList[14].onePrice"></td>
+                                </tr>
+                                <tr>
+                                    <th>8kg~10kg</th>
+                                    <td><input type="text" v-model="priceList[15].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[16].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[17].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[18].onePrice"></td>
+                                    <td colspan="2"><input type="text" v-model="priceList[19].onePrice"></td>
+                                </tr>
+                            
+                                <!-- 중형견 -->
+                                <tr>
+                                    <th colspan="7" class="eNonBorder">중형견(슈나, 코카 등...)</th>
+                                </tr>
+                                <tr>
+                                    <th>5kg이하</th>
+                                    <td><input type="text" v-model="priceList[20].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[21].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[22].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[23].onePrice"></td>
+                                    <td colspan="2"><input type="text" v-model="priceList[24].onePrice"></td>
+                                </tr>
+                                <tr>
+                                    <th>5kg~8kg</th>
+                                    <td><input type="text" v-model="priceList[25].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[26].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[27].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[28].onePrice"></td>
+                                    <td colspan="2"><input type="text" v-model="priceList[29].onePrice"></td>
+                                </tr>
+                                <tr >
+                                    <th>8kg~10kg</th>
+                                    <td><input type="text" v-model="priceList[30].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[31].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[32].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[33].onePrice"></td>
+                                    <td colspan="2"><input type="text" v-model="priceList[34].onePrice"></td>
+                                </tr>
+                                <tr>
+                                    <th>10kg~12kg</th>
+                                    <td><input type="text" v-model="priceList[35].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[36].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[37].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[38].onePrice"></td>
+                                    <td colspan="2"><input type="text" v-model="priceList[39].onePrice"></td>
+                                </tr>
+                                <tr >
+                                    <th>12kg이상</th>
+                                    <td colspan="6">초과 lkg당 <input type="text" v-model="priceList[40].onePrice">원 추가</td>
+                                </tr>
+                                <!-- 특수견 -->
+                                <tr>
+                                    <th colspan="7" class="eNonBorder">특수견(비숑. 베들링턴 등...)</th>
+                                </tr>
+                                <tr>
+                                    <th>몸무게</th>
+                                    <th>목욕</th>
+                                    <th>부분</th>
+                                    <th>목욕+부분</th>
+                                    <th>얼굴+부분+목욕</th>
+                                    <th>스포팅</th>
+                                    <th>가위컷</th>
+                                </tr>
+                                <tr>
+                                    <th>5kg이하</th>
+                                    <td><input type="text" v-model="priceList[41].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[42].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[43].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[44].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[45].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[46].onePrice"></td>
+                                </tr>
+                                <tr >
+                                    <th>5kg~8kg</th>
+                                    <td><input type="text" v-model="priceList[47].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[48].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[49].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[50].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[51].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[52].onePrice"></td>
+                                </tr>
+                                <tr >
+                                    <th>8kg이상</th>
+                                    <td><input type="text" v-model="priceList[53].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[54].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[55].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[56].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[57].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[58].onePrice"></td>
+                                </tr>
+                                <!-- 추가요금 -->
+                                <tr>
+                                    <th colspan="7">&nbsp;</th>
+                                </tr>
+                                <tr>
+                                    <th rowspan="4" colspan="2" class="eNonBorder2">추가요금</th>
+                                    <th>가위컷</th>
+                                    <td><input type="text" v-model="priceList[59].onePrice"></td>
+                                    <th>특수얼굴컷</th>
+                                    <td colspan="2"><input type="text" v-model="priceList[62].onePrice"></td>
+                                </tr>
+                                <tr>
+                                    <th>엉킴</th>
+                                    <td><input type="text" v-model="priceList[60].onePrice"></td>
+                                    <th>투톤염색</th>
+                                    <td colspan="2"><input type="text" v-model="priceList[63].onePrice"></td>
+                                </tr>
+                                <tr>
+                                    <th>기장</th>
+                                    <td><input type="text" v-model="priceList[61].onePrice"></td>
+                                    <th>염색</th>
+                                    <td colspan="2"><input type="text" v-model="priceList[64].onePrice"></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- 후기 -->
+                        <div class="eReviewBox">
+                            <div class="eReviewBoxTitle">
+                                <h1>후기</h1>
+                                <!-- <router-link to="" >더보기 +</router-link> -->
+                            </div>
+                            <!-- 후기 슬라이드 -->
+                            <div class="eReviewSlide">
+                                <div class="eReviewSlideContentBox">
+                                <p>후기 슬라이드 들어갈 곳</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 위치  -->
+                    <div class="ePositionContainer">
+                        <h1>위치</h1>
+                        <div class="ePositionBox">
+
+                            <!-- 위치 왼쪽 -->
+                            <div class="ePositionLeft">
+
+                                <!-- 이용시간 -->
+                                <div class="eTime">
+
+                                    <!-- 이용시간-왼쪽 -->
+                                    <div class="eTimeLeft">
+                                        <h3>이용시간</h3>
                                     </div>
-                                    <div class="eTimeRightContents">
-                                        <textarea placeholder="ex)am 9:00~ pm18:00&#10;   am 9:00~ pm15:00&#10;   pm 12:00~ pm13:00&#10;   영업종료"></textarea>
+                                    <!-- 이용시간-오른쪽 -->
+                                    <div class="eTimeRight">
+                                        <div class="eTimeRightTitle">
+                                            <p>평일</p>
+                                            <p>토요일</p>
+                                            <p>점심시간</p>
+                                            <p>공휴일/주말</p>
+                                        </div>
+                                        <div class="eTimeRightContents">
+                                            <textarea placeholder="ex)am 9:00~ pm18:00&#10;   am 9:00~ pm15:00&#10;   pm 12:00~ pm13:00&#10;   영업종료" v-model="shopInfo.utilTime"></textarea>
+                                            
+                                        </div>
                                         
                                     </div>
-                                    
+                                </div>
+
+                                <!-- 오시는길 -->
+                                <div class="eRoad">
+                                    <!-- 오시는길-왼쪽 -->
+                                    <div class="eRoadLeft">
+                                        <h3>오시는길</h3>
+                                    </div>
+                                    <!-- 오시는길-오른쪽 -->
+                                    <div class="eRoadRight">
+                                        <div class="eRoadRightContents">
+                                            <p>{{ shopInfo.bAddress }} {{ shopInfo.bdAddress}} ({{ shopInfo.bZipCode }})</p>
+                                        </div>
+                                        <div class="eRoadRightBtnBox">
+                                            <button class="kakaoMapBtn">카카오 지도보기</button>
+                                            <button class="naverMapBtn">네이버 지도보기</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 미용예약 -->
+                                <div class="eReserv">
+                                    <!-- 미용예약-왼쪽 -->
+                                    <div class="eReservLeft">
+                                        <h3>예약문의</h3>
+                                    </div>
+                                    <!-- 미용예약-오른쪽 -->
+                                    <div class="eReservRight">
+                                        <div>
+                                            <p class="eReservTel">{{ shopInfo.bPhone}}</p>
+                                        </div>
+                                        <div class="eReservBtnBox">
+                                            <router-link to="/reservationform" class="eReservBtn">예약하러 가기</router-link>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <!-- 오시는길 -->
-                            <div class="eRoad">
-                                <!-- 오시는길-왼쪽 -->
-                                <div class="eRoadLeft">
-                                    <h3>오시는길</h3>
-                                </div>
-                                <!-- 오시는길-오른쪽 -->
-                                <div class="eRoadRight">
-                                    <div class="eRoadRightContents">
-                                        <p>{{ shopInfo.bAddress }} {{ shopInfo.bdAddress}} ({{ shopInfo.bZipCode }})</p>
-                                    </div>
-                                    <div class="eRoadRightBtnBox">
-                                        <button class="kakaoMapBtn">카카오 지도보기</button>
-                                        <button class="naverMapBtn">네이버 지도보기</button>
-                                    </div>
-                                </div>
+                            <!-- 위치 오른쪽 -->
+                            <div class="ePositionLRight">
+                                <!-- <img src="@/assets/images/eMap.png"> -->
+                                <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true" style="width: 636px; height: 410px;">
+                                    <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
+                                </KakaoMap>
                             </div>
-
-                            <!-- 미용예약 -->
-                            <div class="eReserv">
-                                <!-- 미용예약-왼쪽 -->
-                                <div class="eReservLeft">
-                                    <h3>예약문의</h3>
-                                </div>
-                                <!-- 미용예약-오른쪽 -->
-                                <div class="eReservRight">
-                                    <div>
-                                        <p class="eReservTel">{{ shopInfo.bPhone}}</p>
-                                    </div>
-                                    <div class="eReservBtnBox">
-                                        <router-link to="/reservationform" class="eReservBtn">예약하러 가기</router-link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 위치 오른쪽 -->
-                        <div class="ePositionLRight">
-                            <!-- <img src="@/assets/images/eMap.png"> -->
-                            <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true" style="width: 636px; height: 410px;">
-                                <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
-                            </KakaoMap>
                         </div>
                     </div>
+
+                    <!-- 등록 버튼 -->
+                    <button type="submit">가게정보 등록 버튼</button>
                 </div>
             </div>
-          </div>
-        <TopButton />  
-        <ManagerFooter />  
-    </div><!-- wrap --> 
-
+            <TopButton />  
+            <ManagerFooter />  
+        </div><!-- wrap --> 
+    </form>
     <!-- 모달창 -->
 
 
@@ -399,9 +395,6 @@ import { useRoute } from 'vue-router';
         data() {
             return{
                 bNo: this.$route.params.bNo,
-                priceList:[],
-                inventoryList:[],
-                additionalCharges: {},
                 shopInfo: {
                     bZipCode: "",
                     bAddress: "",
@@ -411,68 +404,24 @@ import { useRoute } from 'vue-router';
                     subTitle: "",
                     logo: "",
                     utilTime: "",
+                    dName:"",
+                    introduce:"",
+                    dProfile:"",
+                    job:"",
                 },
+                priceList:[],
+                images:[]
                 
 
             }
         },
         computed: {
-            // 사이즈별 가격표 필터링
-            smallDogPrices() {
-                return this.priceList.filter(price => price.sizeDiv === '소형견');
-            },
-            mediumDogPrices() {
-                return this.priceList.filter(price => price.sizeDiv === '중형견');
-            },
-            specialDogPrices() {
-                return this.priceList.filter(price => price.sizeDiv === '특수견');
-            },
-            //사이즈별 상품목록 필터링
-            smallDogInventoryList() {
-                return this.inventoryList.filter(item => item.sizeDiv === '소형견');
-            },
-            mediumDogInventoryList() {
-                return this.inventoryList.filter(item => item.sizeDiv === '중형견');
-            },
-            specialDogInventoryList() {
-                return this.inventoryList.filter(item => item.sizeDiv === '특수견');
-            }
+
             
         },
         methods: {
 
-            //가격표 불러오기 + 상품목록 불러오기
-            getPrice(){
-                // console.log("값 가져오기");
-                axios({
-                    method: 'get', // put, post, delete 
-                    url: `${this.$store.state.apiBaseUrl}/api/su/firstprice`,
-                    headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
-                    params: {bNo: this.bNo}, //get방식 파라미터로 값이 전달
-                    // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
-                    responseType: 'json' //수신타입
-                }).then(response => {
-                    console.log(response.data.apiData); //수신데이타
-                    console.log("이건 가격:")
-                    console.log(response.data.apiData.pList); //수신데이타
-                    console.log("이건 상품목록:")
-                    console.log(response.data.apiData.inventoryList); //수신데이타
-
-                    this.priceList = response.data.apiData.pList;
-                    this.inventoryList = response.data.apiData.inventoryList;
-
-                    // 추가요금 데이터 설정 - priceList안에 있는 값 쓸 수 있도록
-                    const additionalCharges = this.priceList.find(price => price.sizeDiv === '추가요금');
-                    if (additionalCharges) {
-                        this.additionalCharges = additionalCharges;
-                    }
-
-                }).catch(error => {
-                    console.log(error);
-                });
-            },
-
-            // 가게 정보 불러오기
+            // 가게정보 불러오기
             getShopInfo(){
                 // console.log(this.bNo);
                 axios({
@@ -490,14 +439,75 @@ import { useRoute } from 'vue-router';
                     console.log(error);
                 });
             },
+
+            //가격정보 불러오기
+            getPrice(){
+                // console.log(this.bNo);
+                axios({
+                    method: 'get', // put, post, delete 
+                    url: `${this.$store.state.apiBaseUrl}/api/su/getPriceBybNo`,
+                    headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                    params: {bNo: this.bNo}, //get방식 파라미터로 값이 전달
+                    // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+                    responseType: 'json' //수신타입
+                }).then(response => {
+                    // console.log(response.data.apiData); //수신데이타
+
+                    // 필요한 요소 개수 (여기서는 65개로 가정) - length만큼 onePrice를 초기화애야함.
+                        const requiredLength = 65;
+
+                    // pList가 비어 있는 경우
+                    if (!response.data.apiData || response.data.apiData.length === 0) {
+                        // beautyNo를 1부터 시작하여 +1씩 증가하며 priceList 초기화
+                        this.priceList = Array.from({ length: requiredLength }, (_, index) => ({ beautyNo: index + 1, onePrice: 0 }));
+                    } else {
+                        // priceList의 각 요소가 onePrice 프로퍼티를 가지도록 초기화
+                        const receivedList = response.data.apiData.map(item => ({ beautyNo: item.beautyNo, onePrice: item.onePrice }));
+                        // 필요한 길이만큼 초기화
+                        this.priceList = [...receivedList, ...Array.from({ length: requiredLength - receivedList.length }, (_, index) => ({ beautyNo: receivedList.length + index + 1, onePrice: 0 }))];
+                    }
+
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
+            // 가게정보 등록하기
+            addShopInfo(){
+                // console.log("가게정보 등록하기 버튼");
+                let formData = new FormData();
+
+                formData.append()
+
+
+                axios({
+                    method: 'post', // put, post, delete 
+                    url: `${this.$store.state.apiBaseUrl}/api/su/registerShop`,
+                    headers: { "Content-Type": "multipart/form-data" }, //전송타입
+                    // params: {bNo: this.bNo}, //get방식 파라미터로 값이 전달
+                    data: formData, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+                    responseType: 'json' //수신타입
+                }).then(response => {
+
+                    if (response.data.apiData == 1) {
+                        alert("홈페이지가 성공적으로 만들어졌습니다.");
+                        this.$router.push(`/edit/${this.bNo}`);
+                    } else {
+                        alert("정보를 다시 확인해주세요.");
+                    }
+                    
+
+                }).catch(error => {
+                    console.log(error);
+                });
+            }
   
         },
         created(){
-            this.getPrice();
+
             this.getShopInfo();
+            this.getPrice();
         },
         mounted() {
-
             // ==========가게 로고 1개 첨부파일==========
             (function imageView(att_zone4, btn) {
                 var attZone = document.getElementById(att_zone4);
