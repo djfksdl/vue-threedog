@@ -90,6 +90,7 @@ export default {
                 rDate: "",
                 file: [],
                 imgCount:0,
+                rsNo:10,
             },
             userPoint:1000,
             byteCount: 0, // 후기내용의 바이트수
@@ -124,7 +125,8 @@ export default {
             formData.append('uNo', this.reviewVo.uNo);
             formData.append('rDate', this.reviewVo.rDate);
             formData.append('userPoint',this.userPoint);
-
+            formData.append('rsNo',this.reviewVo.rsNo);
+            
             for (let i = 0; i < this.images.length; i++) {
                 formData.append('file',this.images[i]);
             }
