@@ -13,15 +13,11 @@
 
       <div id="map-search">
         <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true"
-          style="width: 1370px; height: 494px; margin-left: 20px;">
+          style="width: 1370px; height: 494pxpx; margin-left: 20px;">
+          <!-- addList 배열에 있는 각 가게에 대해 반복하여 마커를 표시합니다 -->
           <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
           <KakaoMapMarker v-for="(store, index) in addList" :key="index" :lat="store.latitude" :lng="store.longitude">
           </KakaoMapMarker>
-          <template #infoWindowTemplate="{ marker }">
-            <div class="info-window">
-              <h3>{{ marker.title }}</h3>
-            </div>
-          </template>
         </KakaoMap>
         <DatePicker02 @selectedDate="handleDateChange" @customAction="getList" />
       </div>
