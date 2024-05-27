@@ -20,7 +20,8 @@
 import { defineComponent, ref } from "vue";
 import { Carousel, Slide } from "vue3-carousel";
 import img1 from "@/assets/images/main-slide.png";
-import img2 from "@/assets/images/dog.jpg";
+import img2 from "@/assets/images/002.png";
+import img3 from "@/assets/images/003.png";
 
 import "vue3-carousel/dist/carousel.css";
 
@@ -31,7 +32,7 @@ export default defineComponent({
     Slide,
   },
   setup() {
-    const slides = ref([img1, img2]);
+    const slides = ref([img1, img2, img3]);
     const carouselRef = ref(null);
 
     const nextSlide = () => {
