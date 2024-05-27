@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, reactive, onMounted, watch } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
@@ -55,7 +55,7 @@ import "@/assets/css/potal/searchmap.css";
 
 const route = useRoute();
 const store = useStore();
-const storeList = ref([]);
+const storeList = reactive([]);
 const coordinate = ref({
   lat: 37.5535,
   lng: 126.9715
@@ -169,7 +169,7 @@ const markList = () => {
     headers: { "Content-Type": "application/json; charset=utf-8" },
     responseType: 'json'
   }).then(response => {
-    console.log("전체 가게 리스트");
+    console.log("=========================");
     console.log(response.data.apiData);
     addList.value = response.data.apiData;
   }).catch(error => {

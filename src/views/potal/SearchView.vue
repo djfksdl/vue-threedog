@@ -6,7 +6,7 @@
         <div class="search-search-input">
           <input type="text" class="search-input-search" placeholder="검색어를 입력하세요">
         </div>
-        <button class="search-button">검색</button>
+        <button class="search-button" @click="searchList">검색</button>
       </div>
       <div class="search-select">
         <table class="search-table">
@@ -40,6 +40,28 @@
                         v-if="selectedCities.includes('전남')" @click="cancelCity('전남')">X</span></li>
                     <li @click="toggleCity('제주')" :class="{ 'selected': selectedCities.includes('제주') }">제주 <span
                         v-if="selectedCities.includes('제주')" @click="cancelCity('제주')">X</span></li>
+                  </ul>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="search-category">
+                <div class="location-box">
+                  <div>종류</div>
+                </div>
+              </td>
+              <td>
+                <div class="city-box">
+                  <ul class="city-list">
+                    <li @click="toggleType('소형견')" :class="{ 'selected': selectedTypes.includes('소형견') }">소형견 &nbsp;
+                      <span v-if="selectedTypes.includes('소형견')" class="cancel-btn" @click="cancelType('소형견')">X</span>
+                    </li>
+                    <li @click="toggleType('중형견')" :class="{ 'selected': selectedTypes.includes('중형견') }">중형견 &nbsp;
+                      <span v-if="selectedTypes.includes('중형견')" class="cancel-btn" @click="cancelType('중형견')">X</span>
+                    </li>
+                    <li @click="toggleType('특수견')" :class="{ 'selected': selectedTypes.includes('특수견') }">특수견 &nbsp;
+                      <span v-if="selectedTypes.includes('특수견')" class="cancel-btn" @click="cancelType('특수견')">X</span>
+                    </li>
                   </ul>
                 </div>
               </td>
@@ -85,28 +107,6 @@
             <tr>
               <td class="search-category">
                 <div class="location-box">
-                  <div>종류</div>
-                </div>
-              </td>
-              <td>
-                <div class="city-box">
-                  <ul class="city-list">
-                    <li @click="toggleType('소형견')" :class="{ 'selected': selectedTypes.includes('소형견') }">소형견 &nbsp;
-                      <span v-if="selectedTypes.includes('소형견')" class="cancel-btn" @click="cancelType('소형견')">X</span>
-                    </li>
-                    <li @click="toggleType('중형견')" :class="{ 'selected': selectedTypes.includes('중형견') }">중형견 &nbsp;
-                      <span v-if="selectedTypes.includes('중형견')" class="cancel-btn" @click="cancelType('중형견')">X</span>
-                    </li>
-                    <li @click="toggleType('특수견')" :class="{ 'selected': selectedTypes.includes('특수견') }">특수견 &nbsp;
-                      <span v-if="selectedTypes.includes('특수견')" class="cancel-btn" @click="cancelType('특수견')">X</span>
-                    </li>
-                  </ul>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td class="search-category">
-                <div class="location-box">
                   <div>가격</div>
                 </div>
               </td>
@@ -142,7 +142,8 @@
         </div>
       </div>
       <div class="bottom">
-        <h2 class="result-h2">{{selectedItems.length > 0 ? '관련 검색 결과' : '검색 결과'}}<span class="view-count">조회수 높은 순</span></h2>
+        <h2 class="result-h2">{{ selectedItems.length > 0 ? '관련 검색 결과' : '검색 결과' }}<span class="view-count">조회수 높은
+            순</span></h2>
         <hr>
         <div class="search-result">
           <div class="rank-search">
@@ -205,6 +206,12 @@ export default {
         bNo: ''
       }
     };
+  },
+  watch: {
+    selectedItems: {
+      handler: 'searchList', // selectedItems가 변할 때마다 searchList 메소드 호출
+      deep: true // 중첩된 객체도 감시
+    }
   },
   computed: {
     popularStyle() {
@@ -313,6 +320,31 @@ export default {
     },
     searchResultText() {
       return this.selectedItems.length > 0 ? '관련 검색 결과' : '검색 결과';
+    },
+    searchList() {
+      console.log("데이터 가져오기");
+      // 입력된 검색어와 선택된 항목들을 가져옵니다.
+      const searchKeyword = this.$refs.searchInput.value;
+      const selectedItems = this.selectedItems.map(item => item.label);
+
+      // 선택된 항목들과 검색어를 이용하여 필요한 파라미터를 구성합니다.
+      const params = {
+        searchKeyword: searchKeyword,
+        selectedItems: selectedItems
+      };
+
+      axios({
+        method: 'get',
+        url: `${this.$store.state.apiBaseUrl}/api/keyword`,
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        params: params,
+        responseType: 'json'
+      }).then(response => {
+        console.log(response.data.apiData);
+        this.reviewList = response.data.apiData;
+      }).catch(error => {
+        console.log(error);
+      });
     }
   },
   created() {
