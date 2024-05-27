@@ -9,35 +9,32 @@
                 <!-- 왼쪽 박스: 미용일 및 미용펫 정보 -->
                 <div class="diary-left-box">
                     <!-- 미용 정보 제목 -->
-                    <h2 class="diary-h2">미용 정보</h2>
+                    <h2>미용 정보</h2>
                     <br>
                     <!-- 미용일 및 애견명 표시 -->
-                    <div class="diary-info-leftitem">
-                        <label for="date">이용일:</label>
-                        <input type="text" id="date" v-model="date" disabled>
-                        <tr>
-                            <td><strong>예약내용:</strong></td>&nbsp;&nbsp;
-                            <br><br>
-                            <td>{{ selectedSchedule }}</td>
-                        </tr>
+                    <!-- 날짜 형식을 변경하고, selectedSchedule이 있는지 확인 -->
+                    <div class="diary-info-leftitem" v-if="selectedSchedule">
+                        <label class="diary-label" for="date">이용일: {{ formatDate(selectedSchedule.start) }}</label>
                     </div>
-                    <!-- 예약 정보 표시 -->
-                    <div class="diary-info-leftitem">
-                        <label class="diary-label">애견명: {{ petName }}</label>
+                    <div class="diary-info-leftitem" v-if="selectedSchedule">
+                        <label class="diary-label" for="time">미용 시간: {{ formatTime(selectedSchedule.start) }}</label>
                     </div>
-                    <div class="diary-info-leftitem">
-                        <label class="diary-label">품종: {{ breed }}</label>
+                    <div class="diary-info-leftitem" v-if="selectedSchedule">
+                        <label class="diary-label">애견명: {{ selectedSchedule.extendedProps.petName }}</label>
                     </div>
-                    <div class="diary-info-leftitem">
-                        <label class="diary-label">미용컷: {{ groomingStyle }}</label>
+                    <div class="diary-info-leftitem" v-if="selectedSchedule">
+                        <label class="diary-label">품종: {{ selectedSchedule.extendedProps.breed }}</label>
                     </div>
-                    <div class="diary-info-leftitem">
-                        <label class="diary-label">금액: {{ price }}</label>
+                    <div class="diary-info-leftitem" v-if="selectedSchedule">
+                        <label class="diary-label">미용컷:{{ selectedSchedule.extendedProps.groomingStyle }}</label>
                     </div>
-                    <div class="diary-info-leftitem">
-                        <label class="diary-label">추가요금: {{ additionalFee }}</label>
+                    <div class="diary-info-leftitem" v-if="selectedSchedule">
+                        <label class="diary-label">금액:{{ selectedSchedule.extendedProps.price }}</label>
                     </div>
-                    <div class="diary-info-leftitem">
+                    <div class="diary-info-leftitem" v-if="selectedSchedule">
+                        <label class="diary-label">추가요금: {{ selectedSchedule.additionalFee }}</label>
+                    </div>
+                    <div class="diary-info-leftitem" v-if="selectedSchedule">
                         <label class="diary-label">총 금액: {{ totalAmount }}</label>
                     </div>
                 </div>
@@ -52,7 +49,8 @@
                             <label class="diary-label" for="grooming-photo">미용 사진:</label>
                             <div class="diary-image-container">
                                 <!-- 파일 업로드 입력 필드 -->
-                                <input class="diary-input" type="file" id="grooming-photo" accept="image/*" @change="handleFileUploads($event)" multiple>
+                                <input class="diary-input" type="file" id="grooming-photo" accept="image/*"
+                                    @change="handleFileUploads($event)" multiple>
                                 <!-- 업로드된 사진 미리보기 -->
                                 <img v-for="(url, index) in photoUrls" :src="url" :key="index" alt="미용 사진">
                             </div>
@@ -112,19 +110,23 @@
                             </div>
                         </div>
                     </div>
-                    <!-- 미용 기록 표 -->
-                    <table class="diary-table">
+                   <!-- 미용 기록 표 -->
+                   <table class="diary-table">
                         <tr>
                             <th>항목</th>
                             <th>내용</th>
                         </tr>
                         <tr>
-                            <td>미용일</td>
+                            <td>이용일</td>
                             <td>{{ savedDate }}</td>
                         </tr>
                         <tr>
-                            <td>미용펫</td>
-                            <td>{{ petName }}</td>
+                            <td>이용 시간</td>
+                            <td>{{ savedTime }}</td>
+                        </tr>
+                        <tr>
+                            <td>애견명</td>
+                            <td>{{ savedPetName }}</td>
                         </tr>
                         <tr>
                             <td>미용예절</td>
@@ -185,21 +187,22 @@ export default {
     },
     data() {
         return {
-            date: "2024-05-08", // 이용일
             petName: "보리", // 애견 이름
-            breed: "", // 품종
-            groomingStyle: "", // 미용 스타일
+            breed: "포메라니안", // 품종
+            groomingStyle: "베이비컷", // 미용 스타일
             price: "", // 금액
             additionalFee: "", // 추가 요금
             photoUrls: [], // 업로드된 사진 URL 배열
             groomingEtiquette: "", // 미용 예절
-            condition: "", // 애견 컨디션
+            condition: "", // 컨디션
             mattedArea: "", // 엉킴 부위
             dislikedArea: "", // 싫어했던 부위
             bathDry: "", // 목욕/드라이
             note: "", // 전달 사항
             showModal: false, // 모달 표시 여부
             savedDate: "", // 저장된 이용일
+            savedTime: "", // 저장된 이용 시간
+            savedPetName: "", // 저장된 애견명
             savedGroomingEtiquette: "", // 저장된 미용 예절
             savedCondition: "", // 저장된 컨디션
             savedMattedArea: "", // 저장된 엉킴 부위
@@ -212,8 +215,8 @@ export default {
             images: [], // 이미지 배열
             currentIndex: 0, // 현재 이미지 인덱스
             reserveVo: {
-            rsNo: null // 기본값은 null 또는 undefined로 설정
-        },
+                rsNo: null // 기본값은 null 또는 undefined로 설정
+            },
         };
     },
     methods: {
@@ -238,7 +241,11 @@ export default {
         },
         saveNotification() {
             // 미용 기록 저장
-            this.savedDate = this.date;
+            if (this.selectedSchedule) {
+                this.savedDate = this.formatDate(this.selectedSchedule.start);
+                this.savedTime = this.formatTime(this.selectedSchedule.start);
+                this.savedPetName = this.selectedSchedule.extendedProps.petName;
+            }
             this.savedGroomingEtiquette = this.groomingEtiquette;
             this.savedCondition = this.condition;
             this.savedMattedArea = this.mattedArea;
@@ -253,26 +260,27 @@ export default {
             // 모달 닫기
             this.showModal = false;
         },
-        sendNotification(rsNo) {
-            axios({   
-                method: 'put',  //put,post,delete
-                url: `${this.$store.state.apiBaseUrl}/api/jw/`+ rsNo ,
-                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
-                //params: phonebookVo, //get방식 파라미터로 값이 전달
-                data: this.reserveVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
-                responseType: 'json' //수신타입
-                
-            }).then(response => {
-                console.log(response.data); //수신데이타
-                alert("수정이 완료되었습니다.");
-            }).catch(error => {
-                console.log(error);
-            });
+       // 알림 전송
+       sendNotification() {
+            axios({
+                method: 'put',
+                url: `${this.$store.state.apiBaseUrl}/api/jw/${this.reserveVo.rsNo}`,
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                data: this.reserveVo,
+                responseType: 'json'
+            })
+                .then(response => {
+                    alert("수정이 완료되었습니다.");
+                    console.log(response.data.apidate);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
 
             this.showModal = false;
-    
-            // 모달 알림 메시지 표시
-            Swal.fire({
+
+             // 모달 알림 메시지 표시
+             Swal.fire({
                 title: '전송되었습니다!',
                 icon: 'success',
                 confirmButtonText: '확인'
@@ -281,8 +289,8 @@ export default {
                 this.$router.push({ name: 'schedule' });
             });
         },
+        // 카카오톡 알림 전송
         kakaosendNotification() {
-            // 카카오톡 알림 전송
             Swal.fire({
                 title: '카카오톡 공유하기',
                 text: 'Notification sent via KakaoTalk!',
@@ -291,23 +299,28 @@ export default {
             });
             this.showModal = false;
         },
-
+        // 날짜 형식 변경
+        formatDate(date) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(date).toLocaleDateString(undefined, options);
+        },
+        // 시간 형식 변경
+        formatTime(date) {
+            const options = { hour: '2-digit', minute: '2-digit' };
+            return new Date(date).toLocaleTimeString(undefined, options);
+        }
     },
     computed: {
-        ...mapState(['selectedSchedule']), // Vuex 상태 매핑
+        ...mapState(['selectedSchedule']),
         totalAmount() {
             return this.calculateTotalAmount();
         }
     },
     watch: {
-        //selectedSchedule 변경 시 date 업데이트
         selectedSchedule(newValue) {
             // 스케줄에 있는 날짜를 이용일에 할당
             this.date = newValue;
         }
-    },
-    created() {
-
     }
 };
 </script>

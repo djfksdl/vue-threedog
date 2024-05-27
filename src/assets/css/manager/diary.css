@@ -41,18 +41,22 @@
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
 }
 
+.diary-info-leftitem {
+    margin-bottom: 10px; /* 항목 사이에 간격 추가 */
+}
+
 /* 타이틀 */
 .diary-h2 {
     color: #333333; /* 타이틀 색상 */
     font-size: 1.5em; /* 타이틀 폰트 크기 */
-
+    margin-bottom: 20px; 
 }
 
 /* 라벨 */
 .diary-label {
     font-weight: bold; /* 폰트 굵기 */
     margin-bottom: 10px;
-    display: block;
+    display: inline-block; /* 라벨을 한 줄에 표시 */
 }
 .diary-input {
     width: 100%;

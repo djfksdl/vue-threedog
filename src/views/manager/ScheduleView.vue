@@ -20,7 +20,7 @@
                 <span class="schedule-edit" @click="editEvent">시간수정</span>
                 <span class="schedule-delete" @click="deleteEvent">삭제</span>
                 <span class="schedule-close" @click="closeModal">확인</span>
-                <!-- 여기에 더 많은 일정 정보 표시 -->
+                
             </div>
         </div>
     </div>
@@ -244,7 +244,7 @@ export default {
         },
 
 
-         // deleteEvent() 함수 내용 수정
+        // deleteEvent() 함수 내용 수정
         //드롭 후 삭제
         deleteEvent() {
             Swal.fire({
@@ -289,19 +289,22 @@ export default {
 
 
         //-------------------- 알림장 화면으로 이동  ----------------------------
-        //예약 일정 클릭시 
+        // 예약 일정 클릭 이벤트 처리
         handleEventClick(info) {
             Swal.fire({
                 title: "일정",
-                html: "스케줄: " + info.event.title + "<br/>일시: " + new Date(info.event.start).toLocaleString().substring(0, 20).replace("/g", ""),
+                html: "스케줄: " + info.event.title + 
+                      "<br/>일시: " + new Date(info.event.start).toLocaleString().substring(0, 20).replace("/g", ""),
             });
-            this.selectedEvent = info.event;
-            this.showModal = true;
-            // 선택된 스케줄 정보 저장
-            this.$store.commit("setSelectedSchedule", info.event.title);
-            // 다이어리 알림장 표시
-            this.$router.push("/diary");
+
+            // 선택된 예약 정보를 Vuex에 저장
+            this.$store.commit("setSelectedSchedule", info.event);
+
+            // 다이어리 화면으로 이동
+            this.$router.push({ name: "diary" });
         },
+
+
 
         //확인
         closeModal() {
