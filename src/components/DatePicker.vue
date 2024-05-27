@@ -24,6 +24,9 @@ const onDateChange = (newDate) => {
   if (newDate) {
     const formattedDate = newDate.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' });
     console.log('선택된 날짜:', formattedDate);
+    
   }
 };
+</script>
+<script>
 </script>

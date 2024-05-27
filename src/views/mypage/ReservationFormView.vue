@@ -21,7 +21,7 @@
                             <label>장소</label>
                             <p>{{ businessVo.bAddress }} {{ businessVo.bdAddress }}</p>
                             <label>평균별점</label>
-                            <p>⭐⭐⭐⭐⭐ {{ businessVo.averageStar }}</p> 
+                            <p>⭐⭐⭐⭐⭐ {{ businessVo.averageStar }}</p>
                         </div>
                     </div>
 
@@ -32,7 +32,10 @@
                         <div class="calendar">
                             <Datepicker />
                         </div>
+
                         <div class="time">
+
+                            <!--                             
                             <p>오전</p>
                             <button type="button" :class="{ selected: reserveVo.rsTime === '10:00' }"
                                 @click="toggleTime('10:00')">10:00</button>
@@ -56,32 +59,46 @@
                             <button type="button" :class="{ selected: reserveVo.rsTime === '16:30' }"
                                 @click="toggleTime('16:30')">16:30</button>
                             <button type="button" :class="{ selected: reserveVo.rsTime === '17:00' }"
-                                @click="toggleTime('17:00')">17:00</button>
+                                @click="toggleTime('17:00')">17:00</button> -->
                         </div>
                         <!-- {{ this.reserveVo.rsTime }} -->
                         <!-- v-bind:key="i" v-for="(reserveVo, i) in reserveList" -->
                     </div>
                     <div class="reservationBox">
+
                         <div class="petChoice">
-                            <span>반려견 선택</span>
-                            <label>마리</label><input type="radio" name="pet">
-                            <label>보리</label><input type="radio" name="pet">
+                            <div class="petChoice" style="font-size: 16px; font-weight: bold">반려견 선택</div>
+                            <span v-for="dogVo in dogList" :key="dogVo.dogNo">
+                                {{ dogVo.dogNo }}
+                                <label :for="'pet-' + dogVo.dogNo">{{ dogVo.dogName }}</label>
+                                <input type="radio" name="pet" :id="'pet-' + dogVo.dogNo" :value="dogVo.dogNo"
+                                    @change="selectedDogClick" v-model="selectedDog">
+                            </span>
+
                         </div>
-                        <div class="petKg">
-                            <label>몸무게</label>
-                            <input type="text" value="3.2" style="text-align: right;"> kg
-                        </div>
+
                         <div class="character">
                             <label>특이사항</label>
-                            <button type="button">피부병</button>
-                            <button type="button">심장질환</button>
-                            <button type="button">마킹</button>
-                            <button type="button">마운팅</button>
+                            <button type="button"
+                                :style="{ backgroundColor: dogVo.skin ? '#236C3F' : 'white', color: dogVo.skin ? 'white' : 'black' }"
+                                @click="toggleSkinStatus">피부병</button>
+                            <button type="button"
+                                :style="{ backgroundColor: dogVo.heart ? '#236C3F' : 'white', color: dogVo.heart ? 'white' : 'black' }"
+                                @click="toggleHeartStatus">심장질환</button>
+                            <button type="button"
+                                :style="{ backgroundColor: dogVo.marking ? '#236C3F' : 'white', color: dogVo.marking ? 'white' : 'black' }"
+                                @click="toggleMarkingStatus">마킹</button>
+                            <button type="button"
+                                :style="{ backgroundColor: dogVo.mounting ? '#236C3F' : 'white', color: dogVo.mounting ? 'white' : 'black' }"
+                                @click="toggleMountingStatus">마운팅</button>
+
+
                             <div class="bite">
                                 <div class="biteRange">
                                     <label>입질정도</label>
                                     <div class="biteRange2">
-                                        <input type="range" min="1" max="3" step="1" list="tickmarks">
+                                        <input type="range" min="1" max="3" step="1" list="tickmarks"
+                                            v-model="dogVo.bite">
                                         <datalist id="tickmarks">
                                             <option value="1"></option>
                                             <option value="2"></option>
@@ -98,7 +115,7 @@
 
 
                             </div>
-                            <textarea placeholder="기타 특이사항을 적어주세요."></textarea>
+                            <textarea placeholder="기타 특이사항을 적어주세요." v-model="dogVo.memo"></textarea>
                         </div>
 
 
@@ -389,10 +406,10 @@ import AppHeader from "@/components/AppHeader.vue"
 import axios from "axios"
 
 import '@/assets/css/mypage/mypage.css'
-import SideBar from '@/components/SideBar.vue'
 import Datepicker from '@/components/DatePicker.vue'
-import TopButton from "@/components/TopButton.vue"
+import SideBar from '@/components/SideBar.vue'
 import SignaturePad from "@/components/SignaturePad.vue"
+import TopButton from "@/components/TopButton.vue"
 
 
 
@@ -439,6 +456,24 @@ export default {
                 bAddress: "",
                 bdAddress: "",
                 averageStar: 0.0,
+                rtDate: "",
+                rsTime: "",
+            },
+            dogList: [],
+            dogVo: {
+                uNo: this.$store.state.authUser.uNo,
+                dogNo: "",
+                dogName: "",
+                neutering: false,
+                experience: false,
+                bite: 0,
+                memo: "",
+                size: "",
+                skin: false,
+                heart: false,
+                marking: false,
+                mounting: false,
+
             },
         };
     },
@@ -467,27 +502,92 @@ export default {
             });
         },
 
-        // 예상가격
-        addPrice(price) {
-            this.estimatedPrice += price;
+        // 가게 시간정보
+        getTimeList() {
+            console.log("가게 시게정보 가져오기");
+        },
+
+        // 반려견선택
+        getPetList() {
+            console.log("내 반려견 가져오기");
+            // console.log(this.dogVo)
+            console.log(this.dogVo.uNo);
+            axios({
+                method: 'get',  //put,post,delete
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/getpetlist`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { uNo: this.dogVo.uNo },
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log("반려견성공");
+                console.log(response.data.apiData); //수신데이타
+
+                this.dogList = response.data.apiData;
+
+            }).catch(error => {
+                console.log(error);
+            });
         },
 
 
-        // 시간선택
-        toggleTime(time) {
-            console.log(time);
-            if (this.reserveVo.rsTime == time) {
-                // 이미 선택된 시간을 클릭한 경우 선택 해제
-                this.reserveVo.rsTime = null;
-            } else {
-                // 클릭한 시간을 선택
-                this.reserveVo.rsTime = time;
-            }
+
+
+        // 반려견정보 가져오기
+        selectedDogClick() {
+            console.log(this.selectedDog);
+            axios({
+                method: 'get',  //put,post,delete
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/getpetinfor`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { dogNo: this.selectedDog },
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log("성공");
+                console.log(response.data.apiData); //수신데이타
+                this.dogVo = response.data.apiData;
+
+            }).catch(error => {
+                console.log(error);
+            });
+        },
+
+
+        toggleSkinStatus() {
+            this.dogVo.skin = !this.dogVo.skin; // 피부병 상태 토글
+        },
+        toggleHeartStatus() {
+            this.dogVo.heart = !this.dogVo.heart; // 심장질환 상태 토글
+        },
+        toggleMarkingStatus() {
+            this.dogVo.marking = !this.dogVo.marking; // 마킹 상태 토글
+        },
+        toggleMountingStatus() {
+            this.dogVo.mounting = !this.dogVo.mounting;
+        },
+
+
+        // // 시간선택
+        // toggleTime(time) {
+        //     console.log(time);
+        //     if (this.reserveVo.rsTime == time) {
+        //         // 이미 선택된 시간을 클릭한 경우 선택 해제
+        //         this.reserveVo.rsTime = null;
+        //     } else {
+        //         // 클릭한 시간을 선택
+        //         this.reserveVo.rsTime = time;
+        //     }
+        // },
+
+
+        // 예상가격
+        addPrice(price) {
+            this.estimatedPrice += price;
         },
     },
 
     created() {
         this.getBList();
+        this.getPetList();
     }
 };
 </script>
@@ -500,9 +600,9 @@ export default {
 
 .dp__theme_light {
     /* --dp-menu-border-color: #a7a4a4; */
-    --dp-menu-border-color:none;
+    --dp-menu-border-color: none;
     --dp-primary-color: #236C3F;
-    
+
     --dp-cell-border-radius: 50%;
 }
 
@@ -520,15 +620,18 @@ export default {
 .dp__calendar_item {
     padding: 10px;
 }
-.dp__button{
+
+.dp__button {
     /* background-color: #236C3F; */
     width: 500px;
     height: 80px;
 }
-.dp__calendar_header_item{
+
+.dp__calendar_header_item {
     margin: 20px 0 20px 0;
 }
-:root{
+
+:root {
     --dp-cell-size: 46px;
 }
 </style>
