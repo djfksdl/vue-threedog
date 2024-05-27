@@ -222,7 +222,7 @@ export default {
     
                     if (response.data.apiData == 1) {
                         alert("환영합니다. 회원가입에 성공하셨습니다.");
-                        this.$router.push({ path: '/', query: { name: this.userVo.uName } });
+                        this.$router.push({ path: '/login', query: { name: this.userVo.uName } });
                     } else {
                         alert("회원가입에 실패하였습니다.");
                     }

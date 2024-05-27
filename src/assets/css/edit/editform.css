@@ -335,43 +335,39 @@
     display: flex;
  }
  
- /* 위치 왼쪽 */
-.container3 .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft{
+/* 위치 왼쪽 */
+.eMidContainer .ePositionContainer .ePositionBox .ePositionLeft{
     /* background-color: orangered; */
     width: 900px;
     /* padding: 0 50px; */
-}
+ }
  /* 위치 왼쪽 - 이용시간 */
-.container3 .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime{
+ .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime{
     display: flex;
     /* background-color: darkgrey; */
     margin-bottom: 30px;
-}
+ }
  /* 이용시간 왼쪽 */
-.container3 .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime .eTimeLeft{
+ .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime .eTimeLeft{
     /* background-color: darkmagenta; */
     margin-right: 100px;
-}
+ }
  /* 이용시간 오른쪽 */
-.container3 .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime .eTimeRight{
+ .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime .eTimeRight{
     /* background-color: lawngreen; */
+ }
+ .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime .eTimeRight .eTimeRightContents{
     display: flex;
-}
-.container3 .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime .eTimeRight .eTimeRightTitle p{
-     font-weight: bold;
-     width: 120px;
-     margin-bottom: 5px;
-}
-.container3 .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime .eTimeRight .eTimeRightContents{
-    /* display: flex; */    
-}
-.container3 .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime .eTimeRight .eTimeRightContents textarea{
-    width: 200px;
-    height: 104px;
-    resize: none;
-    overflow: hidden;
-    line-height: 24.5px;
-}
+    margin-bottom: 5px;
+ }
+ .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime .eTimeRight .eTimeRightContents p:first-child{
+    font-weight: bold;
+    width: 120px;
+    /* margin-right: 20px; */
+ }
+ .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime .eTimeRight .eTimeRightContents p:nth-child(2){
+    color: #666;
+ }
 
 /* 위치 왼쪽 - 오시는길 */
 .container3 .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eRoad{

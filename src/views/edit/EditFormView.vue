@@ -1,5 +1,5 @@
 <template>
-    <form v-on:submit="addShopInfo" enctype="multipart/form-data">
+    <form v-on:submit.prevent ="addShopInfo" enctype="multipart/form-data">
         <div id="wrap">
             <ManagerHeader />
             <div class="container3">
@@ -13,11 +13,12 @@
                             <div id='att_zone4' class="addLImgBox" data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
                                 <input id="btnAtt4" type="file" class="eFileAddBtn">
                             </div>
-                        <!-- 타이틀 -->
-                        <div class="eTitle">
-                            <input type="text" placeholder="타이틀" v-model="shopInfo.title">
-                            <input type="text" placeholder="부제목 들어갈 곳" v-model="shopInfo.subTitle">
-                        </div>
+
+                            <!-- 타이틀-->
+                            <div class="eTitle">
+                                <input type="text" placeholder="타이틀" v-model="shopInfo.title">
+                                <input type="text" placeholder="부제목 들어갈 곳" v-model="shopInfo.subTitle">
+                            </div>
                     </div>
                 </div>
                 
@@ -76,6 +77,7 @@
                     <!-- 가격 + 후기 -->
                     <div class="ePriceReviewContainer">
                         <!-- 가격 -->
+                        <!-- <div class="ePriceBox" v-if="priceList.length >= 65"> -->
                         <div class="ePriceBox" v-if="priceList.length >= 65">
                             <h1>가격</h1>
                             <table border="1">
@@ -260,18 +262,23 @@
                                         <h3>이용시간</h3>
                                     </div>
                                     <!-- 이용시간-오른쪽 -->
-                                    <div class="eTimeRight">
-                                        <div class="eTimeRightTitle">
+                                    <div class="eTimeRight "> 
+                                        <div class="eTimeRightContents">
                                             <p>평일</p>
-                                            <p>토요일</p>
-                                            <p>점심시간</p>
-                                            <p>공휴일/주말</p>
+                                            <p>am 9:00~ pm18:00</p>
                                         </div>
                                         <div class="eTimeRightContents">
-                                            <textarea placeholder="ex)am 9:00~ pm18:00&#10;   am 9:00~ pm15:00&#10;   pm 12:00~ pm13:00&#10;   영업종료" v-model="shopInfo.utilTime"></textarea>
-                                            
+                                            <p>토요일</p>
+                                            <p>am 9:00~ pm15:00</p>
                                         </div>
-                                        
+                                        <div class="eTimeRightContents">
+                                            <p>점심시간</p>
+                                            <p>pm 12:00~ pm13:00</p>
+                                        </div>
+                                        <div class="eTimeRightContents">
+                                            <p>공휴일/주말</p>
+                                            <p>영업종료</p>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -341,14 +348,14 @@ import "vue3-carousel/dist/carousel.css";
 // 코드에서 setup을 사용하고 있으므로 setup 내에서 import와 reactive를 사용할 수 있습니다.
 import { reactive, onMounted } from 'vue';
 //Composition API에서는 setup 함수 내에서 직접적으로 this를 사용할 수 없기 때문에 $store에 접근하려면 useStore 훅을 사용하여 스토어를 가져와야 함
-import { useStore } from 'vuex';
-import { useRoute } from 'vue-router';
+// import { useStore } from 'vuex';
+// import { useRoute } from 'vue-router';
 
     //스토어 가져오기
-    const store = useStore();
+    // const store = useStore();
 
     //bNo가져오기
-    const { params } = useRoute();
+    // const { params } = useRoute();
 
     //리액티브 변수 초기화
     const coordinate = reactive({
@@ -357,25 +364,25 @@ import { useRoute } from 'vue-router';
     });
 
     // 가게 정보 불러오기 
-    const getLatLng = () => {
-        axios({
-            method: 'get',
-            url: `${store.state.apiBaseUrl}/api/su/shopInfo`, //store변수 사용
-            headers: { "Content-Type": "application/json; charset=utf-8" },
-            params: { bNo: params.bNo },
-            responseType: 'json'
-        }).then(response => {
-            // shopInfo 객체에서 위도와 경도 값을 받아와서 coordinate 객체에 할당합니다.
-            coordinate.lat = response.data.apiData.latitude;
-            coordinate.lng = response.data.apiData.longitude;
-        }).catch(error => {
-            console.log(error);
-        });
+    // const getLatLng = () => {
+    //     axios({
+    //         method: 'get',
+    //         url: `${store.state.apiBaseUrl}/api/su/shopInfo`, //store변수 사용
+    //         headers: { "Content-Type": "application/json; charset=utf-8" },
+    //         params: { bNo: params.bNo },
+    //         responseType: 'json'
+    //     }).then(response => {
+    //         // shopInfo 객체에서 위도와 경도 값을 받아와서 coordinate 객체에 할당합니다.
+    //         coordinate.lat = response.data.apiData.latitude;
+    //         coordinate.lng = response.data.apiData.longitude;
+    //     }).catch(error => {
+    //         console.log(error);
+    //     });
 
-    };
+    // };
     // 컴포넌트가 마운트된 후에 가게 정보 가져오기
     onMounted(() => {
-        getLatLng();
+        // getLatLng();
     });
 </script>
 <script>
@@ -400,114 +407,173 @@ import { useRoute } from 'vue-router';
                     bAddress: "",
                     bdAddress: "",
                     bPhone: "",
-                    title: "",
+                    title: "", //""으로하면 빈 문자열인데 오류뜬다.
                     subTitle: "",
-                    logo: "",
+                    logo: null,
                     utilTime: "",
                     dName:"",
                     introduce:"",
-                    dProfile:"",
+                    dProfile:null,
                     job:"",
+                    slideImgs:[],
+                    cutImgs:[],
                 },
-                priceList:[],
-                images:[]
-                
+                priceList: this.initializePriceList(),
 
             }
         },
-        computed: {
-
-            
-        },
         methods: {
 
-            // 가게정보 불러오기
-            getShopInfo(){
-                // console.log(this.bNo);
-                axios({
-                    method: 'get', // put, post, delete 
-                    url: `${this.$store.state.apiBaseUrl}/api/su/shopInfo`,
-                    headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
-                    params: {bNo: this.bNo}, //get방식 파라미터로 값이 전달
-                    // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
-                    responseType: 'json' //수신타입
-                }).then(response => {
-
-                    this.shopInfo = response.data.apiData;
-
-                }).catch(error => {
-                    console.log(error);
-                });
+            //가격리스트 없을때! 가격리스트 초기화!
+            initializePriceList() {
+                let priceList = [];
+                for (let i = 0; i < 65; i++) {
+                    priceList.push({ onePrice: '' });
+                }
+                return priceList;
             },
 
-            //가격정보 불러오기
-            getPrice(){
-                // console.log(this.bNo);
-                axios({
-                    method: 'get', // put, post, delete 
-                    url: `${this.$store.state.apiBaseUrl}/api/su/getPriceBybNo`,
-                    headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
-                    params: {bNo: this.bNo}, //get방식 파라미터로 값이 전달
-                    // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
-                    responseType: 'json' //수신타입
-                }).then(response => {
-                    // console.log(response.data.apiData); //수신데이타
 
-                    // 필요한 요소 개수 (여기서는 65개로 가정) - length만큼 onePrice를 초기화애야함.
-                        const requiredLength = 65;
 
-                    // pList가 비어 있는 경우
-                    if (!response.data.apiData || response.data.apiData.length === 0) {
-                        // beautyNo를 1부터 시작하여 +1씩 증가하며 priceList 초기화
-                        this.priceList = Array.from({ length: requiredLength }, (_, index) => ({ beautyNo: index + 1, onePrice: 0 }));
-                    } else {
-                        // priceList의 각 요소가 onePrice 프로퍼티를 가지도록 초기화
-                        const receivedList = response.data.apiData.map(item => ({ beautyNo: item.beautyNo, onePrice: item.onePrice }));
-                        // 필요한 길이만큼 초기화
-                        this.priceList = [...receivedList, ...Array.from({ length: requiredLength - receivedList.length }, (_, index) => ({ beautyNo: receivedList.length + index + 1, onePrice: 0 }))];
-                    }
-
-                }).catch(error => {
-                    console.log(error);
-                });
-            },
             // 가게정보 등록하기
             addShopInfo(){
-                // console.log("가게정보 등록하기 버튼");
+                console.log("가게정보 등록하기 버튼");
                 let formData = new FormData();
 
-                formData.append()
+                formData.append("bNo", this.bNo);
+
+                formData.append("logo", this.shopInfo.logo);
+                formData.append("title", this.shopInfo.title);
+                formData.append("subTitle", this.shopInfo.subTitle);
+                
+                for (let i = 0; i < this.shopInfo.slideImgs.length; i++) {
+                    formData.append('slideImgs',this.shopInfo.slideImgs[i]); 
+                }
+                for (let i = 0; i < this.shopInfo.cutImgs.length; i++) {
+                    formData.append('cutImgs',this.shopInfo.cutImgs[i]);
+                }
+
+                formData.append("dName", this.shopInfo.dName);
+                formData.append("job", this.shopInfo.job);
+                formData.append("introduce", this.shopInfo.introduce);
+                formData.append("dProfile", this.shopInfo.dProfile);
+
+                // priceList의 각 항목을 개별적으로 추가
+                for (let i = 0; i < this.priceList.length; i++) {
+                    formData.append(`priceList[${i}]`, this.priceList[i].onePrice);
+                }
+
+                console.log("=====보내기전 정보 담은거 확인=====");
+
+                console.log(formData.get("logo"));
+                console.log(formData.get("subTitle"));
+
+                console.log(formData.get("slideImgs"));
+                console.log(formData.get("cutImgs"));
+
+                console.log(formData.get("dName"));
+                console.log(formData.get("job"));
+                console.log(formData.get("introduce"));
+
+                console.log(formData.get("dProfile"));
+
+                // console.log("가격리스트의 첫번째 값 확인");
+                // priceList 항목 개별 확인
+                // for (let i = 0; i < this.priceList.length; i++) {
+                //     console.log(`priceList[${i}]`, formData.get(`priceList[${i}]`));
+                // }
 
 
                 axios({
+                    
                     method: 'post', // put, post, delete 
                     url: `${this.$store.state.apiBaseUrl}/api/su/registerShop`,
                     headers: { "Content-Type": "multipart/form-data" }, //전송타입
                     // params: {bNo: this.bNo}, //get방식 파라미터로 값이 전달
-                    data: formData, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+                    data: formData, // formData로 묶어서 보낼떈 Json형태로 보내기 -> springboot에서 받을땐 modelattribute로 받음(formData의 예외다!)
                     responseType: 'json' //수신타입
                 }).then(response => {
+                    console.log(response.data.apiData);
 
-                    if (response.data.apiData == 1) {
-                        alert("홈페이지가 성공적으로 만들어졌습니다.");
-                        this.$router.push(`/edit/${this.bNo}`);
-                    } else {
-                        alert("정보를 다시 확인해주세요.");
-                    }
+                    // if (response.data.apiData == 1) {
+                    //     alert("홈페이지가 성공적으로 만들어졌습니다.");
+                    //     this.$router.push(`/edit/${this.bNo}`);
+                    // } else {
+                    //     alert("정보를 다시 확인해주세요.");
+                    // }
                     
 
                 }).catch(error => {
                     console.log(error);
                 });
-            }
+            },
+
+            // 가게정보 불러오기 - 수정할때 if문 줘서 살리기
+            // getShopInfo(){
+            //     // console.log(this.bNo);
+            //     axios({
+            //         method: 'get', // put, post, delete 
+            //         url: `${this.$store.state.apiBaseUrl}/api/su/shopInfo`,
+            //         headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+            //         params: {bNo: this.bNo}, //get방식 파라미터로 값이 전달
+            //         // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+            //         responseType: 'json' //수신타입
+            //     }).then(response => {
+
+            //         this.shopInfo = response.data.apiData;
+
+            //         // 빈 문자열을 null로 변환
+            //         // if (this.shopInfo.title === "") {
+            //         //     this.shopInfo.title = null;
+            //         // }
+
+            //     }).catch(error => {
+            //         console.log(error);
+            //     });
+            // },
+
+            //가격정보 불러오기
+            getPrice(){
+                // console.log(this.bNo);
+                // axios({
+                //     method: 'get', // put, post, delete 
+                //     url: `${this.$store.state.apiBaseUrl}/api/su/getPriceBybNo`,
+                //     headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                //     params: {bNo: this.bNo}, //get방식 파라미터로 값이 전달
+                //     // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+                //     responseType: 'json' //수신타입
+                // }).then(response => {
+                //     // console.log(response.data.apiData); //수신데이타
+
+                //     // 필요한 요소 개수 (여기서는 65개로 가정) - length만큼 onePrice를 초기화애야함.
+                //         const requiredLength = 65;
+
+                //     // pList가 비어 있는 경우
+                //     if (!response.data.apiData || response.data.apiData.length === 0) {
+                //         // beautyNo를 1부터 시작하여 +1씩 증가하며 priceList 초기화
+                //         this.priceList = Array.from({ length: requiredLength }, (_, index) => ({ beautyNo: index + 1, onePrice: 0 }));
+                //     } else {
+                //         // priceList의 각 요소가 onePrice 프로퍼티를 가지도록 초기화
+                //         const receivedList = response.data.apiData.map(item => ({ beautyNo: item.beautyNo, onePrice: item.onePrice }));
+                //         // 필요한 길이만큼 초기화
+                //         this.priceList = [...receivedList, ...Array.from({ length: requiredLength - receivedList.length }, (_, index) => ({ beautyNo: receivedList.length + index + 1, onePrice: 0 }))];
+                //     }
+
+                // }).catch(error => {
+                //     console.log(error);
+                // });
+            },
   
         },
         created(){
 
-            this.getShopInfo();
-            this.getPrice();
+            // this.getShopInfo();
+            // this.getPrice();
         },
         mounted() {
+
+            const self = this; // imageLoader 함수 내부에서 this가 Vue 인스턴스를 참조하지 않기 때문에 this를 따로 할당해준다.
+           
             // ==========가게 로고 1개 첨부파일==========
             (function imageView(att_zone4, btn) {
                 var attZone = document.getElementById(att_zone4);
@@ -522,11 +588,15 @@ import { useRoute } from 'vue-router';
                 // 이미지를 업로드하고 미리보기 설정
                 btnAtt4.onchange = function (e) {
                     var file = e.target.files[0];
+                    
                     if (!file.type.match(/image.*/)) {
                         alert("이미지 파일만 업로드 가능합니다.");
                         return;
                     }
+                    
                     imageLoader(file);
+                  
+                
                 };
 
                 // 드래그 앤 드롭 기능 설정
@@ -549,12 +619,18 @@ import { useRoute } from 'vue-router';
                         alert("이미지 파일만 업로드 가능합니다.");
                         return;
                     }
+                    
                     imageLoader(file);
+
+                    
+                    
                 }, false);
+
 
                 // 첨부된 이미지를 미리보기
                 function imageLoader(file) {
                     var reader = new FileReader();
+
                     reader.onload = function (ee) {
                         let img = document.createElement('img');
                         img.setAttribute('style', img_style);
@@ -562,8 +638,13 @@ import { useRoute } from 'vue-router';
                         attZone.innerHTML = '';// 기존 내용 비우기
                         attZone.appendChild(makeDiv(img));//첨부된 div밀어넣기
                         attZone.classList.add('file-attached'); // 파일 첨부됨을 나타내는 클래스 추가 -> 관련 css로 배경이미지 안보이게 하기
+                        
+                       
+                        self.shopInfo.logo = file;//로고에 이미지 할당하기.
                     };
+
                     reader.readAsDataURL(file);
+                    
                 }
 
                 // 첨부된 파일이 있는 경우 미리보기를 생성하는 함수
@@ -574,6 +655,7 @@ import { useRoute } from 'vue-router';
                     div.appendChild(img);
                     return div;
                 }
+                
             })('att_zone4', 'btnAtt4');
     
             // ==========이미지 슬라이드 5개 첨부파일==========
@@ -626,7 +708,6 @@ import { useRoute } from 'vue-router';
                 }, false);
 
 
-
                 // 첨부된 이미지들을 배열에 넣고 미리보기
                 function imageLoader(file) {
                     if (sel_files.length >= 5) { // 이미 5개 이상인 경우 추가하지 않음
@@ -645,6 +726,11 @@ import { useRoute } from 'vue-router';
                         attZone.appendChild(makeDiv(img, file));
                     };
                     reader.readAsDataURL(file);
+
+                    // slideImgs 배열에 파일 추가
+                    self.shopInfo.slideImgs= sel_files;
+                    // console.log("배열에 추가:")
+                    // console.log(self.shopInfo.slideImgs);
                 }
 
 
@@ -676,6 +762,7 @@ import { useRoute } from 'vue-router';
                         var p = ele.parentNode;
                         attZone.removeChild(p);
                     };
+                    // self.shopInfo.slideImgs = file;
                     div.appendChild(img);
                     div.appendChild(btn);
                     return div;
@@ -753,6 +840,8 @@ import { useRoute } from 'vue-router';
                         attZone.appendChild(makeDiv(img, file));
                     };
                     reader.readAsDataURL(file);
+
+                    self.shopInfo.cutImgs = sel_files;
                 }
 
 
@@ -846,6 +935,8 @@ import { useRoute } from 'vue-router';
                         attZone.innerHTML = '';// 기존 내용 비우기
                         attZone.appendChild(makeDiv(img));//첨부된 div밀어넣기
                         attZone.classList.add('file-attached'); // 파일 첨부됨을 나타내는 클래스 추가 -> 관련 css로 배경이미지 안보이게 하기
+
+                        self.shopInfo.dProfile = file;//디자이너 프로필에 이미지 할당하기.
                     };
                     reader.readAsDataURL(file);
                 }
