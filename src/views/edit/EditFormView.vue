@@ -427,8 +427,8 @@ import { reactive, onMounted } from 'vue';
             //가격리스트 없을때! 가격리스트 초기화!
             initializePriceList() {
                 let priceList = [];
-                for (let i = 0; i < 65; i++) {
-                    priceList.push({ onePrice: '' });
+                for (let i = 1; i < 66; i++) {
+                    priceList.push({ beautyNo: i ,onePrice: '' });
                 }
                 return priceList;
             },
@@ -460,7 +460,9 @@ import { reactive, onMounted } from 'vue';
 
                 // priceList의 각 항목을 개별적으로 추가
                 for (let i = 0; i < this.priceList.length; i++) {
-                    formData.append(`priceList[${i}]`, this.priceList[i].onePrice);
+                    formData.append(`priceList[${i}].onePrice`, this.priceList[i].onePrice);
+                    formData.append(`priceList[${i}].beautyNo`, this.priceList[i].beautyNo);
+                    
                 }
 
                 console.log("=====보내기전 정보 담은거 확인=====");
@@ -477,12 +479,14 @@ import { reactive, onMounted } from 'vue';
 
                 console.log(formData.get("dProfile"));
 
-                // console.log("가격리스트의 첫번째 값 확인");
+                console.log("가격리스트의 첫번째 값 확인");
                 // priceList 항목 개별 확인
                 // for (let i = 0; i < this.priceList.length; i++) {
-                //     console.log(`priceList[${i}]`, formData.get(`priceList[${i}]`));
+                //     console.log(`priceList[${i}]`, formData.get(`priceList[${i}].beautyNo`),formData.get(`priceList[${i}].onePrice`));
                 // }
 
+                console.log("bNo값:");
+                console.log(formData.get("bNo"));
 
                 axios({
                     
