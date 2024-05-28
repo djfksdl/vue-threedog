@@ -52,23 +52,18 @@
                             <h2>이서현 원장</h2>
                             <div class="eCareerBox">
                                 <h3>경력</h3>
-                                <p>- 2000년 애견미용 입문</p>
-                                <p>- 전 애견미용 학원강사</p>
-                                <p>- 2000년 애견미용 입문</p>
-                                <p>- 2000년 애견미용 입문</p>
-                                <p>- 2000년 애견미용 입문</p>
-                                <p>- 2000년 애견미용 입문</p>
+                                <div class="eCareerBoxInfo">{{ shopInfo.introduce }}</div>
                             </div>
                         </div>
                         <!-- 디자이너소개 오른쪽 -->
                         <div class="edRightBox">
-                            <img src="@/assets/images/profile.png">
+                            <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${shopInfo.logoSaveName}`">
                         </div>
                     </div>
                 </div>
 
                 <!-- 가격 + 후기 -->
-                <div class="ePriceReviewContainer">
+                <div  v-if="priceList.length > 0" class="ePriceReviewContainer">
                     <!-- 가격 -->
                     <div class="ePriceBox">
                         <h1>가격</h1>
@@ -85,20 +80,88 @@
                                 <th>얼굴+부분+목욕</th>
                                 <th colspan="2">기본전체미용</th>
                             </tr>
-                            <tr v-for="(price, index) in smallDogPrices" :key="index">
+                            <tr>
+                                <th>2kg이하</th>
+                                <td>{{ priceList[0].onePrice }}</td>
+                                <td>{{ priceList[1].onePrice }}</td>
+                                <td>{{ priceList[2].onePrice }}</td>
+                                <td>{{ priceList[3].onePrice }}</td>
+                                <td colspan="2">{{ priceList[4].onePrice }}</td>
+                            </tr>
+                            <tr>
+                                <th>2kg~5kg</th>
+                                <td>{{ priceList[5].onePrice }}</td>
+                                <td>{{ priceList[6].onePrice }}</td>
+                                <td>{{ priceList[7].onePrice }}</td>
+                                <td>{{ priceList[8].onePrice }}</td>
+                                <td colspan="2">{{ priceList[9].onePrice }}</td>
+                            </tr>
+                            <tr>
+                                <th>5kg~8kg</th>
+                                <td>{{ priceList[10].onePrice }}</td>
+                                <td>{{ priceList[11].onePrice }}</td>
+                                <td>{{ priceList[12].onePrice }}</td>
+                                <td>{{ priceList[13].onePrice }}</td>
+                                <td colspan="2">{{ priceList[14].onePrice }}</td>
+                            </tr>
+                            <tr>
+                                <th>8kg~10kg</th>
+                                <td>{{ priceList[15].onePrice }}</td>
+                                <td>{{ priceList[16].onePrice }}</td>
+                                <td>{{ priceList[17].onePrice }}</td>
+                                <td>{{ priceList[18].onePrice }}</td>
+                                <td colspan="2">{{ priceList[19].onePrice }}</td>
+                            </tr>
+                            <!-- <tr v-for="(price, index) in smallDogPrices" :key="index">
                                 <th>{{ price.weightDiv }}</th>
                                 <td>{{price.목욕}}</td>
                                 <td>{{price.부분}}</td>
                                 <td>{{price.목욕_부분}}</td>
                                 <td>{{price.얼굴_부분_목욕}}</td>
                                 <td colspan="2">{{price.기본전체미용}}</td>
-                            </tr>
+                            </tr> -->
                         
                             <!-- 중형견 -->
                             <tr>
                                 <th colspan="7" class="eNonBorder">중형견(슈나, 코카 등...)</th>
                             </tr>
-                            <tr v-for="(price, index) in mediumDogPrices" :key="index">
+                            <tr>
+                                <th>5kg이하</th>
+                                <td>{{ priceList[20].onePrice }}</td>
+                                <td>{{ priceList[21].onePrice }}</td>
+                                <td>{{ priceList[22].onePrice }}</td>
+                                <td>{{ priceList[23].onePrice }}</td>
+                                <td colspan="2">{{ priceList[24].onePrice }}</td>
+                            </tr>
+                            <tr>
+                                <th>5kg~8kg</th>
+                                <td>{{ priceList[25].onePrice }}</td>
+                                <td>{{ priceList[26].onePrice }}</td>
+                                <td>{{ priceList[27].onePrice }}</td>
+                                <td>{{ priceList[28].onePrice }}</td>
+                                <td colspan="2">{{ priceList[29].onePrice }}</td>
+                            </tr>
+                            <tr>
+                                <th>8kg~10kg</th>
+                                <td>{{ priceList[30].onePrice }}</td>
+                                <td>{{ priceList[31].onePrice }}</td>
+                                <td>{{ priceList[32].onePrice }}</td>
+                                <td>{{ priceList[33].onePrice }}</td>
+                                <td colspan="2">{{ priceList[34].onePrice }}</td>
+                            </tr>
+                            <tr>
+                                <th>10kg~12kg</th>
+                                <td>{{ priceList[35].onePrice }}</td>
+                                <td>{{ priceList[36].onePrice }}</td>
+                                <td>{{ priceList[37].onePrice }}</td>
+                                <td>{{ priceList[38].onePrice }}</td>
+                                <td colspan="2">{{ priceList[39].onePrice }}</td>
+                            </tr>
+                            <tr>
+                                <th>12kg이상</th>
+                                <td colspan="6">초과 lkg당 {{ priceList[40].onePrice }}원 추가</td>
+                            </tr>
+                            <!-- <tr v-for="(price, index) in mediumDogPrices" :key="index">
                                 <th>{{ price.weightDiv }}</th> 
                                 <td v-if="index == 4" colspan="6">{{price.목욕}}</td>
                                 <td v-else>{{price.목욕}}</td>
@@ -106,7 +169,7 @@
                                 <td v-if="index != 4">{{price.목욕_부분}}</td>
                                 <td v-if="index != 4">{{price.얼굴_부분_목욕}}</td>
                                 <td v-if="index != 4" colspan="2">{{price.기본전체미용}}</td>
-                            </tr>
+                            </tr> -->
                             <!-- 특수견 -->
                             <tr>
                                 <th colspan="7" class="eNonBorder">특수견(비숑. 베들링턴 등...)</th>
@@ -120,7 +183,34 @@
                                 <th>스포팅</th>
                                 <th>가위컷</th>
                             </tr>
-                            <tr v-for="(price, index) in specialDogPrices" :key="index">
+                            <tr>
+                                <th>5kg이하</th>
+                                <td>{{ priceList[41].onePrice }}</td>
+                                <td>{{ priceList[42].onePrice }}</td>
+                                <td>{{ priceList[43].onePrice }}</td>
+                                <td>{{ priceList[44].onePrice }}</td>
+                                <td>{{ priceList[45].onePrice }}</td>
+                                <td>{{ priceList[46].onePrice }}</td>
+                            </tr>
+                            <tr>
+                                <th>5kg~8kg</th>
+                                <td>{{ priceList[47].onePrice }}</td>
+                                <td>{{ priceList[48].onePrice }}</td>
+                                <td>{{ priceList[49].onePrice }}</td>
+                                <td>{{ priceList[50].onePrice }}</td>
+                                <td>{{ priceList[51].onePrice }}</td>
+                                <td>{{ priceList[52].onePrice }}</td>
+                            </tr>
+                            <tr>
+                                <th>8kg이상</th>
+                                <td>{{ priceList[53].onePrice }}</td>
+                                <td>{{ priceList[54].onePrice }}</td>
+                                <td>{{ priceList[55].onePrice }}</td>
+                                <td>{{ priceList[56].onePrice }}</td>
+                                <td>{{ priceList[57].onePrice }}</td>
+                                <td>{{ priceList[58].onePrice }}</td>
+                            </tr>
+                            <!-- <tr v-for="(price, index) in specialDogPrices" :key="index">
                                 <th>{{ price.weightDiv }}</th>
                                 <td>{{price.목욕}}</td>
                                 <td>{{price.부분}}</td>
@@ -128,7 +218,7 @@
                                 <td>{{price.얼굴_부분_목욕}}</td>
                                 <td>{{price.스포팅}}</td>
                                 <td>{{price.가위컷}}</td>
-                            </tr>
+                            </tr> -->
                             <!-- 추가요금 -->
                             <tr>
                                 <th colspan="7">&nbsp;</th>
@@ -136,21 +226,21 @@
                             <tr>
                                 <th rowspan="4" class="eNonBorder2">추가요금</th>
                                 <th>가위컷</th>
-                                <td>{{additionalCharges.컷}}</td>
+                                <td>{{priceList[59].onePrice}}</td>
                                 <th>특수얼굴컷</th>
-                                <td colspan="3">{{additionalCharges.특수얼굴컷}}</td>
+                                <td colspan="3">{{priceList[62].onePrice}}</td>
                             </tr>
                             <tr>
                                 <th>엉킴</th>
-                                <td>{{additionalCharges.특수얼굴컷}}</td>
+                                <td>{{priceList[60].onePrice}}</td>
                                 <th>투톤염색</th>
-                                <td colspan="3">{{additionalCharges.투톤염색}}</td>
+                                <td colspan="3">{{priceList[63].onePrice}}</td>
                             </tr>
                             <tr>
                                 <th>기장</th>
-                                <td>{{additionalCharges.기장}}</td>
+                                <td>{{priceList[61].onePrice}}</td>
                                 <th>염색</th>
-                                <td colspan="3">{{additionalCharges.염색}}</td>
+                                <td colspan="3">{{priceList[64].onePrice}}</td>
                             </tr>
                         </table>
                     </div>
@@ -298,8 +388,9 @@ import { useRoute } from 'vue-router';
             responseType: 'json'
         }).then(response => {
             // shopInfo 객체에서 위도와 경도 값을 받아와서 coordinate 객체에 할당합니다.
-            coordinate.lat = response.data.apiData.latitude;
-            coordinate.lng = response.data.apiData.longitude;
+            coordinate.lat = response.data.apiData.shopInfo.latitude;
+            coordinate.lng = response.data.apiData.shopInfo.longitude;
+
         }).catch(error => {
             console.log(error);
         });
@@ -373,16 +464,6 @@ import axios from 'axios';
            
        },
        computed: {
-            // // 가격표 필터링
-            // smallDogPrices() {
-            //     return this.priceList.filter(price => price.sizeDiv === '소형견');
-            // },
-            // mediumDogPrices() {
-            //     return this.priceList.filter(price => price.sizeDiv === '중형견');
-            // },
-            // specialDogPrices() {
-            //     return this.priceList.filter(price => price.sizeDiv === '특수견');
-            // },
             
         },
        setup() {
@@ -401,7 +482,11 @@ import axios from 'axios';
                 responseType: 'json' //수신타입
             }).then(response => {
 
-                this.shopInfo = response.data.apiData;
+                this.shopInfo = response.data.apiData.shopInfo;
+                this.priceList = response.data.apiData.pList;
+
+                // console.log(this.shopInfo.logo);
+                // console.log(this.priceList);
 
             }).catch(error => {
                 console.log(error);
@@ -409,43 +494,43 @@ import axios from 'axios';
         },
 
         //가격정보 불러오기
-        getPrice(){
-            // console.log(this.bNo);
-            axios({
-                method: 'get', // put, post, delete 
-                url: `${this.$store.state.apiBaseUrl}/api/su/getPriceBybNo`,
-                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
-                params: {bNo: this.bNo}, //get방식 파라미터로 값이 전달
-                // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
-                responseType: 'json' //수신타입
-            }).then(response => {
-                // console.log(response.data.apiData); //수신데이타
+        // getPrice(){
+        //     // console.log(this.bNo);
+        //     axios({
+        //         method: 'get', // put, post, delete 
+        //         url: `${this.$store.state.apiBaseUrl}/api/su/getPriceBybNo`,
+        //         headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+        //         params: {bNo: this.bNo}, //get방식 파라미터로 값이 전달
+        //         // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+        //         responseType: 'json' //수신타입
+        //     }).then(response => {
+        //         // console.log(response.data.apiData); //수신데이타
 
-                // 필요한 요소 개수 (여기서는 65개로 가정) - length만큼 onePrice를 초기화애야함.
-                    const requiredLength = 65;
+        //         // 필요한 요소 개수 (여기서는 65개로 가정) - length만큼 onePrice를 초기화애야함.
+        //             const requiredLength = 65;
 
-                // pList가 비어 있는 경우
-                if (!response.data.apiData || response.data.apiData.length === 0) {
-                    // beautyNo를 1부터 시작하여 +1씩 증가하며 priceList 초기화
-                    this.priceList = Array.from({ length: requiredLength }, (_, index) => ({ beautyNo: index + 1, onePrice: 0 }));
-                } else {
-                    // priceList의 각 요소가 onePrice 프로퍼티를 가지도록 초기화
-                    const receivedList = response.data.apiData.map(item => ({ beautyNo: item.beautyNo, onePrice: item.onePrice }));
-                    // 필요한 길이만큼 초기화
-                    this.priceList = [...receivedList, ...Array.from({ length: requiredLength - receivedList.length }, (_, index) => ({ beautyNo: receivedList.length + index + 1, onePrice: 0 }))];
-                }
+        //         // pList가 비어 있는 경우
+        //         if (!response.data.apiData || response.data.apiData.length === 0) {
+        //             // beautyNo를 1부터 시작하여 +1씩 증가하며 priceList 초기화
+        //             this.priceList = Array.from({ length: requiredLength }, (_, index) => ({ beautyNo: index + 1, onePrice: 0 }));
+        //         } else {
+        //             // priceList의 각 요소가 onePrice 프로퍼티를 가지도록 초기화
+        //             const receivedList = response.data.apiData.map(item => ({ beautyNo: item.beautyNo, onePrice: item.onePrice }));
+        //             // 필요한 길이만큼 초기화
+        //             this.priceList = [...receivedList, ...Array.from({ length: requiredLength - receivedList.length }, (_, index) => ({ beautyNo: receivedList.length + index + 1, onePrice: 0 }))];
+        //         }
 
-            }).catch(error => {
-                console.log(error);
-            });
-        },
+        //     }).catch(error => {
+        //         console.log(error);
+        //     });
+        // },
         
         
   
        },
        created(){
         this.getShopInfo();
-        this.getPrice();
+        // this.getPrice();
        }
    })
 </script>

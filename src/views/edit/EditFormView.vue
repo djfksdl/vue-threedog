@@ -470,8 +470,8 @@ import { reactive, onMounted } from 'vue';
                 console.log(formData.get("logo"));
                 console.log(formData.get("subTitle"));
 
-                console.log(formData.get("slideImgs"));
-                console.log(formData.get("cutImgs"));
+                // console.log(formData.get("slideImgs"));
+                // console.log(formData.get("cutImgs"));
 
                 console.log(formData.get("dName"));
                 console.log(formData.get("job"));
@@ -479,7 +479,7 @@ import { reactive, onMounted } from 'vue';
 
                 console.log(formData.get("dProfile"));
 
-                console.log("가격리스트의 첫번째 값 확인");
+                // console.log("가격리스트의 첫번째 값 확인");
                 // priceList 항목 개별 확인
                 // for (let i = 0; i < this.priceList.length; i++) {
                 //     console.log(`priceList[${i}]`, formData.get(`priceList[${i}].beautyNo`),formData.get(`priceList[${i}].onePrice`));
