@@ -427,7 +427,7 @@ import { reactive, onMounted } from 'vue';
             //가격리스트 없을때! 가격리스트 초기화!
             initializePriceList() {
                 let priceList = [];
-                for (let i = 1; i < 66; i++) {
+                for (let i = 1; i < 66; i++) { // beautyNo가 1번 부터 시작이라 1번부터 값을 할당해야함
                     priceList.push({ beautyNo: i ,onePrice: '' });
                 }
                 return priceList;
@@ -446,12 +446,12 @@ import { reactive, onMounted } from 'vue';
                 formData.append("title", this.shopInfo.title);
                 formData.append("subTitle", this.shopInfo.subTitle);
                 
-                for (let i = 0; i < this.shopInfo.slideImgs.length; i++) {
-                    formData.append('slideImgs',this.shopInfo.slideImgs[i]); 
-                }
-                for (let i = 0; i < this.shopInfo.cutImgs.length; i++) {
-                    formData.append('cutImgs',this.shopInfo.cutImgs[i]);
-                }
+                this.shopInfo.slideImgs.forEach((img, index) => {
+                    formData.append(`slideImgs[${index}]`, img);
+                });
+                this.shopInfo.cutImgs.forEach((img, index) => {
+                    formData.append(`cutImgs[${index}]`, img);
+                });
 
                 formData.append("dName", this.shopInfo.dName);
                 formData.append("job", this.shopInfo.job);
@@ -485,8 +485,6 @@ import { reactive, onMounted } from 'vue';
                 //     console.log(`priceList[${i}]`, formData.get(`priceList[${i}].beautyNo`),formData.get(`priceList[${i}].onePrice`));
                 // }
 
-                console.log("bNo값:");
-                console.log(formData.get("bNo"));
 
                 axios({
                     
