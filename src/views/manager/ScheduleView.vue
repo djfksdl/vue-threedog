@@ -300,8 +300,8 @@ export default {
             // 선택된 예약 정보를 Vuex에 저장
             this.$store.commit("setSelectedSchedule", info.event);
 
-            // 다이어리 화면으로 이동
-            this.$router.push({ name: "diary" });
+              // 선택된 예약 정보와 함께 다이어리 화면으로 이동
+            this.$router.push({ name: 'diary', params: { event: info.event } });
         },
 
 
