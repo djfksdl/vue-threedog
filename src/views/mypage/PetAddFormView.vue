@@ -46,10 +46,10 @@
                                 <div class="size">
                                     <span>크기선택</span>
                                     <label for="small">소형견</label><input id="small" type="radio" name="size"
-                                        value="small" v-model="dogVo.size">
+                                        value="소형견" v-model="dogVo.size">
                                     <label for="middle">중형견</label><input id="middle" type="radio" name="size"
-                                        value="middle" v-model="dogVo.size">
-                                    <label for="big">대형견</label><input id="big" type="radio" name="size" value="big"
+                                        value="중형견" v-model="dogVo.size">
+                                    <label for="big">특수견</label><input id="big" type="radio" name="size" value="특수견"
                                         v-model="dogVo.size">
                                 </div>
                             </div>

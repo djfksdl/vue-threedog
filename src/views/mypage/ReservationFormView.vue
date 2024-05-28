@@ -119,218 +119,112 @@
                         </div>
 
 
+
+
                         <div class="price">
 
-                            <span>크기선택</span>
-                            <label for="small">소형견</label><input id="small" type="radio" name="size" value="small"
-                                v-model="selectedSize">
-                            <label for="middle">중형견</label><input id="middle" type="radio" name="size" value="middle"
-                                v-model="selectedSize">
-                            <label for="big">대형견</label><input id="big" type="radio" name="size" value="big"
-                                v-model="selectedSize">
+                            <!-- {{ dogVo.size }} -->
+                            <!-- <span>크기선택</span>
+                            <label for="small">소형견</label><input id="small" type="radio" name="size" value="소형견"
+                                v-bind:checked="dogVo.size == '소형견'" v-model="dogVo.size">
+                            <label for="middle">중형견</label><input id="middle" type="radio" name="size" value="중형견"
+                                v-bind:checked="dogVo.size == '중형견'" v-model="dogVo.size">
+                            <label for="big">특수견</label><input id="big" type="radio" name="size" value="특수견"
+                                v-bind:checked="dogVo.size == '특수견'" v-model="dogVo.size"> -->
+
+                            {{ dogVo.size }}
                             <div class="tableBox">
-                                <!-- 소형견 -->
-                                <table v-if="selectedSize == 'small'">
+                                <!-- 소형견, 중형견 -->
+                                <table v-if="dogVo.size === '소형견' || dogVo.size === '중형견'" style="width: 650px;">
                                     <!-- <tr>
-                                <th colspan="7" class="eNonBorder">소형견(말티즈, 요크셔, 시츄, 푸들 등...)</th>
-                            </tr> -->
-                                    <tr>
-                                        <th>몸무게</th>
-                                        <th>목욕</th>
-                                        <th>부분</th>
-                                        <th>목욕+부분</th>
-                                        <th>얼굴+부분+목욕</th>
-                                        <th colspan="2">기본전체미용</th>
-                                    </tr>
-                                    <tr>
-                                        <th>2kg이하</th>
-                                        <td>12,000</td>
-                                        <td>12,000</td>
-                                        <td>15,000</td>
-                                        <td>20,000</td>
-                                        <td colspan="2">25,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>2kg~5kg</th>
-                                        <td>15,000</td>
-                                        <td>15,000</td>
-                                        <td>20,000</td>
-                                        <td>25,000</td>
-                                        <td colspan="2">30,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>5kg~8kg</th>
-                                        <td>20,000</td>
-                                        <td>20,000</td>
-                                        <td>25,000</td>
-                                        <td>30,000</td>
-                                        <td colspan="2">35,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>8kg~10kg</th>
-                                        <td>25,000</td>
-                                        <td>25,000</td>
-                                        <td>30,000</td>
-                                        <td>35,000</td>
-                                        <td colspan="2">40,000</td>
-                                    </tr>
-                                    <!-- 추가요금 -->
-                                    <!-- <tr>
-                                    <th colspan="7">&nbsp;</th>
-                                </tr> -->
-                                    <tr>
-                                        <th rowspan="4" class="eNonBorder2">추가요금</th>
-                                        <th>가위컷</th>
-                                        <td>25,000</td>
-                                        <th>특수얼굴컷</th>
-                                        <td colspan="3">5,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>엉킴</th>
-                                        <td>5,000</td>
-                                        <th>투톤 염색</th>
-                                        <td colspan="3">10,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>기장</th>
-                                        <td>5,000</td>
-                                        <th>염색</th>
-                                        <td colspan="3">5,000</td>
-                                    </tr>
+                                     <th colspan="7" class="eNonBorder">소형견(말티즈, 요크셔, 시츄, 푸들 등...)</th>
+                                    </tr> -->
+                                    <!-- v-for="(priceVo, i) in priceList" v-bind:key="i" -->
+                                    <thead>
+                                        <tr>
+                                            <th>몸무게</th>
+                                            <th>목욕</th>
+                                            <th>부분</th>
+                                            <th>목욕+부분</th>
+                                            <th>얼굴+부분+목욕</th>
+                                            <th colspan="2">기본전체미용</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody v-for="(priceVo, i) in priceList" :key="i">
+                                        <tr v-if="i % 5 == 0">
+                                            <th>{{ priceVo.weightDiv }}</th>
+                                            <td>{{ priceVo.onePrice }}</td>
+                                            <td>{{ priceList[i + 1]?.onePrice }}</td>
+                                            <td>{{ priceList[i + 2]?.onePrice }}</td>
+                                            <td>{{ priceList[i + 3]?.onePrice }}</td>
+                                            <td>{{ priceList[i + 4]?.onePrice }}</td>
+                                        </tr>
+                                    </tbody>
+
 
                                 </table>
 
-                                <!-- 중형견 -->
-                                <table v-if="selectedSize == 'middle'" border="1">
-                                    <!-- 중형견 -->
-                                    <tr>
-                                        <th>몸무게</th>
-                                        <th>목욕</th>
-                                        <th>부분</th>
-                                        <th>목욕+부분</th>
-                                        <th>얼굴+부분+목욕</th>
-                                        <th colspan="2">기본전체미용</th>
-                                    </tr>
-
-                                    <tr>
-                                        <th>5kg이하</th>
-                                        <td>20,000</td>
-                                        <td>20,000</td>
-                                        <td>25,000</td>
-                                        <td>30,000</td>
-                                        <td colspan="2">35,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>5kg~8kg</th>
-                                        <td>25,000</td>
-                                        <td>25,000</td>
-                                        <td>30,000</td>
-                                        <td>35,000</td>
-                                        <td colspan="2">40,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>8kg~10kg</th>
-                                        <td>30,000</td>
-                                        <td>30,000</td>
-                                        <td>35,000</td>
-                                        <td>40,000</td>
-                                        <td colspan="2">45,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>10kg~12kg</th>
-                                        <td>35,000</td>
-                                        <td>35,000</td>
-                                        <td>40,000</td>
-                                        <td>45,000</td>
-                                        <td colspan="2">50,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>12kg이상</th>
-                                        <td colspan="6">초과 1kg당 5,000원 추가</td>
-
-                                    </tr>
-                                    <!-- 추가요금 -->
-                                    <tr>
-                                        <th rowspan="4" class="eNonBorder2">추가요금</th>
-                                        <th>가위컷</th>
-                                        <td>25,000</td>
-                                        <th>특수얼굴컷</th>
-                                        <td colspan="3">5,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>엉킴</th>
-                                        <td>5,000</td>
-                                        <th>투톤 염색</th>
-                                        <td colspan="3">10,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>기장</th>
-                                        <td>5,000</td>
-                                        <th>염색</th>
-                                        <td colspan="3">5,000</td>
-                                    </tr>
-
+                                <!-- 특수견 -->
+                                <table v-if="dogVo.size == '특수견'">
+                                    <thead>
+                                        <tr>
+                                            <th>몸무게</th>
+                                            <th>목욕</th>
+                                            <th>부분</th>
+                                            <th>목욕+부분</th>
+                                            <th>얼굴+부분+목욕</th>
+                                            <th>스포팅</th>
+                                            <th>가위컷</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody v-for="(priceVo, i) in priceList" :key="i">
+                                        <tr v-if="i % 6 == 0">
+                                            <th>{{ priceVo.weightDiv }}</th>
+                                            <td>{{ priceVo.onePrice }}</td>
+                                            <td>{{ priceList[i + 1]?.onePrice }}</td>
+                                            <td>{{ priceList[i + 2]?.onePrice }}</td>
+                                            <td>{{ priceList[i + 3]?.onePrice }}</td>
+                                            <td>{{ priceList[i + 4]?.onePrice }}</td>
+                                            <td>{{ priceList[i + 5]?.onePrice }}</td>
+                                        </tr>
+                                    </tbody>
                                 </table>
 
-                                <!-- 대형견 -->
-                                <table v-if="selectedSize == 'big'" border="1">
-                                    <!-- 특수견 -->
-                                    <tr>
-                                        <th>몸무게</th>
-                                        <th>목욕</th>
-                                        <th>부분</th>
-                                        <th>목욕+부분</th>
-                                        <th>얼굴+부분+목욕</th>
-                                        <th>스포팅</th>
-                                    </tr>
-                                    <tr>
-                                        <th>5kg이하</th>
-                                        <td>20,000</td>
-                                        <td>20,000</td>
-                                        <td>25,000</td>
-                                        <td>30,000</td>
-                                        <td>35,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>5kg~8kg</th>
-                                        <td>25,000</td>
-                                        <td>25,000</td>
-                                        <td>30,000</td>
-                                        <td>35,000</td>
-                                        <td>40,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>8kg이상</th>
-                                        <td>30,000</td>
-                                        <td>30,000</td>
-                                        <td>35,000</td>
-                                        <td>40,000</td>
-                                        <td>45,000</td>
-                                    </tr>
-                                    <!-- 추가요금 -->
-                                    <tr>
-                                        <th rowspan="4" class="eNonBorder2">추가요금</th>
-                                        <th>가위컷</th>
-                                        <td>25,000</td>
-                                        <th>특수얼굴컷</th>
-                                        <td colspan="3">5,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>엉킴</th>
-                                        <td>5,000</td>
-                                        <th>투톤 염색</th>
-                                        <td colspan="3">10,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>기장</th>
-                                        <td>5,000</td>
-                                        <th>염색</th>
-                                        <td colspan="3">5,000</td>
-                                    </tr>
-
-                                </table>
+                                
                             </div>
+                            <table style="width: 650px;">
+                                    <tr>
+                                        <th rowspan="4">추가요금</th>
+                                        <th>가위컷</th>
+                                        <td>25,000</td>
+                                        <th>가위컷</th>
+                                        <td>25,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>썸머</th>
+                                        <td>10,000</td>
+                                        <th>투톤염색</th>
+                                        <td>10,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>기장</th>
+                                        <td>5,000</td>
+                                        <th>염색</th>
+                                        <td>5,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>엉킴</th>
+                                        <td>5,000</td>
+                                        <th>특수견</th>
+                                        <td>7,000</td>
+                                    </tr>
+                                </table>
                         </div>
+                        
+
+
+
+
                         <div class="expectPrice">
                             <p>예상가격 {{ estimatedPrice }}원</p>
                         </div>
@@ -427,7 +321,6 @@ export default {
     },
     data() {
         return {
-            selectedSize: '',   //소중대 크기
             reserveList: [],
             // 고객
             reserveVo: {
@@ -473,10 +366,24 @@ export default {
                 heart: false,
                 marking: false,
                 mounting: false,
-
+            },
+            priceList: [],
+            priceVo: {
+                priceNo: 0,
+                beautyNo: 0,
+                bNo: 1,
+                onePrice: 0,
+                sizeDiv: "",
+                weightDiv: "",
+                beauty: "",
             },
         };
     },
+
+    mounted() {
+
+    },
+
 
     methods: {
 
@@ -506,6 +413,18 @@ export default {
         getTimeList() {
             console.log("가게 시게정보 가져오기");
         },
+
+        // // 시간선택
+        // toggleTime(time) {
+        //     console.log(time);
+        //     if (this.reserveVo.rsTime == time) {
+        //         // 이미 선택된 시간을 클릭한 경우 선택 해제
+        //         this.reserveVo.rsTime = null;
+        //     } else {
+        //         // 클릭한 시간을 선택
+        //         this.reserveVo.rsTime = time;
+        //     }
+        // },
 
         // 반려견선택
         getPetList() {
@@ -545,13 +464,13 @@ export default {
                 console.log("성공");
                 console.log(response.data.apiData); //수신데이타
                 this.dogVo = response.data.apiData;
-
+                this.getPrice();
             }).catch(error => {
                 console.log(error);
             });
         },
 
-
+        // 특이사항 버튼
         toggleSkinStatus() {
             this.dogVo.skin = !this.dogVo.skin; // 피부병 상태 토글
         },
@@ -566,17 +485,28 @@ export default {
         },
 
 
-        // // 시간선택
-        // toggleTime(time) {
-        //     console.log(time);
-        //     if (this.reserveVo.rsTime == time) {
-        //         // 이미 선택된 시간을 클릭한 경우 선택 해제
-        //         this.reserveVo.rsTime = null;
-        //     } else {
-        //         // 클릭한 시간을 선택
-        //         this.reserveVo.rsTime = time;
-        //     }
-        // },
+        // 가격표가져오기
+        getPrice() {
+            console.log("가격표 가져오기");
+            console.log("사업자번호 : ", this.priceVo.bNo);
+            console.log("우리강쥐크기 : ", this.dogVo.size);
+            axios({
+                method: 'get',  //put,post,delete
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/getprice`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { bNo: this.priceVo.bNo, sizeDiv: this.dogVo.size },
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log("가격가져오기성공");
+                console.log(response.data.apiData); //수신데이타
+                this.priceList = response.data.apiData;
+
+            }).catch(error => {
+                console.log(error);
+            });
+        },
+
+
 
 
         // 예상가격
