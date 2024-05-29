@@ -13,10 +13,10 @@
 
       <div id="map-search">
         <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true"
-          style="width: 1370px; height: 494pxpx; margin-left: 20px;">
+          style="width: 1300px; height: 494px; margin-left: 20px;">
           <!-- addList 배열에 있는 각 가게에 대해 반복하여 마커를 표시합니다 -->
           <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
-          <KakaoMapMarker v-for="(store, index) in addList" :key="index" :lat="store.latitude" :lng="store.longitude">
+          <KakaoMapMarker v-for="(store, index) in addList" :key="index" :lat="store.latitude" :lng="store.longitude" @click="openInfoWindow(store)">
           </KakaoMapMarker>
         </KakaoMap>
         <DatePicker02 @selectedDate="handleDateChange" @customAction="getList" />
@@ -37,11 +37,11 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, watch } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
-import { KakaoMap, KakaoMapMarker, KakaoMapInfoWindow } from 'vue3-kakao-maps';
+import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
 import DatePicker02 from '@/components/DatePicker02.vue';
 import AppFooter from "@/components/AppFooter.vue";
 import AppHeader from "@/components/AppHeader.vue";
@@ -51,7 +51,7 @@ import "@/assets/css/potal/searchmap.css";
 
 const route = useRoute();
 const store = useStore();
-const storeList = reactive([]);
+const storeList = ref([]);
 const coordinate = ref({
   lat: 37.5535,
   lng: 126.9715
@@ -60,6 +60,8 @@ const searchQuery = ref('');
 const location = ref('');
 const rsDate = ref(null);
 const addList = ref([]);
+const map = ref(null);
+const overlays = ref([]);
 
 const searchLocation = async () => {
   try {
@@ -126,6 +128,7 @@ const getCurrentLocation = () => {
       coordinate.value.lat = lat;
       coordinate.value.lng = lng;
       getList();
+      createMap();
     }, (error) => {
       handleLocationError(error);
     });
@@ -168,29 +171,76 @@ const markList = () => {
     console.log("=========================");
     console.log(response.data.apiData);
     addList.value = response.data.apiData;
+    createMap();  // 마커를 지도에 추가하는 함수를 여기서 호출합니다.
   }).catch(error => {
     console.log(error);
   });
 };
 
 onMounted(() => {
-  if (addList.value.length > 0) {
-    openInfoWindow(addList.value[0]);
-  }
   getList();
   markList();
+  window.closeOverlay = (id) => {
+    const overlay = overlays.value.find(o => o.id === id);
+    if (overlay) overlay.overlay.setMap(null);
+  };
 });
 
-const openInfoWindow = (store) => {
-  const latLng = new window.kakao.maps.LatLng(store.latitude, store.longitude);
+const createMap = () => {
+  if (!window.kakao) {
+    console.error("Kakao map library not loaded.");
+    return;
+  }
 
-  const infoWindow = new KakaoMapInfoWindow({
-    map: window.map,
-    position: latLng,
-    content: `<div class="info-window"><h3>${store.title}</h3></div>`
+  if (!map.value) {
+    map.value = new window.kakao.maps.Map(document.querySelector("#map-main"), {
+      center: new window.kakao.maps.LatLng(coordinate.value.lat, coordinate.value.lng),
+      level: 3
+    });
+  }
+
+  addList.value.forEach(store => {
+    const markerPosition = new window.kakao.maps.LatLng(store.latitude, store.longitude);
+    const marker = new window.kakao.maps.Marker({
+      position: markerPosition
+    });
+
+    marker.setMap(map.value);
+
+    const content = `
+      <div class="map-wrap">
+        <div class="info">
+          <div class="title">${store.title}
+            <div class="close" onclick="closeOverlay(${store.id})" title="닫기"></div>
+          </div>
+          <div class="body">
+            <div class="img">
+              <img src="${store.logo}" width="73" height="70">
+            </div>
+            <div class="desc">
+              <div class="ellipsis">${store.bAddress}</div>
+              <div class="jibun ellipsis">${store.bdAddress}</div>
+              <div><a href="" target="_blank" class="link">홈페이지</a></div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+      //로고 이미지가 없어서 콘솔에 오류가 뜸
+      
+    const overlay = new window.kakao.maps.CustomOverlay({
+      content: content,
+      map: null,
+      position: marker.getPosition()
+    });
+
+    overlays.value.push({ id: store.id, overlay });
+
+    window.kakao.maps.event.addListener(marker, 'click', () => {
+      overlays.value.forEach(o => o.overlay.setMap(null));
+      overlay.setMap(map.value);
+    });
   });
-
-  infoWindow.open();
 };
+
 
 </script>

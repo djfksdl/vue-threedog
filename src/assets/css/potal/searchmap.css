@@ -1,5 +1,7 @@
 #map-search {
     display: flex;
+    margin-left: 20px;
+    height: 494px;
   }
   
   .map-container {
@@ -10,4 +12,6 @@
   .calendar_container {
     flex: 0 0 40%;
     height: 400px;
+    z-index: 999; /* DatePicker가 다른 요소 위에 나타나도록 z-index 설정 */
   }
+ 

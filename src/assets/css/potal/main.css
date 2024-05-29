@@ -1,3 +1,9 @@
+#map-main {
+  width: 1370px;
+  height: 400px;
+  margin-left: 20px; /* 왼쪽에 마진 20px 추가 */
+}
+
 .main-map {
   margin: 20px 20px 20px 20px;
 }
@@ -255,3 +261,4 @@
 .info .link {
   color: #5085BB;
 }
+

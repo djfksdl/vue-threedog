@@ -4,7 +4,8 @@
     <div id="potal-search-container" class="clearfix">
       <div class="search-search-container">
         <div class="search-search-input">
-          <input type="text" class="search-input-search" placeholder="검색어를 입력하세요">
+          <input type="text" class="search-input-search" ref="searchInput" placeholder="검색어를 입력하세요"
+            @input="debouncedSearch">
         </div>
         <button class="search-button" @click="searchList">검색</button>
       </div>
@@ -20,26 +21,9 @@
               <td>
                 <div class="city-box">
                   <ul class="city-list">
-                    <li @click="toggleCity('서울')" :class="{ 'selected': selectedCities.includes('서울') }">서울 <span
-                        v-if="selectedCities.includes('서울')" @click="cancelCity('서울')">X</span></li>
-                    <li @click="toggleCity('경기')" :class="{ 'selected': selectedCities.includes('경기') }">경기 <span
-                        v-if="selectedCities.includes('경기')" @click="cancelCity('경기')">X</span></li>
-                    <li @click="toggleCity('강원')" :class="{ 'selected': selectedCities.includes('강원') }">강원 <span
-                        v-if="selectedCities.includes('강원')" @click="cancelCity('강원')">X</span></li>
-                    <li @click="toggleCity('충북')" :class="{ 'selected': selectedCities.includes('충북') }">충북 <span
-                        v-if="selectedCities.includes('충북')" @click="cancelCity('충북')">X</span></li>
-                    <li @click="toggleCity('충남')" :class="{ 'selected': selectedCities.includes('충남') }">충남 <span
-                        v-if="selectedCities.includes('충남')" @click="cancelCity('충남')">X</span></li>
-                    <li @click="toggleCity('경북')" :class="{ 'selected': selectedCities.includes('경북') }">경북 <span
-                        v-if="selectedCities.includes('경북')" @click="cancelCity('경북')">X</span></li>
-                    <li @click="toggleCity('경남')" :class="{ 'selected': selectedCities.includes('경남') }">경남 <span
-                        v-if="selectedCities.includes('경남')" @click="cancelCity('경남')">X</span></li>
-                    <li @click="toggleCity('전북')" :class="{ 'selected': selectedCities.includes('전북') }">전북 <span
-                        v-if="selectedCities.includes('전북')" @click="cancelCity('전북')">X</span></li>
-                    <li @click="toggleCity('전남')" :class="{ 'selected': selectedCities.includes('전남') }">전남 <span
-                        v-if="selectedCities.includes('전남')" @click="cancelCity('전남')">X</span></li>
-                    <li @click="toggleCity('제주')" :class="{ 'selected': selectedCities.includes('제주') }">제주 <span
-                        v-if="selectedCities.includes('제주')" @click="cancelCity('제주')">X</span></li>
+                    <li v-for="city in cities" :key="city" @click="toggleCity(city)"
+                      :class="{ 'selected': selectedCities.includes(city) }">{{ city }} <span
+                        v-if="selectedCities.includes(city)" @click.stop="cancelCity(city)">X</span></li>
                   </ul>
                 </div>
               </td>
@@ -53,15 +37,9 @@
               <td>
                 <div class="city-box">
                   <ul class="city-list">
-                    <li @click="toggleType('소형견')" :class="{ 'selected': selectedTypes.includes('소형견') }">소형견 &nbsp;
-                      <span v-if="selectedTypes.includes('소형견')" class="cancel-btn" @click="cancelType('소형견')">X</span>
-                    </li>
-                    <li @click="toggleType('중형견')" :class="{ 'selected': selectedTypes.includes('중형견') }">중형견 &nbsp;
-                      <span v-if="selectedTypes.includes('중형견')" class="cancel-btn" @click="cancelType('중형견')">X</span>
-                    </li>
-                    <li @click="toggleType('특수견')" :class="{ 'selected': selectedTypes.includes('특수견') }">특수견 &nbsp;
-                      <span v-if="selectedTypes.includes('특수견')" class="cancel-btn" @click="cancelType('특수견')">X</span>
-                    </li>
+                    <li v-for="type in types" :key="type" @click="toggleType(type)"
+                      :class="{ 'selected': selectedTypes.includes(type) }">{{ type }} <span
+                        v-if="selectedTypes.includes(type)" @click.stop="cancelType(type)">X</span></li>
                   </ul>
                 </div>
               </td>
@@ -75,31 +53,9 @@
               <td>
                 <div class="city-box">
                   <ul class="city-list">
-                    <li @click="toggleWeight('~2kg')" :class="{ 'selected': selectedWeights.includes('~2kg') }">2kg 이하
-                      &nbsp;
-                      <span v-if="selectedWeights.includes('~2kg')" @click="cancelWeight('~2kg')"
-                        class="cancel-btn">X</span>
-                    </li>
-                    <li @click="toggleWeight('2~5kg')" :class="{ 'selected': selectedWeights.includes('2~5kg') }">2~5kg
-                      &nbsp;
-                      <span v-if="selectedWeights.includes('2~5kg')" @click="cancelWeight('2~5kg')"
-                        class="cancel-btn">X</span>
-                    </li>
-                    <li @click="toggleWeight('5~8kg')" :class="{ 'selected': selectedWeights.includes('5~8kg') }">5~8kg
-                      &nbsp;
-                      <span v-if="selectedWeights.includes('5~8kg')" @click="cancelWeight('5~8kg')"
-                        class="cancel-btn">X</span>
-                    </li>
-                    <li @click="toggleWeight('8~10kg')" :class="{ 'selected': selectedWeights.includes('8~10kg') }">
-                      8~10kg &nbsp; <span v-if="selectedWeights.includes('8~10kg')" @click="cancelWeight('8~10kg')"
-                        class="cancel-btn">X</span></li>
-                    <li @click="toggleWeight('10~12kg')" :class="{ 'selected': selectedWeights.includes('10~12kg') }">
-                      10~12kg &nbsp; <span v-if="selectedWeights.includes('10~12kg')" @click="cancelWeight('10~12kg')"
-                        class="cancel-btn">X</span></li>
-                    <li @click="toggleWeight('12kg~')" :class="{ 'selected': selectedWeights.includes('12kg~') }">12kg~
-                      <span v-if="selectedWeights.includes('12kg~')" @click="cancelWeight('12kg~')"
-                        class="cancel-btn">X</span>
-                    </li>
+                    <li v-for="weight in weights" :key="weight" @click="toggleWeight(weight)"
+                      :class="{ 'selected': selectedWeights.includes(weight) }">{{ weight }} <span
+                        v-if="selectedWeights.includes(weight)" @click.stop="cancelWeight(weight)">X</span></li>
                   </ul>
                 </div>
               </td>
@@ -113,20 +69,9 @@
               <td>
                 <div class="city-box">
                   <ul class="city-list">
-                    <li @click="togglePrice('~20,000')" :class="{ 'selected': selectedPrices.includes('~20,000') }">
-                      ~20,000 &nbsp; <span v-if="selectedPrices.includes('~20,000')" @click="cancelPrice('~20,000')"
-                        class="cancel-btn">X</span></li>
-                    <li @click="togglePrice('20,000~40,000')"
-                      :class="{ 'selected': selectedPrices.includes('20,000~40,000') }">20,000~40,000 &nbsp; <span
-                        v-if="selectedPrices.includes('20,000~40,000')" @click="cancelPrice('20,000~40,000')"
-                        class="cancel-btn">X</span></li>
-                    <li @click="togglePrice('40,000~60,000')"
-                      :class="{ 'selected': selectedPrices.includes('40,000~60,000') }">40,000~60,000 &nbsp; <span
-                        v-if="selectedPrices.includes('40,000~60,000')" @click="cancelPrice('40,000~60,000')"
-                        class="cancel-btn">X</span></li>
-                    <li @click="togglePrice('60,000~')" :class="{ 'selected': selectedPrices.includes('60,000~') }">
-                      60,000~ &nbsp; <span v-if="selectedPrices.includes('60,000~')" @click="cancelPrice('60,000~')"
-                        class="cancel-btn">X</span></li>
+                    <li v-for="price in prices" :key="price" @click="togglePrice(price)"
+                      :class="{ 'selected': selectedPrices.includes(price) }">{{ price }} <span
+                        v-if="selectedPrices.includes(price)" @click.stop="cancelPrice(price)">X</span></li>
                   </ul>
                 </div>
               </td>
@@ -163,8 +108,6 @@
             </div>
 
           </div>
-
-
         </div>
       </div>
 
@@ -204,7 +147,11 @@ export default {
         title: '',
         saveName: '',
         bNo: ''
-      }
+      },
+      cities: ['서울', '경기', '강원', '충북', '충남', '경북', '경남', '전북', '전남', '제주'],
+      types: ['소형견', '중형견', '특수견'],
+      weights: ['~2kg', '2~5kg', '5~8kg', '8~10kg', '10~12kg', '12kg~'],
+      prices: ['~20,000', '~40,000', '~60,000', '60,000~']
     };
   },
   watch: {
@@ -323,21 +270,31 @@ export default {
     },
     searchList() {
       console.log("데이터 가져오기");
-      // 입력된 검색어와 선택된 항목들을 가져옵니다.
       const searchKeyword = this.$refs.searchInput.value;
-      const selectedItems = this.selectedItems.map(item => item.label);
 
-      // 선택된 항목들과 검색어를 이용하여 필요한 파라미터를 구성합니다.
       const params = {
         searchKeyword: searchKeyword,
-        selectedItems: selectedItems
+        selectedCities: this.selectedCities,
+        selectedWeights: this.selectedWeights,
+        selectedTypes: this.selectedTypes,
+        selectedPrices: this.selectedPrices
       };
+
+      console.log("==================");
+      console.log(params);
+      console.log("==================");
 
       axios({
         method: 'get',
         url: `${this.$store.state.apiBaseUrl}/api/keyword`,
         headers: { "Content-Type": "application/json; charset=utf-8" },
-        params: params,
+        params: {
+          searchKeyword: searchKeyword,
+          selectedCities: this.selectedCities.join(";"),
+          selectedWeights: this.selectedWeights.join(";"),
+          selectedTypes: this.selectedTypes.join(";"),
+          selectedPrices: this.selectedPrices.join(";")
+        },
         responseType: 'json'
       }).then(response => {
         console.log(response.data.apiData);
