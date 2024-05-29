@@ -44,16 +44,7 @@
                                     <img v-for="slide in group" :key="slide" :src="`${$store.state.apiBaseUrl}/upload/${slide}`">
                                 </div>
                             </Slide>
-                            <!-- <template #addons>
-                                <Pagination />
-                            </template> -->
                         </Carousel>
-                        <!-- <div class="arrow left" @click="prevSlide">
-                            <i class="fas fa-chevron-left"></i>
-                        </div>
-                        <div class="arrow right" @click="nextSlide">
-                            <i class="fas fa-chevron-right"></i>
-                        </div> -->
                     </div>
                 </div>
 
@@ -66,7 +57,7 @@
                             <h2>이서현 원장</h2>
                             <div class="eCareerBox">
                                 <h3>경력</h3>
-                                <div class="eCareerBoxInfo">{{ shopInfo.introduce }}</div>
+                                <div class="eCareerBoxInfo" v-html="shopInfo.introduce.replace(/\n/g, '<br>')"></div>
                             </div>
                         </div>
                         <!-- 디자이너소개 오른쪽 -->
