@@ -407,7 +407,7 @@ import { reactive, onMounted } from 'vue';
                     bAddress: "",
                     bdAddress: "",
                     bPhone: "",
-                    title: "", //""는 빈 문자열, null은 없음
+                    title: "", 
                     subTitle: "",
                     logoFile: null, //로고 파일담을것
                     logo:"", //로고 savaName
@@ -417,8 +417,8 @@ import { reactive, onMounted } from 'vue';
                     dProfileFile:null,//프로파일 파일담을것
                     dProfile:"",//프로파일 savaName
                     job:"",
-                    slideImgs:[],
-                    cutImgs:[],
+                    slideImgs:[],//슬라이드이미지들 파일담을것
+                    cutImgs:[],//컷이미지들 파일담을것
                 },
                 priceList: this.initializePriceList(),
 
@@ -435,11 +435,9 @@ import { reactive, onMounted } from 'vue';
                 return priceList;
             },
 
-
-
             // 가게정보 등록하기
             addShopInfo(){
-                console.log("가게정보 등록하기 버튼");
+                // console.log("가게정보 등록하기 버튼");
                 let formData = new FormData();
 
                 formData.append("bNo", this.bNo);
@@ -536,43 +534,9 @@ import { reactive, onMounted } from 'vue';
             //     });
             // },
 
-            //가격정보 불러오기
-            getPrice(){
-                // console.log(this.bNo);
-                // axios({
-                //     method: 'get', // put, post, delete 
-                //     url: `${this.$store.state.apiBaseUrl}/api/su/getPriceBybNo`,
-                //     headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
-                //     params: {bNo: this.bNo}, //get방식 파라미터로 값이 전달
-                //     // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
-                //     responseType: 'json' //수신타입
-                // }).then(response => {
-                //     // console.log(response.data.apiData); //수신데이타
-
-                //     // 필요한 요소 개수 (여기서는 65개로 가정) - length만큼 onePrice를 초기화애야함.
-                //         const requiredLength = 65;
-
-                //     // pList가 비어 있는 경우
-                //     if (!response.data.apiData || response.data.apiData.length === 0) {
-                //         // beautyNo를 1부터 시작하여 +1씩 증가하며 priceList 초기화
-                //         this.priceList = Array.from({ length: requiredLength }, (_, index) => ({ beautyNo: index + 1, onePrice: 0 }));
-                //     } else {
-                //         // priceList의 각 요소가 onePrice 프로퍼티를 가지도록 초기화
-                //         const receivedList = response.data.apiData.map(item => ({ beautyNo: item.beautyNo, onePrice: item.onePrice }));
-                //         // 필요한 길이만큼 초기화
-                //         this.priceList = [...receivedList, ...Array.from({ length: requiredLength - receivedList.length }, (_, index) => ({ beautyNo: receivedList.length + index + 1, onePrice: 0 }))];
-                //     }
-
-                // }).catch(error => {
-                //     console.log(error);
-                // });
-            },
-  
         },
         created(){
-
             // this.getShopInfo();
-            // this.getPrice();
         },
         mounted() {
 

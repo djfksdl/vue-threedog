@@ -14,9 +14,45 @@
 }
 
 /* 이미지 슬라이드 */
-.container2 .eImgSlide{}
-.container2 .eImgSlide img{
+.container2 .eImgSlide.wrapper-slide {
+    position: relative;
     width: 100%;
+    height: 600px;
+}
+  
+.container2 .eImgSlide.wrapper-slide  .img-slide {
+    width: 100%;
+    height: 600px;
+    overflow: hidden;
+}
+.container2 .eImgSlide.wrapper-slide  .img-slide img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+ 
+}
+
+.container2 .eImgSlide.wrapper-slide .arrow {
+position: absolute;
+top: 50%;
+transform: translateY(-50%);
+font-size: 24px;
+color: rgba(224, 217, 217, 0.986); /* 더 밝은 회색 */
+cursor: pointer;
+z-index: 100;
+}
+  
+.container2 .eImgSlide.wrapper-slide  .left {
+    left: 20px;
+}
+  
+.container2 .eImgSlide.wrapper-slide  .right {
+    right: 20px;
+}
+  
+.container2 .eImgSlide.wrapper-slide .fas.fa-chevron-left,
+.container2 .eImgSlide.wrapper-slide .fas.fa-chevron-right {
+font-size: 36px;
 }
 
 /* ===================== 중간 내용부분 ===================== */

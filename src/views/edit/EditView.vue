@@ -12,7 +12,7 @@
                 <Carousel :autoplay="5000" :wrap-around="true" :show-arrows="false" ref="carouselRef">
                     <Slide v-for="slide in slides" :key="slide">
                         <div class="img-slide">
-                            <img class="slideImg" :src="slide" />
+                            <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${slide }`">
                         </div>
                     </Slide>
                     <template #addons>
@@ -357,8 +357,8 @@
 import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
 import { defineComponent, ref } from "vue";
 import { Carousel, Pagination, Slide } from "vue3-carousel";
-import slide01 from "@/assets/images/main-slide.png";
-import slide02 from "@/assets/images/main-slide02.jpg";
+// import slide01 from "@/assets/images/main-slide.png";
+// import slide02 from "@/assets/images/main-slide02.jpg";
 import "vue3-carousel/dist/carousel.css";
 // 코드에서 setup을 사용하고 있으므로 setup 내에서 import와 reactive를 사용할 수 있습니다.
 import { reactive, onMounted } from 'vue';
@@ -378,31 +378,8 @@ import { useRoute } from 'vue-router';
         lng: 0
     });
 
-    // 가게 정보 에서 위도 경도 값 받아오기
-    const getLatLng = () => {
-        axios({
-            method: 'get',
-            url: `${store.state.apiBaseUrl}/api/su/shopInfo`, //store변수 사용
-            headers: { "Content-Type": "application/json; charset=utf-8" },
-            params: { bNo: params.bNo },
-            responseType: 'json'
-        }).then(response => {
-            // shopInfo 객체에서 위도와 경도 값을 받아와서 coordinate 객체에 할당합니다.
-            coordinate.lat = response.data.apiData.shopInfo.latitude;
-            coordinate.lng = response.data.apiData.shopInfo.longitude;
-
-        }).catch(error => {
-            console.log(error);
-        });
-
-    };
-    // 컴포넌트가 마운트된 후에 가게 정보 가져오기
-    onMounted(() => {
-        getLatLng();
-    });
-    
     //슬라이드
-    const slides = ref([slide01, slide02]);
+    const slides = ref([]);
     const carouselRef = ref(null);
 
     const nextSlide = () => {
@@ -416,6 +393,33 @@ import { useRoute } from 'vue-router';
             carouselRef.value.prev();
         }
     };
+
+    // 가게 정보 에서 위도 경도 슬라이드 리스트 값 받아오기
+    const getLatLngSlide = () => {
+        axios({
+            method: 'get',
+            url: `${store.state.apiBaseUrl}/api/su/shopInfo`, //store변수 사용
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            params: { bNo: params.bNo },
+            responseType: 'json'
+        }).then(response => {
+            // shopInfo 객체에서 위도와 경도 값을 받아와서 coordinate 객체에 할당합니다.
+            coordinate.lat = response.data.apiData.shopInfo.latitude;
+            coordinate.lng = response.data.apiData.shopInfo.longitude;
+
+            slides.value = response.data.apiData.sList;
+
+        }).catch(error => {
+            console.log(error);
+        });
+
+    };
+    // 컴포넌트가 마운트된 후에 가게 정보 가져오기
+    onMounted(() => {
+        getLatLngSlide();
+    });
+    
+    
 </script>
 <script>
 import axios from 'axios';
@@ -458,14 +462,15 @@ import axios from 'axios';
                 job:"",
             },
             priceList:[],
-            additionalCharges: {}
+            slideList:[],
+            cutList:[]
+
         }
            
        },
        computed: {
-            
-        },
-       setup() {
+        },  
+       setup() { //props, context를 통해 외부에서 전달받은 데이터를 받거나, reactive, ref 등을 사용하여 반응성을 갖는 데이터를 정의하고, 해당 데이터에 대한 로직을 구성할 수 있음
         },
        methods: {
 
@@ -483,97 +488,27 @@ import axios from 'axios';
 
                 this.shopInfo = response.data.apiData.shopInfo;
                 this.priceList = response.data.apiData.pList;
+                this.slideList = response.data.apiData.sList;
 
-                console.log(this.shopInfo.logo);
-                console.log(this.shopInfo.dProfile);
+                // console.log(this.shopInfo.logo);
+                // console.log(this.shopInfo.dProfile);
                 // console.log(this.priceList);
+                // console.log(this.slideList);
 
             }).catch(error => {
                 console.log(error);
             });
         },
-
-        //가격정보 불러오기
-        // getPrice(){
-        //     // console.log(this.bNo);
-        //     axios({
-        //         method: 'get', // put, post, delete 
-        //         url: `${this.$store.state.apiBaseUrl}/api/su/getPriceBybNo`,
-        //         headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
-        //         params: {bNo: this.bNo}, //get방식 파라미터로 값이 전달
-        //         // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
-        //         responseType: 'json' //수신타입
-        //     }).then(response => {
-        //         // console.log(response.data.apiData); //수신데이타
-
-        //         // 필요한 요소 개수 (여기서는 65개로 가정) - length만큼 onePrice를 초기화애야함.
-        //             const requiredLength = 65;
-
-        //         // pList가 비어 있는 경우
-        //         if (!response.data.apiData || response.data.apiData.length === 0) {
-        //             // beautyNo를 1부터 시작하여 +1씩 증가하며 priceList 초기화
-        //             this.priceList = Array.from({ length: requiredLength }, (_, index) => ({ beautyNo: index + 1, onePrice: 0 }));
-        //         } else {
-        //             // priceList의 각 요소가 onePrice 프로퍼티를 가지도록 초기화
-        //             const receivedList = response.data.apiData.map(item => ({ beautyNo: item.beautyNo, onePrice: item.onePrice }));
-        //             // 필요한 길이만큼 초기화
-        //             this.priceList = [...receivedList, ...Array.from({ length: requiredLength - receivedList.length }, (_, index) => ({ beautyNo: receivedList.length + index + 1, onePrice: 0 }))];
-        //         }
-
-        //     }).catch(error => {
-        //         console.log(error);
-        //     });
-        // },
         
         
   
        },
        created(){
         this.getShopInfo();
-        // this.getPrice();
        }
    })
 </script>
 <style>
-.wrapper-slide {
-  position: relative;
-  width: 100%;
-  height: 600px;
-}
 
-.img-slide {
-  width: 100%;
-  height: 600px;
-  overflow: hidden;
-}
-
-.slideImg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 24px;
-  color: rgba(224, 217, 217, 0.986); /* 더 밝은 회색 */
-  cursor: pointer;
-  z-index: 100;
-}
-
-.left {
-  left: 20px;
-}
-
-.right {
-  right: 20px;
-}
-
-.fas.fa-chevron-left,
-.fas.fa-chevron-right {
-  font-size: 36px;
-}
 </style>
   
