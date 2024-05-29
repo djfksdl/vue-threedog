@@ -512,7 +512,7 @@ import axios from 'axios';
 
                 this.shopInfo = response.data.apiData.shopInfo;
                 this.priceList = response.data.apiData.pList;
-                this.slideList = response.data.apiData.sList;
+                // this.slideList = response.data.apiData.sList;
 
                 // console.log(this.shopInfo.logo);
                 // console.log(this.shopInfo.dProfile);

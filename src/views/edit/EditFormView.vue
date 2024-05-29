@@ -11,7 +11,9 @@
                     <div class="eLogoTitleInfo">
                         <div class="eLogo">
                             <div id='att_zone4' class="addLImgBox" data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
-                                <input id="btnAtt4" type="file" class="eFileAddBtn">
+                                <!-- 처음부터 img를 만들어서 불러온 값 보이게 하기.그리고 등록하기 위해서 새로운 파일이 들어왔을때 img가 안보이게해서 등록했을때 img태그가 둘다 안겹치게 하기  -->
+                                <!-- <img style="width:100%;height:100%;z-index:none;object-fit:contain" v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${shopInfo.logo }`">  -->
+                                <input id="btnAtt4" type="file" class="eFileAddBtn" >
                             </div>
 
                             <!-- 타이틀-->
@@ -328,8 +330,10 @@
                         </div>
                     </div>
 
-                    <!-- 등록 버튼 -->
+                    <!-- 등록,수정 버튼 -->
                     <button type="submit">가게정보 등록 버튼</button>
+                    <!-- <button type="submit">가게정보 수정 버튼</button> -->
+                    <!-- <button type="submit" v-if="this.shopInfo.logo != null">가게정보 수정 버튼</button> -->
                 </div>
             </div>
             <TopButton />  
@@ -421,6 +425,8 @@ import { reactive, onMounted } from 'vue';
                     cutImgs:[],//컷이미지들 파일담을것
                 },
                 priceList: this.initializePriceList(),
+                slideList:[],
+                cutList:[]
 
             }
         },
@@ -485,7 +491,6 @@ import { reactive, onMounted } from 'vue';
                 //     console.log(`priceList[${i}]`, formData.get(`priceList[${i}].beautyNo`),formData.get(`priceList[${i}].onePrice`));
                 // }
 
-
                 axios({
                     
                     method: 'post', // put, post, delete 
@@ -511,39 +516,36 @@ import { reactive, onMounted } from 'vue';
             },
 
             // 가게정보 불러오기 - 수정할때 if문 줘서 살리기
-            // getShopInfo(){
-            //     // console.log(this.bNo);
-            //     axios({
-            //         method: 'get', // put, post, delete 
-            //         url: `${this.$store.state.apiBaseUrl}/api/su/shopInfo`,
-            //         headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
-            //         params: {bNo: this.bNo}, //get방식 파라미터로 값이 전달
-            //         // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
-            //         responseType: 'json' //수신타입
-            //     }).then(response => {
+            getShopInfo(){
+                // console.log(this.bNo);
+                axios({
+                    method: 'get', // put, post, delete 
+                    url: `${this.$store.state.apiBaseUrl}/api/su/shopInfo`,
+                    headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                    params: {bNo: this.bNo}, //get방식 파라미터로 값이 전달
+                    // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+                    responseType: 'json' //수신타입
+                }).then(response => {
 
-            //         this.shopInfo = response.data.apiData;
+                    this.shopInfo = response.data.apiData.shopInfo;
+                    this.priceList = response.data.apiData.pList;
+                    this.slideList = response.data.apiData.sList;
+                    this.cutList = response.data.apiData.cList;
 
-            //         // 빈 문자열을 null로 변환
-            //         // if (this.shopInfo.title === "") {
-            //         //     this.shopInfo.title = null;
-            //         // }
+                    // // 슬라이드 이미지 미리보기 생성
+                    // if(this.sList != null){
+                    //     this.slideImgsView(this.att_zone, this.btn, this.sList);
+                    // }
+                
 
-            //     }).catch(error => {
-            //         console.log(error);
-            //     });
-            // },
+                }).catch(error => {
+                    console.log(error);
+                });
+            },
 
-        },
-        created(){
-            // this.getShopInfo();
-        },
-        mounted() {
-
-            const self = this; // imageLoader 함수 내부에서 this가 Vue 인스턴스를 참조하지 않기 때문에 this를 따로 할당해준다.
-           
-            // ==========가게 로고 1개 첨부파일==========
-            (function imageView(att_zone4, btn) {
+            //==========가게 로고 1개 첨부파일==========
+            logoImagsView(att_zone4, btn) {
+                var self = this;
                 var attZone = document.getElementById(att_zone4);
                 var btnAtt4 = document.getElementById(btn);
 
@@ -563,8 +565,6 @@ import { reactive, onMounted } from 'vue';
                     }
                     
                     imageLoader(file);
-                  
-                
                 };
 
                 // 드래그 앤 드롭 기능 설정
@@ -589,9 +589,6 @@ import { reactive, onMounted } from 'vue';
                     }
                     
                     imageLoader(file);
-
-                    
-                    
                 }, false);
 
 
@@ -607,12 +604,10 @@ import { reactive, onMounted } from 'vue';
                         attZone.appendChild(makeDiv(img));//첨부된 div밀어넣기
                         attZone.classList.add('file-attached'); // 파일 첨부됨을 나타내는 클래스 추가 -> 관련 css로 배경이미지 안보이게 하기
                         
-                       
                         self.shopInfo.logoFile = file;//로고에 이미지 할당하기.
                     };
 
                     reader.readAsDataURL(file);
-                    
                 }
 
                 // 첨부된 파일이 있는 경우 미리보기를 생성하는 함수
@@ -623,26 +618,17 @@ import { reactive, onMounted } from 'vue';
                     div.appendChild(img);
                     return div;
                 }
-                
-            })('att_zone4', 'btnAtt4');
-    
-            // ==========이미지 슬라이드 5개 첨부파일==========
-            (function imageView(att_zone, btn) {
+            },
+            //==========이미지 슬라이드 5개 첨부파일==========
+            slideImgsView(att_zone, btn) {
+                var self = this;
                 var attZone = document.getElementById(att_zone);
                 var btnAtt = document.getElementById(btn);
                 var sel_files = [];
 
-
-                // 이미지와 체크박스를 감싸고 있는 div속성 
                 var div_style = 'display:inline-block;position:relative;width:280px;height:200px;margin:5px;border:1px solid #a7a4a4;z-index:1';
-
-                // 미리보기 이미지 속성
                 var img_style = 'width:100%;height:100%;z-index:none;object-fit:contain';
-
-
-                // 이미지안에 표시되는 체크박스의 속성
                 var chk_style = 'width:30px;height:30px;position:absolute;font-size:18px;right:0px;background-color:rgba(255,255,255,0.1); color:#ff0000; border:none;font-weight:bold';
-
 
                 btnAtt.onchange = function (e) {
                     var files = e.target.files;
@@ -652,8 +638,6 @@ import { reactive, onMounted } from 'vue';
                     }
                 };
 
-
-                // 탐색기에서 드래그앤 드롭 사용
                 attZone.addEventListener('dragenter', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
@@ -675,13 +659,11 @@ import { reactive, onMounted } from 'vue';
                     }
                 }, false);
 
-
-                // 첨부된 이미지들을 배열에 넣고 미리보기
                 function imageLoader(file) {
-                    if (sel_files.length >= 5) { // 이미 5개 이상인 경우 추가하지 않음
-                        if (!alerted) { // 이미 alert가 띄워진 경우는 추가하지 않음
+                    if (sel_files.length >= 5) {
+                        if (!alerted) {
                             alert("최대 5장까지만 첨부할 수 있습니다.");
-                            alerted = true; // alert 띄움 플래그를 true로 설정
+                            alerted = true;
                         }
                         return;
                     }
@@ -695,15 +677,9 @@ import { reactive, onMounted } from 'vue';
                     };
                     reader.readAsDataURL(file);
 
-                    // slideImgs 배열에 파일 추가
-                    self.shopInfo.slideImgs= sel_files;
-                    // console.log("배열에 추가:")
-                    // console.log(self.shopInfo.slideImgs);
+                    self.shopInfo.slideImgs = sel_files;
                 }
 
-
-
-                //  첨부된 파일이 있는 경우 checkbox와 함께 attZone에 추가할 div를 만들어 반환
                 function makeDiv(img, file) {
                     var div = document.createElement('div');
                     div.setAttribute('style', div_style);
@@ -730,21 +706,20 @@ import { reactive, onMounted } from 'vue';
                         var p = ele.parentNode;
                         attZone.removeChild(p);
                     };
-                    // self.shopInfo.slideImgs = file;
+
                     div.appendChild(img);
                     div.appendChild(btn);
                     return div;
                 }
-                // 이미 alert가 띄워진 경우를 확인하는 플래그
-                var alerted = false;
-            })('att_zone', 'btnAtt');
 
-            // ==========미용컷 20개 첨부파일==========
-            (function imageView(att_zone2, btn) {
+                var alerted = false;
+            },
+            //==========미용컷 20개 첨부파일==========
+            CutimgsView(att_zone2, btn) {
+                var self = this;
                 var attZone = document.getElementById(att_zone2);
                 var btnAtt2 = document.getElementById(btn);
                 var sel_files = [];
-
 
                 // 이미지와 체크박스를 감싸고 있는 div속성 
                 var div_style = 'display:inline-block;position:relative;width:200px;height:200px;margin:5px;border:1px solid #a7a4a4;z-index:1';
@@ -752,10 +727,8 @@ import { reactive, onMounted } from 'vue';
                 // 미리보기 이미지 속성
                 var img_style = 'width:100%;height:100%;z-index:none;object-fit:contain';
 
-
                 // 이미지안에 표시되는 체크박스의 속성
                 var chk_style = 'width:30px;height:30px;position:absolute;font-size:18px;right:0px;background-color:rgba(255,255,255,0.1);color:#a7a4a4;border:none;font-weight:bold';
-
 
                 btnAtt2.onchange = function (e) {
                     var files = e.target.files;
@@ -764,7 +737,6 @@ import { reactive, onMounted } from 'vue';
                         imageLoader(f);
                     }
                 };
-
 
                 // 탐색기에서 드래그앤 드롭 사용
                 attZone.addEventListener('dragenter', function (e) {
@@ -788,8 +760,6 @@ import { reactive, onMounted } from 'vue';
                     }
                 }, false);
 
-
-
                 // 첨부된 이미지들을 배열에 넣고 미리보기
                 function imageLoader(file) {
                     if (sel_files.length >= 20) { // 이미 5개 이상인 경우 추가하지 않음
@@ -811,8 +781,6 @@ import { reactive, onMounted } from 'vue';
 
                     self.shopInfo.cutImgs = sel_files;
                 }
-
-
 
                 //  첨부된 파일이 있는 경우 checkbox와 함께 attZone에 추가할 div를 만들어 반환
                 function makeDiv(img, file) {
@@ -847,10 +815,10 @@ import { reactive, onMounted } from 'vue';
                 }
                 // 이미 alert가 띄워진 경우를 확인하는 플래그
                 var alerted = false;
-            })('att_zone2', 'btnAtt2');
-
+            },
             // ==========디자이너 소개 프로필 1개 첨부파일==========
-            (function imageView(att_zone3, btn) {
+            DimgsView(att_zone3, btn) {
+                var self = this;
                 var attZone = document.getElementById(att_zone3);
                 var btnAtt3 = document.getElementById(btn);
 
@@ -917,7 +885,26 @@ import { reactive, onMounted } from 'vue';
                     div.appendChild(img);
                     return div;
                 }
-            })('att_zone3', 'btnAtt3');
+            }
+
+        },
+        created(){
+            this.getShopInfo();
+        },
+        mounted() {
+            // const self = this; // imageLoader 함수 내부에서 this가 Vue 인스턴스를 참조하지 않기 때문에 this를 따로 할당해준다.
+            // ==========가게 로고 1개 첨부파일==========
+            this.logoImagsView('att_zone4', 'btnAtt4');
+            
+            // ==========이미지 슬라이드 5개 첨부파일==========
+            this.slideImgsView('att_zone', 'btnAtt');
+
+            // ==========미용컷 20개 첨부파일==========
+            this.CutimgsView('att_zone2', 'btnAtt2');
+
+            // ==========디자이너 소개 프로필 1개 첨부파일==========
+            this.DimgsView('att_zone3', 'btnAtt3');
+            
         },
         
             
