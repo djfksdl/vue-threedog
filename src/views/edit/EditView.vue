@@ -31,15 +31,29 @@
             <div class="eMidContainer">
 
                 <!-- 미용사진 -->
-                <div class="eCutImgContainer">
+                <div class="eCutImgContainer ">
                     <h1>미용사진</h1>
-                    <div class="eCutSlide">
-                        <img src="@/assets/images/dog.jpg">
-                        <img src="@/assets/images/dog.jpg">
-                        <img src="@/assets/images/spy.jpg">
-                        <img src="@/assets/images/dog.jpg">
-                        <img src="@/assets/images/dog.jpg">
-                        <img src="@/assets/images/dog.jpg">
+                    <div class="wrapper-slide">
+                        <Carousel 
+                            :autoplay="false" 
+                            :wrap-around="true" 
+                            :show-arrows="false" 
+                            ref="carouselRef2">
+                            <Slide v-for="(group, index) in chunkedSlides" :key="index">
+                                <div class="img-slide eCutSlide">
+                                    <img v-for="slide in group" :key="slide" :src="`${$store.state.apiBaseUrl}/upload/${slide}`">
+                                </div>
+                            </Slide>
+                            <!-- <template #addons>
+                                <Pagination />
+                            </template> -->
+                        </Carousel>
+                        <!-- <div class="arrow left" @click="prevSlide">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="arrow right" @click="nextSlide">
+                            <i class="fas fa-chevron-right"></i>
+                        </div> -->
                     </div>
                 </div>
 
@@ -355,10 +369,8 @@
   
 <script setup>
 import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref , computed } from "vue";
 import { Carousel, Pagination, Slide } from "vue3-carousel";
-// import slide01 from "@/assets/images/main-slide.png";
-// import slide02 from "@/assets/images/main-slide02.jpg";
 import "vue3-carousel/dist/carousel.css";
 // 코드에서 setup을 사용하고 있으므로 setup 내에서 import와 reactive를 사용할 수 있습니다.
 import { reactive, onMounted } from 'vue';
@@ -378,9 +390,14 @@ import { useRoute } from 'vue-router';
         lng: 0
     });
 
-    //슬라이드
+    //============= 슬라이드 =============
+    //메인슬라이드
     const slides = ref([]);
     const carouselRef = ref(null);
+
+    //컷이미지 슬라이드
+    const slides2 = ref([]);
+    const carouselRef2 = ref(null);
 
     const nextSlide = () => {
         if (carouselRef.value && carouselRef.value.next) {
@@ -394,7 +411,20 @@ import { useRoute } from 'vue-router';
         }
     };
 
-    // 가게 정보 에서 위도 경도 슬라이드 리스트 값 받아오기
+    // 배열을 size만큼의 크기로 묶어서 반환하는 함수
+    function chunk(array, size) {
+        return array.reduce((acc, _, i) => {
+            if (i % size === 0) {
+                acc.push(array.slice(i, i + size));
+            }
+            return acc;
+        }, []);
+    }
+
+    // computed property로 chunkedSlides 설정
+    const chunkedSlides = computed(() => chunk(slides2.value, 6));
+
+    // 가게 정보 에서 위도 경도 슬라이드 리스트,컷이미지 리스트 값 받아오기
     const getLatLngSlide = () => {
         axios({
             method: 'get',
@@ -408,12 +438,15 @@ import { useRoute } from 'vue-router';
             coordinate.lng = response.data.apiData.shopInfo.longitude;
 
             slides.value = response.data.apiData.sList;
+            slides2.value = response.data.apiData.cList ;
+          
 
         }).catch(error => {
             console.log(error);
         });
 
     };
+
     // 컴포넌트가 마운트된 후에 가게 정보 가져오기
     onMounted(() => {
         getLatLngSlide();

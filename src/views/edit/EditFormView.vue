@@ -40,7 +40,7 @@
                         <h1>미용사진 등록</h1>
                         <div class="eCutSlideImgInfo">
                             <input id="btnAtt2" type="file" multiple='multiple' class="eCutFileAddBtn" >
-                            <p>*사진은 최대 20장까지 첨부할 수 있습니다.</p>
+                            <p>*사진은 최대 20장까지 첨부할 수 있습니다.(최소 6개이상 넣는걸 추천합니다.)</p>
                         </div>
                         <div id='att_zone2' class="addcImgBox" data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
                     </div>
