@@ -57,7 +57,7 @@
                         </div>
                         <!-- 디자이너소개 오른쪽 -->
                         <div class="edRightBox">
-                            <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${shopInfo.logoSaveName}`">
+                            <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${shopInfo.dProfile }`">
                         </div>
                     </div>
                 </div>
@@ -451,8 +451,7 @@ import axios from 'axios';
                 bPhone: "",
                 title: "",
                 subTitle: "",
-                logo: "",
-                utilTime: "",
+                logo:"",
                 dName:"",
                 introduce:"",
                 dProfile:"",
@@ -485,7 +484,8 @@ import axios from 'axios';
                 this.shopInfo = response.data.apiData.shopInfo;
                 this.priceList = response.data.apiData.pList;
 
-                // console.log(this.shopInfo.logo);
+                console.log(this.shopInfo.logo);
+                console.log(this.shopInfo.dProfile);
                 // console.log(this.priceList);
 
             }).catch(error => {

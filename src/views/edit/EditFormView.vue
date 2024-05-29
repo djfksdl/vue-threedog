@@ -407,13 +407,15 @@ import { reactive, onMounted } from 'vue';
                     bAddress: "",
                     bdAddress: "",
                     bPhone: "",
-                    title: "", //""으로하면 빈 문자열인데 오류뜬다.
+                    title: "", //""는 빈 문자열, null은 없음
                     subTitle: "",
-                    logo: null,
+                    logoFile: null, //로고 파일담을것
+                    logo:"", //로고 savaName
                     utilTime: "",
                     dName:"",
                     introduce:"",
-                    dProfile:null,
+                    dProfileFile:null,//프로파일 파일담을것
+                    dProfile:"",//프로파일 savaName
                     job:"",
                     slideImgs:[],
                     cutImgs:[],
@@ -442,7 +444,7 @@ import { reactive, onMounted } from 'vue';
 
                 formData.append("bNo", this.bNo);
 
-                formData.append("logo", this.shopInfo.logo);
+                formData.append("logoFile", this.shopInfo.logoFile);
                 formData.append("title", this.shopInfo.title);
                 formData.append("subTitle", this.shopInfo.subTitle);
                 
@@ -456,7 +458,7 @@ import { reactive, onMounted } from 'vue';
                 formData.append("dName", this.shopInfo.dName);
                 formData.append("job", this.shopInfo.job);
                 formData.append("introduce", this.shopInfo.introduce);
-                formData.append("dProfile", this.shopInfo.dProfile);
+                formData.append("dProfileFile", this.shopInfo.dProfileFile);
 
                 // priceList의 각 항목을 개별적으로 추가
                 for (let i = 0; i < this.priceList.length; i++) {
@@ -467,7 +469,7 @@ import { reactive, onMounted } from 'vue';
 
                 console.log("=====보내기전 정보 담은거 확인=====");
 
-                console.log(formData.get("logo"));
+                console.log(formData.get("logoFile"));
                 console.log(formData.get("subTitle"));
 
                 // console.log(formData.get("slideImgs"));
@@ -477,7 +479,7 @@ import { reactive, onMounted } from 'vue';
                 console.log(formData.get("job"));
                 console.log(formData.get("introduce"));
 
-                console.log(formData.get("dProfile"));
+                console.log(formData.get("dProfileFile"));
 
                 // console.log("가격리스트의 첫번째 값 확인");
                 // priceList 항목 개별 확인
@@ -642,7 +644,7 @@ import { reactive, onMounted } from 'vue';
                         attZone.classList.add('file-attached'); // 파일 첨부됨을 나타내는 클래스 추가 -> 관련 css로 배경이미지 안보이게 하기
                         
                        
-                        self.shopInfo.logo = file;//로고에 이미지 할당하기.
+                        self.shopInfo.logoFile = file;//로고에 이미지 할당하기.
                     };
 
                     reader.readAsDataURL(file);
@@ -938,7 +940,7 @@ import { reactive, onMounted } from 'vue';
                         attZone.appendChild(makeDiv(img));//첨부된 div밀어넣기
                         attZone.classList.add('file-attached'); // 파일 첨부됨을 나타내는 클래스 추가 -> 관련 css로 배경이미지 안보이게 하기
 
-                        self.shopInfo.dProfile = file;//디자이너 프로필에 이미지 할당하기.
+                        self.shopInfo.dProfileFile = file;//디자이너 프로필에 이미지 할당하기.
                     };
                     reader.readAsDataURL(file);
                 }
