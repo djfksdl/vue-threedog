@@ -1045,7 +1045,7 @@ import { reactive, onMounted } from 'vue';
         mounted() {
             // const self = this; // imageLoader 함수 내부에서 this가 Vue 인스턴스를 참조하지 않기 때문에 this를 따로 할당해준다.
             // ==========가게 로고 1개 첨부파일==========
-            // this.logoImagsView('att_zone4', 'btnAtt4');
+            this.logoImagsView('att_zone4', 'btnAtt4');
             
             // ==========이미지 슬라이드 5개 첨부파일==========
             // this.slideImgsView('att_zone', 'btnAtt');
@@ -1054,7 +1054,7 @@ import { reactive, onMounted } from 'vue';
             // this.CutimgsView('att_zone2', 'btnAtt2');
 
             // ==========디자이너 소개 프로필 1개 첨부파일==========
-            // this.DimgsView('att_zone3', 'btnAtt3');
+            this.DimgsView('att_zone3', 'btnAtt3');
             
         },
         
