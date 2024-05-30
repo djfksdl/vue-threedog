@@ -294,20 +294,29 @@ export default {
         handleEventClick(info) {
             Swal.fire({
                 title: "일정",
-                html: "스케줄: " + info.event.title +
-                    "<br/>일시: " + new Date(info.event.start).toLocaleString().substring(0, 20).replace("/g", ""),
+                html: "스케줄: " + (info.event.title || '') +
+                    "<br/>일시: " + (info.event.start ? new Date(info.event.start).toLocaleString().substring(0, 20).replace("/g", "") : ''),
             });
 
             // 선택된 예약 정보를 Vuex에 저장
-            this.$store.commit("setSelectedSchedule", info.event);
+            if (info.event) {
+                this.$store.commit("setSelectedSchedule", info.event);
 
-            // 선택된 예약 정보와 함께 다이어리 화면으로 이동
-            this.$router.push({ name: 'diary' });
+                // 선택된 예약 정보와 함께 다이어리 화면으로 이동
+                this.$router.push({ name: 'diary' });
 
-            // 다이어리 화면으로 이동 후 미용 기록 조회
-            this.selectGroomingRecord(info.event.extendedProps.rsNo);
+                // 다이어리 화면으로 이동 후 미용 기록 조회
+                if (info.event.extendedProps && info.event.extendedProps.rsNo) {
+                    this.selectGroomingRecord(info.event.extendedProps.rsNo);
+                } else {
+                    console.error('rsNo is not defined.');
+                }
+            } else {
+                console.error('info.event is not defined.');
+            }
         },
-        // 특정 예약의 미용 기록 조회
+
+
         selectGroomingRecord(rsNo) {
             axios({
                 method: 'get',
@@ -316,34 +325,21 @@ export default {
                 responseType: 'json'
             }).then(response => {
                 console.log('Response data:', response.data.apiData); // 응답 데이터 확인
-                const groomingRecord = response.data.apiData; // groomingRecord 변수명으로 변경
+                const groomingRecord = response.data.apiData;
 
-                // 받은 데이터를 처리하여 상태에 바인딩합니다.
-                if (groomingRecord) {
-                    this.$store.commit("setGroomingRecord", groomingRecord); // Vuex에 데이터 업데이트
-
-                    // 예약 정보가 로드되었는지 확인합니다.
-                    console.log('Grooming record loaded successfully.');
-
-                    // 화면에 바인딩된 데이터가 올바른지 확인합니다.
-                    console.log('Grooming Etiquette:', groomingRecord.groomingEtiquette);
-                    console.log('Condition:', groomingRecord.condition);
-                    console.log('Matted Area:', groomingRecord.mattedArea);
-                    console.log('Disliked Area:', groomingRecord.dislikedArea);
-                    console.log('Bath Dry:', groomingRecord.bathDry);
-                    console.log('Note:', groomingRecord.note);
-                    console.log('Additional Fees:', groomingRecord.additionalFees);
-                    console.log('Photo URLs:', groomingRecord.photos || []);
-                    console.log('Selected Additional Fee:', groomingRecord.selectedAdditionalFee);
+                // 미용 기록이 없는 경우에 대한 처리
+                if (!groomingRecord) {
+                    console.warn('Grooming record not found.');
+                    return;
                 }
+
+                // Vuex에 데이터 업데이트
+                this.$store.commit("setGroomingRecord", groomingRecord);
+
             }).catch(error => {
-                console.error('Error fetching reservations:', error);
+                console.error('Error fetching grooming record:', error);
             });
         },
-
-
-
-
 
 
         //확인
