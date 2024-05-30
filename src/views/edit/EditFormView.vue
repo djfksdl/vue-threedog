@@ -29,7 +29,7 @@
                     <div class="eSlideImgContainer">
                         <h1>슬라이드 사진등록</h1>
                         <div class="eSlideImgInfo">
-                            <input id="btnAtt" type="file" multiple='multiple' class="eFileAddBtn" >
+                            <input id="btnAtt" type="file" multiple='multiple' class="eFileAddBtn" v-on:change="slideImgsView">
                             <p>*사진은 최대 5장까지 첨부할 수 있습니다.</p>
                         </div>
                         <div id='att_zone' class="addImgBox" data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
@@ -40,7 +40,7 @@
                         <h1>미용사진 등록</h1>
                         <div class="eCutSlideImgInfo">
                             <input id="btnAtt2" type="file" multiple='multiple' class="eCutFileAddBtn" >
-                            <p>*사진은 최대 20장까지 첨부할 수 있습니다.(최소 6개이상 넣는걸 추천합니다.)</p>
+                            <p>*사진은 최대 18장까지 첨부할 수 있습니다.(최소 6개이상 넣는걸 추천합니다.)</p>
                         </div>
                         <div id='att_zone2' class="addcImgBox" data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
                     </div>
@@ -350,14 +350,14 @@ import "vue3-carousel/dist/carousel.css";
 // 코드에서 setup을 사용하고 있으므로 setup 내에서 import와 reactive를 사용할 수 있습니다.
 import { reactive, onMounted } from 'vue';
 //Composition API에서는 setup 함수 내에서 직접적으로 this를 사용할 수 없기 때문에 $store에 접근하려면 useStore 훅을 사용하여 스토어를 가져와야 함
-import { useStore } from 'vuex';
-import { useRoute } from 'vue-router';
+// import { useStore } from 'vuex';
+// import { useRoute } from 'vue-router';
 
     //스토어 가져오기
-    const store = useStore();
+    // const store = useStore();
 
     //bNo가져오기
-    const { params } = useRoute();
+    // const { params } = useRoute();
 
     //리액티브 변수 초기화
     const coordinate = reactive({
@@ -366,25 +366,25 @@ import { useRoute } from 'vue-router';
     });
 
     // 가게 정보 불러오기 
-    const getLatLng = () => {
-        axios({
-            method: 'get',
-            url: `${store.state.apiBaseUrl}/api/su/shopInfo`, //store변수 사용
-            headers: { "Content-Type": "application/json; charset=utf-8" },
-            params: { bNo: params.bNo },
-            responseType: 'json'
-        }).then(response => {
-            // shopInfo 객체에서 위도와 경도 값을 받아와서 coordinate 객체에 할당합니다.
-            coordinate.lat = response.data.apiData.shopInfo.latitude;
-            coordinate.lng = response.data.apiData.shopInfo.longitude;
-        }).catch(error => {
-            console.log(error);
-        });
+    // const getLatLng = () => {
+    //     axios({
+    //         method: 'get',
+    //         url: `${store.state.apiBaseUrl}/api/su/shopInfo`, //store변수 사용
+    //         headers: { "Content-Type": "application/json; charset=utf-8" },
+    //         params: { bNo: params.bNo },
+    //         responseType: 'json'
+    //     }).then(response => {
+    //         // shopInfo 객체에서 위도와 경도 값을 받아와서 coordinate 객체에 할당합니다.
+    //         coordinate.lat = response.data.apiData.shopInfo.latitude;
+    //         coordinate.lng = response.data.apiData.shopInfo.longitude;
+    //     }).catch(error => {
+    //         console.log(error);
+    //     });
 
-    };
+    // };
     // 컴포넌트가 마운트된 후에 가게 정보 가져오기
     onMounted(() => {
-        getLatLng();
+        // getLatLng();
     });
 </script>
 <script>
@@ -536,7 +536,22 @@ import { useRoute } from 'vue-router';
                     if (this.shopInfo.logo) {
                         this.logoImagsView('att_zone4', 'btnAtt4');
                     }
-                
+
+                    //초기 메인 슬라이드 설정
+                    if (this.slideList) {
+                        this.slideImgsView('att_zone', 'btnAtt');
+                        console.log("메인슬라이드 가져오기");
+                    }
+
+                    //초기 컷 슬라이드 설정
+                    if (this.cutList) {
+                        this.CutimgsView('att_zone2', 'btnAtt2');
+                    }
+
+                    // 초기 디자이너 설정
+                    if (this.shopInfo.dProfile) {
+                        this.DimgsView('att_zone3', 'btnAtt3');
+                    }
 
                 }).catch(error => {
                     console.log(error);
@@ -644,7 +659,10 @@ import { useRoute } from 'vue-router';
                 var img_style = 'width:100%;height:100%;z-index:none;object-fit:contain';
                 var chk_style = 'width:30px;height:30px;position:absolute;font-size:18px;right:0px;background-color:rgba(255,255,255,0.1); color:#ff0000; border:none;font-weight:bold';
 
+
+                //이미지를 업로드하고 미리보기 설정
                 btnAtt.onchange = function (e) {
+                    console.log("온체인지")
                     var files = e.target.files;
                     var fileArr = Array.prototype.slice.call(files);
                     for (let f of fileArr) {
@@ -652,14 +670,17 @@ import { useRoute } from 'vue-router';
                     }
                 };
 
+                //드래그앤 드롭 기능 설정
                 attZone.addEventListener('dragenter', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
+                    console.log("드래그앤터")
                 }, false);
 
                 attZone.addEventListener('dragover', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
+                    console.log("드래그오버")
                 }, false);
 
                 attZone.addEventListener('drop', function (e) {
@@ -668,11 +689,18 @@ import { useRoute } from 'vue-router';
                     e.stopPropagation();
                     var dt = e.dataTransfer;
                     files = dt.files;
-                    for (let f of files) {
-                        imageLoader(f);
+                    // 이미 파일을 받았다면 추가 처리를 하지 않음
+                    if (sel_files.length < 5) {
+                        for (let f of files) {
+                            imageLoader(f);
+                        }
+                        console.log("포문이 실행이 ")
                     }
+
+                    console.log("드롭이 여기임")
                 }, false);
 
+                //이미지 로더 함수
                 function imageLoader(file) {
                     if (sel_files.length >= 5) {
                         if (!alerted) {
@@ -726,9 +754,20 @@ import { useRoute } from 'vue-router';
                     return div;
                 }
 
+                // 초기 이미지 설정
+                if (self.slideList && self.slideList.length > 0) {
+                    console.log("혹시 여기가?")
+                    self.slideList.forEach(slide => {
+                        let img = document.createElement('img');
+                        img.setAttribute('style', img_style);
+                        img.src = `${this.$store.state.apiBaseUrl}/upload/${slide}`;
+                        attZone.appendChild(makeDiv(img, { name: slide }));
+                    });
+                }
+
                 var alerted = false;
             },
-            //==========미용컷 20개 첨부파일==========
+            //==========미용컷 18개 첨부파일==========
             CutimgsView(att_zone2, btn) {
                 var self = this;
                 var attZone = document.getElementById(att_zone2);
@@ -776,9 +815,9 @@ import { useRoute } from 'vue-router';
 
                 // 첨부된 이미지들을 배열에 넣고 미리보기
                 function imageLoader(file) {
-                    if (sel_files.length >= 20) { // 이미 5개 이상인 경우 추가하지 않음
+                    if (sel_files.length >= 18) { // 이미 18개 이상인 경우 추가하지 않음
                         if (!alerted) { // 이미 alert가 띄워진 경우는 추가하지 않음
-                            alert("최대 20장까지만 첨부할 수 있습니다.");
+                            alert("최대 18장까지만 첨부할 수 있습니다.");
                             alerted = true; // alert 띄움 플래그를 true로 설정
                         }
                         return;
@@ -827,6 +866,17 @@ import { useRoute } from 'vue-router';
                     div.appendChild(btn);
                     return div;
                 }
+
+                // 초기 이미지 설정
+                if (self.cutList && self.cutList.length > 0) {
+                    self.cutList.forEach(slide => {
+                        let img = document.createElement('img');
+                        img.setAttribute('style', img_style);
+                        img.src = `${this.$store.state.apiBaseUrl}/upload/${slide}`;
+                        attZone.appendChild(makeDiv(img, { name: slide }));
+                    });
+                }
+
                 // 이미 alert가 띄워진 경우를 확인하는 플래그
                 var alerted = false;
             },
@@ -899,7 +949,22 @@ import { useRoute } from 'vue-router';
                     div.appendChild(img);
                     return div;
                 }
-            }
+
+                //초기 디자이너 프로필 이미지 설정
+                if (self.shopInfo.dProfile) {
+                    let img = document.createElement('img');
+                    img.src = `${self.$store.state.apiBaseUrl}/upload/${self.shopInfo.dProfile}`;
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'contain';
+                    
+                    attZone.innerHTML = ''; // 기존 내용 비우기
+                    attZone.appendChild(img); // 첨부된 이미지 넣기
+                    attZone.classList.add('file-attached'); // 파일 첨부됨을 나타내는 클래스 추가
+                }
+            },
+            // 이미지5개 슬라이드 
+            
 
         },
         created(){
@@ -911,10 +976,10 @@ import { useRoute } from 'vue-router';
             this.logoImagsView('att_zone4', 'btnAtt4');
             
             // ==========이미지 슬라이드 5개 첨부파일==========
-            this.slideImgsView('att_zone', 'btnAtt');
+            // this.slideImgsView('att_zone', 'btnAtt');
 
             // ==========미용컷 20개 첨부파일==========
-            this.CutimgsView('att_zone2', 'btnAtt2');
+            // this.CutimgsView('att_zone2', 'btnAtt2');
 
             // ==========디자이너 소개 프로필 1개 첨부파일==========
             this.DimgsView('att_zone3', 'btnAtt3');
