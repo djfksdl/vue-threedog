@@ -1,5 +1,5 @@
 <template>
-    <form v-on:submit.prevent ="addShopInfo" enctype="multipart/form-data">
+    <form v-on:submit.prevent ="handleSubmit" enctype="multipart/form-data">
         <div id="wrap">
             <ManagerHeader />
             <div class="container3">
@@ -29,7 +29,7 @@
                     <div class="eSlideImgContainer">
                         <h1>슬라이드 사진등록</h1>
                         <div class="eSlideImgInfo">
-                            <input id="btnAtt" type="file" multiple='multiple' class="eFileAddBtn" v-on:change="slideImgsView">
+                            <input id="btnAtt" type="file" multiple='multiple' class="eFileAddBtn">
                             <p>*사진은 최대 5장까지 첨부할 수 있습니다.</p>
                         </div>
                         <div id='att_zone' class="addImgBox" data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
@@ -95,7 +95,7 @@
                                 </tr>
                                 <tr>
                                     <th>2kg이하</th>
-                                    <td><input type="text" v-model="priceList[0].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[0].onePrice"  ></td>
                                     <td><input type="text" v-model="priceList[1].onePrice"></td>
                                     <td><input type="text" v-model="priceList[2].onePrice"></td>
                                     <td><input type="text" v-model="priceList[3].onePrice"></td>
@@ -329,9 +329,9 @@
                     </div>
 
                     <!-- 등록,수정 버튼 -->
-                    <button type="submit">가게정보 등록 버튼</button>
-                    <!-- <button type="submit">가게정보 수정 버튼</button> -->
-                    <!-- <button type="submit" v-if="this.shopInfo.logo != null">가게정보 수정 버튼</button> -->
+                    <button type="submit" v-if="this.shopInfo.logo != null" v-on:click="setAction('update')">가게정보 수정 버튼</button>
+                    <button type="submit" v-if="this.shopInfo.logo == null" v-on:click="setAction('add')">가게정보 등록 버튼</button>
+
                 </div>
             </div>
             <TopButton />  
@@ -421,10 +421,13 @@ import { reactive, onMounted } from 'vue';
                     job:"",
                     slideImgs:[],//슬라이드이미지들 파일담을것
                     cutImgs:[],//컷이미지들 파일담을것
+                    hiNo:""
                 },
                 priceList: this.initializePriceList(),
                 slideList:[],
-                cutList:[]
+                cutList:[],
+
+                action: ''
 
             }
         },
@@ -438,10 +441,20 @@ import { reactive, onMounted } from 'vue';
                 }
                 return priceList;
             },
-
-            // 가게정보 등록하기
+            // 등록, 수정 구별하기
+            setAction(actionType) {
+                this.action = actionType;
+            },
+            handleSubmit() {
+                if (this.action === 'add') {
+                    this.addShopInfo();
+                } else if (this.action === 'update') {
+                    this.updateShopInfo();
+                }
+            },
+            // ========== 가게정보 등록하기 ==========
             addShopInfo(){
-                // console.log("가게정보 등록하기 버튼");
+                console.log("가게정보 등록하기 버튼");
                 let formData = new FormData();
 
                 formData.append("bNo", this.bNo);
@@ -513,7 +526,7 @@ import { reactive, onMounted } from 'vue';
                 });
             },
 
-            // 가게정보 불러오기 - 수정할때 if문 줘서 살리기
+            // ========== 가게정보 불러오기 ==========
             getShopInfo(){
                 // console.log(this.bNo);
                 axios({
@@ -557,8 +570,70 @@ import { reactive, onMounted } from 'vue';
                     console.log(error);
                 });
             },
+            // ========== 가게정보 수정하기 ==========
+            updateShopInfo(){
+                console.log("가게정보 수정하기 버튼");
+                let formData = new FormData();
 
-            //==========가게 로고 1개 첨부파일==========
+                formData.append("bNo", this.bNo);
+
+                formData.append("logoFile", this.shopInfo.logoFile);
+                formData.append("title", this.shopInfo.title);
+                formData.append("subTitle", this.shopInfo.subTitle);
+                
+                this.shopInfo.slideImgs.forEach((img, index) => {
+                    formData.append(`slideImgs[${index}]`, img);
+                });
+                this.shopInfo.cutImgs.forEach((img, index) => {
+                    formData.append(`cutImgs[${index}]`, img);
+                });
+
+                formData.append("dName", this.shopInfo.dName);
+                formData.append("job", this.shopInfo.job);
+                formData.append("introduce", this.shopInfo.introduce);
+                formData.append("dProfileFile", this.shopInfo.dProfileFile);
+
+                // priceList의 각 항목을 개별적으로 추가
+                for (let i = 0; i < this.priceList.length; i++) {
+                    formData.append(`priceList[${i}].onePrice`, this.priceList[i].onePrice);
+                    formData.append(`priceList[${i}].beautyNo`, this.priceList[i].beautyNo);
+                    console.log("여기 확인하기")
+                    console.log(formData.get(`priceList[${i}].onePrice`) );
+                }
+
+                console.log("=====수정으로 보내기전 정보 담은거 확인=====");
+
+                console.log(formData.get("logoFile"));
+                console.log(formData.get("subTitle"));
+                console.log(formData.get("dName"));
+                console.log(formData.get("job"));
+                console.log(formData.get("introduce"));
+                console.log(formData.get("dProfileFile"));
+
+                axios({
+                    
+                    method: 'put', // put, post, delete 
+                    url: `${this.$store.state.apiBaseUrl}/api/su/updateShop`,
+                    headers: { "Content-Type": "multipart/form-data" }, //전송타입
+                    data: formData, // formData로 묶어서 보낼떈 Json형태로 보내기 -> springboot에서 받을땐 modelattribute로 받음(formData의 예외다!)
+                    responseType: 'json' //수신타입
+                }).then(response => {
+                    console.log(response.data.apiData);
+
+                    // if (response.data.apiData == 1) {
+                    //     alert("홈페이지가 성공적으로 만들어졌습니다.");
+                    //     this.$router.push(`/edit/${this.bNo}`);
+                    // } else {
+                    //     alert("정보를 다시 확인해주세요.");
+                    // }
+                    
+
+                }).catch(error => {
+                    console.log(error);
+                });
+
+            },
+            // ==========가게 로고 1개 첨부파일==========
             logoImagsView(att_zone4, btn) {
                 var self = this;
                 var attZone = document.getElementById(att_zone4);
@@ -586,6 +661,7 @@ import { reactive, onMounted } from 'vue';
                 attZone.addEventListener('dragenter', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
+                    console.log("드래그엔터")
                 }, false);
 
                 attZone.addEventListener('dragover', function (e) {
@@ -648,7 +724,7 @@ import { reactive, onMounted } from 'vue';
                 }
 
             },
-            //==========이미지 슬라이드 5개 첨부파일==========
+            // ==========이미지 슬라이드 5개 첨부파일==========
             slideImgsView(att_zone, btn) {
                 var self = this;
                 var attZone = document.getElementById(att_zone);
@@ -693,11 +769,8 @@ import { reactive, onMounted } from 'vue';
                     if (sel_files.length < 5) {
                         for (let f of files) {
                             imageLoader(f);
-                        }
-                        console.log("포문이 실행이 ")
+                        }  
                     }
-
-                    console.log("드롭이 여기임")
                 }, false);
 
                 //이미지 로더 함수
@@ -756,7 +829,7 @@ import { reactive, onMounted } from 'vue';
 
                 // 초기 이미지 설정
                 if (self.slideList && self.slideList.length > 0) {
-                    console.log("혹시 여기가?")
+            
                     self.slideList.forEach(slide => {
                         let img = document.createElement('img');
                         img.setAttribute('style', img_style);
@@ -767,7 +840,7 @@ import { reactive, onMounted } from 'vue';
 
                 var alerted = false;
             },
-            //==========미용컷 18개 첨부파일==========
+            // ==========미용컷 18개 첨부파일==========
             CutimgsView(att_zone2, btn) {
                 var self = this;
                 var attZone = document.getElementById(att_zone2);
@@ -963,7 +1036,6 @@ import { reactive, onMounted } from 'vue';
                     attZone.classList.add('file-attached'); // 파일 첨부됨을 나타내는 클래스 추가
                 }
             },
-            // 이미지5개 슬라이드 
             
 
         },
@@ -973,7 +1045,7 @@ import { reactive, onMounted } from 'vue';
         mounted() {
             // const self = this; // imageLoader 함수 내부에서 this가 Vue 인스턴스를 참조하지 않기 때문에 this를 따로 할당해준다.
             // ==========가게 로고 1개 첨부파일==========
-            this.logoImagsView('att_zone4', 'btnAtt4');
+            // this.logoImagsView('att_zone4', 'btnAtt4');
             
             // ==========이미지 슬라이드 5개 첨부파일==========
             // this.slideImgsView('att_zone', 'btnAtt');
@@ -982,7 +1054,7 @@ import { reactive, onMounted } from 'vue';
             // this.CutimgsView('att_zone2', 'btnAtt2');
 
             // ==========디자이너 소개 프로필 1개 첨부파일==========
-            this.DimgsView('att_zone3', 'btnAtt3');
+            // this.DimgsView('att_zone3', 'btnAtt3');
             
         },
         
