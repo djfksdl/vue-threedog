@@ -272,12 +272,17 @@ export default {
       console.log("데이터 가져오기");
       const searchKeyword = this.$refs.searchInput.value;
 
+      const selectedCitiesString = this.selectedCities.join(',');
+      const selectedWeightsString = this.selectedWeights.join(',');
+      const selectedTypesString = this.selectedTypes.join(',');
+      const selectedPricesString = this.selectedPrices.join(',');
+
       const params = {
         searchKeyword: searchKeyword,
-        selectedCities: this.selectedCities,
-        selectedWeights: this.selectedWeights,
-        selectedTypes: this.selectedTypes,
-        selectedPrices: this.selectedPrices
+        selectedCities: selectedCitiesString,
+        selectedWeights: selectedWeightsString,
+        selectedTypes: selectedTypesString,
+        selectedPrices: selectedPricesString
       };
 
       console.log("==================");
@@ -288,13 +293,7 @@ export default {
         method: 'get',
         url: `${this.$store.state.apiBaseUrl}/api/keyword`,
         headers: { "Content-Type": "application/json; charset=utf-8" },
-        params: {
-          searchKeyword: searchKeyword,
-          selectedCities: this.selectedCities.join(";"),
-          selectedWeights: this.selectedWeights.join(";"),
-          selectedTypes: this.selectedTypes.join(";"),
-          selectedPrices: this.selectedPrices.join(";")
-        },
+        params: params, // 쿼리 매개변수로 데이터를 전송
         responseType: 'json'
       }).then(response => {
         console.log(response.data.apiData);
@@ -303,6 +302,7 @@ export default {
         console.log(error);
       });
     }
+
   },
   created() {
     this.getList();

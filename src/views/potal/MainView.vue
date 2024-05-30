@@ -82,7 +82,8 @@ const getCurrentLocation = () => {
 
       coordinate.value.lat = lat;
       coordinate.value.lng = lng;
-      createMap();
+
+      createMap(); // 현재 위치로 지도 이동
     }, (error) => {
       handleLocationError(error);
     });
@@ -90,6 +91,7 @@ const getCurrentLocation = () => {
     alert('Geolocation is not supported by this browser.');
   }
 };
+
 
 const handleLocationError = (error) => {
   switch (error.code) {
@@ -152,6 +154,9 @@ const createMap = () => {
       center: new window.kakao.maps.LatLng(coordinate.value.lat, coordinate.value.lng),
       level: 3
     });
+  } else {
+    const newCenter = new window.kakao.maps.LatLng(coordinate.value.lat, coordinate.value.lng);
+    map.value.setCenter(newCenter);
   }
 
   addList.value.forEach(store => {

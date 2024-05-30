@@ -10,15 +10,16 @@
         <!-- 검색 버튼 -->
         <button class="search-button" @click="searchLocation">검색</button>
       </div>
-
-      <div id="map-search">
-        <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true"
-          style="width: 1300px; height: 494px; margin-left: 20px;">
-          <!-- addList 배열에 있는 각 가게에 대해 반복하여 마커를 표시합니다 -->
-          <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
-          <KakaoMapMarker v-for="(store, index) in addList" :key="index" :lat="store.latitude" :lng="store.longitude" @click="openInfoWindow(store)">
-          </KakaoMapMarker>
-        </KakaoMap>
+      
+      <div class="map-cal">
+        <div id="map-search">
+          <!-- <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true"
+            style="width: 1300px; height: 494px; margin-left: 20px;">
+            <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
+            <KakaoMapMarker v-for="(store, index) in addList" :key="index" :lat="store.latitude" :lng="store.longitude" @click="openInfoWindow(store)">
+            </KakaoMapMarker>
+          </KakaoMap> -->
+        </div>
         <DatePicker02 @selectedDate="handleDateChange" @customAction="getList" />
       </div>
 
@@ -41,7 +42,6 @@ import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
-import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
 import DatePicker02 from '@/components/DatePicker02.vue';
 import AppFooter from "@/components/AppFooter.vue";
 import AppHeader from "@/components/AppHeader.vue";
@@ -71,7 +71,7 @@ const searchLocation = async () => {
       coordinate.value.lat = parseFloat(place.lat);
       coordinate.value.lng = parseFloat(place.lon);
       location.value = searchQuery.value;
-      getList();
+      createMap();
     } else {
       alert('위치를 찾을 수 없습니다.');
     }
@@ -104,6 +104,7 @@ const getList = () => {
     console.log("-----------------------");
     console.log(response.data.apiData);
     storeList.value = response.data.apiData;
+    createMap();
   }).catch(error => {
     console.log(error);
   });
@@ -127,7 +128,6 @@ const getCurrentLocation = () => {
       const lng = position.coords.longitude;
       coordinate.value.lat = lat;
       coordinate.value.lng = lng;
-      getList();
       createMap();
     }, (error) => {
       handleLocationError(error);
@@ -177,15 +177,6 @@ const markList = () => {
   });
 };
 
-onMounted(() => {
-  getList();
-  markList();
-  window.closeOverlay = (id) => {
-    const overlay = overlays.value.find(o => o.id === id);
-    if (overlay) overlay.overlay.setMap(null);
-  };
-});
-
 const createMap = () => {
   if (!window.kakao) {
     console.error("Kakao map library not loaded.");
@@ -193,10 +184,13 @@ const createMap = () => {
   }
 
   if (!map.value) {
-    map.value = new window.kakao.maps.Map(document.querySelector("#map-main"), {
+    map.value = new window.kakao.maps.Map(document.querySelector("#map-search"), {
       center: new window.kakao.maps.LatLng(coordinate.value.lat, coordinate.value.lng),
       level: 3
     });
+  } else {
+    const newCenter = new window.kakao.maps.LatLng(coordinate.value.lat, coordinate.value.lng);
+    map.value.setCenter(newCenter);
   }
 
   addList.value.forEach(store => {
@@ -242,5 +236,14 @@ const createMap = () => {
   });
 };
 
+
+onMounted(() => {
+  getList();
+  markList();
+  window.closeOverlay = (id) => {
+    const overlay = overlays.value.find(o => o.id === id);
+    if (overlay) overlay.overlay.setMap(null);
+  };
+});
 
 </script>
