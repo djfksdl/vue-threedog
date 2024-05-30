@@ -26,6 +26,9 @@ export default createStore({
         setSelectedSchedule(state, schedule) {
             state.selectedSchedule = schedule;
         },
+        setGroomingRecord(state, groomingRecord) {
+            state.groomingRecord = groomingRecord;
+        },
         setAuth(state, payload) {
             state.auth = payload;
         },

@@ -208,99 +208,74 @@ export default {
             },
         };
     },
+   
     methods: {
-        methods: {
-            // 특정 예약의 미용 기록 조회
-            selectGroomingRecord(rsNo) {
-                axios({
-                    method: 'get',
-                    url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/grooming-record`,
-                    headers: { "Content-Type": "application/json; charset=utf-8" },
-                    responseType: 'json'
-                }).then(response => {
-                    console.log('Response data:', response.data.apiData); // 응답 데이터 확인
-                    const data = response.data.apiData;
 
-                    // 받은 데이터를 처리하여 상태에 바인딩합니다.
-                    if (data) {
-                        this.groomingEtiquette = data.groomingEtiquette;
-                        this.condition = data.condition;
-                        this.mattedArea = data.mattedArea;
-                        this.dislikedArea = data.dislikedArea;
-                        this.bathDry = data.bathDry;
-                        this.note = data.note;
-                        this.additionalFees = data.additionalFees;
-                        this.photoUrls = data.photos || [];
-                        this.selectedAdditionalFee = data.selectedAdditionalFee;
-                    }
-                }).catch(error => {
-                    console.error('Error fetching reservations:', error);
+
+        // 미용 기록 업데이트
+        updateGroomingRecord(rsNo, reserveVo) {
+            axios({
+                method: 'put',
+                url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/grooming-record`,
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                data: reserveVo,
+                responseType: 'json'
+            }).then(response => {
+                console.log('Response data:', response.data.apiData); // 응답 데이터 확인
+                const data = response.data.apiData;
+
+                // 성공적으로 업데이트된 미용 기록을 처리합니다.
+                if (data) {
+                    this.groomingEtiquette = data.groomingEtiquette;
+                    this.condition = data.condition;
+                    this.mattedArea = data.mattedArea;
+                    this.dislikedArea = data.dislikedArea;
+                    this.bathDry = data.bathDry;
+                    this.note = data.note;
+                    this.additionalFees = data.additionalFees;
+                    this.photoUrls = data.photos || [];
+                    this.selectedAdditionalFee = data.selectedAdditionalFee;
+                }
+
+                Swal.fire({
+                    title: '업데이트되었습니다!',
+                    icon: 'success',
+                    confirmButtonText: '확인'
+                }).then(() => {
+                    this.$router.push({ name: 'schedule' });
                 });
-            },
-            // 미용 기록 업데이트
-            updateGroomingRecord(rsNo, reserveVo) {
-                axios({
-                    method: 'put',
-                    url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/grooming-record`,
-                    headers: { "Content-Type": "application/json; charset=utf-8" },
-                    data: reserveVo,
-                    responseType: 'json'
-                }).then(response => {
-                    console.log('Response data:', response.data.apiData); // 응답 데이터 확인
-                    const data = response.data.apiData;
-
-                    // 성공적으로 업데이트된 미용 기록을 처리합니다.
-                    if (data) {
-                        this.groomingEtiquette = data.groomingEtiquette;
-                        this.condition = data.condition;
-                        this.mattedArea = data.mattedArea;
-                        this.dislikedArea = data.dislikedArea;
-                        this.bathDry = data.bathDry;
-                        this.note = data.note;
-                        this.additionalFees = data.additionalFees;
-                        this.photoUrls = data.photos || [];
-                        this.selectedAdditionalFee = data.selectedAdditionalFee;
-                    }
-
-                    Swal.fire({
-                        title: '업데이트되었습니다!',
-                        icon: 'success',
-                        confirmButtonText: '확인'
-                    }).then(() => {
-                        this.$router.push({ name: 'schedule' });
-                    });
-                }).catch(error => {
-                    console.error('Error updating grooming record:', error);
-                });
-            },
-            // 사진 업로드
-            uploadImage(rsNo, file) {
-                const formData = new FormData();
-                formData.append('file', file);
-                axios({
-                    method: 'post',
-                    url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/upload-image`,
-                    headers: { "Content-Type": "multipart/form-data" },
-                    responseType: 'json'
-                }).then(response => {
-                    console.log('Response data:', response.data.apiData);
-                    const newPhotoUrl = response.data.apiData.url;
-
-                    // 업로드된 사진 URL을 추가합니다.
-                    if (newPhotoUrl) {
-                        this.photoUrls.push(newPhotoUrl);
-                    }
-
-                    Swal.fire({
-                        title: '이미지 업로드 완료!',
-                        icon: 'success',
-                        confirmButtonText: '확인'
-                    });
-                }).catch(error => {
-                    console.error('Error uploading image:', error);
-                });
-            }
+            }).catch(error => {
+                console.error('Error updating grooming record:', error);
+            });
         },
+        // 사진 업로드
+        uploadImage(rsNo, file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            axios({
+                method: 'post',
+                url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/upload-image`,
+                headers: { "Content-Type": "multipart/form-data" },
+                responseType: 'json'
+            }).then(response => {
+                console.log('Response data:', response.data.apiData);
+                const newPhotoUrl = response.data.apiData.url;
+
+                // 업로드된 사진 URL을 추가합니다.
+                if (newPhotoUrl) {
+                    this.photoUrls.push(newPhotoUrl);
+                }
+
+                Swal.fire({
+                    title: '이미지 업로드 완료!',
+                    icon: 'success',
+                    confirmButtonText: '확인'
+                });
+            }).catch(error => {
+                console.error('Error uploading image:', error);
+            });
+        },
+
         // 추가요금 선택
         selectAdditionalFee(item) {
             this.selectedAdditionalFee = item;
