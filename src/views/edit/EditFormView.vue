@@ -527,10 +527,12 @@ import { reactive, onMounted } from 'vue';
                     responseType: 'json' //수신타입
                 }).then(response => {
 
-                    this.shopInfo = response.data.apiData.shopInfo;
-                    this.priceList = response.data.apiData.pList;
-                    this.slideList = response.data.apiData.sList;
+                    this.shopInfo = response.data.apiData.shopInfo||{} ; //title없으면 빈문자열로 설정
+                   
+                    this.priceList = response.data.apiData.pList.length ? response.data.apiData.pList :this.initializePriceList()  ;
+                    this.slideList = response.data.apiData.sList ;
                     this.cutList = response.data.apiData.cList;
+                    
 
                     // // 슬라이드 이미지 미리보기 생성
                     // if(this.sList != null){
