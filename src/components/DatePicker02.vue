@@ -74,4 +74,15 @@ const handleButtonClick = () => {
   display: block;
   margin-right: 200px;
 }
+
+.cal02 .dp__action_button.dp__action_select{
+    color: #236C3F;
+    font-size: 0px;
+}
+.cal02 .dp__action_button.dp__action_select::after {
+    content: "선택";
+    font-size: 17px;
+    color: white;
+    padding: 5px;
+}
 </style>
