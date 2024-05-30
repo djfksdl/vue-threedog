@@ -11,8 +11,6 @@
                     <div class="eLogoTitleInfo">
                         <div class="eLogo">
                             <div id='att_zone4' class="addLImgBox" data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
-                                <!-- 처음부터 img를 만들어서 불러온 값 보이게 하기.그리고 등록하기 위해서 새로운 파일이 들어왔을때 img가 안보이게해서 등록했을때 img태그가 둘다 안겹치게 하기  -->
-                                <!-- <img style="width:100%;height:100%;z-index:none;object-fit:contain" v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${shopInfo.logo }`">  -->
                                 <input id="btnAtt4" type="file" class="eFileAddBtn" >
                             </div>
 
@@ -352,14 +350,14 @@ import "vue3-carousel/dist/carousel.css";
 // 코드에서 setup을 사용하고 있으므로 setup 내에서 import와 reactive를 사용할 수 있습니다.
 import { reactive, onMounted } from 'vue';
 //Composition API에서는 setup 함수 내에서 직접적으로 this를 사용할 수 없기 때문에 $store에 접근하려면 useStore 훅을 사용하여 스토어를 가져와야 함
-// import { useStore } from 'vuex';
-// import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 
     //스토어 가져오기
-    // const store = useStore();
+    const store = useStore();
 
     //bNo가져오기
-    // const { params } = useRoute();
+    const { params } = useRoute();
 
     //리액티브 변수 초기화
     const coordinate = reactive({
@@ -368,25 +366,25 @@ import { reactive, onMounted } from 'vue';
     });
 
     // 가게 정보 불러오기 
-    // const getLatLng = () => {
-    //     axios({
-    //         method: 'get',
-    //         url: `${store.state.apiBaseUrl}/api/su/shopInfo`, //store변수 사용
-    //         headers: { "Content-Type": "application/json; charset=utf-8" },
-    //         params: { bNo: params.bNo },
-    //         responseType: 'json'
-    //     }).then(response => {
-    //         // shopInfo 객체에서 위도와 경도 값을 받아와서 coordinate 객체에 할당합니다.
-    //         coordinate.lat = response.data.apiData.latitude;
-    //         coordinate.lng = response.data.apiData.longitude;
-    //     }).catch(error => {
-    //         console.log(error);
-    //     });
+    const getLatLng = () => {
+        axios({
+            method: 'get',
+            url: `${store.state.apiBaseUrl}/api/su/shopInfo`, //store변수 사용
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            params: { bNo: params.bNo },
+            responseType: 'json'
+        }).then(response => {
+            // shopInfo 객체에서 위도와 경도 값을 받아와서 coordinate 객체에 할당합니다.
+            coordinate.lat = response.data.apiData.shopInfo.latitude;
+            coordinate.lng = response.data.apiData.shopInfo.longitude;
+        }).catch(error => {
+            console.log(error);
+        });
 
-    // };
+    };
     // 컴포넌트가 마운트된 후에 가게 정보 가져오기
     onMounted(() => {
-        // getLatLng();
+        getLatLng();
     });
 </script>
 <script>
@@ -534,10 +532,10 @@ import { reactive, onMounted } from 'vue';
                     this.cutList = response.data.apiData.cList;
                     
 
-                    // // 슬라이드 이미지 미리보기 생성
-                    // if(this.sList != null){
-                    //     this.slideImgsView(this.att_zone, this.btn, this.sList);
-                    // }
+                    // 초기 로고 설정
+                    if (this.shopInfo.logo) {
+                        this.logoImagsView('att_zone4', 'btnAtt4');
+                    }
                 
 
                 }).catch(error => {
@@ -620,6 +618,20 @@ import { reactive, onMounted } from 'vue';
                     div.appendChild(img);
                     return div;
                 }
+
+                //초기 로고 이미지 설정
+                if (self.shopInfo.logo) {
+                    let img = document.createElement('img');
+                    img.src = `${self.$store.state.apiBaseUrl}/upload/${self.shopInfo.logo}`;
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'contain';
+                    
+                    attZone.innerHTML = ''; // 기존 내용 비우기
+                    attZone.appendChild(img); // 첨부된 이미지 넣기
+                    attZone.classList.add('file-attached'); // 파일 첨부됨을 나타내는 클래스 추가
+                }
+
             },
             //==========이미지 슬라이드 5개 첨부파일==========
             slideImgsView(att_zone, btn) {
