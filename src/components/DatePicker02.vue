@@ -1,19 +1,8 @@
 <template>
   <div class="cal02">
-    <Datepicker
-      class="a"
-      locale="ko"
-      v-model="date"
-      format="yyyy-MM-dd"
-      :inline="true"
-      :selectable="isSelectableDate"
-      :show-toolbar="false"
-      :enable-time-picker="false"
-      :show-selected-date="false"
-      :show-previous-month="false"
-      :min-date="minDate"
-      @update:modelValue="handleDateUpdate"
-    >
+    <Datepicker class="a" locale="ko" v-model="date" format="yyyy-MM-dd" :inline="true" :selectable="isSelectableDate"
+      :show-toolbar="false" :enable-time-picker="false" :show-selected-date="false" :show-previous-month="false"
+      :min-date="minDate" @update:modelValue="handleDateUpdate">
       <button class="dp__action_button" @click="handleButtonClick">조회</button>
     </Datepicker>
   </div>
@@ -57,6 +46,8 @@ const handleButtonClick = () => {
 .cal02 {
   transform: scale(0.9);
   margin-top: -40px;
+  height: 494px;
+  position: relative; 
 }
 
 .cal02 .dp__selection_preview {
@@ -69,20 +60,43 @@ const handleButtonClick = () => {
 
 .cal02 .dp__action_button {
   width: 100px;
-  height: 40px;
+  height: 45px;
   font-size: 16px;
   display: block;
   margin-right: 200px;
 }
 
-.cal02 .dp__action_button.dp__action_select{
-    color: #236C3F;
-    font-size: 0px;
+.cal02 .dp__action_button.dp__action_select {
+  color: #236C3F;
+  font-size: 0px;
 }
+
 .cal02 .dp__action_button.dp__action_select::after {
-    content: "선택";
-    font-size: 17px;
-    color: white;
-    padding: 5px;
+  content: "선택";
+  font-size: 17px;
+  color: white;
+  padding: 5px;
+}
+
+.cal02 .dp__theme_light {
+  /* --dp-menu-border-color: #a7a4a4; */
+  --dp-menu-border-color: none;
+  --dp-primary-color: #236C3F;
+
+  --dp-cell-border-radius: 50%;
+}
+
+.cal02 .dp__instance_calendar {
+  width: 500px;
+  font-size: 18px;
+  padding: 10px;
+}
+
+.cal02 .dp__calendar_item {
+  padding: 10px;
+}
+
+.cal02 .dp__calendar_header_item {
+  margin: 30px 0 20px 0;
 }
 </style>

@@ -171,7 +171,7 @@ const createMap = () => {
       <div class="map-wrap">
         <div class="info">
           <div class="title">${store.title}
-            <div class="close" onclick="closeOverlay(${store.id})" title="닫기"></div>
+            <div class="close" @click="closeOverlay(${store.id})" title="닫기"></div>
           </div>
           <div class="body">
             <div class="img">
@@ -211,6 +211,12 @@ onMounted(() => {
     if (overlay) overlay.overlay.setMap(null);
   };
 });
+
+const closeOverlay = (id) => {
+  const overlay = overlays.value.find(o => o.id === id);
+  if (overlay) overlay.overlay.setMap(null);
+};
+console.log(closeOverlay);
 </script>
 
 <script>

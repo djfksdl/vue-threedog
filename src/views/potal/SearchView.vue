@@ -12,6 +12,7 @@
       <div class="search-select">
         <table class="search-table">
           <tbody>
+            <!-- 도시 선택 -->
             <tr>
               <td class="search-category">
                 <div class="location-box">
@@ -28,6 +29,7 @@
                 </div>
               </td>
             </tr>
+            <!-- 종류 선택 -->
             <tr>
               <td class="search-category">
                 <div class="location-box">
@@ -44,6 +46,7 @@
                 </div>
               </td>
             </tr>
+            <!-- 무게 선택 -->
             <tr>
               <td class="search-category">
                 <div class="location-box">
@@ -53,13 +56,14 @@
               <td>
                 <div class="city-box">
                   <ul class="city-list">
-                    <li v-for="weight in weights" :key="weight" @click="toggleWeight(weight)"
-                      :class="{ 'selected': selectedWeights.includes(weight) }">{{ weight }} <span
-                        v-if="selectedWeights.includes(weight)" @click.stop="cancelWeight(weight)">X</span></li>
+                    <li v-for="(weight, index) in weights" :key="index" @click="toggleWeight(index)"
+                      :class="{ 'selected': selectedWeights.includes(index) }">{{ weight }} <span
+                        v-if="selectedWeights.includes(index)" @click.stop="cancelWeight(index)">X</span></li>
                   </ul>
                 </div>
               </td>
             </tr>
+            <!-- 가격 선택 -->
             <tr>
               <td class="search-category">
                 <div class="location-box">
@@ -69,9 +73,9 @@
               <td>
                 <div class="city-box">
                   <ul class="city-list">
-                    <li v-for="price in prices" :key="price" @click="togglePrice(price)"
-                      :class="{ 'selected': selectedPrices.includes(price) }">{{ price }} <span
-                        v-if="selectedPrices.includes(price)" @click.stop="cancelPrice(price)">X</span></li>
+                    <li v-for="(price, index) in prices" :key="index" @click="togglePrice(index)"
+                      :class="{ 'selected': selectedPrices.includes(index) }">{{ price }} <span
+                        v-if="selectedPrices.includes(index)" @click.stop="cancelPrice(index)">X</span></li>
                   </ul>
                 </div>
               </td>
@@ -80,6 +84,7 @@
         </table>
       </div>
 
+      <!-- 선택된 항목 표시 -->
       <div class="selected-items">
         <div v-for="(item, index) in selectedItems" :key="index" class="selected-item" @click="cancelSelected(item)">
           {{ item.label }}
@@ -114,7 +119,6 @@
     </div>
     <TopButton />
     <AppFooter id="AppFooter" />
-
   </div>
 </template>
 
@@ -187,13 +191,13 @@ export default {
         this.selectedItems = this.selectedItems.filter(item => item.label !== city);
       }
     },
-    toggleWeight(weight) {
-      const index = this.selectedWeights.indexOf(weight);
-      if (index === -1) {
-        this.selectedWeights.push(weight);
+    toggleWeight(index) {
+      const weight = this.weights[index];
+      if (!this.selectedWeights.includes(index)) {
+        this.selectedWeights.push(index);
         this.selectedItems.push({ type: 'weight', label: weight });
       } else {
-        this.selectedWeights.splice(index, 1);
+        this.selectedWeights = this.selectedWeights.filter(item => item !== index);
         this.selectedItems = this.selectedItems.filter(item => item.label !== weight);
       }
     },
@@ -206,13 +210,13 @@ export default {
         this.selectedItems = this.selectedItems.filter(item => item.label !== type);
       }
     },
-    togglePrice(price) {
-      const index = this.selectedPrices.indexOf(price);
-      if (index === -1) {
-        this.selectedPrices.push(price);
+    togglePrice(index) {
+      const price = this.prices[index];
+      if (!this.selectedPrices.includes(index)) {
+        this.selectedPrices.push(index);
         this.selectedItems.push({ type: 'price', label: price });
       } else {
-        this.selectedPrices.splice(index, 1);
+        this.selectedPrices = this.selectedPrices.filter(item => item !== index);
         this.selectedItems = this.selectedItems.filter(item => item.label !== price);
       }
     },
@@ -220,27 +224,29 @@ export default {
       this.selectedCities = this.selectedCities.filter(item => item !== city);
       this.selectedItems = this.selectedItems.filter(item => item.label !== city);
     },
-    cancelWeight(weight) {
-      this.selectedWeights = this.selectedWeights.filter(item => item !== weight);
+    cancelWeight(weightIndex) {
+      const weight = this.weights[weightIndex];
+      this.selectedWeights = this.selectedWeights.filter(item => item !== weightIndex);
       this.selectedItems = this.selectedItems.filter(item => item.label !== weight);
     },
     cancelType(type) {
       this.selectedTypes = this.selectedTypes.filter(item => item !== type);
       this.selectedItems = this.selectedItems.filter(item => item.label !== type);
     },
-    cancelPrice(price) {
-      this.selectedPrices = this.selectedPrices.filter(item => item !== price);
+    cancelPrice(priceIndex) {
+      const price = this.prices[priceIndex];
+      this.selectedPrices = this.selectedPrices.filter(item => item !== priceIndex);
       this.selectedItems = this.selectedItems.filter(item => item.label !== price);
     },
     cancelSelected(item) {
       if (item.type === 'city') {
         this.cancelCity(item.label);
       } else if (item.type === 'weight') {
-        this.cancelWeight(item.label);
+        this.cancelWeight(this.weights.indexOf(item.label));
       } else if (item.type === 'type') {
         this.cancelType(item.label);
       } else if (item.type === 'price') {
-        this.cancelPrice(item.label);
+        this.cancelPrice(this.prices.indexOf(item.label));
       }
     },
     handleScroll() {
@@ -272,10 +278,10 @@ export default {
       console.log("데이터 가져오기");
       const searchKeyword = this.$refs.searchInput.value;
 
-      const selectedCitiesString = this.selectedCities.join(',');
-      const selectedWeightsString = this.selectedWeights.join(',');
-      const selectedTypesString = this.selectedTypes.join(',');
-      const selectedPricesString = this.selectedPrices.join(',');
+      const selectedCitiesString = this.selectedCities.join(';');
+      const selectedWeightsString = this.selectedWeights.join(';');
+      const selectedTypesString = this.selectedTypes.join(';');
+      const selectedPricesString = this.selectedPrices.join(';');
 
       const params = {
         searchKeyword: searchKeyword,
@@ -302,7 +308,6 @@ export default {
         console.log(error);
       });
     }
-
   },
   created() {
     this.getList();
