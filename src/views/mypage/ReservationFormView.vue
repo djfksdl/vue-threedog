@@ -32,23 +32,7 @@
                         <div class="calendar">
                             <Datepicker />
                         </div>
-                        <div class="time">
-                            <p>오전</p>
-                            <button type="button" :class="{ selected: reserveVo.rtTime === '10:00' }"
-                                @click="toggleTime('10:00')">10:00</button>
-                            <button type="button" :class="{ selected: reserveVo.rtTime === '11:00' }"
-                                @click="toggleTime('11:00')">11:00</button>
-                            <p>오후</p>
-                            <button type="button" :class="{ selected: reserveVo.rtTime === '14:00' }"
-                                @click="toggleTime('14:00')">14:00</button>
-                            <button type="button" :class="{ selected: reserveVo.rtTime === '15:00' }"
-                                @click="toggleTime('15:00')">15:00</button>
-                            <button type="button" :class="{ selected: reserveVo.rtTime === '16:00' }"
-                                @click="toggleTime('16:00')">16:00</button>
-                            <button type="button" :class="{ selected: reserveVo.rtTime === '17:00' }"
-                                @click="toggleTime('17:00')">17:00</button>
-                        </div>
-                        {{ this.reserveVo.rtTime }}
+                        
                         <!-- v-bind:key="i" v-for="(reserveVo, i) in reserveList" -->
                     </div>
                     <div class="reservationBox">
@@ -300,6 +284,8 @@ export default {
     },
     data() {
         return {
+           
+
             reserveList: [],
             // 고객
             reserveVo: {
@@ -307,7 +293,6 @@ export default {
                 bNo: 1,
                 dogNo: 0,
                 rtDate: "",
-                rtTime: null,
                 singImg: "",
                 expectedPrice: 0,
                 attitude: "",
@@ -392,17 +377,7 @@ export default {
             });
         },
 
-        // 시간선택, 가져오기
-        toggleTime(time) {
-            console.log(time);
-            if (this.reserveVo.rtTime == time) {
-                // 이미 선택된 시간을 클릭한 경우 선택 해제
-                this.reserveVo.rtTime = null;
-            } else {
-                // 클릭한 시간을 선택
-                this.reserveVo.rtTime = time;
-            }
-        },
+       
 
         // 반려견선택
         getPetList() {
@@ -586,36 +561,5 @@ export default {
 #reservationForm .selected {
     background-color: #236C3F !important;
     color: #ffffff !important;
-}
-
-
-.star-rating {
-    font-size: 24px;
-    color: #ccc;
-    display: flex;
-}
-
-.star {
-    position: relative;
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    overflow: hidden;
-}
-
-.star .star-filled {
-    position: absolute;
-    top: 0;
-    left: 0;
-    color: #f5c518;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.star .star-empty {
-    position: absolute;
-    top: 0;
-    left: 0;
-    color: #ccc;
 }
 </style>
