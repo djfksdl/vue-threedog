@@ -738,48 +738,59 @@ import { reactive, onMounted } from 'vue';
 
                 //이미지를 업로드하고 미리보기 설정
                 btnAtt.onchange = function (e) {
-                    console.log("온체인지")
+                    console.log("온체인지5");
                     var files = e.target.files;
                     var fileArr = Array.prototype.slice.call(files);
-                    for (let f of fileArr) {
-                        imageLoader(f);
-                    }
+                    fileArr.forEach(file => {
+                        if (sel_files.length < 5) {
+                            imageLoader(file);
+                        } else if (!alerted) {
+                            alert("최대 5장까지만 첨부할 수 있습니다.");
+                            alerted = true;
+                        }
+                    });
+                    updateFileInput();
                 };
 
                 //드래그앤 드롭 기능 설정
                 attZone.addEventListener('dragenter', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log("드래그앤터")
+                    console.log("드래그앤터5")
                 }, false);
 
                 attZone.addEventListener('dragover', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log("드래그오버")
+                    console.log("드래그오버5")
                 }, false);
 
                 attZone.addEventListener('drop', function (e) {
-                    var files = {};
+                    // var files = {};
                     e.preventDefault();
                     e.stopPropagation();
                     var dt = e.dataTransfer;
-                    files = dt.files;
-                    // 이미 파일을 받았다면 추가 처리를 하지 않음
+                    var files = dt.files;
                     if (sel_files.length < 5) {
                         for (let f of files) {
-                            imageLoader(f);
-                        }  
+                            if (sel_files.length < 5) {
+                                imageLoader(f);
+                            } else if (!alerted) {
+                                alert("최대 5장까지만 첨부할 수 있습니다.");
+                                alerted = true;
+                                break;
+                            }
+                        }
+                    } else if (!alerted) {
+                        alert("최대 5장까지만 첨부할 수 있습니다.");
+                        alerted = true;
                     }
+                    updateFileInput();
                 }, false);
 
-                //이미지 로더 함수
+                //이미지 로더 함수-첨부된 이미지들을 배열에 넣고 미리보기
                 function imageLoader(file) {
                     if (sel_files.length >= 5) {
-                        if (!alerted) {
-                            alert("최대 5장까지만 첨부할 수 있습니다.");
-                            alerted = true;
-                        }
                         return;
                     }
                     sel_files.push(file);
@@ -795,6 +806,7 @@ import { reactive, onMounted } from 'vue';
                     self.shopInfo.slideImgs = sel_files;
                 }
 
+                //div생성 함수
                 function makeDiv(img, file) {
                     var div = document.createElement('div');
                     div.setAttribute('style', div_style);
@@ -813,11 +825,8 @@ import { reactive, onMounted } from 'vue';
                             }
                         }
 
-                        var dt = new DataTransfer();
-                        for (let f of sel_files) {
-                            dt.items.add(f);
-                        }
-                        btnAtt.files = dt.files;
+                        updateFileInput();
+
                         var p = ele.parentNode;
                         attZone.removeChild(p);
                     };
@@ -826,6 +835,16 @@ import { reactive, onMounted } from 'vue';
                     div.appendChild(btn);
                     return div;
                 }
+
+                // 파일 입력 요소 업데이트 함수
+                function updateFileInput() {
+                    var dt = new DataTransfer();
+                    sel_files.forEach(file => {
+                        dt.items.add(file);
+                    });
+                    btnAtt.files = dt.files;
+                }
+
 
                 // 초기 이미지 설정
                 if (self.slideList && self.slideList.length > 0) {
@@ -856,43 +875,61 @@ import { reactive, onMounted } from 'vue';
                 // 이미지안에 표시되는 체크박스의 속성
                 var chk_style = 'width:30px;height:30px;position:absolute;font-size:18px;right:0px;background-color:rgba(255,255,255,0.1);color:#a7a4a4;border:none;font-weight:bold';
 
+                //이미지를 업로드하고 미리보기 설정
                 btnAtt2.onchange = function (e) {
+                    console.log("온체인지18");
                     var files = e.target.files;
                     var fileArr = Array.prototype.slice.call(files);
-                    for (let f of fileArr) {
-                        imageLoader(f);
-                    }
+                    fileArr.forEach(file => {
+                        if (sel_files.length < 18) {
+                            imageLoader(file);
+                        } else if (!alerted) {
+                            alert("최대 18장까지만 첨부할 수 있습니다.");
+                            alerted = true;
+                        }
+                    });
+                    updateFileInput();
                 };
 
-                // 탐색기에서 드래그앤 드롭 사용
+                // 드래그앤 드롭 기능 설정
                 attZone.addEventListener('dragenter', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
+                    console.log("드래그앤터18")
                 }, false);
 
                 attZone.addEventListener('dragover', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
+                    console.log("드래그오버18")
                 }, false);
 
                 attZone.addEventListener('drop', function (e) {
-                    var files = {};
+                    // var files = {};
                     e.preventDefault();
                     e.stopPropagation();
                     var dt = e.dataTransfer;
-                    files = dt.files;
-                    for (let f of files) {
-                        imageLoader(f);
+                    var files = dt.files;
+                    if (sel_files.length < 18) {
+                        for (let f of files) {
+                            if (sel_files.length < 18) {
+                                imageLoader(f);
+                            } else if (!alerted) {
+                                alert("최대 18장까지만 첨부할 수 있습니다.");
+                                alerted = true;
+                                break;
+                            }
+                        }
+                    } else if (!alerted) {
+                        alert("최대 18장까지만 첨부할 수 있습니다.");
+                        alerted = true;
                     }
+                    updateFileInput();
                 }, false);
 
-                // 첨부된 이미지들을 배열에 넣고 미리보기
+                // 이미지 로더 함수-첨부된 이미지들을 배열에 넣고 미리보기
                 function imageLoader(file) {
                     if (sel_files.length >= 18) { // 이미 18개 이상인 경우 추가하지 않음
-                        if (!alerted) { // 이미 alert가 띄워진 경우는 추가하지 않음
-                            alert("최대 18장까지만 첨부할 수 있습니다.");
-                            alerted = true; // alert 띄움 플래그를 true로 설정
-                        }
                         return;
                     }
                     sel_files.push(file);
@@ -927,17 +964,23 @@ import { reactive, onMounted } from 'vue';
                             }
                         }
 
-                        var dt = new DataTransfer();
-                        for (let f of sel_files) {
-                            dt.items.add(f);
-                        }
-                        btnAtt2.files = dt.files;
+                        updateFileInput();
+
                         var p = ele.parentNode;
                         attZone.removeChild(p);
                     };
                     div.appendChild(img);
                     div.appendChild(btn);
                     return div;
+                }
+
+                 // 파일 입력 요소 업데이트 함수
+                 function updateFileInput() {
+                    var dt = new DataTransfer();
+                    sel_files.forEach(file => {
+                        dt.items.add(file);
+                    });
+                    btnAtt2.files = dt.files;
                 }
 
                 // 초기 이미지 설정
@@ -1044,8 +1087,9 @@ import { reactive, onMounted } from 'vue';
         },
         mounted() {
             // const self = this; // imageLoader 함수 내부에서 this가 Vue 인스턴스를 참조하지 않기 때문에 this를 따로 할당해준다.
-            // ==========가게 로고 1개 첨부파일==========
+            // ==========가게 로고 1개 첨부파일========== 이거 주석처리하면 처음등록할때 드래그앤드롭,미리보기가 안됨
             this.logoImagsView('att_zone4', 'btnAtt4');
+            
             
             // ==========이미지 슬라이드 5개 첨부파일==========
             // this.slideImgsView('att_zone', 'btnAtt');
