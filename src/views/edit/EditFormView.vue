@@ -594,12 +594,12 @@ import { reactive, onMounted } from 'vue';
                 formData.append("dProfileFile", this.shopInfo.dProfileFile);
 
                 // priceList의 각 항목을 개별적으로 추가
-                for (let i = 0; i < this.priceList.length; i++) {
-                    formData.append(`priceList[${i}].onePrice`, this.priceList[i].onePrice);
-                    formData.append(`priceList[${i}].beautyNo`, this.priceList[i].beautyNo);
-                    console.log("여기 확인하기")
-                    console.log(formData.get(`priceList[${i}].onePrice`) );
-                }
+                // for (let i = 0; i < this.priceList.length; i++) {
+                //     formData.append(`priceList[${i}].onePrice`, this.priceList[i].onePrice);
+                //     formData.append(`priceList[${i}].beautyNo`, this.priceList[i].beautyNo);
+                //     console.log("여기 확인하기")
+                //     console.log(formData.get(`priceList[${i}].onePrice`) );
+                // }
 
                 console.log("=====수정으로 보내기전 정보 담은거 확인=====");
 
@@ -610,27 +610,27 @@ import { reactive, onMounted } from 'vue';
                 console.log(formData.get("introduce"));
                 console.log(formData.get("dProfileFile"));
 
-                axios({
+                // axios({
                     
-                    method: 'put', // put, post, delete 
-                    url: `${this.$store.state.apiBaseUrl}/api/su/updateShop`,
-                    headers: { "Content-Type": "multipart/form-data" }, //전송타입
-                    data: formData, // formData로 묶어서 보낼떈 Json형태로 보내기 -> springboot에서 받을땐 modelattribute로 받음(formData의 예외다!)
-                    responseType: 'json' //수신타입
-                }).then(response => {
-                    console.log(response.data.apiData);
+                //     method: 'put', // put, post, delete 
+                //     url: `${this.$store.state.apiBaseUrl}/api/su/updateShop`,
+                //     headers: { "Content-Type": "multipart/form-data" }, //전송타입
+                //     data: formData, // formData로 묶어서 보낼떈 Json형태로 보내기 -> springboot에서 받을땐 modelattribute로 받음(formData의 예외다!)
+                //     responseType: 'json' //수신타입
+                // }).then(response => {
+                //     console.log(response.data.apiData);
 
-                    // if (response.data.apiData == 1) {
-                    //     alert("홈페이지가 성공적으로 만들어졌습니다.");
-                    //     this.$router.push(`/edit/${this.bNo}`);
-                    // } else {
-                    //     alert("정보를 다시 확인해주세요.");
-                    // }
+                //     // if (response.data.apiData == 1) {
+                //     //     alert("홈페이지가 성공적으로 만들어졌습니다.");
+                //     //     this.$router.push(`/edit/${this.bNo}`);
+                //     // } else {
+                //     //     alert("정보를 다시 확인해주세요.");
+                //     // }
                     
 
-                }).catch(error => {
-                    console.log(error);
-                });
+                // }).catch(error => {
+                //     console.log(error);
+                // });
 
             },
             // ==========가게 로고 1개 첨부파일==========
@@ -655,6 +655,7 @@ import { reactive, onMounted } from 'vue';
                     }
                     
                     imageLoader(file);
+                    updateFileInput(file);
                 };
 
                 // 드래그 앤 드롭 기능 설정
@@ -680,6 +681,7 @@ import { reactive, onMounted } from 'vue';
                     }
                     
                     imageLoader(file);
+                    updateFileInput(file);
                 }, false);
 
 
@@ -710,6 +712,13 @@ import { reactive, onMounted } from 'vue';
                     return div;
                 }
 
+                // 파일 입력 요소 업데이트 함수
+                function updateFileInput(file) {
+                    var dt = new DataTransfer();
+                    dt.items.add(file);
+                    btnAtt4.files = dt.files;
+                }
+
                 //초기 로고 이미지 설정
                 if (self.shopInfo.logo) {
                     let img = document.createElement('img');
@@ -721,6 +730,10 @@ import { reactive, onMounted } from 'vue';
                     attZone.innerHTML = ''; // 기존 내용 비우기
                     attZone.appendChild(img); // 첨부된 이미지 넣기
                     attZone.classList.add('file-attached'); // 파일 첨부됨을 나타내는 클래스 추가
+
+                    // 기존 로고 파일을 파일 입력 요소에 설정
+                    var initialFile = new File([], self.shopInfo.logo); // 로고 파일 이름으로 빈 파일 생성
+                    updateFileInput(initialFile);
                 }
 
             },
@@ -848,13 +861,19 @@ import { reactive, onMounted } from 'vue';
 
                 // 초기 이미지 설정
                 if (self.slideList && self.slideList.length > 0) {
+
+                    var initialFiles = [];
             
                     self.slideList.forEach(slide => {
                         let img = document.createElement('img');
                         img.setAttribute('style', img_style);
                         img.src = `${this.$store.state.apiBaseUrl}/upload/${slide}`;
                         attZone.appendChild(makeDiv(img, { name: slide }));
+                        initialFiles.push(new File([], slide)); // Placeholder file for the initial files
                     });
+                    sel_files = initialFiles;
+                    updateFileInput();
+                   
                 }
 
                 var alerted = false;
@@ -985,12 +1004,18 @@ import { reactive, onMounted } from 'vue';
 
                 // 초기 이미지 설정
                 if (self.cutList && self.cutList.length > 0) {
+
+                    var initialFiles = [];
+
                     self.cutList.forEach(slide => {
                         let img = document.createElement('img');
                         img.setAttribute('style', img_style);
                         img.src = `${this.$store.state.apiBaseUrl}/upload/${slide}`;
                         attZone.appendChild(makeDiv(img, { name: slide }));
+                        initialFiles.push(new File([], slide)); // Placeholder file for the initial files
                     });
+                    sel_files = initialFiles;
+                    updateFileInput();
                 }
 
                 // 이미 alert가 띄워진 경우를 확인하는 플래그
@@ -1016,6 +1041,7 @@ import { reactive, onMounted } from 'vue';
                         return;
                     }
                     imageLoader(file);
+                    updateFileInput(file);
                 };
 
                 // 드래그 앤 드롭 기능 설정
@@ -1039,6 +1065,7 @@ import { reactive, onMounted } from 'vue';
                         return;
                     }
                     imageLoader(file);
+                    updateFileInput(file);
                 }, false);
 
                 // 첨부된 이미지를 미리보기
@@ -1066,6 +1093,13 @@ import { reactive, onMounted } from 'vue';
                     return div;
                 }
 
+                // 파일 입력 요소 업데이트 함수
+                function updateFileInput(file) {
+                    var dt = new DataTransfer();
+                    dt.items.add(file);
+                    btnAtt3.files = dt.files;
+                }
+
                 //초기 디자이너 프로필 이미지 설정
                 if (self.shopInfo.dProfile) {
                     let img = document.createElement('img');
@@ -1077,6 +1111,10 @@ import { reactive, onMounted } from 'vue';
                     attZone.innerHTML = ''; // 기존 내용 비우기
                     attZone.appendChild(img); // 첨부된 이미지 넣기
                     attZone.classList.add('file-attached'); // 파일 첨부됨을 나타내는 클래스 추가
+
+                    // 기존 디자이너 파일을 파일 입력 요소에 설정
+                    var initialFile = new File([], self.shopInfo.dProfile ); // 디자이너 파일 이름으로 빈 파일 생성
+                    updateFileInput(initialFile);
                 }
             },
             
