@@ -32,22 +32,33 @@
                     </div>
 
                     <!-- 시간 선택 -->
-                    <div v-if="isAllDayCheck">
-                        <div class="selectWorkTime" v-for="(day, index) in days" :key="day">
-                            <div :class="{'selectWorkDay': true, 'selected': selectedDays.includes(index)}" @click="selectDay(index)">
-                                {{ day }}
+                    <div class="selectWorkTimeContainer"> 
+                        <div v-if="isAllDayCheck">
+                            <div class="selectWorkTime" v-for="(day, index) in days" :key="day">
+                                <div :class="{'selectWorkDay': true, 'selected': selectedDays.includes(index)}" @click="selectDay(index)">
+                                    {{ day }}
+                                </div>
+                                <div>
+                                    <input type="time"> ~ <input type="time">
+                                </div>
+                            </div>
+                            <!-- '점심' 시간 선택 -->
+                            <div class="selectWorkTime">
+                                <div class="selectWorkDay" @click="selectDay('lunch')" :class="{'selected': selectedDays.includes('lunch')}">
+                                    점심
+                                </div>
+                                <div>
+                                    <input type="time"> ~ <input type="time">
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="selectWorkTime">
+                            <div :class="{'selectWorkDay': true, 'selected': selectedDays.includes(0)}" @click="selectDay(0)">
+                                월
                             </div>
                             <div>
                                 <input type="time"> ~ <input type="time">
                             </div>
-                        </div>
-                    </div>
-                    <div v-else class="selectWorkTime">
-                        <div :class="{'selectWorkDay': true, 'selected': selectedDays.includes(0)}" @click="selectDay(0)">
-                            월
-                        </div>
-                        <div>
-                            <input type="time"> ~ <input type="time">
                         </div>
                     </div>
 
@@ -89,7 +100,7 @@
                     headerToolbar: {
                         start: "prev,next today",
                         center: "title",
-                        end: "dayGridMonth,dayGridWeek,dayGridDay"
+                        end: ""
                     },
                     editable: true, // 드래그 앤 드롭 및 크기 조정 활성화
                     contentHeight: 500,
@@ -104,11 +115,20 @@
         },
         methods: {
             selectDay(index) {
-                const selectedIndex = this.selectedDays.indexOf(index);
-                if (selectedIndex === -1) {
-                    this.selectedDays.push(index); // 선택 추가
+                if (index === 'lunch') {
+                    const selectedIndex = this.selectedDays.indexOf('lunch');
+                    if (selectedIndex === -1) {
+                        this.selectedDays.push('lunch'); // '점심' 선택 추가
+                    } else {
+                        this.selectedDays.splice(selectedIndex, 1); // '점심' 선택 취소
+                    }
                 } else {
-                    this.selectedDays.splice(selectedIndex, 1); // 선택 취소
+                    const selectedIndex = this.selectedDays.indexOf(index);
+                    if (selectedIndex === -1) {
+                        this.selectedDays.push(index); // 선택 추가
+                    } else {
+                        this.selectedDays.splice(selectedIndex, 1); // 선택 취소
+                    }
                 }
             }
         },

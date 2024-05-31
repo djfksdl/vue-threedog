@@ -43,6 +43,7 @@
 }
 .mheader .mheaderWrap .mheaderLeft .mlogo a img{
     width: 150px;
+    height: 80px;
     object-fit: contain;
 }
 .mheader .mheaderWrap .mheaderLeft .mMenu{

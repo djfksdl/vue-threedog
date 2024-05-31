@@ -5,7 +5,7 @@
             <div class="mheaderLeft">
                 <!-- 로고 -->
                 <div class="mlogo">
-                    <router-link v-bind:to="`/edit/${this.bNo}`"><img src="@/assets/images/logo2.png" alt=""></router-link>
+                    <router-link v-bind:to="`/edit/${this.bNo}`"><img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${shopInfo.logo }`"></router-link>
                 </div>
                 <!-- 메뉴(회원+원장) -->
                 <ul class="mMenu" v-if="this.$store.state.auth == null ">
@@ -17,6 +17,7 @@
                     <li><router-link to="/diary">알림창</router-link></li>
                     <li><router-link to="/schedule">예약스케쥴</router-link></li>
                     <li><router-link to="/totalsales">매출/통계</router-link></li>
+                    <li><router-link v-bind:to="`/inserttime/${this.bNo}`">운영시간등록</router-link></li>
                 </ul>
             </div>
             <!-- 헤더 오른쪽 로그인- 로그인 했을때(회원) -->
@@ -47,12 +48,17 @@
 
 <script>
 import "@/assets/css/headerFooter/mheader.css"
+import axios from 'axios';
+
 export default {
     name: "ManagerHeader",
     components: {},
     data() {
         return {
-            bNo: this.$route.params.bNo
+            bNo: this.$route.params.bNo,
+            shopInfo:{
+                logo:""
+            }
         };
     },
     methods: {
@@ -78,9 +84,32 @@ export default {
                 this.$router.push(`/mypage/${this.$store.state.authUser.uNo}`);
             }
 
+        },
+        //헤더 불러오기
+        getShopInfo(){
+            console.log("헤더 정보 불러오기");
+
+            axios({
+                method: 'get', // put, post, delete 
+                url: `${this.$store.state.apiBaseUrl}/api/su/shopInfo`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: {bNo: this.bNo}, //get방식 파라미터로 값이 전달
+                // data: this.userVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+                responseType: 'json' //수신타입
+            }).then(response => {
+
+                this.shopInfo = response.data.apiData.shopInfo;
+                console.log(this.shopInfo)
+             
+
+            }).catch(error => {
+                console.log(error);
+            });
         }
     },
-    created() { }
+    created() { 
+        this.getShopInfo();
+    }
 };
 </script>
 

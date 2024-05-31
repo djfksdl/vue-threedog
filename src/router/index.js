@@ -124,7 +124,7 @@ const routes = [
     component: SearchMap
   },
   {
-    path: '/inserttime',
+    path: '/inserttime/:bNo',
     name: 'insertTime',
     component: InsertTime
   },
