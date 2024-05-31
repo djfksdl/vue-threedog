@@ -85,6 +85,10 @@
                         <input class="diary-input" type="text" id="bath-dry" v-model="bathDry">
                     </div>
                     <div class="diary-info-rightitem">
+                        <label class="diary-label" for="curruntWeight">몸무게</label>
+                        <input class="diary-input" type="text" id="curruntWeight" v-model="curruntWeight">
+                    </div>
+                    <div class="diary-info-rightitem">
                         <label class="diary-label" for="note">전달사항</label>
                         <textarea class="diary-textarea" id="note" v-model="note"></textarea>
                     </div>
@@ -140,6 +144,10 @@
                             <td>{{ savedBathDry }}</td>
                         </tr>
                         <tr>
+                            <td>몸무게</td>
+                            <td>{{ curruntWeight }}</td>
+                        </tr>
+                        <tr>
                             <td>추가요금</td>
                             <td>{{ savedAdditionalFee?.price }}</td>
                         </tr>
@@ -190,6 +198,7 @@ export default {
             mattedArea: "", // 엉킨 부위
             dislikedArea: "", // 싫어했던 부위
             bathDry: "", // 목욕/드라이 정보
+            curruntWeight: "",//몸무게
             note: "", // 전달 사항
             showModal: false, // 모달 표시 여부
             savedDate: "", // 저장된 이용일
@@ -200,6 +209,7 @@ export default {
             savedMattedArea: "", // 저장된 엉킨 부위
             savedDislikedArea: "", // 저장된 싫어했던 부위
             savedBathDry: "", // 저장된 목욕/드라이 정보
+            savedcurruntWeight: "", // 몸무게
             selectedAdditionalFee: null, // 선택된 추가 요금
             savedNote: "", // 저장된 전달 사항
             attachedPhotos: [], // 첨부된 사진 파일들
@@ -226,8 +236,6 @@ export default {
     methods: {
 
         //-------------------- 알림장 화면----------------------------
-
-
         // 특정 예약의 미용 기록 조회
         selectGroomingRecord(rsNo) {
             axios({
@@ -253,46 +261,51 @@ export default {
             });
         },
 
-        //사진업로드
+
+
+        //-------------------- 사진사진----------------------------
+
+        // 사진 업로드를 처리하는 컨트롤러 메서드
         handleFileUploads(event) {
             const files = event.target.files;
+            if (!files || files.length === 0) {
+                console.error('선택된 파일이 없습니다.');
+                return;
+            }
+
+            // 로그 위치 변경: FormData 생성 전에 확인
+            console.log('업로드할 데이터:', files); // files 확인
+
             const formData = new FormData();
 
+            // 추가 필드들을 FormData에 추가
+            formData.append('rsNo', this.rsNo);
+            formData.append('petName', this.petName);
+            formData.append('groomingStyle', this.groomingStyle);
+            
             for (let i = 0; i < files.length; i++) {
                 formData.append('file', files[i]);
+
+                // 미리보기 URL을 생성하여 photoUrls 배열에 추가
+                const url = URL.createObjectURL(files[i]);
+                this.photoUrls.push(url);
+
+                // 업로드된 사진을 attachedPhotos 배열에 추가
+                this.attachedPhotos.push(files[i]);
             }
 
             if (!this.rsNo) {
                 console.error('rsNo 값이 없습니다.');
                 return;
             }
-
-            axios.post(`${this.$store.state.apiBaseUrl}/api/jw/${this.rsNo}/uploadimage`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            }).then(response => {
-                console.log('Response data:', response.data.apiData);
-                const newPhotoUrl = response.data.apiData.url;
-                // 업로드된 사진 URL을 추가합니다.
-                if (newPhotoUrl) {
-                    this.photoUrls.push(newPhotoUrl);
-                }
-                Swal.fire({
-                    title: '이미지 업로드 완료!',
-                    icon: 'success',
-                    confirmButtonText: '확인'
-                });
-            }).catch(error => {
-                console.error('Error uploading image:', error);
-            });
         },
-        
         // 사진 삭제 기능
         removePhoto(index) {
             this.photoUrls.splice(index, 1);
-            this.attachedPhotos.splice(index, 1);
+            // this.attachedPhotos.splice(index, 1); // attachedPhotos에서의 삭제는 필요하지 않을 수 있습니다.
         },
+
+        //-------------------- 금액금액----------------------------
 
         // 추가요금 선택
         selectAdditionalFee(item) {
@@ -304,51 +317,104 @@ export default {
             const additionalFee = parseFloat(this.selectedAdditionalFee?.price) || 0;
             return basePrice + additionalFee;
         },
+        // 모달 닫기
+        closeModal() {
+            this.showModal = false;
+        },
+        //-------------------- 모두 저장저장----------------------------
+        // 업데이트 및 사진 db에 저장
+        saveNotification() {
+            if (!this.rsNo) {
+                console.error('rsNo 값이 없습니다.');
+                return;
+            }
+            if (this.selectedSchedule) {
+                this.savedDate = this.formatDate(this.selectedSchedule.start);
+                this.savedTime = this.formatTime(this.selectedSchedule.start);
+                this.savedPetName = this.selectedSchedule.extendedProps.petName;
+                this.reserveVo.rsNo = this.rsNo; // rsNo 값을 설정
+            }
+            this.savedGroomingEtiquette = this.groomingEtiquette;
+            this.savedCondition = this.condition;
+            this.savedMattedArea = this.mattedArea;
+            this.savedDislikedArea = this.dislikedArea;
+            this.savedBathDry = this.bathDry;
+            this.savedcurruntWeight = this.curruntWeight;
+            this.savedAdditionalFee = this.selectedAdditionalFee;
+            this.savedNote = this.note;
+            this.savedAttachedPhotos = this.attachedPhotos.map(file => URL.createObjectURL(file));
+            this.showModal = true;
+
+            // FormData 생성
+            const formData = new FormData();
+            formData.append('rsNo', this.rsNo);
+            formData.append('groomingEtiquette', this.savedGroomingEtiquette);
+            formData.append('condition', this.savedCondition);
+            formData.append('mattedArea', this.savedMattedArea);
+            formData.append('dislikedArea', this.savedDislikedArea);
+            formData.append('bathDry', this.savedBathDry);
+            formData.append('bathDry', this.savedcurruntWeight);
+            formData.append('note', this.savedNote);
+            formData.append('additionalFees', JSON.stringify(this.savedAdditionalFee));
 
 
-        // 미용 기록 업데이트
-        updateGroomingRecord(rsNo, reserveVo) {
-            axios({
-                method: 'put',
-                url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/updategroomingrecord`,
-                headers: { "Content-Type": "application/json; charset=utf-8" },
-                data: reserveVo,
-                responseType: 'json'
-            }).then(response => {
-                console.log('Response data:', response.data.apiData); // 응답 데이터 확인
-                const data = response.data.apiData;
+            // 이미지 파일 추가
+            this.attachedPhotos.forEach(photo => {
+                formData.append('file', photo);
+            });
 
-                // 성공적으로 업데이트된 미용 기록을 처리합니다.
-                if (data) {
-                    this.groomingEtiquette = data.groomingEtiquette;
-                    this.condition = data.condition;
-                    this.mattedArea = data.mattedArea;
-                    this.dislikedArea = data.dislikedArea;
-                    this.bathDry = data.bathDry;
-                    this.note = data.note;
-                    this.additionalFees = data.additionalFees;
-                    this.photoUrls = data.photos || [];
-                    this.selectedAdditionalFee = data.selectedAdditionalFee;
-                }
 
+            // 미용 기록 업데이트 요청과 이미지 업로드 요청을 Promise.all로 동시에 실행
+            Promise.all([
+                this.updateGroomingRecord(this.rsNo, this.reserveVo),
+                this.uploadImages(this.rsNo)
+            ]).then(([groomingRecordResponse, imageUploadResponse]) => {
+                // 여기서 각각의 응답을 처리합니다.
+                console.log('Grooming Record Response:', groomingRecordResponse);
+                console.log('Image Upload Response:', imageUploadResponse);
+
+                // 두 요청 모두 성공했을 때 알림 표시
                 Swal.fire({
-                    title: '업데이트되었습니다!',
+                    title: '알림이 저장되었습니다!',
                     icon: 'success',
                     confirmButtonText: '확인'
                 }).then(() => {
                     this.$router.push({ name: 'reserve' });
                 });
-            }).catch(error => {
-                console.error('Error updating grooming record:', error);
+            }).catch(errors => {
+                // 하나 이상의 요청이 실패했을 때 에러 처리
+                console.error('Error saving notification:', errors);
             });
         },
 
-        // 모달 닫기
-        closeModal() {
-            this.showModal = false;
+        // 미용 기록 업데이트
+        updateGroomingRecord(rsNo, reserveVo) {
+            return axios({
+                method: 'put',
+                url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/updategroomingrecord`,
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                data: reserveVo,
+                responseType: 'json'
+            });
         },
 
-        // 알림 전송
+        // 이미지 업로드 관련 수정
+        uploadImages(rsNo) {
+            const formData = new FormData();
+            this.attachedPhotos.forEach(photo => {
+                formData.append('file', photo);
+            });
+
+            // FormData에 추가된 이미지 데이터 전송
+            return axios({
+                method: 'post',
+                url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/uploadimage`,
+                headers: { "Content-Type": "multipart/form-data" },
+                data: formData,
+                responseType: 'json'
+            });
+        },
+        // 보내기
         sendNotification() {
             axios({
                 method: 'put',
@@ -372,27 +438,8 @@ export default {
                 icon: 'success',
                 confirmButtonText: '확인'
             }).then(() => {
-                this.$router.push({ name: 'schedule' });
+                this.$router.push({ name: 'reserve' });
             });
-        },
-
-        // 알림 저장
-        saveNotification() {
-            if (this.selectedSchedule) {
-                this.savedDate = this.formatDate(this.selectedSchedule.start);
-                this.savedTime = this.formatTime(this.selectedSchedule.start);
-                this.savedPetName = this.selectedSchedule.extendedProps.petName;
-                this.reserveVo.rsNo = this.rsNo; // rsNo 값을 설정
-            }
-            this.savedGroomingEtiquette = this.groomingEtiquette;
-            this.savedCondition = this.condition;
-            this.savedMattedArea = this.mattedArea;
-            this.savedDislikedArea = this.dislikedArea;
-            this.savedBathDry = this.bathDry;
-            this.savedAdditionalFee = this.selectedAdditionalFee;
-            this.savedNote = this.note;
-            this.savedAttachedPhotos = this.attachedPhotos.map(file => URL.createObjectURL(file));
-            this.showModal = true;
         },
 
         // 카카오톡 알림 전송
