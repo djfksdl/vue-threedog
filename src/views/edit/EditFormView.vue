@@ -417,15 +417,17 @@ import { reactive, onMounted } from 'vue';
                     dName:"",
                     introduce:"",
                     dProfileFile:null,//프로파일 파일담을것
-                    dProfile:"",//프로파일 savaName
+                    dProfile:"",//프로파일 saveName
                     job:"",
                     slideImgs:[],//슬라이드이미지들 파일담을것
                     cutImgs:[],//컷이미지들 파일담을것
                     hiNo:""
                 },
                 priceList: this.initializePriceList(),
-                slideList:[],
-                cutList:[],
+                slideList:[],//슬라이드이미지들 saveName List + hiNo
+                cutList:[],//컷이미지들 saveName List   
+                delSlideHiNos:[], //슬라이드 이미지들 삭제 번호
+                delCutHiNos:[], //컷 이미지들 삭제 번호
 
                 action: ''
 
@@ -541,7 +543,8 @@ import { reactive, onMounted } from 'vue';
                     this.shopInfo = response.data.apiData.shopInfo||{} ; //title없으면 빈문자열로 설정
                    
                     this.priceList = response.data.apiData.pList.length ? response.data.apiData.pList :this.initializePriceList()  ;
-                    this.slideList = response.data.apiData.sList ;
+                    this.slideList = response.data.apiData.sList;
+                    // console.log(this.slideList);
                     this.cutList = response.data.apiData.cList;
                     
 
@@ -577,21 +580,84 @@ import { reactive, onMounted } from 'vue';
 
                 formData.append("bNo", this.bNo);
 
-                formData.append("logoFile", this.shopInfo.logoFile);
                 formData.append("title", this.shopInfo.title);
                 formData.append("subTitle", this.shopInfo.subTitle);
                 
-                this.shopInfo.slideImgs.forEach((img, index) => {
-                    formData.append(`slideImgs[${index}]`, img);
-                });
-                this.shopInfo.cutImgs.forEach((img, index) => {
-                    formData.append(`cutImgs[${index}]`, img);
-                });
-
                 formData.append("dName", this.shopInfo.dName);
                 formData.append("job", this.shopInfo.job);
                 formData.append("introduce", this.shopInfo.introduce);
-                formData.append("dProfileFile", this.shopInfo.dProfileFile);
+
+                // ********** 단일 이미지 파일 **********
+                //파일은 불러와도 허구의 정보이다. 실제 파일이 들어가는게 아니기떄문에 파일을 수정안하고 넣으려면 안들어갈경우를 따로 따져준다. 
+                if(this.shopInfo.logoFile !=null){
+                    formData.append("logoFile", this.shopInfo.logoFile);
+                }
+
+                if(this.shopInfo.dProfileFile!=null){
+                    formData.append("dProfileFile", this.shopInfo.dProfileFile);
+                }
+
+                // ********** 다수 이미지 파일 **********
+                // 초기화되지 않은 경우 빈 배열로 설정
+                if (!this.delSlideHiNos) {
+                    this.delSlideHiNos = [];
+                }
+
+                // 초기화되지 않은 경우 빈 배열로 설정
+                if (!this.shopInfo.slideImgs) {
+                    this.shopInfo.slideImgs = [];
+                }
+
+                // 초기화되지 않은 경우 빈 배열로 설정
+                if (!this.shopInfo.cutImgs) {
+                    this.shopInfo.cutImgs = [];
+                }
+
+                //삭제할 슬라이드 번호 배열 추가
+                if(this.delSlideHiNos.length ==0 ){
+                    console.log("아무것도 안넣기 슬라이드 삭제번호");
+                }else{
+                    this.delSlideHiNos.forEach(hiNo => {
+                        formData.append('delSlideHiNos[]', hiNo);
+                    });
+                    console.log("삭제 슬라이드 번호추가함");  
+                }
+                
+                //삭제할 슬라이드이미지 배열 추가
+                if(this.shopInfo.slideImgs.length != 0){
+                    
+                    this.shopInfo.slideImgs.forEach((img, index) => {
+                        formData.append(`slideImgs[${index}]`, img);
+                    });
+                    console.log("슬라이드 추가함");
+                    console.log(this.shopInfo.slideImgs);
+                }else{
+                    console.log("아무것도 안넣기 슬라이드");
+                }
+
+                //삭제할 컷이미지 번호 배열 추가
+                if(this.delCutHiNos.length ==0 ){
+                    console.log("아무것도 안넣기 컷 삭제번호");
+                }else{
+                    this.delCutHiNos.forEach(hiNo => {
+                        formData.append('delCutHiNos[]', hiNo);
+                    });
+                    console.log("삭제 컷 번호추가함");  
+                }
+
+                //삭제할 컷이미지 배열 추가
+                if(this.shopInfo.cutImgs.length != 0){
+                    
+                    this.shopInfo.cutImgs.forEach((img, index) => {
+                        formData.append(`cutImgs[${index}]`, img);
+                    });
+                    console.log("컷 추가함");
+                    console.log(this.shopInfo.cutImgs);
+                }else{
+                    console.log("아무것도 안넣기 컷");
+                }
+                
+               
 
                 // priceList의 각 항목을 개별적으로 추가
                 // for (let i = 0; i < this.priceList.length; i++) {
@@ -603,34 +669,37 @@ import { reactive, onMounted } from 'vue';
 
                 console.log("=====수정으로 보내기전 정보 담은거 확인=====");
 
+                console.log(formData.get("bNo"));
                 console.log(formData.get("logoFile"));
+                console.log(formData.get("title"));
                 console.log(formData.get("subTitle"));
                 console.log(formData.get("dName"));
                 console.log(formData.get("job"));
                 console.log(formData.get("introduce"));
                 console.log(formData.get("dProfileFile"));
+            
 
-                // axios({
+                axios({
                     
-                //     method: 'put', // put, post, delete 
-                //     url: `${this.$store.state.apiBaseUrl}/api/su/updateShop`,
-                //     headers: { "Content-Type": "multipart/form-data" }, //전송타입
-                //     data: formData, // formData로 묶어서 보낼떈 Json형태로 보내기 -> springboot에서 받을땐 modelattribute로 받음(formData의 예외다!)
-                //     responseType: 'json' //수신타입
-                // }).then(response => {
-                //     console.log(response.data.apiData);
+                    method: 'put', // put, post, delete 
+                    url: `${this.$store.state.apiBaseUrl}/api/su/updateShop`,
+                    headers: { "Content-Type": "multipart/form-data" }, //전송타입
+                    data: formData, // formData로 묶어서 보낼떈 Json형태로 보내기 -> springboot에서 받을땐 modelattribute로 받음(formData의 예외다!)
+                    responseType: 'json' //수신타입
+                }).then(response => {
+                    console.log(response.data.apiData);
 
-                //     // if (response.data.apiData == 1) {
-                //     //     alert("홈페이지가 성공적으로 만들어졌습니다.");
-                //     //     this.$router.push(`/edit/${this.bNo}`);
-                //     // } else {
-                //     //     alert("정보를 다시 확인해주세요.");
-                //     // }
+                    // if (response.data.apiData == 1) {
+                    //     alert("홈페이지가 성공적으로 만들어졌습니다.");
+                    //     this.$router.push(`/edit/${this.bNo}`);
+                    // } else {
+                    //     alert("정보를 다시 확인해주세요.");
+                    // }
                     
 
-                // }).catch(error => {
-                //     console.log(error);
-                // });
+                }).catch(error => {
+                    console.log(error);
+                });
 
             },
             // ==========가게 로고 1개 첨부파일==========
@@ -734,6 +803,20 @@ import { reactive, onMounted } from 'vue';
                     // 기존 로고 파일을 파일 입력 요소에 설정
                     var initialFile = new File([], self.shopInfo.logo); // 로고 파일 이름으로 빈 파일 생성
                     updateFileInput(initialFile);
+
+                    // 실제 파일을 클라이언트에 가져와서 FormData에 추가
+                    // 기본 데이터를 가진 파일 객체 생성
+                    // fetch(img.src)
+                    // .then(response => response.blob())
+                    // .then(blob => {
+                    //     const initialFile = new File([blob], self.shopInfo.logo, { type: blob.type });
+                    //     updateFileInput(initialFile);
+                    //     self.shopInfo.logoFile = initialFile; // 로고 파일을 할당
+                    // })
+                    // .catch(error => console.error('Error fetching the image:', error));
+
+                    
+
                 }
 
             },
@@ -821,21 +904,32 @@ import { reactive, onMounted } from 'vue';
 
                 //div생성 함수
                 function makeDiv(img, file) {
+                  
                     var div = document.createElement('div');
                     div.setAttribute('style', div_style);
 
                     var btn = document.createElement('input');
                     btn.setAttribute('type', 'button');
                     btn.setAttribute('value', 'x');
-                    btn.setAttribute('delFile', file.name);
+                    btn.setAttribute('delFile', file.saveName);
+                    btn.setAttribute('hino', file.hiNo);
                     btn.setAttribute('style', chk_style);
+
                     btn.onclick = function (ev) {
                         var ele = ev.srcElement;
                         var delFile = ele.getAttribute('delFile');
+                        var hiNo = ele.getAttribute('hino'); // hiNo 값 가져오기
+
+                        // 삭제한 이미지 파일 hiNo를 배열에 추가합니다.
+                        self.delSlideHiNos.push(hiNo);
+                        console.log(self.delSlideHiNos);
+
+                        //이미지 배열에서 삭제한 이미지를 제거
                         for (var i = 0; i < sel_files.length; i++) {
                             if (delFile == sel_files[i].name) {
                                 sel_files.splice(i, 1);
                             }
+                            
                         }
 
                         updateFileInput();
@@ -861,19 +955,16 @@ import { reactive, onMounted } from 'vue';
 
                 // 초기 이미지 설정
                 if (self.slideList && self.slideList.length > 0) {
-
-                    var initialFiles = [];
             
                     self.slideList.forEach(slide => {
                         let img = document.createElement('img');
                         img.setAttribute('style', img_style);
-                        img.src = `${this.$store.state.apiBaseUrl}/upload/${slide}`;
-                        attZone.appendChild(makeDiv(img, { name: slide }));
-                        initialFiles.push(new File([], slide)); // Placeholder file for the initial files
+                        img.src = `${this.$store.state.apiBaseUrl}/upload/${slide.saveName}`;
+                        img.setAttribute('hiNo', slide.hiNo );
+                        // console.log(slide.hiNo );
+                        // console.log(slide );
+                        attZone.appendChild(makeDiv(img, slide));
                     });
-                    sel_files = initialFiles;
-                    updateFileInput();
-                   
                 }
 
                 var alerted = false;
@@ -972,11 +1063,23 @@ import { reactive, onMounted } from 'vue';
                     var btn = document.createElement('input');
                     btn.setAttribute('type', 'button');
                     btn.setAttribute('value', 'x');
-                    btn.setAttribute('delFile', file.name);
+                    btn.setAttribute('delFile', file.saveName);
+                    btn.setAttribute('hino', file.hiNo);
+                    console.log("***")
+                    console.log(file)
+                    console.log(file.hiNo)
                     btn.setAttribute('style', chk_style);
+
                     btn.onclick = function (ev) {
                         var ele = ev.srcElement;
                         var delFile = ele.getAttribute('delFile');
+                        var hiNo = ele.getAttribute('hino'); // hiNo 값 가져오기
+
+                        // 삭제한 이미지 파일 hiNo를 배열에 추가합니다.
+                        self.delCutHiNos.push(hiNo);
+                        console.log(self.delCutHiNos);
+
+                         //이미지 배열에서 삭제한 이미지를 제거
                         for (var i = 0; i < sel_files.length; i++) {
                             if (delFile == sel_files[i].name) {
                                 sel_files.splice(i, 1);
@@ -1010,8 +1113,11 @@ import { reactive, onMounted } from 'vue';
                     self.cutList.forEach(slide => {
                         let img = document.createElement('img');
                         img.setAttribute('style', img_style);
-                        img.src = `${this.$store.state.apiBaseUrl}/upload/${slide}`;
-                        attZone.appendChild(makeDiv(img, { name: slide }));
+                        img.src = `${this.$store.state.apiBaseUrl}/upload/${slide.saveName}`;
+                        img.setAttribute('hiNo', slide.hiNo );
+                        console.log(slide.hiNo );
+                        // console.log(slide );
+                        attZone.appendChild(makeDiv(img, slide));
                         initialFiles.push(new File([], slide)); // Placeholder file for the initial files
                     });
                     sel_files = initialFiles;

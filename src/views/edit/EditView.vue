@@ -12,7 +12,7 @@
                 <Carousel :autoplay="5000" :wrap-around="true" :show-arrows="false" ref="carouselRef">
                     <Slide v-for="slide in slides" :key="slide">
                         <div class="img-slide">
-                            <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${slide }`">
+                            <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${slide.saveName }`">
                         </div>
                     </Slide>
                     <template #addons>
@@ -41,7 +41,7 @@
                             ref="carouselRef2">
                             <Slide v-for="(group, index) in chunkedSlides" :key="index">
                                 <div class="img-slide eCutSlide">
-                                    <img v-for="slide in group" :key="slide" :src="`${$store.state.apiBaseUrl}/upload/${slide}`">
+                                    <img v-for="slide in group" :key="slide" :src="`${$store.state.apiBaseUrl}/upload/${slide.saveName}`">
                                 </div>
                             </Slide>
                         </Carousel>
