@@ -64,7 +64,12 @@ const map = ref(null);
 const overlays = ref([]);
 
 
+window.closeOverlay = () => {
+  overlays.value.forEach(o => o.overlay.setMap(null));
+};
 
+
+// 사용자가 입력한 위치를 검색하여 지도에 표시하는 함수
 const searchLocation = async () => {
   try {
     const response = await axios.get(`https://nominatim.openstreetmap.org/search?format=json&q=${searchQuery.value}`);
@@ -83,6 +88,7 @@ const searchLocation = async () => {
   }
 };
 
+// 현재 지도 위치에 따른 가게 리스트를 가져오는 함수
 const getList = () => {
   console.log("검색 리스트");
 
@@ -112,6 +118,7 @@ const getList = () => {
   });
 };
 
+// route.query.location 값이 변경되면 실행되는 watch 함수
 watch(
   () => route.query.location,
   (newLocation) => {
@@ -123,6 +130,7 @@ watch(
   { immediate: true }
 );
 
+// 사용자의 현재 위치를 가져오는 함수
 const getCurrentLocation = () => {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -139,6 +147,7 @@ const getCurrentLocation = () => {
   }
 };
 
+// 위치 정보 가져오기 오류 처리 함수
 const handleLocationError = (error) => {
   switch (error.code) {
     case error.PERMISSION_DENIED:
@@ -156,11 +165,13 @@ const handleLocationError = (error) => {
   }
 };
 
+// 예약 날짜 변경 시 실행되는 함수
 const handleDateChange = (newDate) => {
   rsDate.value = newDate;
   getList();
 };
 
+// 서버에서 가져온 가게 리스트를 지도에 마커로 표시하는 함수
 const markList = () => {
   console.log("전체 가게 리스트");
 
@@ -173,17 +184,14 @@ const markList = () => {
     console.log("=========================");
     console.log(response.data.apiData);
     addList.value = response.data.apiData;
-    createMap();  // 마커를 지도에 추가하는 함수를 여기서 호출합니다.
+    createMap(); // 마커를 지도에 추가하는 함수를 여기서 호출합니다.
   }).catch(error => {
     console.log(error);
   });
 };
 
-
-
+// 지도를 생성하고 가게 마커를 추가하는 함수
 const createMap = () => {
-
-
   if (!window.kakao) {
     console.error("Kakao map library not loaded.");
     return;
@@ -241,23 +249,13 @@ const createMap = () => {
     });
 
 
-    
-    // function closeOverlay() {
-    //   overlay.setMap(null); 
-    // }
-
-
-
   });
 };
 
-
-
-
+// 컴포넌트가 마운트될 때 실행되는 함수
 onMounted(() => {
   getList();
   markList();
-
 });
 
 </script>
