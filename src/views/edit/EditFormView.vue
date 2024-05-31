@@ -645,7 +645,7 @@ import { reactive, onMounted } from 'vue';
                     console.log("삭제 컷 번호추가함");  
                 }
 
-                //삭제할 컷이미지 배열 추가
+                // 삭제할 컷이미지 배열 추가
                 if(this.shopInfo.cutImgs.length != 0){
                     
                     this.shopInfo.cutImgs.forEach((img, index) => {
@@ -659,13 +659,13 @@ import { reactive, onMounted } from 'vue';
                 
                
 
-                // priceList의 각 항목을 개별적으로 추가
-                // for (let i = 0; i < this.priceList.length; i++) {
-                //     formData.append(`priceList[${i}].onePrice`, this.priceList[i].onePrice);
-                //     formData.append(`priceList[${i}].beautyNo`, this.priceList[i].beautyNo);
-                //     console.log("여기 확인하기")
-                //     console.log(formData.get(`priceList[${i}].onePrice`) );
-                // }
+                // ********** priceList의 각 항목을 개별적으로 추가 **********
+                for (let i = 0; i < this.priceList.length; i++) {
+                    formData.append(`priceList[${i}].onePrice`, this.priceList[i].onePrice);
+                    formData.append(`priceList[${i}].beautyNo`, this.priceList[i].beautyNo);
+                    console.log("여기 확인하기")
+                    console.log(formData.get(`priceList[${i}].onePrice`) );
+                }
 
                 console.log("=====수정으로 보내기전 정보 담은거 확인=====");
 
@@ -1065,9 +1065,9 @@ import { reactive, onMounted } from 'vue';
                     btn.setAttribute('value', 'x');
                     btn.setAttribute('delFile', file.saveName);
                     btn.setAttribute('hino', file.hiNo);
-                    console.log("***")
-                    console.log(file)
-                    console.log(file.hiNo)
+                    // console.log("***")
+                    // console.log(file)
+                    // console.log(file.hiNo)
                     btn.setAttribute('style', chk_style);
 
                     btn.onclick = function (ev) {
@@ -1115,7 +1115,7 @@ import { reactive, onMounted } from 'vue';
                         img.setAttribute('style', img_style);
                         img.src = `${this.$store.state.apiBaseUrl}/upload/${slide.saveName}`;
                         img.setAttribute('hiNo', slide.hiNo );
-                        console.log(slide.hiNo );
+                        // console.log(slide.hiNo );
                         // console.log(slide );
                         attZone.appendChild(makeDiv(img, slide));
                         initialFiles.push(new File([], slide)); // Placeholder file for the initial files
@@ -1231,12 +1231,12 @@ import { reactive, onMounted } from 'vue';
         },
         mounted() {
             // const self = this; // imageLoader 함수 내부에서 this가 Vue 인스턴스를 참조하지 않기 때문에 this를 따로 할당해준다.
-            // ==========가게 로고 1개 첨부파일========== 이거 주석처리하면 처음등록할때 드래그앤드롭,미리보기가 안됨
+            // ==========가게 로고 1개 첨부파일========== 이거 주석처리하면 처음등록할때 드래그앤드롭,미리보기가 안됨(단일이미지는 해주기)
             this.logoImagsView('att_zone4', 'btnAtt4');
             
             
             // ==========이미지 슬라이드 5개 첨부파일==========
-            // this.slideImgsView('att_zone', 'btnAtt');
+            // this.slideImgsView('att_zone', 'btnAtt'); 이거 주석처리 해제하면 드래그가 2번됨.
 
             // ==========미용컷 20개 첨부파일==========
             // this.CutimgsView('att_zone2', 'btnAtt2');
