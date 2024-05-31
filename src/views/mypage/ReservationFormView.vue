@@ -26,13 +26,13 @@
                     </div>
 
                 </div>
-                <form>
+                <form v-on:submit.prevent="reserveInsert" enctype="multipart/form-data">
                     <h2>📅 날짜와 시간을 선택해주세요</h2>
                     <div class="choiceBox">
                         <div class="calendar">
-                            <Datepicker />
+                            <Datepicker @selectedDate="handleSelectedDateTime" @selectedTime="handleSelectedDateTime" />
                         </div>
-                        
+
                         <!-- v-bind:key="i" v-for="(reserveVo, i) in reserveList" -->
                     </div>
                     <div class="reservationBox">
@@ -124,15 +124,21 @@
                                     <tbody v-for="(priceVo, i) in priceList" :key="i">
                                         <tr v-if="i % 5 == 0">
                                             <th>{{ priceVo.weightDiv }}</th>
-                                            <td @click="addPrice(priceVo.onePrice, i)">{{ priceVo.onePrice }}</td>
-                                            <td @click="addPrice(priceList[i + 1]?.onePrice, i + 1)">{{ priceList[i +
-                                1]?.onePrice }}</td>
-                                            <td @click="addPrice(priceList[i + 2]?.onePrice, i + 2)">{{ priceList[i +
-                                2]?.onePrice }}</td>
-                                            <td @click="addPrice(priceList[i + 3]?.onePrice, i + 3)">{{ priceList[i +
-                                3]?.onePrice }}</td>
-                                            <td @click="addPrice(priceList[i + 4]?.onePrice, i + 4)">{{ priceList[i +
-                                4]?.onePrice }}</td>
+                                            <td :class="{ selected: selectedPriceIndex == i }"
+                                                @click="addPrice(priceVo.onePrice, i)">{{
+                                priceVo.onePrice.toLocaleString() }}</td>
+                                            <td :class="{ selected: selectedPriceIndex == i + 1 }"
+                                                @click="addPrice(priceList[i + 1]?.onePrice, i + 1)">{{ priceList[i +
+                                1]?.onePrice.toLocaleString() }}</td>
+                                            <td :class="{ selected: selectedPriceIndex == i + 2 }"
+                                                @click="addPrice(priceList[i + 2]?.onePrice, i + 2)">{{ priceList[i +
+                                2]?.onePrice.toLocaleString() }}</td>
+                                            <td :class="{ selected: selectedPriceIndex == i + 3 }"
+                                                @click="addPrice(priceList[i + 3]?.onePrice, i + 3)">{{ priceList[i +
+                                3]?.onePrice.toLocaleString() }}</td>
+                                            <td :class="{ selected: selectedPriceIndex == i + 4 }"
+                                                @click="addPrice(priceList[i + 4]?.onePrice, i + 4)">{{ priceList[i +
+                                4]?.onePrice.toLocaleString() }}</td>
                                         </tr>
                                     </tbody>
 
@@ -155,17 +161,24 @@
                                     <tbody v-for="(priceVo, i) in priceList" :key="i">
                                         <tr v-if="i % 6 == 0">
                                             <th>{{ priceVo.weightDiv }}</th>
-                                            <td @click="addPrice(priceVo.onePrice)">{{ priceVo.onePrice }}</td>
-                                            <td @click="addPrice(priceList[i + 1]?.onePrice)">{{ priceList[i +
-                                1]?.onePrice }}</td>
-                                            <td @click="addPrice(priceList[i + 2]?.onePrice)">{{ priceList[i +
-                                2]?.onePrice }}</td>
-                                            <td @click="addPrice(priceList[i + 3]?.onePrice)">{{ priceList[i +
-                                3]?.onePrice }}</td>
-                                            <td @click="addPrice(priceList[i + 4]?.onePrice)">{{ priceList[i +
-                                4]?.onePrice }}</td>
-                                            <td @click="addPrice(priceList[i + 5]?.onePrice)">{{ priceList[i +
-                                5]?.onePrice }}</td>
+                                            <td :class="{ selected: selectedPriceIndex == i }"
+                                                @click="addPrice(priceVo.onePrice)">{{ priceVo.onePrice.toLocaleString()
+                                                }}</td>
+                                            <td :class="{ selected: selectedPriceIndex == i + 1 }"
+                                                @click="addPrice(priceList[i + 1]?.onePrice)">{{ priceList[i +
+                                1]?.onePrice.toLocaleString() }}</td>
+                                            <td :class="{ selected: selectedPriceIndex == i + 2 }"
+                                                @click="addPrice(priceList[i + 2]?.onePrice)">{{ priceList[i +
+                                2]?.onePrice.toLocaleString() }}</td>
+                                            <td :class="{ selected: selectedPriceIndex == i + 3 }"
+                                                @click="addPrice(priceList[i + 3]?.onePrice)">{{ priceList[i +
+                                3]?.onePrice.toLocaleString() }}</td>
+                                            <td :class="{ selected: selectedPriceIndex == i + 4 }"
+                                                @click="addPrice(priceList[i + 4]?.onePrice)">{{ priceList[i +
+                                4]?.onePrice.toLocaleString() }}</td>
+                                            <td :class="{ selected: selectedPriceIndex == i + 5 }"
+                                                @click="addPrice(priceList[i + 5]?.onePrice)">{{ priceList[i +
+                                5]?.onePrice.toLocaleString() }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -180,14 +193,15 @@
                                     <tr v-for="(priceList2, i) in priceList2" :key="i">
                                         <th>{{ priceList2.beauty }}</th>
                                         <td :class="{ 'selected': priceList2.selected }"
-                                            @click="toggleSelected(priceList2)">{{ priceList2.onePrice }}</td>
+                                            @click="toggleSelected(priceList2)">{{ priceList2.onePrice.toLocaleString()
+                                            }}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
 
                         <div class="expectPrice">
-                            <p>예상가격 {{ this.reserveVo.expectedPrice.toLocaleString() }}원</p>
+                            <p>예상가격 {{ (this.reserveVo.expectedPrice - this.usePoint).toLocaleString() }}원</p>
                         </div>
 
                         <div class="point">
@@ -244,10 +258,10 @@
                             </button>
                         </div>
                     </div>
+                    <div class="subBtn">
+                        <button class="reserveInsert" type="submit">예약</button>
+                    </div>
                 </form>
-                <div class="subBtn">
-                    <button type="submit">예약</button>
-                </div>
             </div>
         </div>
 
@@ -271,6 +285,7 @@ import TopButton from "@/components/TopButton.vue"
 
 
 
+
 export default {
     name: "ReservationFormView",
     components: {
@@ -284,7 +299,7 @@ export default {
     },
     data() {
         return {
-           
+            selectedPriceIndex: null,
 
             reserveList: [],
             // 고객
@@ -348,12 +363,12 @@ export default {
             usePoint: 0,
             paymentMethods: ['휴대폰', '무통장입금'], // 사용 가능한 결제 방법
             selectedPayment: null, // 선택된 결제 방법 인덱스
+
         };
     },
 
 
     methods: {
-
 
         //가게정보
         getBList() {
@@ -377,7 +392,14 @@ export default {
             });
         },
 
-       
+        // 날짜 시간
+        handleSelectedDateTime(selected) {
+            // 선택한 날짜와 시간 데이터를 받아서 처리합니다.
+            console.log("과연?????????????????????/");
+            console.log('선택한 날짜:', selected.newDate);
+            console.log('선택한 시간:', selected.time);
+        },
+
 
         // 반려견선택
         getPetList() {
@@ -396,6 +418,9 @@ export default {
 
                 this.dogList = response.data.apiData;
 
+                // 초기화
+                this.addPrice();
+                this.reserveVo.expectedPrice = 0;
             }).catch(error => {
                 console.log(error);
             });
@@ -417,9 +442,12 @@ export default {
                 console.log("성공");
                 console.log(response.data.apiData); //수신데이타
                 this.dogVo = response.data.apiData;
+
+                // 초기화
                 this.getPrice();
                 this.getPlusPrice();
                 this.reserveVo.expectedPrice = 0;
+
             }).catch(error => {
                 console.log(error);
             });
@@ -480,7 +508,7 @@ export default {
             });
         },
 
-        // 추가요금 버튼
+        // 추가요금 가격표
         toggleSelected(priceList2) {
             priceList2.selected = !priceList2.selected; // 상태를 토글합니다
             if (priceList2.selected) {
@@ -493,20 +521,64 @@ export default {
         },
 
         // 예상가격
-        addPrice(price) {
+        addPrice(price, index) {
             console.log("가격예상클릭");
+            console.log("선택한 가격:", price);
+            console.log("선택한 가격의 인덱스:", index);
+
+
+            // 선택한 td의 열 인덱스 계산
+            const colIndex = event.target.cellIndex;
+
+            // table 요소 가져오기
+            const table = event.target.closest('table');
+
+            // 선택된 td와 동일한 열에 있는 thead의 th 요소 가져오기
+            const theadTh = table.querySelector('thead th:nth-child(' + (colIndex + 1) + ')');
+
+            // 선택된 td의 열에 있는 thead의 th의 내용 가져오기
+            const firstThValue = theadTh.textContent;
+
+            console.log("선택한 td의 전체 세로의 첫번째 th 값:", firstThValue);
+
+
+
+            // 선택한 행의 인덱스 계산
+            const rowIndex = Math.floor(index / 5) * 5;
+
+            // 선택한 행의 첫 번째 열의 th 값
+            const thValue = this.priceList[rowIndex].weightDiv;
+
+            console.log("선택한 행의 첫 번째 열의 th 값:", thValue);
+
+            // 선택한 열의 첫 번째 값
+            const firstCellValue = this.priceList[rowIndex].onePrice;
+
+            // 선택한 행의 값
+            const rowValues = this.priceList.slice(rowIndex, rowIndex + 5).map(item => item.onePrice);
+
+            console.log("선택한 열의 첫 번째 값:", firstCellValue);
+            console.log("선택한 행의 값:", rowValues);
+
             this.reserveVo.expectedPrice = price;
             console.log(this.reserveVo.expectedPrice);
-            this.selectedCell = price !== undefined ? price : null;
+            this.selectedPriceIndex = index; // 클릭된 셀의 인덱스를 설정
+            console.log(this.selectedPriceIndex);
+
+            // priceVo에 담기
+            this.priceVo.onePrice = price;
+            this.priceVo.weightDiv = thValue;
+            this.priceVo.beauty = firstThValue;
 
             // priceList2 배열의 모든 요소의 selected 속성을 초기화
             this.priceList2.forEach(item => {
                 item.selected = false;
             });
-
         },
 
-        // 포인트버튼
+
+
+        // 포인트 전액사용 버튼
         useAllPoint() {
             this.usePoint = this.uPoint;
         },
@@ -534,7 +606,21 @@ export default {
         togglePayment(index) {
             // 이미 선택된 결제 방법이라면 선택 취소하고, 아니라면 선택합니다.
             this.selectedPayment = this.selectedPayment === index ? null : index;
+        },
+
+
+        // 예약하기
+        reserveInsert() {
+            console.log("예약하기");
+            // console.log("날짜:", date, "시간:", rtTime);
+            console.log("펫", this.dogVo.dogNo, ":", this.dogVo.dogName);
+            console.log("피부병 : ", this.dogVo.skin, "심장질환 : ", this.dogVo.heart, "마킹 : ", this.dogVo.marking, "마운팅 : ", this.dogVo.mounting);
+            console.log("입질정도 : ", this.dogVo.bite);
+            console.log("기타사항 : ", this.dogVo.memo);
+            console.log("미용목록", this.priceVo.beauty, "가격", this.priceVo.onePrice, "몸무게구분", this.priceVo.weightDiv);
+
         }
+
 
     },
 
@@ -558,7 +644,7 @@ export default {
 </script>
 
 <style>
-#reservationForm .selected {
+.selected {
     background-color: #236C3F !important;
     color: #ffffff !important;
 }

@@ -8,7 +8,7 @@
       <!-- {{ currentDate }} -->
       <!-- <p>오전</p>
       <p>오후</p> -->
-      <p>시간선택~~~~</p>
+      <p>시간선택</p>
       <div v-if="reserveList.length > 0">
         <div v-for="time in reserveList" :key="time" style="display: inline-block;">
           <button type="button" :class="{ selected: isSelected(time.rtTime), disabled: time.rtFinish }"
@@ -23,6 +23,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import { defineEmits } from 'vue';
 import { useStore } from 'vuex';
 import axios from 'axios';
 import Datepicker from '@vuepic/vue-datepicker';
@@ -42,22 +43,7 @@ const reserveTime = ref({
 
 const reserveList = ref([]);
 
-// // 현재 날짜를 업데이트하는 함수
-// const getCurrentDate = () => {
-//   const now = new Date();
-//   const year = now.getFullYear();
-//   const month = String(now.getMonth() + 1).padStart(2, '0');
-//   const day = String(now.getDate()).padStart(2, '0');
-//   return `${year}-${month}-${day}`;
-// };
-
-// // 초기에 현재 날짜 설정
-// let currentDate = getCurrentDate();
-
-// // 현재 날짜를 실시간으로 업데이트하기 위해 1일마다 getCurrentDate 함수를 호출하여 currentDate 변수 업데이트
-// setInterval(() => {
-//   currentDate = getCurrentDate();
-// }, 86400000); // 1일은 86400000밀리초입니다.
+const emit=defineEmits(['selectedDate','selectedTime']);
 
 // Datepicker에서 날짜가 변경될 때 실행되는 함수
 const onDateChange = (newDate) => {
@@ -77,6 +63,7 @@ const onDateChange = (newDate) => {
         console.log(response.data.apiData);
         reserveList.value = response.data.apiData;
         console.log(reserveList.value);
+        emit('selectedDate',reserveTime.value.rtDate);
       })
       .catch(error => {
         console.log(error);
@@ -100,18 +87,20 @@ const formatTime = (timeString) => {
 
 // 시간 선택 함수
 const toggleTime = (time) => {
-  console.log(time);
   if (reserveTime.value.rtTime === time) {
     reserveTime.value.rtTime = '';  // 선택 해제 (빈 문자열 할당)
   } else {
     reserveTime.value.rtTime = time;  // 시간 선택
+    console.log(reserveTime.value.rtDate);
+    console.log(time);
+    emit('selectedTime',time);
   }
+
 };
 
 const isSelected = (time) => {
   return reserveTime.value.rtTime === time;
 };
-
 
 </script>
 
@@ -125,6 +114,7 @@ const isSelected = (time) => {
   background-color: gray;
   color: gray;
   pointer-events: none;
+  border: 1px solid red;
 }
 
 #reservationFormDatePicker .dp__theme_light {
