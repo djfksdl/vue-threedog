@@ -10,14 +10,12 @@
       <p>오후</p> -->
       <p>시간선택</p>
       <div v-for="time in reserveList" :key="time" style="display: inline-block;">
-          <button type="button"
-                  :class="{ selected: isSelected(time.rtTime), disabled: time.rtFinish }"
-                  @click="toggleTime(time.rtTime)"
-                  :disabled="time.rtFinish">
-            {{ formatTime(time.rtTime) }}
-          </button>
-          <!-- {{time.rtNo}} -->
-        </div>
+        <button type="button" :class="{ selected: isSelected(time.rtTime), disabled: time.rtFinish }"
+          @click="toggleTime(time)" :disabled="time.rtFinish">
+          {{ formatTime(time.rtTime) }}
+        </button>
+        <!-- {{ time.rtNo }} -->
+      </div>
     </div>
   </div>
 </template>
@@ -44,7 +42,7 @@ const reserveTime = ref({
 
 const reserveList = ref([]);
 
-const emit=defineEmits(['selectedDateTime']);
+const emit = defineEmits(['selectedDateTime']);
 
 // Datepicker에서 날짜가 변경될 때 실행되는 함수
 const onDateChange = (newDate) => {
@@ -90,11 +88,21 @@ const formatTime = (timeString) => {
 const toggleTime = (time) => {
   if (reserveTime.value.rtTime === time) {
     reserveTime.value.rtTime = '';  // 선택 해제 (빈 문자열 할당)
+    reserveTime.value.rtNo = 0;
   } else {
-    reserveTime.value.rtTime = time;  // 시간 선택
+    reserveTime.value.rtTime = time.rtTime;  // 시간 선택
+    reserveTime.value.rtNo = time.rtNo;      // rtNo 설정
+    reserveTime.value.rtFinish = time.rtFinish;
     console.log(reserveTime.value.rtDate);
     console.log(time);
-    emit('selectedDateTime', { newDate: reserveTime.value.rtDate, time:time} );
+    console.log(reserveTime.value.rtNo);
+    console.log(reserveTime.value.rtFinish);
+
+    //부모한테 데이터전달
+    emit('selectedDateTime', {
+      newDate: reserveTime.value.rtDate, time: time.rtTime, rtNo: reserveTime.value.rtNo,
+      rtFinish: reserveTime.value.rtFinish
+    });
   }
 
 };

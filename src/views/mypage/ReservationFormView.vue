@@ -361,7 +361,8 @@ export default {
                 surcharge: 0,
                 message: "",
                 curruntWeight: 0,
-                rtNo:0,
+                rtNo: 0,
+                rtFinish: false,
             },
             // 사업자
             businessVo: {
@@ -443,10 +444,10 @@ export default {
             console.log("과연?????????????????????");
             console.log('선택한 날짜:', selected.newDate);
             console.log('선택한 시간:', selected.time);
-            // console.log('선택한 시간번호',selected.rtNo);
+            console.log('선택한 시간 rtNo:', selected.rtNo);
             this.reserveVo.rtDate = selected.newDate;
             this.reserveVo.rtTime = selected.time;
-            // this.reserveVo.rtNo=selected.rtNo;
+            this.reserveVo.rtNo = selected.rtNo;
         },
 
 
@@ -735,6 +736,7 @@ export default {
                 formData.append('skin', this.dogVo.skin);
                 formData.append('heart', this.dogVo.heart);
                 formData.append('marking', this.dogVo.marking);
+                formData.append('mounting', this.dogVo.mounting);
                 formData.append('bite', this.dogVo.bite);
                 formData.append('memo', this.dogVo.memo);
                 formData.append('beauty', this.priceVo.beauty);
@@ -743,14 +745,13 @@ export default {
                 formData.append('expectedPrice', this.reserveVo.expectedPrice);
                 formData.append('usePoint', this.usePoint);
                 formData.append('bNo', this.reserveVo.bNo);
-                formData.append('uNo',this.dogVo.uNo);
+                formData.append('uNo', this.dogVo.uNo);
+                formData.append('expectedPrice', this.reserveVo.expectedPrice);
                 formData.append('rtNo', this.reserveVo.rtNo);
-                formData.append('expectedPrice',this.reserveVo.expectedPrice);
-                formData.append('mounting', this.reserveVo.mounting);
-                formData.append('onePirce',this.priveVo.onePirce);
+                formData.append('rtFinish', this.reserveVo.rtFinish);
 
                 this.priceVo.beauty2.forEach((item, index) => {
-                formData.append(`beautyPlus[${index}]`, item);
+                    formData.append(`beautyPlus[${index}]`, item);
                 });
 
                 axios({
@@ -814,6 +815,7 @@ export default {
     background-color: #236C3F !important;
     color: #ffffff !important;
 }
+
 canvas {
     border: 1px solid #a7a4a4;
     width: 620px;
