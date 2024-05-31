@@ -52,8 +52,6 @@
                                 <input class="diary-input" type="file" id="grooming-photo" accept="image/*"
                                     @change="handleFileUploads($event)" multiple>
 
-
-
                                 <!-- 업로드된 사진 미리보기 -->
                                 <div v-for="(url, index) in photoUrls" :key="index" class="diary-image-preview">
                                     <img :src="url" alt="미용 사진">
@@ -213,25 +211,106 @@ export default {
             },
         };
     },
+
     mounted() {
-        // 다이어리 화면으로 이동할 때 선택된 일정 데이터와 rsNo 값을 가져옴
-        this.selectedEvent = this.$route.params.event;
-        // rsNo 값을 가져옴
-        if (this.selectedEvent && this.selectedEvent.extendedProps) {
-            this.rsNo = this.selectedEvent.extendedProps.rsNo;
-        } else {
-            // selectedEvent 또는 extendedProps가 정의되지 않았을 때 예외 처리
-            console.error('selectedEvent or extendedProps is not defined.');
+        // Vuex 스토어에서 rsNo 값을 가져옴
+        const rsNo = this.$store.state.selectedSchedule ? this.$store.state.selectedSchedule.extendedProps.rsNo : null;
+
+        // rsNo 값이 있는 경우 미용 기록 조회
+        if (rsNo) {
+            this.rsNo = rsNo; // rsNo 값을 설정
+            this.selectGroomingRecord(rsNo);
         }
     },
 
-
     methods: {
+
+        //-------------------- 알림장 화면----------------------------
+
+
+        // 특정 예약의 미용 기록 조회
+        selectGroomingRecord(rsNo) {
+            axios({
+                method: 'get',
+                url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/groomingrecord`,
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                responseType: 'json'
+            }).then(response => {
+                console.log('응답 데이터:', response.data.apiData); // 응답 데이터 확인
+                const groomingRecord = response.data.apiData;
+
+                // 미용 기록이 없는 경우에 대한 처리
+                if (!groomingRecord) {
+                    console.warn('미용 기록을 찾을 수 없습니다.');
+                    return;
+                }
+
+                // Vuex에 데이터 업데이트
+                this.$store.commit("setGroomingRecord", groomingRecord);
+
+            }).catch(error => {
+                console.error('미용 기록 조회 중 오류 발생:', error);
+            });
+        },
+
+        //사진업로드
+        handleFileUploads(event) {
+            const files = event.target.files;
+            const formData = new FormData();
+
+            for (let i = 0; i < files.length; i++) {
+                formData.append('file', files[i]);
+            }
+
+            if (!this.rsNo) {
+                console.error('rsNo 값이 없습니다.');
+                return;
+            }
+
+            axios.post(`${this.$store.state.apiBaseUrl}/api/jw/${this.rsNo}/uploadimage`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(response => {
+                console.log('Response data:', response.data.apiData);
+                const newPhotoUrl = response.data.apiData.url;
+                // 업로드된 사진 URL을 추가합니다.
+                if (newPhotoUrl) {
+                    this.photoUrls.push(newPhotoUrl);
+                }
+                Swal.fire({
+                    title: '이미지 업로드 완료!',
+                    icon: 'success',
+                    confirmButtonText: '확인'
+                });
+            }).catch(error => {
+                console.error('Error uploading image:', error);
+            });
+        },
+        
+        // 사진 삭제 기능
+        removePhoto(index) {
+            this.photoUrls.splice(index, 1);
+            this.attachedPhotos.splice(index, 1);
+        },
+
+        // 추가요금 선택
+        selectAdditionalFee(item) {
+            this.selectedAdditionalFee = item;
+        },
+        // 총 금액 계산
+        calculateTotalAmount() {
+            const basePrice = parseFloat(this.selectedSchedule.extendedProps.price) || 0;
+            const additionalFee = parseFloat(this.selectedAdditionalFee?.price) || 0;
+            return basePrice + additionalFee;
+        },
+
+
         // 미용 기록 업데이트
         updateGroomingRecord(rsNo, reserveVo) {
             axios({
                 method: 'put',
-                url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/groomingrecord`,
+                url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/updategroomingrecord`,
                 headers: { "Content-Type": "application/json; charset=utf-8" },
                 data: reserveVo,
                 responseType: 'json'
@@ -257,91 +336,18 @@ export default {
                     icon: 'success',
                     confirmButtonText: '확인'
                 }).then(() => {
-                    this.$router.push({ name: 'schedule' });
+                    this.$router.push({ name: 'reserve' });
                 });
             }).catch(error => {
                 console.error('Error updating grooming record:', error);
             });
         },
-        // 사진 업로드
-        uploadImage(file) {
-            const formData = new FormData();
-            formData.append('file', file);
-            axios({
-                method: 'post',
-                // rsNo 값을 URL에 추가
-                url: `${this.$store.state.apiBaseUrl}/api/jw/${this.rsNo}/uploadimage`,
-                headers: { "Content-Type": "multipart/form-data" },
-                data: formData,
-                responseType: 'json'
-            }).then(response => {
-                console.log('Response data:', response.data.apiData);
-                const newPhotoUrl = response.data.apiData.url;
-                // 업로드된 사진 URL을 추가합니다.
-                if (newPhotoUrl) {
-                    this.photoUrls.push(newPhotoUrl);
-                }
-                Swal.fire({
-                    title: '이미지 업로드 완료!',
-                    icon: 'success',
-                    confirmButtonText: '확인'
-                });
-            }).catch(error => {
-                console.error('Error uploading image:', error);
-            });
-        },
-        // 알림 저장
-        saveNotification() {
-            if (this.selectedSchedule) {
-                this.savedDate = this.formatDate(this.selectedSchedule.start);
-                this.savedTime = this.formatTime(this.selectedSchedule.start);
-                this.savedPetName = this.selectedSchedule.extendedProps.petName;
-                this.reserveVo.rsNo = this.rsNo; // rsNo 값을 설정
-            }
-            this.savedGroomingEtiquette = this.groomingEtiquette;
-            this.savedCondition = this.condition;
-            this.savedMattedArea = this.mattedArea;
-            this.savedDislikedArea = this.dislikedArea;
-            this.savedBathDry = this.bathDry;
-            this.savedAdditionalFee = this.selectedAdditionalFee;
-            this.savedNote = this.note;
-            this.savedAttachedPhotos = this.attachedPhotos.map(file => URL.createObjectURL(file));
-            this.showModal = true;
-        },
-        // 파일 업로드 처리
-        handleFileUploads(event) {
-            const files = event.target.files;
-            for (let i = 0; i < files.length; i++) {
-                const reader = new FileReader();
-                reader.readAsDataURL(files[i]);
-                reader.onload = () => {
-                    this.photoUrls.push(reader.result);
-                };
-            }
-            this.attachedPhotos = [...this.attachedPhotos, ...Array.from(files)];
-        },
-        // 사진 삭제 기능
-        removePhoto(index) {
-            this.photoUrls.splice(index, 1);
-            this.attachedPhotos.splice(index, 1);
-        },
-
-        // 추가요금 선택
-        selectAdditionalFee(item) {
-            this.selectedAdditionalFee = item;
-        },
-        // 총 금액 계산
-        calculateTotalAmount() {
-            const basePrice = parseFloat(this.selectedSchedule.extendedProps.price) || 0;
-            const additionalFee = parseFloat(this.selectedAdditionalFee?.price) || 0;
-            return basePrice + additionalFee;
-        },
-
 
         // 모달 닫기
         closeModal() {
             this.showModal = false;
         },
+
         // 알림 전송
         sendNotification() {
             axios({
@@ -369,6 +375,26 @@ export default {
                 this.$router.push({ name: 'schedule' });
             });
         },
+
+        // 알림 저장
+        saveNotification() {
+            if (this.selectedSchedule) {
+                this.savedDate = this.formatDate(this.selectedSchedule.start);
+                this.savedTime = this.formatTime(this.selectedSchedule.start);
+                this.savedPetName = this.selectedSchedule.extendedProps.petName;
+                this.reserveVo.rsNo = this.rsNo; // rsNo 값을 설정
+            }
+            this.savedGroomingEtiquette = this.groomingEtiquette;
+            this.savedCondition = this.condition;
+            this.savedMattedArea = this.mattedArea;
+            this.savedDislikedArea = this.dislikedArea;
+            this.savedBathDry = this.bathDry;
+            this.savedAdditionalFee = this.selectedAdditionalFee;
+            this.savedNote = this.note;
+            this.savedAttachedPhotos = this.attachedPhotos.map(file => URL.createObjectURL(file));
+            this.showModal = true;
+        },
+
         // 카카오톡 알림 전송
         kakaosendNotification() {
             Swal.fire({
@@ -404,6 +430,8 @@ export default {
             this.date = newValue;
         }
     },
+
+
 
 };
 </script>

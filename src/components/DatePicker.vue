@@ -1,27 +1,122 @@
 <template>
   <div id="reservationFormDatePicker">
-    <Datepicker locale="ko" v-model="date" format="yyyy-MM-dd" :enable-time-picker="false" :inline="true"
-      :min-date="minDate" @update:model-value="onDateChange" />
+    <div>
+      <Datepicker locale="ko" v-model="date" format="yyyy-MM-dd" :enable-time-picker="false" :inline="true"
+        :min-date="minDate" @update:model-value="onDateChange" />
+    </div>
+    <div class="time">
+      <!-- {{ currentDate }} -->
+      <!-- <p>오전</p>
+      <p>오후</p> -->
+      <p>시간선택</p>
+      <div v-if="reserveList.length > 0">
+        <div v-for="time in reserveList" :key="time" style="display: inline-block;">
+          <button type="button" :class="{ selected: isSelected(time.rtTime), disabled: time.rtFinish }"
+            @click="toggleTime(time.rtTime)">
+            {{ formatTime(time.rtTime) }}
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import { defineEmits } from 'vue';
+import { useStore } from 'vuex';
+import axios from 'axios';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 
+const store = useStore();
 const date = ref(new Date());
 const minDate = ref(new Date());
 
+const reserveTime = ref({
+  rtNo: 0,
+  bNo: 1,
+  rtDate: "",
+  rtTime: "",
+  rtFinish: false,
+});
+
+const reserveList = ref([]);
+
+const emit=defineEmits(['selectedDate','selectedTime']);
+
+// Datepicker에서 날짜가 변경될 때 실행되는 함수
 const onDateChange = (newDate) => {
   if (newDate) {
     const formattedDate = newDate.toISOString().split('T')[0];
-    console.log('선택된 날짜:', formattedDate);
-
+    reserveTime.value.rtDate = formattedDate;
+    console.log('선택된 날짜:', reserveTime.value.rtDate);
+    axios({
+      method: 'get',
+      url: `${store.state.apiBaseUrl}/api/mypage/gettimelist`,
+      headers: { "Content-Type": "application/json; charset=utf-8" },
+      params: { bNo: reserveTime.value.bNo, rtDate: reserveTime.value.rtDate },
+      responseType: 'json'
+    })
+      .then(response => {
+        console.log("성공");
+        console.log(response.data.apiData);
+        reserveList.value = response.data.apiData;
+        console.log(reserveList.value);
+        emit('selectedDate',reserveTime.value.rtDate);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
+  reserveTime.value.rtTime = '';
+
 };
+
+// 시간 형식을 시와 분으로 추출하는 함수
+const extractHourAndMinute = (timeString) => {
+  const [hour, minute] = timeString.split(':');
+  return { hour, minute };
+};
+
+// 시간을 시:분 형식으로 포맷하는 함수
+const formatTime = (timeString) => {
+  const { hour, minute } = extractHourAndMinute(timeString);
+  return `${hour}:${minute}`;
+};
+
+// 시간 선택 함수
+const toggleTime = (time) => {
+  if (reserveTime.value.rtTime === time) {
+    reserveTime.value.rtTime = '';  // 선택 해제 (빈 문자열 할당)
+  } else {
+    reserveTime.value.rtTime = time;  // 시간 선택
+    console.log(reserveTime.value.rtDate);
+    console.log(time);
+    emit('selectedTime',time);
+  }
+
+};
+
+const isSelected = (time) => {
+  return reserveTime.value.rtTime === time;
+};
+
 </script>
+
+
 <style>
+#reservationFormDatePicker {
+  display: flex;
+}
+
+#reservationFormDatePicker .disabled {
+  background-color: gray;
+  color: gray;
+  pointer-events: none;
+  border: 1px solid red;
+}
+
 #reservationFormDatePicker .dp__theme_light {
   /* --dp-menu-border-color: #a7a4a4; */
   --dp-menu-border-color: none;
@@ -66,8 +161,45 @@ const onDateChange = (newDate) => {
 
 #reservationFormDatePicker .dp__action_button.dp__action_select::after {
   content: "선택";
-  font-size: 17px;
   color: white;
-  padding: 5px;
+  font-size: 16px;
+  padding: 20px;
+}
+
+#reservationFormDatePicker .dp__selection_preview {
+  color: white;
+}
+
+
+
+
+
+
+#reservationFormDatePicker .time {
+  width: 500px;
+  height: 400px;
+  /* background-color: red; */
+  margin: 70px 150px 0 120px;
+
+}
+
+#reservationFormDatePicker .time p {
+  margin: 23px;
+}
+
+#reservationFormDatePicker .time button {
+  padding: 12px;
+  margin: 8px;
+  width: 100px;
+  background-color: white;
+  border: 1px solid #236C3F;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#reservationFormDatePicker .time button:hover {
+  background-color: #236C3F;
+  color: white;
 }
 </style>
