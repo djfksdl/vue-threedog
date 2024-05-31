@@ -3,8 +3,8 @@ import createPersistedState from 'vuex-persistedstate';
 export default createStore({
     state() {
         return {
-            // apiBaseUrl: "http://localhost:9010",
-            apiBaseUrl: "http://43.200.182.62:9033",
+            apiBaseUrl: "http://localhost:9010",
+            // apiBaseUrl: "http://43.200.182.62:9033",
             authUser: null,
             token: null,
             selectedSchedule: null,

@@ -199,6 +199,7 @@
   width: 17px;
   height: 17px;
   background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');
+  margin-top: -2px;
 }
 
 .info .close:hover {

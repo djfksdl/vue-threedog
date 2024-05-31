@@ -72,7 +72,7 @@ const coordinate = ref({
 const storeList = ref([]);
 const addList = ref([]);
 const map = ref(null);
-const overlays = ref([]);
+// const overlays = ref([]);
 
 const getCurrentLocation = () => {
   if (navigator.geolocation) {
@@ -171,7 +171,7 @@ const createMap = () => {
       <div class="map-wrap">
         <div class="info">
           <div class="title">${store.title}
-            <div class="close" @click="closeOverlay(${store.id})" title="닫기"></div>
+            <div class="close" @click="closeOverlay()" title="닫기"></div>
           </div>
           <div class="body">
             <div class="img">
@@ -206,17 +206,12 @@ const createMap = () => {
 onMounted(() => {
   mainList();
   markList();
-  window.closeOverlay = (id) => {
-    const overlay = overlays.value.find(o => o.id === id);
-    if (overlay) overlay.overlay.setMap(null);
-  };
 });
 
-const closeOverlay = (id) => {
-  const overlay = overlays.value.find(o => o.id === id);
-  if (overlay) overlay.overlay.setMap(null);
-};
-console.log(closeOverlay);
+// window.closeOverlay = () => {
+//     const overlay = overlays.value.find();
+//     if (overlay) overlay.overlay.setMap(null);
+//   };
 </script>
 
 <script>
@@ -227,6 +222,8 @@ import AppHeader from "@/components/AppHeader.vue"
 import TopButton from "@/components/TopButton.vue"
 import "@/assets/css/potal/main.css"
 // import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
+
+const overlays = ref([]);
 
 export default {
   name: "MainView",
@@ -313,6 +310,10 @@ export default {
         this.suggestions = [];
       }
     },
+    closeOverlay() {
+      const overlay = overlays.value.find();
+      if (overlay) overlay.overlay.setMap(null);
+    }
   },
   created() {
     this.getList();

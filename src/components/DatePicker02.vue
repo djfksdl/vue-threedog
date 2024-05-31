@@ -48,6 +48,7 @@ const handleButtonClick = () => {
   margin-top: -40px;
   height: 494px;
   position: relative; 
+  padding-top: 10px;
 }
 
 .cal02 .dp__selection_preview {
