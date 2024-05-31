@@ -6,11 +6,15 @@
     </div>
     <div class="time">
       <!-- {{ currentDate }} -->
-      <p>오전</p>
-      <p>오후</p>
-       <div v-if="reserveList.length > 0">
-        <div v-for="time in reserveList" :key="time">
-            <button>{{ formatTime(time.rtTime) }}</button>
+      <!-- <p>오전</p>
+      <p>오후</p> -->
+      <p>시간선택~~~~</p>
+      <div v-if="reserveList.length > 0">
+        <div v-for="time in reserveList" :key="time" style="display: inline-block;">
+          <button type="button" :class="{ selected: isSelected(time.rtTime), disabled: time.rtFinish }"
+            @click="toggleTime(time.rtTime)">
+            {{ formatTime(time.rtTime) }}
+          </button>
         </div>
       </div>
     </div>
@@ -33,6 +37,7 @@ const reserveTime = ref({
   bNo: 1,
   rtDate: "",
   rtTime: "",
+  rtFinish: false,
 });
 
 const reserveList = ref([]);
@@ -77,6 +82,8 @@ const onDateChange = (newDate) => {
         console.log(error);
       });
   }
+  reserveTime.value.rtTime = '';
+
 };
 
 // 시간 형식을 시와 분으로 추출하는 함수
@@ -92,14 +99,18 @@ const formatTime = (timeString) => {
 };
 
 // 시간 선택 함수
-// const toggleTime = (time) => {
-//   console.log(time);
-//   if (reserveTime.value.rtTime === time) {
-//     reserveTime.value.rtTime = '';  // 선택 해제 (빈 문자열 할당)
-//   } else {
-//     reserveTime.value.rtTime = time;  // 시간 선택
-//   }
-// };
+const toggleTime = (time) => {
+  console.log(time);
+  if (reserveTime.value.rtTime === time) {
+    reserveTime.value.rtTime = '';  // 선택 해제 (빈 문자열 할당)
+  } else {
+    reserveTime.value.rtTime = time;  // 시간 선택
+  }
+};
+
+const isSelected = (time) => {
+  return reserveTime.value.rtTime === time;
+};
 
 
 </script>
@@ -108,6 +119,12 @@ const formatTime = (timeString) => {
 <style>
 #reservationFormDatePicker {
   display: flex;
+}
+
+#reservationFormDatePicker .disabled {
+  background-color: gray;
+  color: gray;
+  pointer-events: none;
 }
 
 #reservationFormDatePicker .dp__theme_light {
@@ -159,7 +176,9 @@ const formatTime = (timeString) => {
   padding: 20px;
 }
 
-
+#reservationFormDatePicker .dp__selection_preview {
+  color: white;
+}
 
 
 
