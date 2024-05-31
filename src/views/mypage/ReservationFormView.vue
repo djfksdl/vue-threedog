@@ -355,7 +355,7 @@ export default {
                 onePrice: 0,
                 sizeDiv: "",
                 weightDiv: "",
-                beauty: "",
+                beauty: [],
             },
             // 유저
             uPoint: 0,
@@ -618,7 +618,7 @@ export default {
             console.log("입질정도 : ", this.dogVo.bite);
             console.log("기타사항 : ", this.dogVo.memo);
             console.log("미용목록", this.priceVo.beauty, "가격", this.priceVo.onePrice, "몸무게구분", this.priceVo.weightDiv);
-
+            // console.log("추가요금",this.priceList2[].beauty);
         }
 
 
