@@ -292,55 +292,44 @@ export default {
         //-------------------- 알림장 화면으로 이동  ----------------------------
         // 예약 일정 클릭 이벤트 처리
         handleEventClick(info) {
+            if (!info || !info.event) {
+                console.error('클릭된 예약 정보가 없습니다.');
+                return;
+            }
+
+            const event = info.event;
+            console.log('Event 정보:', event);
+
+            const eventTitle = event.title || '';
+            const eventStart = event.start ? new Date(event.start).toLocaleString().substring(0, 20).replace("/g", "") : '';
+
             Swal.fire({
                 title: "일정",
-                html: "스케줄: " + (info.event.title || '') +
-                    "<br/>일시: " + (info.event.start ? new Date(info.event.start).toLocaleString().substring(0, 20).replace("/g", "") : ''),
+                html: "스케줄: " + eventTitle + "<br/>일시: " + eventStart,
             });
 
             // 선택된 예약 정보를 Vuex에 저장
-            if (info.event) {
-                this.$store.commit("setSelectedSchedule", info.event);
+            this.$store.commit("setSelectedSchedule", event);
 
-                // 선택된 예약 정보와 함께 다이어리 화면으로 이동
-                this.$router.push({ name: 'diary' });
-
+            // 선택된 예약 정보와 함께 다이어리 화면으로 이동
+            this.$router.push({ name: 'diary' }).then(() => {
                 // 다이어리 화면으로 이동 후 미용 기록 조회
-                if (info.event.extendedProps && info.event.extendedProps.rsNo) {
-                    this.selectGroomingRecord(info.event.extendedProps.rsNo);
-                } else {
-                    console.error('rsNo is not defined.');
-                }
-            } else {
-                console.error('info.event is not defined.');
-            }
-        },
-
-
-        selectGroomingRecord(rsNo) {
-            axios({
-                method: 'get',
-                url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/groomingrecord`,
-                headers: { "Content-Type": "application/json; charset=utf-8" },
-                responseType: 'json'
-            }).then(response => {
-                console.log('Response data:', response.data.apiData); // 응답 데이터 확인
-                const groomingRecord = response.data.apiData;
-
-                // 미용 기록이 없는 경우에 대한 처리
-                if (!groomingRecord) {
-                    console.warn('Grooming record not found.');
+                if (!event.extendedProps) {
+                    console.error('event.extendedProps가 없습니다.');
                     return;
                 }
 
-                // Vuex에 데이터 업데이트
-                this.$store.commit("setGroomingRecord", groomingRecord);
+                if (!event.extendedProps.rsNo) {
+                    console.error('event.extendedProps.rsNo가 정의되지 않았습니다.');
+                    return;
+                }
 
-            }).catch(error => {
-                console.error('Error fetching grooming record:', error);
+                console.log('예약 번호 (rsNo):', event.extendedProps.rsNo);
+
+                // 다이어리 컴포넌트의 selectGroomingRecord 메서드 호출
+                this.$root.$emit('selectGroomingRecord', event.extendedProps.rsNo);
             });
         },
-
 
         //확인
         closeModal() {

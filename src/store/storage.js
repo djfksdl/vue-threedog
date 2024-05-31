@@ -8,7 +8,8 @@ export default createStore({
             authUser: null,
             token: null,
             selectedSchedule: null,
-            auth: null
+            auth: null,
+            groomingRecord: null, // groomingRecord 속성 추가
 
         };
     },
