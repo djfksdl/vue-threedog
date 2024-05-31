@@ -338,7 +338,6 @@
             <ManagerFooter />  
         </div><!-- wrap --> 
     </form>
-    <!-- 모달창 -->
 
 
 </template>
