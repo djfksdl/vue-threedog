@@ -32,36 +32,23 @@
                         <div class="calendar">
                             <Datepicker />
                         </div>
-
                         <div class="time">
-
-                            <!--                             
                             <p>오전</p>
-                            <button type="button" :class="{ selected: reserveVo.rsTime === '10:00' }"
+                            <button type="button" :class="{ selected: reserveVo.rtTime === '10:00' }"
                                 @click="toggleTime('10:00')">10:00</button>
-                            <button type="button" :class="{ selected: reserveVo.rsTime === '10:30' }"
-                                @click="toggleTime('10:30')">10:30</button>
-                            <button type="button" :class="{ selected: reserveVo.rsTime === '11:00' }"
+                            <button type="button" :class="{ selected: reserveVo.rtTime === '11:00' }"
                                 @click="toggleTime('11:00')">11:00</button>
-                            <button type="button" :class="{ selected: reserveVo.rsTime === '11:30' }"
-                                @click="toggleTime('11:30')">11:30</button>
                             <p>오후</p>
-                            <button type="button" :class="{ selected: reserveVo.rsTime === '14:00' }"
+                            <button type="button" :class="{ selected: reserveVo.rtTime === '14:00' }"
                                 @click="toggleTime('14:00')">14:00</button>
-                            <button type="button" :class="{ selected: reserveVo.rsTime === '14:30' }"
-                                @click="toggleTime('14:30')">14:30</button>
-                            <button type="button" :class="{ selected: reserveVo.rsTime === '15:00' }"
+                            <button type="button" :class="{ selected: reserveVo.rtTime === '15:00' }"
                                 @click="toggleTime('15:00')">15:00</button>
-                            <button type="button" :class="{ selected: reserveVo.rsTime === '15:30' }"
-                                @click="toggleTime('15:30')">15:30</button>
-                            <button type="button" :class="{ selected: reserveVo.rsTime === '16:00' }"
+                            <button type="button" :class="{ selected: reserveVo.rtTime === '16:00' }"
                                 @click="toggleTime('16:00')">16:00</button>
-                            <button type="button" :class="{ selected: reserveVo.rsTime === '16:30' }"
-                                @click="toggleTime('16:30')">16:30</button>
-                            <button type="button" :class="{ selected: reserveVo.rsTime === '17:00' }"
-                                @click="toggleTime('17:00')">17:00</button> -->
+                            <button type="button" :class="{ selected: reserveVo.rtTime === '17:00' }"
+                                @click="toggleTime('17:00')">17:00</button>
                         </div>
-                        <!-- {{ this.reserveVo.rsTime }} -->
+                        {{ this.reserveVo.rtTime }}
                         <!-- v-bind:key="i" v-for="(reserveVo, i) in reserveList" -->
                     </div>
                     <div class="reservationBox">
@@ -153,11 +140,15 @@
                                     <tbody v-for="(priceVo, i) in priceList" :key="i">
                                         <tr v-if="i % 5 == 0">
                                             <th>{{ priceVo.weightDiv }}</th>
-                                            <td>{{ priceVo.onePrice }}</td>
-                                            <td>{{ priceList[i + 1]?.onePrice }}</td>
-                                            <td>{{ priceList[i + 2]?.onePrice }}</td>
-                                            <td>{{ priceList[i + 3]?.onePrice }}</td>
-                                            <td>{{ priceList[i + 4]?.onePrice }}</td>
+                                            <td @click="addPrice(priceVo.onePrice, i)">{{ priceVo.onePrice }}</td>
+                                            <td @click="addPrice(priceList[i + 1]?.onePrice, i + 1)">{{ priceList[i +
+                                1]?.onePrice }}</td>
+                                            <td @click="addPrice(priceList[i + 2]?.onePrice, i + 2)">{{ priceList[i +
+                                2]?.onePrice }}</td>
+                                            <td @click="addPrice(priceList[i + 3]?.onePrice, i + 3)">{{ priceList[i +
+                                3]?.onePrice }}</td>
+                                            <td @click="addPrice(priceList[i + 4]?.onePrice, i + 4)">{{ priceList[i +
+                                4]?.onePrice }}</td>
                                         </tr>
                                     </tbody>
 
@@ -180,60 +171,46 @@
                                     <tbody v-for="(priceVo, i) in priceList" :key="i">
                                         <tr v-if="i % 6 == 0">
                                             <th>{{ priceVo.weightDiv }}</th>
-                                            <td>{{ priceVo.onePrice }}</td>
-                                            <td>{{ priceList[i + 1]?.onePrice }}</td>
-                                            <td>{{ priceList[i + 2]?.onePrice }}</td>
-                                            <td>{{ priceList[i + 3]?.onePrice }}</td>
-                                            <td>{{ priceList[i + 4]?.onePrice }}</td>
-                                            <td>{{ priceList[i + 5]?.onePrice }}</td>
+                                            <td @click="addPrice(priceVo.onePrice)">{{ priceVo.onePrice }}</td>
+                                            <td @click="addPrice(priceList[i + 1]?.onePrice)">{{ priceList[i +
+                                1]?.onePrice }}</td>
+                                            <td @click="addPrice(priceList[i + 2]?.onePrice)">{{ priceList[i +
+                                2]?.onePrice }}</td>
+                                            <td @click="addPrice(priceList[i + 3]?.onePrice)">{{ priceList[i +
+                                3]?.onePrice }}</td>
+                                            <td @click="addPrice(priceList[i + 4]?.onePrice)">{{ priceList[i +
+                                4]?.onePrice }}</td>
+                                            <td @click="addPrice(priceList[i + 5]?.onePrice)">{{ priceList[i +
+                                5]?.onePrice }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
 
-                                
+
                             </div>
                             <table style="width: 650px;">
+                                <tbody>
                                     <tr>
-                                        <th rowspan="4">추가요금</th>
-                                        <th>가위컷</th>
-                                        <td>25,000</td>
-                                        <th>가위컷</th>
-                                        <td>25,000</td>
+                                        <th rowspan="7">추가요금</th>
                                     </tr>
-                                    <tr>
-                                        <th>썸머</th>
-                                        <td>10,000</td>
-                                        <th>투톤염색</th>
-                                        <td>10,000</td>
+                                    <tr v-for="(priceList2, i) in priceList2" :key="i">
+                                        <th>{{ priceList2.beauty }}</th>
+                                        <td :class="{ 'selected': priceList2.selected }"
+                                            @click="toggleSelected(priceList2)">{{ priceList2.onePrice }}</td>
                                     </tr>
-                                    <tr>
-                                        <th>기장</th>
-                                        <td>5,000</td>
-                                        <th>염색</th>
-                                        <td>5,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>엉킴</th>
-                                        <td>5,000</td>
-                                        <th>특수견</th>
-                                        <td>7,000</td>
-                                    </tr>
-                                </table>
+                                </tbody>
+                            </table>
                         </div>
-                        
-
-
-
 
                         <div class="expectPrice">
-                            <p>예상가격 {{ estimatedPrice }}원</p>
+                            <p>예상가격 {{ this.reserveVo.expectedPrice.toLocaleString() }}원</p>
                         </div>
 
                         <div class="point">
                             <label>포인트</label>
-                            <input type="text">
-                            <button type="button">사용</button>
-                            <p>1500P 사용가능</p>
+                            <input type="number" step="10" v-model="usePoint">
+                            <button type="button" @click="useAllPoint">전액사용</button>
+                            <p>{{ (this.uPoint - this.usePoint).toLocaleString() }}P 사용가능</p>
                         </div>
 
                         <div class="notice">
@@ -262,7 +239,7 @@
                                 7. 생식기 및 귀털 제거에서 자극을 최소화하기 위해 지저분해 보일 수 있는 점 양해 부탁드립니다.<br>
                             </div>
                             <div>
-                                <input type="checkbox">안내사항 및 미용시 주의사항에 동의합니다.
+                                <input type="checkbox" id="agreeCheckbox" disabled>안내사항 및 미용시 주의사항에 동의합니다.
                             </div>
                         </div>
 
@@ -277,8 +254,10 @@
 
                         <div class="cal">
                             <p>노쇼방지를 위해 예약금 20,000원을 받고 있습니다.</p>
-                            <button type="button">휴대폰</button>
-                            <button type="button">무통장입금</button>
+                            <button type="button" v-for="(payment, index) in paymentMethods" :key="index"
+                                @click="togglePayment(index)" :class="{ 'selected': selectedPayment === index }">
+                                {{ payment }}
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -325,10 +304,10 @@ export default {
             // 고객
             reserveVo: {
                 rsNo: 0,
-                bNo: 0,
+                bNo: 1,
                 dogNo: 0,
-                rsDate: "",
-                rsTime: null,
+                rtDate: "",
+                rtTime: null,
                 singImg: "",
                 expectedPrice: 0,
                 attitude: "",
@@ -368,6 +347,7 @@ export default {
                 mounting: false,
             },
             priceList: [],
+            priceList2: [],
             priceVo: {
                 priceNo: 0,
                 beautyNo: 0,
@@ -377,15 +357,18 @@ export default {
                 weightDiv: "",
                 beauty: "",
             },
+            // 유저
+            uPoint: 0,
+            isClicked: false,    //포인트버튼
+            usePoint: 0,
+            paymentMethods: ['휴대폰', '무통장입금'], // 사용 가능한 결제 방법
+            selectedPayment: null, // 선택된 결제 방법 인덱스
         };
-    },
-
-    mounted() {
-
     },
 
 
     methods: {
+
 
         //가게정보
         getBList() {
@@ -409,22 +392,17 @@ export default {
             });
         },
 
-        // 가게 시간정보
-        getTimeList() {
-            console.log("가게 시게정보 가져오기");
+        // 시간선택, 가져오기
+        toggleTime(time) {
+            console.log(time);
+            if (this.reserveVo.rtTime == time) {
+                // 이미 선택된 시간을 클릭한 경우 선택 해제
+                this.reserveVo.rtTime = null;
+            } else {
+                // 클릭한 시간을 선택
+                this.reserveVo.rtTime = time;
+            }
         },
-
-        // // 시간선택
-        // toggleTime(time) {
-        //     console.log(time);
-        //     if (this.reserveVo.rsTime == time) {
-        //         // 이미 선택된 시간을 클릭한 경우 선택 해제
-        //         this.reserveVo.rsTime = null;
-        //     } else {
-        //         // 클릭한 시간을 선택
-        //         this.reserveVo.rsTime = time;
-        //     }
-        // },
 
         // 반려견선택
         getPetList() {
@@ -465,6 +443,8 @@ export default {
                 console.log(response.data.apiData); //수신데이타
                 this.dogVo = response.data.apiData;
                 this.getPrice();
+                this.getPlusPrice();
+                this.reserveVo.expectedPrice = 0;
             }).catch(error => {
                 console.log(error);
             });
@@ -489,7 +469,7 @@ export default {
         getPrice() {
             console.log("가격표 가져오기");
             console.log("사업자번호 : ", this.priceVo.bNo);
-            console.log("우리강쥐크기 : ", this.dogVo.size);
+            console.log("크기 : ", this.dogVo.size);
             axios({
                 method: 'get',  //put,post,delete
                 url: `${this.$store.state.apiBaseUrl}/api/mypage/getprice`,
@@ -506,18 +486,98 @@ export default {
             });
         },
 
+        // 추가요금가져오기
+        getPlusPrice() {
+            console.log("가격표-추가요금 가져오기");
+            axios({
+                method: 'get',  //put,post,delete
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/getplusprice`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { bNo: this.priceVo.bNo },
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log("가격표-추가요금 가져오기");
+                console.log(response.data.apiData); //수신데이타
+                this.priceList2 = response.data.apiData;
 
+            }).catch(error => {
+                console.log(error);
+            });
+        },
 
+        // 추가요금 버튼
+        toggleSelected(priceList2) {
+            priceList2.selected = !priceList2.selected; // 상태를 토글합니다
+            if (priceList2.selected) {
+                console.log('선택한 값 :', priceList2.onePrice);
+                this.reserveVo.expectedPrice += priceList2.onePrice; // priceVo.onePrice에 선택한 값의 누적을 수행합니다.
+            } else {
+                console.log('선택 취소한 값 :', priceList2.onePrice);
+                this.reserveVo.expectedPrice -= priceList2.onePrice; // 선택 취소한 값의 차감을 수행합니다.
+            }
+        },
 
         // 예상가격
         addPrice(price) {
-            this.estimatedPrice += price;
+            console.log("가격예상클릭");
+            this.reserveVo.expectedPrice = price;
+            console.log(this.reserveVo.expectedPrice);
+            this.selectedCell = price !== undefined ? price : null;
+
+            // priceList2 배열의 모든 요소의 selected 속성을 초기화
+            this.priceList2.forEach(item => {
+                item.selected = false;
+            });
+
         },
+
+        // 포인트버튼
+        useAllPoint() {
+            this.usePoint = this.uPoint;
+        },
+
+
+        // 유저포인트
+        getPoint() {
+            console.log("유저포인트 가져오기");
+            axios({
+                method: 'get',  //put,post,delete
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/getpoint`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { uNo: this.dogVo.uNo },
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log("유저포인트 가져오기");
+                console.log(response.data.apiData); //수신데이타
+                this.uPoint = response.data.apiData.uPoint;
+            }).catch(error => {
+                console.log(error);
+            });
+        },
+
+        // 결제방법 버튼
+        togglePayment(index) {
+            // 이미 선택된 결제 방법이라면 선택 취소하고, 아니라면 선택합니다.
+            this.selectedPayment = this.selectedPayment === index ? null : index;
+        }
+
+    },
+
+    mounted() {
+        const noticeElement = document.getElementById('notice');
+        const checkbox = document.getElementById('agreeCheckbox');
+
+        noticeElement.addEventListener('scroll', () => {
+            if (noticeElement.scrollTop + noticeElement.clientHeight >= noticeElement.scrollHeight) {
+                checkbox.disabled = false;
+            }
+        });
     },
 
     created() {
         this.getBList();
         this.getPetList();
+        this.getPoint();
     }
 };
 </script>
@@ -528,40 +588,34 @@ export default {
     color: #ffffff !important;
 }
 
-.dp__theme_light {
-    /* --dp-menu-border-color: #a7a4a4; */
-    --dp-menu-border-color: none;
-    --dp-primary-color: #236C3F;
 
-    --dp-cell-border-radius: 50%;
+.star-rating {
+    font-size: 24px;
+    color: #ccc;
+    display: flex;
 }
 
-.dp__instance_calendar {
-    width: 500px;
-    font-size: 20px;
-    padding: 10px;
+.star {
+    position: relative;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    overflow: hidden;
 }
 
-/* select Button */
-/* .dp__action_buttons {
-    visibility: hidden;
-} */
-
-.dp__calendar_item {
-    padding: 10px;
+.star .star-filled {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #f5c518;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
-.dp__button {
-    /* background-color: #236C3F; */
-    width: 500px;
-    height: 80px;
-}
-
-.dp__calendar_header_item {
-    margin: 20px 0 20px 0;
-}
-
-:root {
-    --dp-cell-size: 46px;
+.star .star-empty {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #ccc;
 }
 </style>

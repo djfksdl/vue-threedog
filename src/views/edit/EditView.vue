@@ -413,7 +413,7 @@ import { useRoute } from 'vue-router';
     }
 
     // computed property로 chunkedSlides 설정
-    const chunkedSlides = computed(() => chunk(slides2.value, 6));
+    const chunkedSlides = computed(() => chunk(slides2.value, 18));
 
     // 가게 정보 에서 위도 경도 슬라이드 리스트,컷이미지 리스트 값 받아오기
     const getLatLngSlide = () => {

@@ -599,6 +599,7 @@ datalist {
     padding: 10px;
     border: 1px solid #a7a4a4;
     border-radius: 10px;
+    text-align: right;
 }
 
 #reservationForm .reservationBox .point button {
@@ -646,7 +647,7 @@ datalist {
 
 #reservationForm .price {
     width: 650px;
-    height: 600px;
+    height: 750px;
 }
 
 #reservationForm .expectPrice {
@@ -695,9 +696,9 @@ datalist {
 }
 
 
-#reservationForm .price table tr:first-child {
+/* #reservationForm .price table tr:first-child {
     background-color: #e2e2e2;
-}
+} */
 
 
 #reservationForm .price table td,
