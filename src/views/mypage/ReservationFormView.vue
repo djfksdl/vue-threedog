@@ -26,11 +26,11 @@
                     </div>
 
                 </div>
-                <form v-on:submit.prevent="reserveInsert" enctype="multipart/form-data">
+                <form v-on:submit.prevent="reserveInsert">
                     <h2>📅 날짜와 시간을 선택해주세요</h2>
                     <div class="choiceBox">
                         <div class="calendar">
-                            <Datepicker @selectedDate="handleSelectedDateTime" @selectedTime="handleSelectedDateTime" />
+                            <Datepicker @selectedDateTime="handleSelectedDateTime" />
                         </div>
 
                         <!-- v-bind:key="i" v-for="(reserveVo, i) in reserveList" -->
@@ -102,11 +102,10 @@
                                 v-bind:checked="dogVo.size == '중형견'" v-model="dogVo.size">
                             <label for="big">특수견</label><input id="big" type="radio" name="size" value="특수견"
                                 v-bind:checked="dogVo.size == '특수견'" v-model="dogVo.size"> -->
-
                             {{ dogVo.size }}
                             <div class="tableBox">
-                                <!-- 소형견, 중형견 -->
-                                <table v-if="dogVo.size === '소형견' || dogVo.size === '중형견'" style="width: 650px;">
+                                <!-- 소형견 -->
+                                <table v-if="dogVo.size === '소형견'" style="width: 650px;">
                                     <!-- <tr>
                                      <th colspan="7" class="eNonBorder">소형견(말티즈, 요크셔, 시츄, 푸들 등...)</th>
                                     </tr> -->
@@ -145,6 +144,43 @@
 
                                 </table>
 
+                                <!-- 중형견 -->
+                                <table v-if="dogVo.size === '중형견'" style="width: 650px;">
+                                    <thead>
+                                        <tr>
+                                            <th>몸무게</th>
+                                            <th>목욕</th>
+                                            <th>부분</th>
+                                            <th>목욕+부분</th>
+                                            <th>얼굴+부분+목욕</th>
+                                            <th colspan="2">기본전체미용</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody v-for="(priceVo, i) in priceList" :key="i">
+                                        <tr v-if="i % 5 == 0">
+                                            <th>{{ priceVo.weightDiv }}</th>
+                                            <td :class="{ selected: selectedPriceIndex == i }"
+                                                @click="addPrice(priceVo.onePrice, i)">{{
+                                priceVo.onePrice.toLocaleString() }}</td>
+                                            <td :class="{ selected: selectedPriceIndex == i + 1 }"
+                                                @click="addPrice(priceList[i + 1]?.onePrice, i + 1)">{{ priceList[i +
+                                1]?.onePrice.toLocaleString() }}</td>
+                                            <td :class="{ selected: selectedPriceIndex == i + 2 }"
+                                                @click="addPrice(priceList[i + 2]?.onePrice, i + 2)">{{ priceList[i +
+                                2]?.onePrice.toLocaleString() }}</td>
+                                            <td :class="{ selected: selectedPriceIndex == i + 3 }"
+                                                @click="addPrice(priceList[i + 3]?.onePrice, i + 3)">{{ priceList[i +
+                                3]?.onePrice.toLocaleString() }}</td>
+                                            <td :class="{ selected: selectedPriceIndex == i + 4 }"
+                                                @click="addPrice(priceList[i + 4]?.onePrice, i + 4)">{{ priceList[i +
+                                4]?.onePrice.toLocaleString() }}</td>
+                                        </tr>
+
+                                    </tbody>
+
+
+                                </table>
+
                                 <!-- 특수견 -->
                                 <table v-if="dogVo.size == '특수견'">
                                     <thead>
@@ -162,22 +198,23 @@
                                         <tr v-if="i % 6 == 0">
                                             <th>{{ priceVo.weightDiv }}</th>
                                             <td :class="{ selected: selectedPriceIndex == i }"
-                                                @click="addPrice(priceVo.onePrice)">{{ priceVo.onePrice.toLocaleString()
-                                                }}</td>
+                                                @click="addPrice(priceList[i]?.onePrice, i)">{{
+                                priceVo.onePrice.toLocaleString()
+                            }}</td>
                                             <td :class="{ selected: selectedPriceIndex == i + 1 }"
-                                                @click="addPrice(priceList[i + 1]?.onePrice)">{{ priceList[i +
+                                                @click="addPrice(priceList[i + 1]?.onePrice, i + 1)">{{ priceList[i +
                                 1]?.onePrice.toLocaleString() }}</td>
                                             <td :class="{ selected: selectedPriceIndex == i + 2 }"
-                                                @click="addPrice(priceList[i + 2]?.onePrice)">{{ priceList[i +
+                                                @click="addPrice(priceList[i + 2]?.onePrice, i + 2)">{{ priceList[i +
                                 2]?.onePrice.toLocaleString() }}</td>
                                             <td :class="{ selected: selectedPriceIndex == i + 3 }"
-                                                @click="addPrice(priceList[i + 3]?.onePrice)">{{ priceList[i +
+                                                @click="addPrice(priceList[i + 3]?.onePrice, i + 3)">{{ priceList[i +
                                 3]?.onePrice.toLocaleString() }}</td>
                                             <td :class="{ selected: selectedPriceIndex == i + 4 }"
-                                                @click="addPrice(priceList[i + 4]?.onePrice)">{{ priceList[i +
+                                                @click="addPrice(priceList[i + 4]?.onePrice, i + 4)">{{ priceList[i +
                                 4]?.onePrice.toLocaleString() }}</td>
                                             <td :class="{ selected: selectedPriceIndex == i + 5 }"
-                                                @click="addPrice(priceList[i + 5]?.onePrice)">{{ priceList[i +
+                                                @click="addPrice(priceList[i + 5]?.onePrice, i + 5)">{{ priceList[i +
                                 5]?.onePrice.toLocaleString() }}</td>
                                         </tr>
                                     </tbody>
@@ -246,7 +283,14 @@
                         <div class="signBox">
                             <label>전자서명</label>
                             <div class="sign">
-                                <SignaturePad />
+                                <div>
+                                    <canvas ref="signatureCanvas" v-on:mousedown="onBegin" v-on:mouseup="onEnd"
+                                        width="620" height="250" style="border: 1px solid #000;">
+                                    </canvas>
+                                </div>
+                                <div class="sign0">
+                                    <button @click.prevent="clearCanvas">지우기</button>
+                                </div>
                             </div>
                         </div>
 
@@ -273,13 +317,12 @@
 <script>
 import AppFooter from "@/components/AppFooter.vue"
 import AppHeader from "@/components/AppHeader.vue"
-
+import SignaturePad from 'signature_pad';
 import axios from "axios"
 
 import '@/assets/css/mypage/mypage.css'
 import Datepicker from '@/components/DatePicker.vue'
 import SideBar from '@/components/SideBar.vue'
-import SignaturePad from "@/components/SignaturePad.vue"
 import TopButton from "@/components/TopButton.vue"
 
 
@@ -294,13 +337,12 @@ export default {
         Datepicker,
         SideBar,
         TopButton,
-        SignaturePad,
 
     },
     data() {
         return {
             selectedPriceIndex: null,
-
+            signaturePad: null,
             reserveList: [],
             // 고객
             reserveVo: {
@@ -308,6 +350,7 @@ export default {
                 bNo: 1,
                 dogNo: 0,
                 rtDate: "",
+                rtTime: "",
                 singImg: "",
                 expectedPrice: 0,
                 attitude: "",
@@ -318,6 +361,7 @@ export default {
                 surcharge: 0,
                 message: "",
                 curruntWeight: 0,
+                rtNo:0,
             },
             // 사업자
             businessVo: {
@@ -355,7 +399,8 @@ export default {
                 onePrice: 0,
                 sizeDiv: "",
                 weightDiv: "",
-                beauty: [],
+                beauty: "",
+                beauty2: [],
             },
             // 유저
             uPoint: 0,
@@ -395,9 +440,13 @@ export default {
         // 날짜 시간
         handleSelectedDateTime(selected) {
             // 선택한 날짜와 시간 데이터를 받아서 처리합니다.
-            console.log("과연?????????????????????/");
+            console.log("과연?????????????????????");
             console.log('선택한 날짜:', selected.newDate);
             console.log('선택한 시간:', selected.time);
+            // console.log('선택한 시간번호',selected.rtNo);
+            this.reserveVo.rtDate = selected.newDate;
+            this.reserveVo.rtTime = selected.time;
+            // this.reserveVo.rtNo=selected.rtNo;
         },
 
 
@@ -421,6 +470,12 @@ export default {
                 // 초기화
                 this.addPrice();
                 this.reserveVo.expectedPrice = 0;
+                this.priceList.forEach(item => {
+                    item.selected = false;
+                });
+
+
+
             }).catch(error => {
                 console.log(error);
             });
@@ -443,10 +498,15 @@ export default {
                 console.log(response.data.apiData); //수신데이타
                 this.dogVo = response.data.apiData;
 
+
+
                 // 초기화
                 this.getPrice();
                 this.getPlusPrice();
                 this.reserveVo.expectedPrice = 0;
+                this.priceVo.beauty2 = [];
+                this.addPrice();
+
 
             }).catch(error => {
                 console.log(error);
@@ -514,18 +574,23 @@ export default {
             if (priceList2.selected) {
                 console.log('선택한 값 :', priceList2.onePrice);
                 this.reserveVo.expectedPrice += priceList2.onePrice; // priceVo.onePrice에 선택한 값의 누적을 수행합니다.
+
+                // 선택한 td의 가로의 th의 값 가져오기
+                const thValue = priceList2.beauty;
+                console.log('선택한 td의 가로의 th의 값:', thValue);
+                this.priceVo.beauty2.push(thValue);
+                console.log(this.priceVo.beauty);
+
             } else {
                 console.log('선택 취소한 값 :', priceList2.onePrice);
                 this.reserveVo.expectedPrice -= priceList2.onePrice; // 선택 취소한 값의 차감을 수행합니다.
             }
         },
 
-        // 예상가격
         addPrice(price, index) {
             console.log("가격예상클릭");
             console.log("선택한 가격:", price);
             console.log("선택한 가격의 인덱스:", index);
-
 
             // 선택한 td의 열 인덱스 계산
             const colIndex = event.target.cellIndex;
@@ -541,8 +606,6 @@ export default {
 
             console.log("선택한 td의 전체 세로의 첫번째 th 값:", firstThValue);
 
-
-
             // 선택한 행의 인덱스 계산
             const rowIndex = Math.floor(index / 5) * 5;
 
@@ -551,31 +614,38 @@ export default {
 
             console.log("선택한 행의 첫 번째 열의 th 값:", thValue);
 
-            // 선택한 열의 첫 번째 값
-            const firstCellValue = this.priceList[rowIndex].onePrice;
+            // 만약 이미 선택된 가격 항목이면 선택 해제
+            if (this.selectedPriceIndex === index) {
+                this.selectedPriceIndex = null;
+                this.selectedPrice = 0;
 
-            // 선택한 행의 값
-            const rowValues = this.priceList.slice(rowIndex, rowIndex + 5).map(item => item.onePrice);
+                // 선택이 해제되면 예상가격에서 선택된 가격을 뺀다
+                this.reserveVo.expectedPrice = 0;
+            } else {
+                // 선택된 가격이 없을 경우에만 새로운 가격을 선택
+                // 이전에 선택된 가격이 있었다면, 먼저 그 가격을 예상가격에서 빼준다
+                if (this.selectedPriceIndex !== null) {
+                    this.reserveVo.expectedPrice = 0;
+                }
 
-            console.log("선택한 열의 첫 번째 값:", firstCellValue);
-            console.log("선택한 행의 값:", rowValues);
+                // 새로운 가격을 예상가격에 추가
+                this.reserveVo.expectedPrice += price;
+                this.selectedPriceIndex = index;
+                this.selectedPrice = price; // 선택된 가격 업데이트
 
-            this.reserveVo.expectedPrice = price;
-            console.log(this.reserveVo.expectedPrice);
-            this.selectedPriceIndex = index; // 클릭된 셀의 인덱스를 설정
-            console.log(this.selectedPriceIndex);
-
-            // priceVo에 담기
-            this.priceVo.onePrice = price;
-            this.priceVo.weightDiv = thValue;
-            this.priceVo.beauty = firstThValue;
+                // priceVo에 담기
+                this.priceVo.onePrice = price;
+                this.priceVo.weightDiv = thValue;
+                this.priceVo.beauty = firstThValue;
+            }
 
             // priceList2 배열의 모든 요소의 selected 속성을 초기화
             this.priceList2.forEach(item => {
                 item.selected = false;
             });
-        },
+        }
 
+        ,
 
 
         // 포인트 전액사용 버튼
@@ -608,18 +678,111 @@ export default {
             this.selectedPayment = this.selectedPayment === index ? null : index;
         },
 
+        clearCanvas() {
+            const canvas = this.$refs.signatureCanvas;
+            const context = canvas.getContext('2d');
+            context.clearRect(0, 0, canvas.width, canvas.height);
+        },
+        onBegin() {
+            this.signaturePad.onBegin();
+        },
+        onEnd() {
+            this.signaturePad.onEnd();
+        },
+        getSignatureImage() {
+            // 서명이 입력되지 않았을 때 빈 문자열 반환
+            if (this.signaturePad.isEmpty()) {
+                return '';
+            }
+            // 서명을 이미지로 변환하여 반환
+            return this.signaturePad.toDataURL();
+        },
+
 
         // 예약하기
         reserveInsert() {
-            console.log("예약하기");
-            // console.log("날짜:", date, "시간:", rtTime);
-            console.log("펫", this.dogVo.dogNo, ":", this.dogVo.dogName);
-            console.log("피부병 : ", this.dogVo.skin, "심장질환 : ", this.dogVo.heart, "마킹 : ", this.dogVo.marking, "마운팅 : ", this.dogVo.mounting);
-            console.log("입질정도 : ", this.dogVo.bite);
-            console.log("기타사항 : ", this.dogVo.memo);
-            console.log("미용목록", this.priceVo.beauty, "가격", this.priceVo.onePrice, "몸무게구분", this.priceVo.weightDiv);
-            // console.log("추가요금",this.priceList2[].beauty);
+            const formData = new FormData();
+
+            // 서명이 비어 있는지 확인
+            const canvas = this.$refs.signatureCanvas;
+            const context = canvas.getContext('2d');
+            const imageData = context.getImageData(0, 0, canvas.width, canvas.height).data;
+            const isEmpty = imageData.every(channel => channel === 0);
+
+            if (!this.reserveVo.rtDate || !this.reserveVo.rtTime) {
+                alert('날짜와 시간을 선택해주세요.');
+            } else if (this.reserveVo.expectedPrice == 0) {
+                alert("반려견을 선택하여 예약할 목록을 선택하세요.");
+            } else if (!document.getElementById('agreeCheckbox').checked) {
+                alert('안내사항 및 미용시 주의사항에 동의해주세요.');
+            } else if (isEmpty) {
+                alert("서명을 해주세요.");
+            } else {
+                // Canvas를 이미지 파일로 변환하여 FormData에 추가
+                const dataURL = canvas.toDataURL(); // Canvas를 Data URL로 변환
+                const blob = this.dataURItoBlob(dataURL); // Data URL을 Blob으로 변환
+
+                // Blob을 File 객체로 변환
+                const imageFile = new File([blob], 'signature.png', { type: 'image/png' });
+
+                // FormData에 이미지 파일 추가
+                formData.append('signFile', imageFile);
+
+                // 예약에 필요한 데이터 추가
+                formData.append('rtDate', this.reserveVo.rtDate);
+                formData.append('rtTime', this.reserveVo.rtTime);
+                formData.append('dogNo', this.dogVo.dogNo);
+                formData.append('skin', this.dogVo.skin);
+                formData.append('heart', this.dogVo.heart);
+                formData.append('marking', this.dogVo.marking);
+                formData.append('bite', this.dogVo.bite);
+                formData.append('memo', this.dogVo.memo);
+                formData.append('beauty', this.priceVo.beauty);
+                formData.append('price', this.priceVo.onePrice);
+                formData.append('weightDiv', this.priceVo.weightDiv);
+                formData.append('expectedPrice', this.reserveVo.expectedPrice);
+                formData.append('usePoint', this.usePoint);
+                formData.append('bNo', this.reserveVo.bNo);
+                formData.append('uNo',this.dogVo.uNo);
+                formData.append('rtNo', this.reserveVo.rtNo);
+                formData.append('expectedPrice',this.reserveVo.expectedPrice);
+                formData.append('mounting', this.reserveVo.mounting);
+                formData.append('onePirce',this.priveVo.onePirce);
+
+                this.priceVo.beauty2.forEach((item, index) => {
+                formData.append(`beautyPlus[${index}]`, item);
+                });
+
+                axios({
+                    method: 'post',
+                    url: `${this.$store.state.apiBaseUrl}/api/mypage/reservation`,
+                    headers: { "Content-Type": "multipart/form-data" },
+                    data: formData,
+                    responseType: 'json'
+                }).then(response => {
+                    console.log(response.data);
+                    if (response.data.result == "success") {
+                        console.log("예약하기성공!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        // this.$router.push('/');
+                    } else {
+                        alert("알수없는 오류");
+                    }
+                }).catch(error => {
+                    console.log(error);
+                });
+            }
+        },
+        dataURItoBlob(dataURI) {
+            const byteString = atob(dataURI.split(',')[1]);
+            const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            return new Blob([ab], { type: mimeString });
         }
+
 
 
     },
@@ -633,6 +796,9 @@ export default {
                 checkbox.disabled = false;
             }
         });
+
+        const canvas = this.$refs.signatureCanvas;
+        this.signaturePad = new SignaturePad(canvas);
     },
 
     created() {
@@ -647,5 +813,24 @@ export default {
 .selected {
     background-color: #236C3F !important;
     color: #ffffff !important;
+}
+canvas {
+    border: 1px solid #a7a4a4;
+    width: 620px;
+    height: 250px;
+    border-radius: 10px;
+}
+
+.sign0 {
+    width: 620px;
+    /* background-color: red; */
+    text-align: end;
+}
+
+.sign0 button {
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
 }
 </style>
