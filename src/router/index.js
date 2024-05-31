@@ -19,6 +19,8 @@ import EditFormView from '@/views/edit/EditFormView.vue'
 import ScheduleView from '@/views/manager/ScheduleView.vue'
 import NaverLogin from '@/views/potal/NaverLogin.vue'
 import SearchMap from '@/views/potal/SearchMap.vue'
+import InsertTime from '@/views/manager/InsertTime.vue'
+
 
 const routes = [
   {
@@ -120,6 +122,11 @@ const routes = [
     path: '/searchmap',
     name: 'searchmap',
     component: SearchMap
+  },
+  {
+    path: '/inserttime',
+    name: 'insertTime',
+    component: InsertTime
   },
 ]
 
