@@ -28,7 +28,6 @@
           <KakaoMapMarker v-for="(store, index) in addList" :key="index" :lat="store.latitude" :lng="store.longitude">
           </KakaoMapMarker>
         </KakaoMap> -->
-
       </div>
 
       <h2 class="result-h2">동네 랭킹 Best <a class="view-count" href="/searchmap">더보기</a></h2>
@@ -72,7 +71,7 @@ const coordinate = ref({
 const storeList = ref([]);
 const addList = ref([]);
 const map = ref(null);
-// const overlays = ref([]);
+const overlays = ref([]);
 
 const getCurrentLocation = () => {
   if (navigator.geolocation) {
@@ -91,7 +90,6 @@ const getCurrentLocation = () => {
     alert('Geolocation is not supported by this browser.');
   }
 };
-
 
 const handleLocationError = (error) => {
   switch (error.code) {
@@ -171,7 +169,7 @@ const createMap = () => {
       <div class="map-wrap">
         <div class="info">
           <div class="title">${store.title}
-            <div class="close" @click="closeOverlay()" title="닫기"></div>
+            <div class="close" @click="closeOverlay(overlay)" title="닫기"></div>
           </div>
           <div class="body">
             <div class="img">
@@ -185,34 +183,34 @@ const createMap = () => {
           </div>
         </div>
       </div>`;
-      //로고 이미지가 없어서 콘솔에 오류가 뜸
-      
+
     const overlay = new window.kakao.maps.CustomOverlay({
       content: content,
       map: null,
       position: marker.getPosition()
     });
 
-    overlays.value.push({ id: store.id, overlay });
+    overlays.value.push(overlay);
 
     window.kakao.maps.event.addListener(marker, 'click', () => {
-      overlays.value.forEach(o => o.overlay.setMap(null));
-      overlay.setMap(map.value);
+      overlays.value.forEach(o => o.setMap(null)); // 모든 오버레이를 지도에서 숨깁니다.
+      overlay.setMap(map.value); // 클릭한 마커에 해당하는 오버레이를 지도에 표시합니다.
     });
   });
 };
 
+const closeOverlay = (overlay) => {
+  overlay.setMap(null);
+};
+console.log(closeOverlay);
 
 onMounted(() => {
   mainList();
   markList();
 });
 
-// window.closeOverlay = () => {
-//     const overlay = overlays.value.find();
-//     if (overlay) overlay.overlay.setMap(null);
-//   };
 </script>
+
 
 <script>
 import SlideView from '@/components/SlideView.vue';
@@ -222,8 +220,6 @@ import AppHeader from "@/components/AppHeader.vue"
 import TopButton from "@/components/TopButton.vue"
 import "@/assets/css/potal/main.css"
 // import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
-
-const overlays = ref([]);
 
 export default {
   name: "MainView",
@@ -310,10 +306,6 @@ export default {
         this.suggestions = [];
       }
     },
-    closeOverlay() {
-      const overlay = overlays.value.find();
-      if (overlay) overlay.overlay.setMap(null);
-    }
   },
   created() {
     this.getList();

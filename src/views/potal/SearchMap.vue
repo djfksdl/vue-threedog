@@ -10,7 +10,7 @@
         <!-- 검색 버튼 -->
         <button class="search-button" @click="searchLocation">검색</button>
       </div>
-      
+
       <div class="map-cal">
         <div id="map-search">
           <!-- <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true"
@@ -62,6 +62,8 @@ const rsDate = ref(null);
 const addList = ref([]);
 const map = ref(null);
 const overlays = ref([]);
+
+
 
 const searchLocation = async () => {
   try {
@@ -177,7 +179,11 @@ const markList = () => {
   });
 };
 
+
+
 const createMap = () => {
+
+
   if (!window.kakao) {
     console.error("Kakao map library not loaded.");
     return;
@@ -205,7 +211,7 @@ const createMap = () => {
       <div class="map-wrap">
         <div class="info">
           <div class="title">${store.title}
-            <div class="close" onclick="closeOverlay(${store.id})" title="닫기"></div>
+            <div class="close" onclick="closeOverlay()" title="닫기"></div>
           </div>
           <div class="body">
             <div class="img">
@@ -219,8 +225,8 @@ const createMap = () => {
           </div>
         </div>
       </div>`;
-      //로고 이미지가 없어서 콘솔에 오류가 뜸
-      
+    //로고 이미지가 없어서 콘솔에 오류가 뜸
+
     const overlay = new window.kakao.maps.CustomOverlay({
       content: content,
       map: null,
@@ -233,17 +239,25 @@ const createMap = () => {
       overlays.value.forEach(o => o.overlay.setMap(null));
       overlay.setMap(map.value);
     });
+
+
+    
+    // function closeOverlay() {
+    //   overlay.setMap(null); 
+    // }
+
+
+
   });
 };
+
+
 
 
 onMounted(() => {
   getList();
   markList();
-  window.closeOverlay = (id) => {
-    const overlay = overlays.value.find(o => o.id === id);
-    if (overlay) overlay.overlay.setMap(null);
-  };
+
 });
 
 </script>
