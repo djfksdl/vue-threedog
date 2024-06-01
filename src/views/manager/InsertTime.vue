@@ -337,7 +337,7 @@ export default {
         // ***** 일괄등록x 선택된 날짜 업데이트 *****
         updateDate(date) {
             this.selectedDate = date;
-            
+
             // 날짜가 변경될 때도 점심이 선택된 상태로 유지
             if (!this.selectedDays.includes('lunch')) {
                 this.selectedDays.push('lunch');
@@ -377,6 +377,10 @@ export default {
             } else {
                 if (!this.selectedDays.includes(index)) {
                     this.selectedDays = this.workDays; // 요일은 계속 선택된 상태로 유지
+                    // 날짜가 변경될 때도 점심이 선택된 상태로 유지
+                    if (!this.selectedDays.includes('lunch')) {
+                        this.selectedDays.push('lunch');
+                    }
                 }
             }
         },
@@ -420,6 +424,12 @@ export default {
 
     },
     watch:{
+        selectedDate() {
+            // 날짜가 변경될 때도 점심이 선택된 상태로 유지
+            if (!this.selectedDays.includes('lunch')) {
+                this.selectedDays.push('lunch');
+            }
+        },
         isAllDayCheck(newVal) {
             if (!newVal) {
                 this.selectedStartDate = '';
