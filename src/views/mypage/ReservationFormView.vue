@@ -13,6 +13,7 @@
                             <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${businessVo.logo}`"
                                 style="margin-left:30px; width: 220px;height: 220px; border-radius: 5%;">
                         </div>
+
                         <div class="managerInfor3">
                             <label>매장명</label>
                             <p>{{ businessVo.title }}</p>
@@ -26,6 +27,7 @@
                     </div>
 
                 </div>
+                <!-- {{ this.dogVo.uNo }} -->
                 <form v-on:submit.prevent="reserveInsert">
                     <h2>📅 날짜와 시간을 선택해주세요</h2>
                     <div class="choiceBox">
@@ -402,8 +404,10 @@ export default {
                 weightDiv: "",
                 beauty: "",
                 beauty2: [],
+                priceNo2: [],
             },
             // 유저
+            uNo: this.$store.state.authUser.uNo,
             uPoint: 0,
             isClicked: false,    //포인트버튼
             usePoint: 0,
@@ -448,6 +452,9 @@ export default {
             this.reserveVo.rtDate = selected.newDate;
             this.reserveVo.rtTime = selected.time;
             this.reserveVo.rtNo = selected.rtNo;
+
+
+
         },
 
 
@@ -571,28 +578,53 @@ export default {
 
         // 추가요금 가격표
         toggleSelected(priceList2) {
-            priceList2.selected = !priceList2.selected; // 상태를 토글합니다
+            // 선택 상태를 토글합니다.
+            priceList2.selected = !priceList2.selected;
+
             if (priceList2.selected) {
                 console.log('선택한 값 :', priceList2.onePrice);
-                this.reserveVo.expectedPrice += priceList2.onePrice; // priceVo.onePrice에 선택한 값의 누적을 수행합니다.
+                this.reserveVo.expectedPrice += priceList2.onePrice; // 선택한 값의 누적을 수행합니다.
 
-                // 선택한 td의 가로의 th의 값 가져오기
+                // 가격표 No 출력 및 추가
+                console.log("priceNo:", priceList2.priceNo);
+                this.priceVo.priceNo2.push(priceList2.priceNo); // priceNo2 배열에 추가합니다.
+
+                // 선택한 td의 가로의 th 값을 가져옵니다.
                 const thValue = priceList2.beauty;
-                console.log('선택한 td의 가로의 th의 값:', thValue);
-                this.priceVo.beauty2.push(thValue);
-                console.log(this.priceVo.beauty);
+                console.log('선택한 td의 가로의 th 값:', thValue);
+                // this.priceVo.beauty2.push(thValue);
+                // console.log(this.priceVo.beauty2);
 
             } else {
                 console.log('선택 취소한 값 :', priceList2.onePrice);
                 this.reserveVo.expectedPrice -= priceList2.onePrice; // 선택 취소한 값의 차감을 수행합니다.
+
+                // 선택 취소한 th 값을 beauty2 배열에서 제거합니다.
+                const thIndex = this.priceVo.beauty2.indexOf(priceList2.beauty);
+                if (thIndex > -1) {
+                    this.priceVo.beauty2.splice(thIndex, 1);
+                }
+
+                // 선택 취소한 priceNo 값을 priceNo2 배열에서 제거합니다.
+                const priceNoIndex = this.priceVo.priceNo2.indexOf(priceList2.priceNo);
+                if (priceNoIndex > -1) {
+                    this.priceVo.priceNo2.splice(priceNoIndex, 1);
+                }
             }
-        },
+
+            // 콘솔에 현재 예상 가격 출력
+            console.log('현재 예상 가격 :', this.reserveVo.expectedPrice);
+            // 콘솔에 현재 priceNo2 배열 출력
+            console.log('현재 priceNo 배열 :', this.priceVo.priceNo2);
+        }
+
+        ,
+
 
         addPrice(price, index) {
             console.log("가격예상클릭");
             console.log("선택한 가격:", price);
             console.log("선택한 가격의 인덱스:", index);
-
             // 선택한 td의 열 인덱스 계산
             const colIndex = event.target.cellIndex;
 
@@ -614,6 +646,8 @@ export default {
             const thValue = this.priceList[rowIndex].weightDiv;
 
             console.log("선택한 행의 첫 번째 열의 th 값:", thValue);
+
+
 
             // 만약 이미 선택된 가격 항목이면 선택 해제
             if (this.selectedPriceIndex === index) {
@@ -638,15 +672,24 @@ export default {
                 this.priceVo.onePrice = price;
                 this.priceVo.weightDiv = thValue;
                 this.priceVo.beauty = firstThValue;
+
+
+                // firstThValue와 thValue에 맞는 priceNo 값을 priceList에서 찾기
+                this.priceList.forEach(item => {
+                    if (item.beauty === firstThValue && item.weightDiv === thValue) {
+                        console.log("가격표 No:", item.priceNo);
+                        this.priceVo.priceNo = item.priceNo;
+                        console.log("가격표맞아??????????????");
+                        console.log(this.priceVo.priceNo);
+                    }
+                });
             }
 
             // priceList2 배열의 모든 요소의 selected 속성을 초기화
             this.priceList2.forEach(item => {
                 item.selected = false;
             });
-        }
-
-        ,
+        },
 
 
         // 포인트 전액사용 버튼
@@ -702,6 +745,7 @@ export default {
 
         // 예약하기
         reserveInsert() {
+            console.log(this.uNo);
             const formData = new FormData();
 
             // 서명이 비어 있는지 확인
@@ -726,33 +770,41 @@ export default {
                 // Blob을 File 객체로 변환
                 const imageFile = new File([blob], 'signature.png', { type: 'image/png' });
 
+
+                // 확인용
+
+
+
+
                 // FormData에 이미지 파일 추가
                 formData.append('signFile', imageFile);
 
                 // 예약에 필요한 데이터 추가
-                formData.append('rtDate', this.reserveVo.rtDate);
-                formData.append('rtTime', this.reserveVo.rtTime);
-                formData.append('dogNo', this.dogVo.dogNo);
-                formData.append('skin', this.dogVo.skin);
-                formData.append('heart', this.dogVo.heart);
-                formData.append('marking', this.dogVo.marking);
-                formData.append('mounting', this.dogVo.mounting);
-                formData.append('bite', this.dogVo.bite);
-                formData.append('memo', this.dogVo.memo);
-                formData.append('beauty', this.priceVo.beauty);
-                formData.append('price', this.priceVo.onePrice);
-                formData.append('weightDiv', this.priceVo.weightDiv);
-                formData.append('expectedPrice', this.reserveVo.expectedPrice);
-                formData.append('usePoint', this.usePoint);
-                formData.append('bNo', this.reserveVo.bNo);
-                formData.append('uNo', this.dogVo.uNo);
-                formData.append('expectedPrice', this.reserveVo.expectedPrice);
-                formData.append('rtNo', this.reserveVo.rtNo);
-                formData.append('rtFinish', this.reserveVo.rtFinish);
+                formData.append('rtDate', this.reserveVo.rtDate); //
+                formData.append('rtTime', this.reserveVo.rtTime); //
+                formData.append('dogNo', this.dogVo.dogNo); // 
+                formData.append('skin', this.dogVo.skin); //
+                formData.append('heart', this.dogVo.heart); //
+                formData.append('marking', this.dogVo.marking); //
+                formData.append('mounting', this.dogVo.mounting);//
+                formData.append('bite', this.dogVo.bite); //
+                formData.append('memo', this.dogVo.memo);//
+                formData.append('beauty', this.priceVo.beauty); //
+                formData.append('onePrice', this.priceVo.onePrice); //
+                formData.append('weightDiv', this.priceVo.weightDiv); //
+                formData.append('expectedPrice', this.reserveVo.expectedPrice);//
+                formData.append('usePoint', this.usePoint);//
+                formData.append('bNo', this.reserveVo.bNo);//
+                formData.append('uNo', this.uNo);//
+                formData.append('rtNo', this.reserveVo.rtNo);//
+                formData.append('rtFinish', this.reserveVo.rtFinish);//
+                formData.append('priceNo', this.priceVo.priceNo); //
+                formData.append('rsNum',this.reserveVo.rsNo);
 
-                this.priceVo.beauty2.forEach((item, index) => {
-                    formData.append(`beautyPlus[${index}]`, item);
+                this.priceVo.priceNo2.forEach((item, index) => {
+                    formData.append(`priceNoPlus[${index}]`, item);
                 });
+                console.log("예약제바아아아아아아아아알");
 
                 axios({
                     method: 'post',
