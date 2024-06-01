@@ -46,8 +46,6 @@
                                         <input type="time" step="600" :value="rtVo.rtTimes[index]?.endTime || ''" @input="updateEndTime(index, $event.target.value)">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="rightColumn">
                                 <div class="selectWorkTime">
                                     <div class="selectWorkDay" @click="selectDay('lunch')" :class="{'selected': selectedDays.includes('lunch')}">
                                         점심
@@ -57,6 +55,9 @@
                                         <input type="time" step="600" :value="rtVo.rtTimes['lunch']?.endTime || ''" @input="updateEndTime('lunch', $event.target.value)">
                                     </div>
                                 </div>
+                            </div>
+                            <div class="rightColumn">
+                                
                                 <div class="selectWorkTime">
                                     <div class="selectWorkDay" @click="selectDay('sat')" :class="{'selected': selectedDays.includes('sat')}">
                                         토
@@ -147,11 +148,11 @@ export default {
                 contentHeight: 500,
                 locale: "ko",
                 firstDay: 1, //월요일을 시작일로 설정
-                events: this.holidays, //공휴일 이벤트 추가
+                events:this.events,//이벤트 소스를 events 배열로 설정
                 dateClick: this.handleDateClick, // 날짜 클릭 이벤트 핸들러 
                 dateSet: this.handleDateSet //날짜 선택 이벤트 핸들러 
             },
-            holidays : [],// 공휴일 데이터를 저장할 배열
+            // holidays : [],// 공휴일 데이터를 저장할 배열
 
             //날짜,시간관련
             isAllDayCheck: false,
@@ -168,19 +169,34 @@ export default {
                 rtDates:[],
                 rtTimes:[],
                 bNo : this.$route.params.bNo,
-            }
+            },
+            // 이벤트 데이터를 저장할 배열 추가
+            events: [],
+            
         };
     },
     methods: {
-        async fetchHolidays() {
-            try {
-                const response = await axios.get('API_URL_HERE'); // 공휴일 데이터를 제공하는 API의 URL
-                this.holidays = response.data; // API의 데이터 구조에 따라 수정
-            } catch (error) {
-                console.error('Error fetching holidays:', error);
-            }
-        },
-        // 이용가능시간 등록하기
+        // ***** 공휴일 api불러오기 - 나중에 *****
+        // async fetchHolidays() {
+        //     try {
+        //         const response = await axios.get('API_URL_HERE'); // 공휴일 데이터를 제공하는 API의 URL
+        //         this.holidays = response.data; // API의 데이터 구조에 따라 수정
+        //         // 공휴일 데이터를 events 배열에 추가
+        //         this.holidays.forEach(holiday => {
+        //             this.events.push({
+        //                 title: holiday.name,
+        //                 start: holiday.date,
+        //                 allDay: true,
+        //                 color: 'red' // 공휴일 이벤트의 색상을 빨간색으로 설정
+        //             });
+        //         });
+        //         this.$refs.calendar.getApi().addEventSource(this.events); // 이벤트 소스를 FullCalendar에 추가
+        //     } catch (error) {
+        //         console.error('Error fetching holidays:', error);
+        //     }
+        // },
+
+        // ***** 이용가능시간 등록하기 *****
         insertRT() {
             // console.log("등록 버튼");
 
@@ -216,8 +232,8 @@ export default {
                 });
             }
 
-            console.log("여기 확인하라");
-            console.log(this.rtVo);
+            // console.log("여기 확인하라");
+            // console.log(this.rtVo);
 
             axios({
                 method: 'post', 
@@ -227,12 +243,55 @@ export default {
                 responseType: 'json'
             }).then(response => {
                 console.log(response.data.apiData);
+
+                
+            }).catch(error => {
+                console.log(error);
+            });
+        },
+        // 등록되어있는 날짜 가져오기
+        selectRt() {
+
+            // console.log("등록여부 확인");
+            axios({
+                method: 'get',
+                url: `${this.$store.state.apiBaseUrl}/api/su/selectRt`,
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                params : {bNo: this.rtVo.bNo},
+                responseType: 'json'
+            }).then(response => {
+                    console.log("화깅ㄴ하기")
+                    console.log(response.data.apiData);
+
+                    // 서버로부터 기존 이벤트를 받아서 events 배열에 추가
+                    response.data.apiData.forEach(event => {
+                        this.events.push({
+                            title: 'V완료V',
+                            start: event.rtDate.split(' ')[0], // rtDate에서 날짜만 추출
+                            allDay: true
+                        });
+                    });
+
+                    // 이벤트 소스를 FullCalendar에 추가
+                    this.$refs.calendar.getApi().removeAllEvents(); // 기존 이벤트 제거
+                    this.$refs.calendar.getApi().addEventSource(this.events); // 새로운 이벤트 소스 추가
+              
             }).catch(error => {
                 console.log(error);
             });
         },
 
-        // 점심 시간 체크
+        addEventRange(startDate, endDate) {
+            let currentDate = new Date(startDate);
+            let endDateObj = new Date(endDate);
+
+            while (currentDate <= endDateObj) {
+                this.addEvent(currentDate.toISOString().split('T')[0]);
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+        },
+
+        // ***** 점심 시간 체크 *****
         isLunchTime(startTime, endTime) {
             if (!this.selectedDays.includes('lunch')) {
                 return false; // 점심시간이 선택되지 않은 경우, 항상 false를 반환하여 시간을 포함시키도록 합니다.
@@ -242,12 +301,13 @@ export default {
             return (startTime >= lunchStart && startTime < lunchEnd) || (endTime > lunchStart && endTime <= lunchEnd);
         },
 
-        // 시간을 "HH:mm" 형식으로 포맷팅
+        // ***** 시간을 "HH:mm" 형식으로 포맷팅 *****
         formatTime(date) {
             const hours = String(date.getHours()).padStart(2, '0');
             const minutes = String(date.getMinutes()).padStart(2, '0');
             return `${hours}:${minutes}`;
         },
+       
         
         // ***** 달력 클릭시 input창에 해당 날짜 할당 *****
         handleDateClick(info) {
@@ -466,7 +526,7 @@ export default {
     },
     created() {
 
-        this.fetchHolidays(); //공휴일 가져옴
+        // this.fetchHolidays(); //공휴일 가져옴
 
         // 오늘 날짜를 YYYY-MM-DD 형식으로 설정
         const today = new Date();
@@ -477,6 +537,8 @@ export default {
 
          // 기본적으로 월요일부터 일요일까지의 요일을 선택된 상태로 설정
         this.selectedDays = [0,1, 2, 3, 4, 5, 6 , 'lunch']; // 월요일부터 일요일까지의 요일 인덱스
+
+        this.selectRt();
     },
 };
 </script>
