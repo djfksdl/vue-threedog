@@ -14,7 +14,6 @@ export default createStore({
         };
     },
     mutations: {
-        //
         setAuthUser(state, payload) {
             state.authUser = payload;
         },
@@ -33,6 +32,9 @@ export default createStore({
         setAuth(state, payload) {
             state.auth = payload;
         },
+        setReservationData(state, data) {
+            state.reservationData = data;
+        },
 
     },
     plugins: [
@@ -43,10 +45,17 @@ export default createStore({
     actions: {
         updateSelectedSchedule({ commit }, schedule) {
             commit('setSelectedSchedule', schedule);
+        },
+        updateReservationData({ commit }, data) {
+            commit('setReservationData', data);
         }
     },
     getters: {
-        getSelectedSchedule: state => state.selectedSchedule
-    }
+        getSelectedSchedule: state => state.selectedSchedule,
+        reservationData(state) {
+            return state.reservationData;
+        }
+    },
+
 
 });

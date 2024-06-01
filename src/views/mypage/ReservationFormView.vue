@@ -331,7 +331,7 @@ import AppFooter from "@/components/AppFooter.vue"
 import AppHeader from "@/components/AppHeader.vue"
 import SignaturePad from 'signature_pad';
 import axios from "axios"
-
+import { mapActions } from 'vuex';
 import '@/assets/css/mypage/mypage.css'
 import Datepicker from '@/components/DatePicker.vue'
 import SideBar from '@/components/SideBar.vue'
@@ -757,7 +757,7 @@ export default {
             return this.signaturePad.toDataURL();
         }
         ,
-
+        ...mapActions(['updateReservationData']),
 
         // 예약하기
         reserveInsert() {
@@ -822,6 +822,34 @@ export default {
                 });
                 console.log("예약제바아아아아아아아아알");
 
+                // 예약에 필요한 데이터 추가
+                const reservationData = {
+                    rtDate: this.reserveVo.rtDate,
+                    rtTime: this.reserveVo.rtTime,
+                    dogNo: this.dogVo.dogNo,
+                    skin: this.dogVo.skin,
+                    heart: this.dogVo.heart,
+                    marking: this.dogVo.marking,
+                    mounting: this.dogVo.mounting,
+                    bite: this.dogVo.bite,
+                    memo: this.dogVo.memo,
+                    beauty: this.priceVo.beauty,
+                    onePrice: this.priceVo.onePrice,
+                    weightDiv: this.priceVo.weightDiv,
+                    expectedPrice: this.reserveVo.expectedPrice,
+                    usePoint: this.usePoint,
+                    bNo: this.reserveVo.bNo,
+                    uNo: this.uNo,
+                    rtNo: this.reserveVo.rtNo,
+                    rtFinish: this.reserveVo.rtFinish,
+                    priceNo: this.priceVo.priceNo,
+                    rsNum: this.reserveVo.rsNo,
+                    priceNoPlus: this.priceVo.priceNo2
+                };
+
+                // Vuex 스토어에 데이터 저장
+                this.updateReservationData(reservationData);
+
                 axios({
                     method: 'post',
                     url: `${this.$store.state.apiBaseUrl}/api/mypage/reservation`,
@@ -832,7 +860,11 @@ export default {
                     console.log(response.data);
                     if (response.data.result == "success") {
                         console.log("예약하기성공!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                        // this.$router.push('/');
+
+                        this.$router.push('/reservationsuccess');
+
+
+
 
                     } else {
                         alert("알수없는 오류");
@@ -909,8 +941,4 @@ canvas {
     padding: 10px;
     cursor: pointer;
 }
-
-
-
-
 </style>
