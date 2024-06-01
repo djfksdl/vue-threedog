@@ -317,6 +317,13 @@ export default {
             this.highlightDateRange();
         }
     },
-    created() {},
+    created() {
+        // 오늘 날짜를 YYYY-MM-DD 형식으로 설정
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        this.selectedDate = `${yyyy}-${mm}-${dd}`;
+    },
 };
 </script>
