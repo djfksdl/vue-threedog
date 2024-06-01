@@ -20,6 +20,7 @@ import ScheduleView from '@/views/manager/ScheduleView.vue'
 import NaverLogin from '@/views/potal/NaverLogin.vue'
 import SearchMap from '@/views/potal/SearchMap.vue'
 import InsertTime from '@/views/manager/InsertTime.vue'
+import ReservationSuccessView from '@/views/mypage/ReservationSuccessView.vue'
 
 
 const routes = [
@@ -31,12 +32,12 @@ const routes = [
   {
     path: '/diary',
     name: 'diary',
-    component:DiaryView
+    component: DiaryView
   },
   {
     path: '/petaddform',
     name: 'petaddform',
-    component:PetAddFormView
+    component: PetAddFormView
   },
   {
     path: '/edit/:bNo',
@@ -71,32 +72,32 @@ const routes = [
   {
     path: '/totalsales',
     name: 'totalsales',
-    component:TotalSalesView
+    component: TotalSalesView
   },
   {
     path: '/mydiary',
     name: 'mydiary',
-    component:MyDiaryView
+    component: MyDiaryView
   },
   {
     path: '/reservationform',
     name: 'reservationform',
-    component:ReservationFormView
+    component: ReservationFormView
   },
   {
     path: '/review',
     name: 'review',
-    component:ReviewView
+    component: ReviewView
   },
   {
     path: '/reserve',
     name: 'reserve',
-    component:ReserveView
+    component: ReserveView
   },
   {
     path: '/mypage/:uNo',
     name: 'mypage',
-    component:MypageView
+    component: MypageView
   },
   {
     path: '/search',
@@ -127,6 +128,12 @@ const routes = [
     path: '/inserttime/:bNo',
     name: 'insertTime',
     component: InsertTime
+  },
+  {
+    path: '/reservationsuccess',
+    name: ReservationSuccessView,
+    component: ReservationSuccessView
+
   },
 ]
 

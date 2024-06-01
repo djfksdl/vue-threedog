@@ -310,8 +310,16 @@
                         <button class="reserveInsert" type="submit">예약</button>
                     </div>
                 </form>
+                <!-- 모달 창 -->
+                <div v-if="modalVisible" class="reservationModal">
+                    <div class="modal-content">
+                        <p>예약이 완료되었습니다.</p>
+                        <span class="close" @click="closeModal">&times;</span>
+                    </div>
+                </div>
             </div>
         </div>
+
 
         <TopButton />
         <AppFooter />
@@ -825,6 +833,7 @@ export default {
                     if (response.data.result == "success") {
                         console.log("예약하기성공!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                         // this.$router.push('/');
+
                     } else {
                         alert("알수없는 오류");
                     }
@@ -833,6 +842,9 @@ export default {
                 });
             }
         },
+
+
+        // 전자서명 Blob
         dataURItoBlob(dataURI) {
             const byteString = atob(dataURI.split(',')[1]);
             const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
@@ -897,4 +909,8 @@ canvas {
     padding: 10px;
     cursor: pointer;
 }
+
+
+
+
 </style>
