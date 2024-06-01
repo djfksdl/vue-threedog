@@ -180,9 +180,9 @@ export default {
                 console.error('Error fetching holidays:', error);
             }
         },
-        // 일괄등록x일때 이용가능시간 등록하기
+        // 이용가능시간 등록하기
         insertRT() {
-            console.log("등록 버튼");
+            // console.log("등록 버튼");
 
             // 선택된 날짜와 시간을 기반으로 rtVo 구성
             this.rtVo.rtDates = this.isAllDayCheck ? [this.selectedStartDate, this.selectedEndDate] : [this.selectedDate];
@@ -232,8 +232,11 @@ export default {
             });
         },
 
-        // 점심 시간 체크 (예: 12:00 ~ 13:00)
+        // 점심 시간 체크
         isLunchTime(startTime, endTime) {
+            if (!this.selectedDays.includes('lunch')) {
+                return false; // 점심시간이 선택되지 않은 경우, 항상 false를 반환하여 시간을 포함시키도록 합니다.
+            }
             const lunchStart = new Date('1970-01-01T12:00:00');
             const lunchEnd = new Date('1970-01-01T13:00:00');
             return (startTime >= lunchStart && startTime < lunchEnd) || (endTime > lunchStart && endTime <= lunchEnd);
