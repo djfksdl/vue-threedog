@@ -20,14 +20,14 @@
                     <!-- 날짜 선택 -->
                     <div class="selectWorkDate">
                         <div v-if="!isAllDayCheck">
-                            <input type="date">
+                            <input type="date" :value="selectedDate" @input="updateDate($event.target.value)" >
                         </div>
                         <div v-else>
-                            <input type="date">~<input type="date">
+                            <input type="date" :value="selectedStartDate" @input="updateStartDate($event.target.value)">~<input type="date" :value="selectedEndDate" @input="updateEndDate($event.target.value)">
                         </div>
                         <div class="weekAllDayCheck">
-                            <p>일괄등록하기</p>
-                            <input type="checkbox" v-model="isAllDayCheck"> 
+                            <label id="checkAllDay" >일괄등록하기</label>
+                            <input id="checkAllDay" type="checkbox" v-model="isAllDayCheck"> 
                         </div>
                     </div>
 
@@ -111,9 +111,32 @@
                 isAllDayCheck:false,
                 selectedDays: [], // 선택된 요일 인덱스, 다중 선택이 가능하기 위해 배열로 설정
                 days: ['월', '화', '수', '목', '금', '토'],  // 요일 목록
+                selectedDate:'',
+                selectedStartDate:'',//일괄 등록시 시작 날짜
+                selectedEndDate:''// 일괄 등록시 종료 날짜
             };
         },
         methods: {
+
+            //달력 클릭시 input창에 해당 날짜 
+            handleDateClick(info) {
+                if (!this.isAllDayCheck) {
+                    this.selectedDate = info.dateStr;
+                } else {
+                    this.selectedStartDate = info.dateStr;
+                    this.selectedEndDate = '';
+                }
+            },
+            updateDate(date) {
+                this.selectedDate = date;
+            },
+            updateStartDate(date) {
+                this.selectedStartDate = date;
+            },
+            updateEndDate(date) {
+                this.selectedEndDate = date;
+            },
+            //요일 선택(다중 선택 가능)
             selectDay(index) {
                 if (index === 'lunch') {
                     const selectedIndex = this.selectedDays.indexOf('lunch');
