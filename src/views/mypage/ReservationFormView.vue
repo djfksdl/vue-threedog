@@ -276,9 +276,11 @@
                                 7. 생식기 및 귀털 제거에서 자극을 최소화하기 위해 지저분해 보일 수 있는 점 양해 부탁드립니다.<br>
                             </div>
                             <div>
-                                <input type="checkbox" id="agreeCheckbox" disabled>안내사항 및 미용시 주의사항에 동의합니다.
+                                <input type="checkbox" id="agreeCheckbox"><label for="agreeCheckbox">안내사항 및 미용시
+                                    주의사항에 동의합니다.</label>
                             </div>
                         </div>
+
 
 
 
@@ -643,10 +645,10 @@ export default {
             const rowIndex = Math.floor(index / 5) * 5;
 
             // 선택한 행의 첫 번째 열의 th 값
-            const thValue = this.priceList[rowIndex].weightDiv;
+            const thValue = this.priceList[rowIndex + 1].weightDiv;
 
             console.log("선택한 행의 첫 번째 열의 th 값:", thValue);
-
+            console.log(this.priceVo.priceNo);
 
 
             // 만약 이미 선택된 가격 항목이면 선택 해제
@@ -721,16 +723,20 @@ export default {
             // 이미 선택된 결제 방법이라면 선택 취소하고, 아니라면 선택합니다.
             this.selectedPayment = this.selectedPayment === index ? null : index;
         },
-
         clearCanvas() {
+            // 캔버스 요소와 컨텍스트 가져오기
             const canvas = this.$refs.signatureCanvas;
             const context = canvas.getContext('2d');
+
+            // 캔버스 영역을 비웁니다.
             context.clearRect(0, 0, canvas.width, canvas.height);
         },
         onBegin() {
+            // 서명이 시작될 때 호출되는 메서드
             this.signaturePad.onBegin();
         },
         onEnd() {
+            // 서명이 끝날 때 호출되는 메서드
             this.signaturePad.onEnd();
         },
         getSignatureImage() {
@@ -738,9 +744,11 @@ export default {
             if (this.signaturePad.isEmpty()) {
                 return '';
             }
+
             // 서명을 이미지로 변환하여 반환
             return this.signaturePad.toDataURL();
-        },
+        }
+        ,
 
 
         // 예약하기
@@ -758,9 +766,11 @@ export default {
                 alert('날짜와 시간을 선택해주세요.');
             } else if (this.reserveVo.expectedPrice == 0) {
                 alert("반려견을 선택하여 예약할 목록을 선택하세요.");
-            } else if (!document.getElementById('agreeCheckbox').checked) {
-                alert('안내사항 및 미용시 주의사항에 동의해주세요.');
-            } else if (isEmpty) {
+            }
+            // else if (!document.getElementById('agreeCheckbox').checked) {
+            //     alert('안내사항 및 미용시 주의사항에 동의해주세요.');
+            // } 
+            else if (isEmpty) {
                 alert("서명을 해주세요.");
             } else {
                 // Canvas를 이미지 파일로 변환하여 FormData에 추가
@@ -770,8 +780,6 @@ export default {
                 // Blob을 File 객체로 변환
                 const imageFile = new File([blob], 'signature.png', { type: 'image/png' });
 
-
-                // 확인용
 
 
 
@@ -799,7 +807,7 @@ export default {
                 formData.append('rtNo', this.reserveVo.rtNo);//
                 formData.append('rtFinish', this.reserveVo.rtFinish);//
                 formData.append('priceNo', this.priceVo.priceNo); //
-                formData.append('rsNum',this.reserveVo.rsNo);
+                formData.append('rsNum', this.reserveVo.rsNo);
 
                 this.priceVo.priceNo2.forEach((item, index) => {
                     formData.append(`priceNoPlus[${index}]`, item);
@@ -841,14 +849,16 @@ export default {
     },
 
     mounted() {
-        const noticeElement = document.getElementById('notice');
-        const checkbox = document.getElementById('agreeCheckbox');
+        // const noticeElement = document.getElementById('notice');
+        // const checkbox = document.getElementById('agreeCheckbox');
 
-        noticeElement.addEventListener('scroll', () => {
-            if (noticeElement.scrollTop + noticeElement.clientHeight >= noticeElement.scrollHeight) {
-                checkbox.disabled = false;
-            }
-        });
+        // noticeElement.addEventListener('scroll', () => {
+        //     // 더 이상 스크롤할 수 없을 때
+        //     if (noticeElement.scrollTop + noticeElement.clientHeight >= noticeElement.scrollHeight) {
+        //         // 체크박스를 활성화
+        //         checkbox.disabled = false;
+        //     }
+        // });
 
         const canvas = this.$refs.signatureCanvas;
         this.signaturePad = new SignaturePad(canvas);
