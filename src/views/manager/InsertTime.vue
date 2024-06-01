@@ -13,7 +13,7 @@
             <div class="timeContainer" >
                 <!-- 타이틀 -->
                 <div class="timeTop">
-                    <h1>한 주 스케쥴 등록</h1>
+                    <h1>영업시간 등록</h1>
                 </div>
 
                 <!-- 스케쥴 등록 -->
@@ -42,7 +42,8 @@
                                         {{ day }}
                                     </div>
                                     <div>
-                                        <input type="time"> ~ <input type="time">
+                                        <input type="time" :value="rtVo.rtTimes[index]?.startTime || ''" @input="updateStartTime(index, $event.target.value)"> ~ 
+                                        <input type="time" :value="rtVo.rtTimes[index]?.endTime || ''" @input="updateEndTime(index, $event.target.value)">
                                     </div>
                                 </div>
                             </div>
@@ -52,7 +53,8 @@
                                         점심
                                     </div>
                                     <div>
-                                        <input type="time"> ~ <input type="time">
+                                        <input type="time" :value="rtVo.rtTimes['lunch']?.startTime || ''" @input="updateStartTime('lunch', $event.target.value)"> ~ 
+                                        <input type="time" :value="rtVo.rtTimes['lunch']?.endTime || ''" @input="updateEndTime('lunch', $event.target.value)">
                                     </div>
                                 </div>
                                 <div class="selectWorkTime">
@@ -60,7 +62,8 @@
                                         토
                                     </div>
                                     <div>
-                                        <input type="time"> ~ <input type="time">
+                                        <input type="time" :value="rtVo.rtTimes['sat']?.startTime || ''" @input="updateStartTime('sat', $event.target.value)"> ~ 
+                                        <input type="time" :value="rtVo.rtTimes['sat']?.endTime || ''" @input="updateEndTime('sat', $event.target.value)">
                                     </div>
                                 </div>
                                 <div class="selectWorkTime">
@@ -68,7 +71,8 @@
                                         일
                                     </div>
                                     <div>
-                                        <input type="time"> ~ <input type="time">
+                                        <input type="time" :value="rtVo.rtTimes['sun']?.startTime || ''" @input="updateStartTime('sun', $event.target.value)"> ~ 
+                                        <input type="time" :value="rtVo.rtTimes['sun']?.endTime || ''" @input="updateEndTime('sun', $event.target.value)">
                                     </div>
                                 </div>
                             </div>
@@ -81,7 +85,8 @@
                                 {{ getDayName(selectedDate) }}
                             </div>
                             <div>
-                                <input type="time"> ~ <input type="time">
+                                <input type="time" :value="rtVo.rtTimes[getDayIndex(selectedDate)]?.startTime || ''" @input="updateStartTime(getDayIndex(selectedDate), $event.target.value)"> ~ 
+                                <input type="time" :value="rtVo.rtTimes[getDayIndex(selectedDate)]?.endTime || ''" @input="updateEndTime(getDayIndex(selectedDate), $event.target.value)">
                             </div>
                         </div>
                         <div class="selectWorkTime">
@@ -89,13 +94,15 @@
                                 점심
                             </div>
                             <div>
-                                <input type="time"> ~ <input type="time">
+                                <input type="time" :value="rtVo.rtTimes['lunch']?.startTime || ''" @input="updateStartTime('lunch', $event.target.value)"> ~ 
+                                <input type="time" :value="rtVo.rtTimes['lunch']?.endTime || ''" @input="updateEndTime('lunch', $event.target.value)">
                             </div>
                         </div>
                     </div>
 
+
                     <!-- 등록,수정버튼 -->
-                    <button type="submit" class="insertBtn">등록</button>
+                    <button type="submit" class="insertBtn" v-on:click="insertRT">등록</button>
 
                 </div>
             </div>
@@ -114,6 +121,7 @@ import FullCalendar from "@fullcalendar/vue3";
 import interactionPlugin from "@fullcalendar/interaction"; // 상호작용 플러그인
 import dayGridPlugin from "@fullcalendar/daygrid";
 import "@/assets/css/manager/insertTime.css"; 
+import axios from 'axios';
 
 export default {
     name: "InsertTime",
@@ -150,10 +158,82 @@ export default {
             selectedDate: '',
             selectedStartDate: '', // 일괄 등록시 시작 날짜
             selectedEndDate: '' ,// 일괄 등록시 종료 날짜
-            selectedDateElements:[] //선택된 날짜 요소들
+            selectedDateElements:[], //선택된 날짜 요소들
+            workTimes:[], //선택된 요일별 시간
+            
+            rtVo:{
+                rtDates:[],
+                rtTimes:[],
+                bNo : this.$route.params.bNo,
+            }
         };
     },
     methods: {
+        insertRT() {
+            console.log("등록 버튼");
+
+            // 선택된 날짜와 시간을 기반으로 rtVo 구성
+            this.rtVo.rtDates = this.isAllDayCheck ? [this.selectedStartDate, this.selectedEndDate] : [this.selectedDate];
+
+            // 일괄등록 안 했을 때
+            if (!this.isAllDayCheck) {
+                const selectedTimeInputs = document.querySelectorAll('.selectedTimeContainer2 input[type="time"]');
+                let startTime = selectedTimeInputs[0].value;
+                let endTime = selectedTimeInputs[1].value;
+
+                // 1시간 단위로 시간을 쪼개서 rtVo에 추가
+                let currentTime = new Date(`1970-01-01T${startTime}:00`);
+                let endDateTime = new Date(`1970-01-01T${endTime}:00`);
+                this.rtVo.rtTimes = [];
+                while (currentTime < endDateTime) {
+                    let nextHour = new Date(currentTime);
+                    nextHour.setHours(currentTime.getHours() + 1);
+
+                    if (this.isLunchTime(currentTime, nextHour)) {
+                        currentTime = nextHour;
+                        continue; // 점심 시간은 제외
+                    }
+
+                    this.rtVo.rtTimes.push(this.formatTime(currentTime));
+                    currentTime = nextHour;
+                }
+            } else {
+                // 일괄등록 로직
+                this.rtVo.rtTimes = this.selectedDays.map(day => {
+                    return this.rtVo.rtTimes[day]?.startTime || '';
+                });
+            }
+
+            console.log("여기 확인하라");
+            console.log(this.rtVo);
+
+            axios({
+                method: 'post', 
+                url: `${this.$store.state.apiBaseUrl}/api/su/insertRT`,
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                data: this.rtVo,
+                responseType: 'json'
+            }).then(response => {
+                console.log(response.data.apiData);
+            }).catch(error => {
+                console.log(error);
+            });
+        },
+
+        // 점심 시간 체크 (예: 12:00 ~ 13:00)
+        isLunchTime(startTime, endTime) {
+            const lunchStart = new Date('1970-01-01T12:00:00');
+            const lunchEnd = new Date('1970-01-01T13:00:00');
+            return (startTime >= lunchStart && startTime < lunchEnd) || (endTime > lunchStart && endTime <= lunchEnd);
+        },
+
+        // 시간을 "HH:mm" 형식으로 포맷팅
+        formatTime(date) {
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${hours}:${minutes}`;
+        },
+        
         // ***** 달력 클릭시 input창에 해당 날짜 할당 *****
         handleDateClick(info) {
             console.log(info); // 클릭 이벤트 확인용
@@ -162,7 +242,6 @@ export default {
             if (!this.isAllDayCheck) {
                 this.selectedDate = info.dateStr;
                 this.highlightDate(info.dateStr); // 날짜 강조 표시
-                
             } else { //  일괄등록o
                 this.selectedStartDate = info.dateStr;
 
@@ -281,7 +360,22 @@ export default {
             } else if (this.selectedDate) {
                 this.highlightDate(this.selectedDate);
             }
-        }
+        },
+
+        // 업데이트 메서드 추가
+        updateStartTime(day, time) {
+            if (!this.rtVo.rtTimes[day]) {
+                this.rtVo.rtTimes = { ...this.rtVo.rtTimes, [day]: {} }; // 대신 일반 JavaScript 방식을 사용
+            }
+            this.rtVo.rtTimes[day].startTime = time;
+        },
+
+        updateEndTime(day, time) {
+            if (!this.rtVo.rtTimes[day]) {
+                this.rtVo.rtTimes = { ...this.rtVo.rtTimes, [day]: {} }; // 대신 일반 JavaScript 방식을 사용
+            }
+            this.rtVo.rtTimes[day].endTime = time;
+        },
 
     },
     watch:{
@@ -291,7 +385,6 @@ export default {
                 this.selectedEndDate = '';
                 this.clearHighlightedDates();
             } else if (this.selectedDate) {
-
                 // '일괄등록하기'를 체크하고 이미 선택된 날짜가 있는 경우
                 this.selectedStartDate = this.selectedDate;
                 const clickedDate = new Date(this.selectedDate);
@@ -310,7 +403,7 @@ export default {
                 this.highlightDateRange();
             }
         },
-         selectedStartDate() {
+        selectedStartDate() {
             this.highlightDateRange();
         },
         selectedEndDate() {
