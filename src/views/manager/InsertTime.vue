@@ -42,8 +42,8 @@
                                         {{ day }}
                                     </div>
                                     <div>
-                                        <input type="time" :value="rtVo.rtTimes[index]?.startTime || ''" @input="updateStartTime(index, $event.target.value)"> ~ 
-                                        <input type="time" :value="rtVo.rtTimes[index]?.endTime || ''" @input="updateEndTime(index, $event.target.value)">
+                                        <input type="time" step="600" :value="rtVo.rtTimes[index]?.startTime || ''" @input="updateStartTime(index, $event.target.value)"> ~ 
+                                        <input type="time" step="600" :value="rtVo.rtTimes[index]?.endTime || ''" @input="updateEndTime(index, $event.target.value)">
                                     </div>
                                 </div>
                             </div>
@@ -53,8 +53,8 @@
                                         점심
                                     </div>
                                     <div>
-                                        <input type="time" :value="rtVo.rtTimes['lunch']?.startTime || ''" @input="updateStartTime('lunch', $event.target.value)"> ~ 
-                                        <input type="time" :value="rtVo.rtTimes['lunch']?.endTime || ''" @input="updateEndTime('lunch', $event.target.value)">
+                                        <input type="time" step="600" :value="rtVo.rtTimes['lunch']?.startTime || ''" @input="updateStartTime('lunch', $event.target.value)"> ~ 
+                                        <input type="time" step="600" :value="rtVo.rtTimes['lunch']?.endTime || ''" @input="updateEndTime('lunch', $event.target.value)">
                                     </div>
                                 </div>
                                 <div class="selectWorkTime">
@@ -62,8 +62,8 @@
                                         토
                                     </div>
                                     <div>
-                                        <input type="time" :value="rtVo.rtTimes['sat']?.startTime || ''" @input="updateStartTime('sat', $event.target.value)"> ~ 
-                                        <input type="time" :value="rtVo.rtTimes['sat']?.endTime || ''" @input="updateEndTime('sat', $event.target.value)">
+                                        <input type="time" step="600" :value="rtVo.rtTimes['sat']?.startTime || ''" @input="updateStartTime('sat', $event.target.value)"> ~ 
+                                        <input type="time" step="600" :value="rtVo.rtTimes['sat']?.endTime || ''" @input="updateEndTime('sat', $event.target.value)">
                                     </div>
                                 </div>
                                 <div class="selectWorkTime">
@@ -71,8 +71,8 @@
                                         일
                                     </div>
                                     <div>
-                                        <input type="time" :value="rtVo.rtTimes['sun']?.startTime || ''" @input="updateStartTime('sun', $event.target.value)"> ~ 
-                                        <input type="time" :value="rtVo.rtTimes['sun']?.endTime || ''" @input="updateEndTime('sun', $event.target.value)">
+                                        <input type="time" step="600" :value="rtVo.rtTimes['sun']?.startTime || ''" @input="updateStartTime('sun', $event.target.value)"> ~ 
+                                        <input type="time" step="600" :value="rtVo.rtTimes['sun']?.endTime || ''" @input="updateEndTime('sun', $event.target.value)">
                                     </div>
                                 </div>
                             </div>
@@ -81,21 +81,21 @@
 
                     <div class="selectWorkTimeContainer selectedTimeContainer2" v-else>
                         <div class="selectWorkTime">
-                            <div :class="{'selectWorkDay': true, 'selected': selectedDays.includes(getDayIndex(selectedDate))}" @click="selectDay(getDayIndex(selectedDate))">
+                            <div :class="{'selectWorkDay': true, 'selected': selectedDays.includes(getDayIndex(selectedDate))}">
                                 {{ getDayName(selectedDate) }}
                             </div>
                             <div>
-                                <input type="time" :value="rtVo.rtTimes[getDayIndex(selectedDate)]?.startTime || ''" @input="updateStartTime(getDayIndex(selectedDate), $event.target.value)"> ~ 
-                                <input type="time" :value="rtVo.rtTimes[getDayIndex(selectedDate)]?.endTime || ''" @input="updateEndTime(getDayIndex(selectedDate), $event.target.value)">
+                                <input type="time" step="600" :value="rtVo.rtTimes[getDayIndex(selectedDate)]?.startTime || ''" @input="updateStartTime(getDayIndex(selectedDate), $event.target.value)"> ~ 
+                                <input type="time" step="600" :value="rtVo.rtTimes[getDayIndex(selectedDate)]?.endTime || ''" @input="updateEndTime(getDayIndex(selectedDate), $event.target.value)">
                             </div>
                         </div>
                         <div class="selectWorkTime">
-                            <div class="selectWorkDay" @click="selectDay('lunch')" :class="{'selected': selectedDays.includes('lunch')}">
+                            <div class="selectWorkDay" @click="selectDay('lunch', true)" :class="{'selected': selectedDays.includes('lunch')}">
                                 점심
                             </div>
                             <div>
-                                <input type="time" :value="rtVo.rtTimes['lunch']?.startTime || ''" @input="updateStartTime('lunch', $event.target.value)"> ~ 
-                                <input type="time" :value="rtVo.rtTimes['lunch']?.endTime || ''" @input="updateEndTime('lunch', $event.target.value)">
+                                <input type="time" step="600" :value="rtVo.rtTimes['lunch']?.startTime || ''" @input="updateStartTime('lunch', $event.target.value)"> ~ 
+                                <input type="time" step="600" :value="rtVo.rtTimes['lunch']?.endTime || ''" @input="updateEndTime('lunch', $event.target.value)">
                             </div>
                         </div>
                     </div>
@@ -123,6 +123,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import "@/assets/css/manager/insertTime.css"; 
 import axios from 'axios';
 
+
 export default {
     name: "InsertTime",
     components: {
@@ -138,17 +139,19 @@ export default {
                 plugins: [dayGridPlugin ,interactionPlugin], 
                 initialView: "dayGridMonth",
                 headerToolbar: {
-                    start: "prev,next today",
-                    center: "title",
-                    end: ""
+                    start: "title",
+                    center: "",
+                    end: "prev,next today"
                 },
                 editable: true, // 드래그 앤 드롭 및 크기 조정 활성화
                 contentHeight: 500,
                 locale: "ko",
                 firstDay: 1, //월요일을 시작일로 설정
+                events: this.holidays, //공휴일 이벤트 추가
                 dateClick: this.handleDateClick, // 날짜 클릭 이벤트 핸들러 
                 dateSet: this.handleDateSet //날짜 선택 이벤트 핸들러 
             },
+            holidays : [],// 공휴일 데이터를 저장할 배열
 
             //날짜,시간관련
             isAllDayCheck: false,
@@ -169,6 +172,15 @@ export default {
         };
     },
     methods: {
+        async fetchHolidays() {
+            try {
+                const response = await axios.get('API_URL_HERE'); // 공휴일 데이터를 제공하는 API의 URL
+                this.holidays = response.data; // API의 데이터 구조에 따라 수정
+            } catch (error) {
+                console.error('Error fetching holidays:', error);
+            }
+        },
+        // 일괄등록x일때 이용가능시간 등록하기
         insertRT() {
             console.log("등록 버튼");
 
@@ -237,6 +249,15 @@ export default {
         // ***** 달력 클릭시 input창에 해당 날짜 할당 *****
         handleDateClick(info) {
             console.log(info); // 클릭 이벤트 확인용
+
+            const clickedDate = new Date(info.dateStr);
+            const today = new Date();
+            
+            // 오늘 날짜 이전인지 확인
+            if (clickedDate < today.setHours(0, 0, 0, 0)) {
+                alert("오늘 날짜 이전은 선택할 수 없습니다.");
+                return; // 함수 종료
+            }
 
             //  일괄등록x 
             if (!this.isAllDayCheck) {
@@ -316,6 +337,11 @@ export default {
         // ***** 일괄등록x 선택된 날짜 업데이트 *****
         updateDate(date) {
             this.selectedDate = date;
+            
+            // 날짜가 변경될 때도 점심이 선택된 상태로 유지
+            if (!this.selectedDays.includes('lunch')) {
+                this.selectedDays.push('lunch');
+            }
         },
 
         // ***** 일괄등록o 선택된 시작 날짜 업데이트 *****
@@ -330,13 +356,28 @@ export default {
             this.highlightDateRange(); 
         },
 
-        // ***** 요일 선택(다중 선택 가능) *****
-        selectDay(index) {
-            const selectedIndex = this.selectedDays.indexOf(index);
+        // 점심 시간을 토글하는 메서드
+        toggleLunch() {
+            const selectedIndex = this.selectedDays.indexOf('lunch');
             if (selectedIndex === -1) {
-                this.selectedDays.push(index); // 선택 추가
+                this.selectedDays.push('lunch'); // 점심 추가
             } else {
-                this.selectedDays.splice(selectedIndex, 1); // 선택 취소
+                this.selectedDays.splice(selectedIndex, 1); // 점심 취소
+            }
+        },
+        // ***** 요일 선택(다중 선택 가능) *****
+        selectDay(index, isLunch) {
+            if (isLunch) {
+                const selectedIndex = this.selectedDays.indexOf('lunch');
+                if (selectedIndex === -1) {
+                    this.selectedDays.push('lunch'); // 선택 추가
+                } else {
+                    this.selectedDays.splice(selectedIndex, 1); // 선택 취소
+                }
+            } else {
+                if (!this.selectedDays.includes(index)) {
+                    this.selectedDays = this.workDays; // 요일은 계속 선택된 상태로 유지
+                }
             }
         },
 
@@ -411,12 +452,18 @@ export default {
         }
     },
     created() {
+
+        this.fetchHolidays(); //공휴일 가져옴
+
         // 오늘 날짜를 YYYY-MM-DD 형식으로 설정
         const today = new Date();
         const yyyy = today.getFullYear();
         const mm = String(today.getMonth() + 1).padStart(2, '0');
         const dd = String(today.getDate()).padStart(2, '0');
         this.selectedDate = `${yyyy}-${mm}-${dd}`;
+
+         // 기본적으로 월요일부터 일요일까지의 요일을 선택된 상태로 설정
+        this.selectedDays = [0,1, 2, 3, 4, 5, 6 , 'lunch']; // 월요일부터 일요일까지의 요일 인덱스
     },
 };
 </script>
