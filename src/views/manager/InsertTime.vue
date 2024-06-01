@@ -138,7 +138,8 @@ export default {
                 contentHeight: 500,
                 locale: "ko",
                 firstDay: 1, //월요일을 시작일로 설정
-                dateClick: this.handleDateClick // 날짜 클릭 이벤트 핸들러 추가
+                dateClick: this.handleDateClick, // 날짜 클릭 이벤트 핸들러 
+                dateSet: this.handleDateSet //날짜 선택 이벤트 핸들러 
             },
 
             //날짜,시간관련
@@ -148,23 +149,27 @@ export default {
             allDays: ['월', '화', '수', '목', '금', '토', '일'],  // 전체 요일 목록
             selectedDate: '',
             selectedStartDate: '', // 일괄 등록시 시작 날짜
-            selectedEndDate: '' // 일괄 등록시 종료 날짜
+            selectedEndDate: '' ,// 일괄 등록시 종료 날짜
+            selectedDateElements:[] //선택된 날짜 요소들
         };
     },
     methods: {
-        // 달력 클릭시 input창에 해당 날짜 할당
+        // ***** 달력 클릭시 input창에 해당 날짜 할당 *****
         handleDateClick(info) {
             console.log(info); // 클릭 이벤트 확인용
+
+            //  일괄등록x 
             if (!this.isAllDayCheck) {
                 this.selectedDate = info.dateStr;
-            } else {
+                this.highlightDate(info.dateStr); // 날짜 강조 표시
+                
+            } else { //  일괄등록o
                 this.selectedStartDate = info.dateStr;
 
-                // 선택한 날짜의 일요일 날짜 계산하여 할당
                 const clickedDate = new Date(info.dateStr);
                 const day = clickedDate.getDay();
                 
-                // 수정된 부분: 일요일을 선택했을 때 - 다음주 일요일이 안찍히게 
+                // 일요일을 선택했을 때 - 다음주 일요일이 안찍히게 
                 if (day === 0) {
                     this.selectedEndDate = info.dateStr;
                 } else {
@@ -174,51 +179,104 @@ export default {
 
                     this.selectedEndDate = saturdayDate.toISOString().split('T')[0];
                 }
+                this.highlightDateRange(); // 날짜 범위 강조 표시
             }
         },
+
+         // ***** 일괄등록x 날짜 강조 표시 *****
+         highlightDate(dateStr) {
+            // 기존 선택된 날짜 초기화
+            this.clearHighlightedDates();
+            const dateElement = document.querySelector(`[data-date="${dateStr}"]`);
+            if (dateElement) {
+                dateElement.style.backgroundColor = '#f8a247'; // 원하는 배경색
+                this.selectedDateElements.push(dateElement);
+            }
+        },
+
+        // ***** 일괄등록o 날짜 범위 강조 표시 *****
+        highlightDateRange() {
+            // 기존 선택된 날짜 초기화
+            this.clearHighlightedDates();
+
+            const startDate = new Date(this.selectedStartDate);
+            const endDate = new Date(this.selectedEndDate);
+            for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
+                const dateStr = d.toISOString().split('T')[0];
+                const dateElement = document.querySelector(`[data-date="${dateStr}"]`);
+                if (dateElement) {
+                    dateElement.style.backgroundColor = '#f8a247'; // 원하는 배경색
+                    this.selectedDateElements.push(dateElement);
+                }
+            }
+        },
+
+        // ***** 기존 강조 표시 초기화 *****
+        clearHighlightedDates() {
+            this.selectedDateElements.forEach(element => {
+                element.style.backgroundColor = ''; // 기본 배경색으로 초기화
+            });
+            this.selectedDateElements = [];
+        },
+
+        // ***** 일괄등록x 선택된 날짜 업데이트 *****
         updateDate(date) {
             this.selectedDate = date;
         },
+
+        // ***** 일괄등록o 선택된 시작 날짜 업데이트 *****
         updateStartDate(date) {
             this.selectedStartDate = date;
+            this.highlightDateRange(); 
         },
+
+        // ***** 일괄등록o 선택된 종료(일요일) 날짜 업데이트 *****
         updateEndDate(date) {
             this.selectedEndDate = date;
+            this.highlightDateRange(); 
         },
-        // 요일 선택(다중 선택 가능)
+
+        // ***** 요일 선택(다중 선택 가능) *****
         selectDay(index) {
-            if (index === 'lunch' || index === 'sun' || index === 'sat') {
-                const selectedIndex = this.selectedDays.indexOf(index);
-                if (selectedIndex === -1) {
-                    this.selectedDays.push(index); // 선택 추가
-                } else {
-                    this.selectedDays.splice(selectedIndex, 1); // 선택 취소
-                }
+            const selectedIndex = this.selectedDays.indexOf(index);
+            if (selectedIndex === -1) {
+                this.selectedDays.push(index); // 선택 추가
             } else {
-                const selectedIndex = this.selectedDays.indexOf(index);
-                if (selectedIndex === -1) {
-                    this.selectedDays.push(index); // 선택 추가
-                } else {
-                    this.selectedDays.splice(selectedIndex, 1); // 선택 취소
-                }
+                this.selectedDays.splice(selectedIndex, 1); // 선택 취소
             }
         },
+
+        // ***** 선택된 날짜의 해당 요일 반환 *****
         getDayName(dateStr) {
             const date = new Date(dateStr);
             const days = ['일', '월', '화', '수', '목', '금', '토'];
             return days[date.getDay()];
         },
+
+        // ***** 선택된 날짜의 해당 요일의 index 반환 *****
         getDayIndex(dateStr) {
             const date = new Date(dateStr);
             return date.getDay();
+        },
+
+        // 새로운 datesSet 이벤트 핸들러
+        handleDatesSet() {
+            if (this.isAllDayCheck && this.selectedStartDate && this.selectedEndDate) {
+                this.highlightDateRange();
+            } else if (this.selectedDate) {
+                this.highlightDate(this.selectedDate);
+            }
         }
+
     },
     watch:{
         isAllDayCheck(newVal) {
             if (!newVal) {
                 this.selectedStartDate = '';
                 this.selectedEndDate = '';
+                this.clearHighlightedDates();
             } else if (this.selectedDate) {
+
                 // '일괄등록하기'를 체크하고 이미 선택된 날짜가 있는 경우
                 this.selectedStartDate = this.selectedDate;
                 const clickedDate = new Date(this.selectedDate);
@@ -234,7 +292,14 @@ export default {
 
                     this.selectedEndDate = saturdayDate.toISOString().split('T')[0];
                 }
+                this.highlightDateRange();
             }
+        },
+         selectedStartDate() {
+            this.highlightDateRange();
+        },
+        selectedEndDate() {
+            this.highlightDateRange();
         }
     },
     created() {},
