@@ -20,7 +20,7 @@
                     <!-- 날짜 선택 -->
                     <div class="selectWorkDate">
                         <div v-if="!isAllDayCheck">
-                            <input type="date" :value="selectedDate" @input="updateDate($event.target.value)" >
+                            <input type="date" :value="selectedDate" @input="updateDate($event.target.value)">
                         </div>
                         <div v-else>
                             <input type="date" :value="selectedStartDate" @input="updateStartDate($event.target.value)">~<input type="date" :value="selectedEndDate" @input="updateEndDate($event.target.value)">
@@ -75,87 +75,91 @@
         <ManagerFooter /> 
     </div><!-- wrap --> 
 </template>
+
 <script>
-    import '@/assets/css/manager/insertTime.css';
-    import ManagerFooter from "@/components/ManagerFooter.vue";
-    import ManagerHeader from "@/components/ManagerHeader.vue";
-    import TopButton from "@/components/TopButton.vue";
-    import FullCalendar from "@fullcalendar/vue3";
-    import dayGridPlugin from "@fullcalendar/daygrid";
+import '@/assets/css/manager/insertTime.css';
+import ManagerFooter from "@/components/ManagerFooter.vue";
+import ManagerHeader from "@/components/ManagerHeader.vue";
+import TopButton from "@/components/TopButton.vue";
+import FullCalendar from "@fullcalendar/vue3";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import "@/assets/css/manager/insertTime.css"; 
+// import axios from 'axios';
 
-    export default {
-        name: "InsertTime",
-        components: {
-            ManagerFooter,
-            ManagerHeader,
-            TopButton,
-            FullCalendar
-        },
-        data() {
-            return {
-                // 달력관련
-                calendarOptions: {
-                    plugins: [dayGridPlugin], 
-                    initialView: "dayGridMonth",
-                    headerToolbar: {
-                        start: "prev,next today",
-                        center: "title",
-                        end: ""
-                    },
-                    editable: true, // 드래그 앤 드롭 및 크기 조정 활성화
-                    contentHeight: 500,
-                    locale: "ko",
+export default {
+    name: "InsertTime",
+    components: {
+        ManagerFooter,
+        ManagerHeader,
+        TopButton,
+        FullCalendar
+    },
+    data() {
+        return {
+            // 달력관련
+            calendarOptions: {
+                plugins: [dayGridPlugin], 
+                initialView: "dayGridMonth",
+                headerToolbar: {
+                    start: "prev,next today",
+                    center: "title",
+                    end: ""
                 },
+                editable: true, // 드래그 앤 드롭 및 크기 조정 활성화
+                contentHeight: 500,
+                locale: "ko",
+                dateClick: this.handleDateClick // 날짜 클릭 이벤트 핸들러 추가
+            },
 
-                //날짜,시간관련
-                isAllDayCheck:false,
-                selectedDays: [], // 선택된 요일 인덱스, 다중 선택이 가능하기 위해 배열로 설정
-                days: ['월', '화', '수', '목', '금', '토'],  // 요일 목록
-                selectedDate:'',
-                selectedStartDate:'',//일괄 등록시 시작 날짜
-                selectedEndDate:''// 일괄 등록시 종료 날짜
-            };
-        },
-        methods: {
-
-            //달력 클릭시 input창에 해당 날짜 
-            handleDateClick(info) {
-                if (!this.isAllDayCheck) {
-                    this.selectedDate = info.dateStr;
-                } else {
-                    this.selectedStartDate = info.dateStr;
-                    this.selectedEndDate = '';
-                }
-            },
-            updateDate(date) {
-                this.selectedDate = date;
-            },
-            updateStartDate(date) {
-                this.selectedStartDate = date;
-            },
-            updateEndDate(date) {
-                this.selectedEndDate = date;
-            },
-            //요일 선택(다중 선택 가능)
-            selectDay(index) {
-                if (index === 'lunch') {
-                    const selectedIndex = this.selectedDays.indexOf('lunch');
-                    if (selectedIndex === -1) {
-                        this.selectedDays.push('lunch'); // '점심' 선택 추가
-                    } else {
-                        this.selectedDays.splice(selectedIndex, 1); // '점심' 선택 취소
-                    }
-                } else {
-                    const selectedIndex = this.selectedDays.indexOf(index);
-                    if (selectedIndex === -1) {
-                        this.selectedDays.push(index); // 선택 추가
-                    } else {
-                        this.selectedDays.splice(selectedIndex, 1); // 선택 취소
-                    }
-                }
+            //날짜,시간관련
+            isAllDayCheck: false,
+            selectedDays: [], // 선택된 요일 인덱스, 다중 선택이 가능하기 위해 배열로 설정
+            days: ['월', '화', '수', '목', '금', '토'],  // 요일 목록
+            selectedDate: '',
+            selectedStartDate: '', // 일괄 등록시 시작 날짜
+            selectedEndDate: '' // 일괄 등록시 종료 날짜
+        };
+    },
+    methods: {
+        // 달력 클릭시 input창에 해당 날짜 할당
+        handleDateClick(info) {
+            console.log("여기 확인하기")
+            console.log(info);
+            if (!this.isAllDayCheck) {
+                this.selectedDate = info.dateStr;
+            } else {
+                this.selectedStartDate = info.dateStr;
+                this.selectedEndDate = '';
             }
         },
-        created(){}
-    };
+        updateDate(date) {
+            this.selectedDate = date;
+        },
+        updateStartDate(date) {
+            this.selectedStartDate = date;
+        },
+        updateEndDate(date) {
+            this.selectedEndDate = date;
+        },
+        // 요일 선택(다중 선택 가능)
+        selectDay(index) {
+            if (index === 'lunch') {
+                const selectedIndex = this.selectedDays.indexOf('lunch');
+                if (selectedIndex === -1) {
+                    this.selectedDays.push('lunch'); // '점심' 선택 추가
+                } else {
+                    this.selectedDays.splice(selectedIndex, 1); // '점심' 선택 취소
+                }
+            } else {
+                const selectedIndex = this.selectedDays.indexOf(index);
+                if (selectedIndex === -1) {
+                    this.selectedDays.push(index); // 선택 추가
+                } else {
+                    this.selectedDays.splice(selectedIndex, 1); // 선택 취소
+                }
+            }
+        }
+    },
+    created() {}
+};
 </script>
-<style></style>
