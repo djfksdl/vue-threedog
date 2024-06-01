@@ -187,6 +187,14 @@ export default {
          highlightDate(dateStr) {
             // 기존 선택된 날짜 초기화
             this.clearHighlightedDates();
+
+            // 오늘 날짜 스타일 리셋 (선택된 날짜가 오늘이 아닌 경우)
+            const todayElement = document.querySelector('.fc-day-today');
+            if (todayElement && todayElement.getAttribute('data-date') !== dateStr) {
+                todayElement.classList.add('fc-day-today-bold-only');
+                todayElement.classList.remove('fc-day-today');
+            }
+
             const dateElement = document.querySelector(`[data-date="${dateStr}"]`);
             if (dateElement) {
                 dateElement.style.backgroundColor = '#f8a247'; // 원하는 배경색
@@ -199,8 +207,15 @@ export default {
             // 기존 선택된 날짜 초기화
             this.clearHighlightedDates();
 
+            // 오늘 날짜 스타일 리셋 (선택된 범위에 오늘이 포함되지 않은 경우)
+            const todayElement = document.querySelector('.fc-day-today');
             const startDate = new Date(this.selectedStartDate);
             const endDate = new Date(this.selectedEndDate);
+            if (todayElement && (todayElement.getAttribute('data-date') < this.selectedStartDate || todayElement.getAttribute('data-date') > this.selectedEndDate)) {
+                todayElement.classList.add('fc-day-today-bold-only');
+                todayElement.classList.remove('fc-day-today');
+            }
+
             for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
                 const dateStr = d.toISOString().split('T')[0];
                 const dateElement = document.querySelector(`[data-date="${dateStr}"]`);
