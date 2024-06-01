@@ -9,8 +9,33 @@
                         <h1>예약완료페이지</h1>
                         <p>감사합니다. 예약이 정상적으로 완료되었습니다.</p>
                     </div>
-                    <div>{{ reservationData.rtDate }}</div>
+                    <ul>
+                        <li>{{ reservationData.saveName }}</li>
+                        <li>가게명 {{ reservationData.title }}</li>
+                        <li>가게전화번호 {{ reservationData.bPhone }}</li>
+                        <li>가게 주소{{ reservationData.bAddress }}</li>
+                        <li>{{ reservationData.bdAddress }}</li>
+                        <li>예약자성함 {{ this.$store.state.authUser.uName }}</li>
+                        <li>반려견이름 {{ reservationData.dogName }}</li>
+                        <li>날짜 {{ reservationData.rtDate }}</li>
+                        <li>시간 {{ reservationData.rtTime }}</li>
+                        <li>사용한 포인트 {{ reservationData.usePoint.toLocaleString() }} 원</li>
+                        <li>목록 {{ reservationData.beauty }}</li>
+                        <!-- <li>몸무게 {{ reservationData.weightDiv }}</li> -->
+                        <li>추가요금목록 {{ reservationData.beauty2 }}</li>
+                        <li>예상가격 {{ reservationData.expectedPrice.toLocaleString() }} 원</li>
+                    </ul>
+                    <div class="routerlinkBox">
+                        <div class="routerlink1">
+                            <button><router-link :to="`/mypage/${this.$store.state.authUser.uNo}`">마이페이지로 돌아가기</router-link></button>
+                        </div>
+                        <div class="routerlink2">
+                            <button><router-link :to="`/`">홈으로 돌아가기</router-link></button>
+                        </div>
+                    </div>
                 </div>
+            </div>
+            <div>
             </div>
         </div>
 
@@ -45,23 +70,4 @@ export default {
 </script>
 
 
-<style>
-.reservationSuccess {
-    width: 1200px;
-    /* background-color: red; */
-    margin: 0 auto;
-    border: 1px solid black;
-}
-
-.reservationSuccess .reservationSuccessHp {
-    padding: 30px 30px;
-    text-align: center;
-    background-color: #236C3F;
-    color: white;
-}
-
-.reservationSuccess .reservationSuccessHp p {
-    color: rgb(255, 255, 255);
-    margin-top: 10px;
-}
-</style>
+<style></style>

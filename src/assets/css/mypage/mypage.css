@@ -715,3 +715,40 @@ datalist {
 
 
 }
+
+
+
+
+
+
+
+
+
+
+/* 예약완료페이지 */
+/* ********************************************************* */
+/* reservationSuccess */
+
+.reservationSuccess {
+    width: 1200px;
+    /* background-color: red; */
+    margin: 0 auto;
+    /* border: 1px solid black; */
+}
+
+.reservationSuccess .reservationSuccessHp {
+    padding: 30px 30px;
+    text-align: center;
+    /* background-color: #236C3F; */
+    /* color: white; */
+}
+
+.reservationSuccess .reservationSuccessHp p {
+    /* color: rgb(255, 255, 255); */
+    margin-top: 10px;
+}
+
+.reservationSuccess .routerlinkBox{
+    display: flex;
+   
+}

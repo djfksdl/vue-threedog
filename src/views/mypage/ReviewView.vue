@@ -12,8 +12,9 @@
                         width: 250px; height: 30px; margin-left: 850px;">
                     <i class="fas fa-search" style="position: absolute; padding-left: 1360px; padding-top: 7px"></i> -->
                 </div>
-                <div class="reviewBoardContainer" @click="reviewDetail" v-bind:key="i"
-                    v-for="(reviewVo, i) in reviewList">
+                <div class="reviewBoardContainer" @click="reviewDetail" >
+                <!-- v-bind:key="i"
+                    v-for="(reviewVo, i) in reviewList"> -->
                     <div class="reviewCon03">
                         <div>
                             <!-- <p>마리</p> -->
@@ -24,7 +25,7 @@
                         </div>
                         <div style="margin-top: 20px;">
                             <div>
-                                <div class="userId"><strong>작성자 </strong>님</div>
+                                <div class="userId"><strong>{작성자} </strong>님</div>
                                 <div style="display: flex; margin-top: 5px ">
                                     <div class="cutInfor">마리(3.2kg) </div>
                                     <div class="star">⭐⭐⭐⭐⭐</div>
@@ -118,7 +119,7 @@ export default {
                 saveName: "",
                 uName: "",
                 beauty: "",
-
+                rsNo:0,
             },
 
         };
@@ -137,7 +138,7 @@ export default {
             }).then(response => {
                 console.log("성공");
                 console.log(response.data.apiData); //수신데이타
-                this.businessVo = response.data.apiData;
+                this.reviewVo = response.data.apiData;
 
                 console.log(this.businessList);
             }).catch(error => {
@@ -151,6 +152,10 @@ export default {
         }
 
     },
+
+    created(){
+        this.getRList();
+    }
 };
 </script>
 <style>

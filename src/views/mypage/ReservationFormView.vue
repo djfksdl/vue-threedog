@@ -602,8 +602,8 @@ export default {
                 // 선택한 td의 가로의 th 값을 가져옵니다.
                 const thValue = priceList2.beauty;
                 console.log('선택한 td의 가로의 th 값:', thValue);
-                // this.priceVo.beauty2.push(thValue);
-                // console.log(this.priceVo.beauty2);
+                this.priceVo.beauty2.push(thValue);
+                console.log(this.priceVo.beauty2);
 
             } else {
                 console.log('선택 취소한 값 :', priceList2.onePrice);
@@ -844,7 +844,15 @@ export default {
                     rtFinish: this.reserveVo.rtFinish,
                     priceNo: this.priceVo.priceNo,
                     rsNum: this.reserveVo.rsNo,
-                    priceNoPlus: this.priceVo.priceNo2
+                    priceNoPlus: this.priceVo.priceNo2,
+                    title:this.businessVo.title,
+                    dogName:this.dogVo.dogName,
+                    beauty2:this.priceVo.beauty2,
+                    bPhone:this.businessVo.bPhone,
+                    bAddress:this.businessVo.bAddress,
+                    bdAddress:this.businessVo.bdAddress,
+                    saveName:this.businessVo.saveName
+
                 };
 
                 // Vuex 스토어에 데이터 저장
