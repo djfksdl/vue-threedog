@@ -76,6 +76,15 @@
                                         <input type="time" step="600" :value="rtVo.rtTimes['sun']?.endTime || ''" @input="updateEndTime('sun', $event.target.value)">
                                     </div>
                                 </div>
+                                <div class="selectWorkTime">
+                                    <div class="selectWorkDay" @click="selectDay('lunch')" :class="{'selected': selectedDays.includes('lunch')}">
+                                        주.점
+                                    </div>
+                                    <div>
+                                        <input type="time" step="600" :value="rtVo.rtTimes['lunch']?.startTime || ''" @input="updateStartTime('lunch', $event.target.value)"> ~ 
+                                        <input type="time" step="600" :value="rtVo.rtTimes['lunch']?.endTime || ''" @input="updateEndTime('lunch', $event.target.value)">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
