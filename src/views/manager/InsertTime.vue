@@ -100,7 +100,8 @@ export default {
                 locale: "ko",
                 firstDay: 1, //월요일을 시작일로 설정
                 dateClick: this.handleDateClick, // 날짜 클릭 이벤트 핸들러 
-                dateSet: this.handleDateSet //날짜 선택 이벤트 핸들러 
+                dateSet: this.handleDateSet, //날짜 선택 이벤트 핸들러 
+                eventContent: this.renderEventContent, // 이벤트 내용을 렌더링하는 함수 추가
             },
             holidays : [],// 공휴일 데이터를 저장할 배열
 
@@ -315,6 +316,8 @@ export default {
                     const [startTime] = slot.split(' ~ '); // 시작 시간만 저장
                     this.rtVo.rtDates.push(formattedDate);
                     this.rtVo.rtTimes.push(startTime);
+
+                    this.$router.push(`/inserttime/${this.bNo}`);
                 });
             }
 
@@ -375,32 +378,65 @@ export default {
             return slots;
         },
 
-        // 시간 형식 변환 메소드
+        // ***** 시간 형식 변환 메소드 *****
         formatTime(date) {
             const hours = String(date.getHours()).padStart(2, '0');
             const minutes = String(date.getMinutes()).padStart(2, '0');
             return `${hours}:${minutes}`;
         },
-        // 등록되어있는 날짜 가져오기
-        // selectRt() {
 
-        //     // console.log("등록여부 확인");
-        //     axios({
-        //         method: 'get',
-        //         url: `${this.$store.state.apiBaseUrl}/api/su/selectRt`,
-        //         headers: { "Content-Type": "application/json; charset=utf-8" },
-        //         params : {bNo: this.rtVo.bNo},
-        //         responseType: 'json'
-        //     }).then(response => {
-        //             console.log("화깅ㄴ하기")
-        //             console.log(response.data.apiData);
+        // ***** 등록되어있는 날짜 가져오기 *****
+        selectRt() {
 
-        //             // 이벤트 소스를 FullCalendar에 추가
+            console.log("등록여부 확인");
+
+            axios({
+                method: 'get',
+                url: `${this.$store.state.apiBaseUrl}/api/su/selectRt`,
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                params : {bNo: this.rtVo.bNo},
+                responseType: 'json'
+            }).then(response => {
+                    console.log("화깅ㄴ하기")
+                    console.log(response.data.apiData);
+
+                    // 이벤트 소스를 FullCalendar에 추가
+                    const rtData = response.data.apiData;
+                    const formattedDates = rtData.map(item => item.rtDate);
+                    this.addCompletionEvents(formattedDates); 
               
-        //     }).catch(error => {
-        //         console.log(error);
-        //     });
-        // },
+            }).catch(error => {
+                console.log(error);
+            });
+        },
+
+        // ***** 등록되어있는 날짜에 달력에 추가
+        addCompletionEvents(dates) {
+            const calendarApi = this.$refs.calendar.getApi();
+            dates.forEach(date => {
+                calendarApi.addEvent({
+                    title: '',
+                    start: date, // 날짜 형식이 일치하는지 확인 필요 (예: '2023-06-10')
+                    allDay: true,
+                    display: 'background', // 배경으로 표시
+                    backgroundColor: 'transparent', // 투명 배경
+                    extendedProps: {
+                        imageUrl: require('@/assets/images/check_date.png') // 이미지 경로 추가
+                    }
+                });
+            });
+        },
+        renderEventContent(arg) {
+            if (arg.event.extendedProps.imageUrl) {
+                // 등록 완료 이벤트에 이미지 추가
+                return {
+                    html: `<img src="${arg.event.extendedProps.imageUrl}" style="width: 20px; height: 20px; display: block;">`
+                };
+            } else if (arg.event.title) {
+                // 공휴일 이벤트는 제목을 그대로 표시
+                return { html: arg.event.title };
+            }
+        },
 
 
 
@@ -421,6 +457,9 @@ export default {
     created() {
         // 공휴일 불러오기
         this.fetchHolidays();
+
+        //저장되어있는 날짜 불러오기
+        this.selectRt();
         
     },
 };
