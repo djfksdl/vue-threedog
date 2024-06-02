@@ -53,14 +53,6 @@
     color: #fff;
     font-weight: bold;
 }
-
-/* FullCalendar의 선택된 날짜 스타일링 */
-.container4 .calendarContainer .selected-event {
-    background-color: #f8a247;
-    color: #fff;
-    font-weight: bold;
-}
-
 /* FullCalendar의 오늘 날짜 스타일링2 - 다른 날짜가 선택되었을때 */
 .container4 .calendarContainer .fc-day-today-bold-only {
     font-weight: bold;
@@ -147,10 +139,14 @@
     align-items: center;
     justify-content: center;
 }
+/* 일괄등록 눌렀을때 div간격 조절 */
 .container4 .timeContainer .insertScheduleContainer .selectedTimeContainer .selectWorkTime {
     margin-bottom: 30px;
 }
-
+/* 일괄등록 안눌렀을때 div간격 조절*/
+.container4 .timeContainer .insertScheduleContainer .selectedTimeContainer2 .selectWorkTime {
+    margin-bottom: 30px;
+}
 .container4 .timeContainer .insertScheduleContainer .selectWorkTime .selectWorkDay {
     width: 50px;
     height: 50px;
@@ -159,11 +155,6 @@
     background-color: #ddd;
     border-radius: 30px;
     margin-right: 20px;
-    transition: background-color 0.3s, color 0.3s;
-}
-.container4 .timeContainer .insertScheduleContainer .selectWorkTime .selectWorkDay.active {
-    background-color: #000; /* 원하는 배경색 */
-    color: #fff; /* 원하는 글자색 */
 }
 
 /* 등록,수정 버튼 */
