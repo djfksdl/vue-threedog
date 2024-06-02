@@ -102,7 +102,7 @@ export default {
                 dateClick: this.handleDateClick, // 날짜 클릭 이벤트 핸들러 
                 dateSet: this.handleDateSet //날짜 선택 이벤트 핸들러 
             },
-            // holidays : [],// 공휴일 데이터를 저장할 배열
+            holidays : [],// 공휴일 데이터를 저장할 배열
 
             //날짜,시간관련
             selectedStartDate: null, //선택된 시작 날짜
@@ -114,9 +114,9 @@ export default {
                 { label: '수', active: false },
                 { label: '목', active: false },
                 { label: '금', active: false },
+                { label: '점심', active: false },
                 { label: '토', active: false },
                 { label: '일', active: false },
-                { label: '점심', active: false },
                 { label: '공휴일', active: false },
                 { label: '주말점심', active: false }
             ],
@@ -203,14 +203,26 @@ export default {
                 const currentDay = new Date(startDate);
                 currentDay.setDate(currentDay.getDate() + i);
                 const dayIndex = currentDay.getDay(); // 0 (일요일) ~ 6 (토요일)
+                const formattedDate = currentDay.toISOString().split('T')[0].replace(/-/g, ''); //공휴일관련변수
 
-                if (dayIndex === 0) this.workDays[6].active = true; // 일요일
-                else if (dayIndex === 6) this.workDays[5].active = true; // 토요일
-                else this.workDays[dayIndex - 1].active = true; // 평일
+                if (dayIndex === 0) {
+                    this.workDays[7].active = true; // 일요일
+                    this.workDays[9].active = true; // 주말 점심
+                } else if (dayIndex === 6) {
+                    this.workDays[6].active = true; // 토요일
+                    this.workDays[9].active = true; // 주말 점심
+                } else {
+                    this.workDays[dayIndex - 1].active = true; // 평일
+                    this.workDays[5].active = true; // 점심
+                }
 
-                // 점심 및 주말 점심 활성화
-                this.workDays[7].active = true; // 점심
-                if (dayIndex === 0 || dayIndex === 6) this.workDays[9].active = true; // 주말 점심
+                // 공휴일 활성화
+                if (this.holidays.includes(formattedDate)) {
+                    this.workDays[8].active = true; // 공휴일
+                    // 공휴일이면 점심 비활성화하고 주말 점심 활성화
+                    this.workDays[5].active = false; // 점심 비활성화
+                    this.workDays[9].active = true; // 주말 점심 활성화
+                }
             }
         },
 
@@ -221,7 +233,6 @@ export default {
                 this.$refs.startDateInput.focus();
             }
         },
-
 
         // ***** 공휴일 api불러오기 *****
         async fetchHolidays() {
@@ -241,6 +252,9 @@ export default {
                         color: 'red' // 공휴일 이벤트의 색상을 빨간색으로 설정
                     });
                 });
+
+                this.holidays = holidays.map(holiday => holiday.locdate.toString());
+                
             } catch (error) {
                 console.error('Error fetching holidays:', error);
             }
