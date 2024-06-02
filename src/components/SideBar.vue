@@ -4,7 +4,7 @@
         <div class="profile">
             <!-- 프로필 사진 -->
             <div class="profileImg">
-                <img src="@/assets/images/dog2.jpg">
+                <img :src="userVo.uProfile">
             </div>
             <!-- 프로필 내용 -->
             <div class="profileId">
