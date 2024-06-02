@@ -12,28 +12,37 @@
                         width: 250px; height: 30px; margin-left: 850px;">
                     <i class="fas fa-search" style="position: absolute; padding-left: 1360px; padding-top: 7px"></i> -->
                 </div>
-                <div class="reviewBoardContainer" @click="reviewDetail" >
-                <!-- v-bind:key="i"
-                    v-for="(reviewVo, i) in reviewList"> -->
+                <div class="reviewBoardContainer" @click="reviewDetail(reviewVo.rNo)" v-bind:key="i"
+                    v-for="(reviewVo, i) in reviewList">
+                    <!--  -->
                     <div class="reviewCon03">
                         <div>
-                            <!-- <p>마리</p> -->
                             <div class="mypetImgSlider">
-                                <img src="@/assets/images/r1.jpg"
-                                    style="width: 100px; height: 100px; border-radius: 50%;">
+                                <img :src="reviewVo.saveName" style="width: 100px; height: 100px; border-radius: 50%;">
                             </div>
                         </div>
                         <div style="margin-top: 20px;">
                             <div>
-                                <div class="userId"><strong>{작성자} </strong>님</div>
+                                <div class="userId"><strong>{{ reviewVo.uId }} </strong>님</div>
                                 <div style="display: flex; margin-top: 5px ">
-                                    <div class="cutInfor">마리(3.2kg) </div>
-                                    <div class="star">⭐⭐⭐⭐⭐</div>
-                                    <div class="views">조회수 3</div>
-                                    <div class="date">2024.05.14</div>
+                                    <div class="cutInfor">{{ reviewVo.dogName }}({{ reviewVo.weight }}kg) </div>
+                                    <div class="star" style="margin-top: 2px;">
+                                        <!-- Full stars -->
+                                        <span v-for="i in Math.floor(reviewVo.star)" :key="i"
+                                            style="padding: none;"><img src="@/assets/images/star_yellow.jpg"
+                                                style="width: 15px;"></span>
+                                        <!-- Half star -->
+                                        <!-- <span v-if="reviewVo2.star - Math.floor(reviewVo.star) >= 0.5">><img src="@/assets/images/star_ban.png" style="width: 15px;"></span> -->
+                                        <!-- Empty stars -->
+                                        <span v-for="i in 5 - Math.ceil(reviewVo.star)" :key="'empty_' + i"><img
+                                                src="@/assets/images/star_gray.jpg" style="width: 15px;"></span>
+                                        <!-- {{ reviewVo.star }}.0 -->
+                                    </div>
+                                    <div class="views">조회수 {{ reviewVo.views }}</div>
+                                    <div class="date">{{ formatDate(reviewVo.rDate) }}</div>
                                 </div>
                                 <div class="context">
-                                    더불어 강아지 스파&팩도 가능하며, 소형견은 물론 중형견, 대형견까지 모두 미용 가능한 곳이에요.
+                                    {{ truncateContent(reviewVo.rContent) }}
                                 </div>
                                 <p
                                     style="text-align: right; margin-left: 830px; margin-top: 10px; width: 300px; font-weight: bold; color: gray;">
@@ -44,43 +53,46 @@
                     </div>
 
                 </div>
-
                 <div class="modal-wrap" v-show="modalCheck">
                     <div class="modal-container">
-
                         <div class="reviewBoardDetailContainer">
                             <div class="reviewDetailImg">
-                                <img src="@/assets/images/r1.jpg" style="width: 300px; height: 350px;">
+                                <img src="" style="width: 300px; height: 350px;">
                             </div>
                             <div>
-                                <div class="userId"><strong>작성자 </strong>님</div>
+                                <div class="userId"><strong>{{ reviewVo2.uId }}</strong>님</div>
                                 <div style="display: flex;">
-                                    <div class="beauty">가위컷</div>
-                                    <div class="cutInfor">마리(3.2kg) </div>
-                                    <div class="date">2024.05.14</div>
+                                    <!-- <div class="beauty">zzzzzzzzzzzz</div> -->
+                                    <div class="cutInfor">{{ reviewVo2.dogName }} ({{ reviewVo2.weight }}kg)
+                                    </div>
+                                    <div class="date">{{ formatDate(reviewVo2.rDate) }}</div>
                                 </div>
                                 <div style="display: flex;">
-                                    <div class="price">59,000원</div>
-                                    <div class="star">⭐⭐⭐⭐⭐</div>
+                                    <div class="price">{{ reviewVo2.expectedPrice.toLocaleString() }}원</div>
+
+                                    <div class="star" style="margin-top: 3px;">
+                                        <!-- Full stars -->
+                                        <span v-for="i in Math.floor(reviewVo2.star)" :key="i"><img
+                                                src="@/assets/images/star_yellow.jpg" style="width: 15px;"></span>
+                                        <!-- Half star -->
+                                        <!-- <span v-if="reviewVo2.star - Math.floor(reviewVo2.star) >= 0.5">><img src="@/assets/images/star_ban.png" style="width: 15px;"></span> -->
+                                        <!-- Empty stars -->
+                                        <span v-for="i in 5 - Math.ceil(reviewVo2.star)" :key="'empty_' + i"><img
+                                                src="@/assets/images/star_gray.jpg" style="width: 15px;"></span>
+                                    </div>
                                 </div>
+
                                 <div class="context">
-                                    첫 번째로 소개해드릴 곳은 경기도 구리시 인창동에 위치한 애견미용실 '레몬이네그루밍샵' 이에요.
-                                    이곳은 오픈형 구조로 되어있으며, 가위컷을전문으로 하고 있어요.
-                                    다만, 일반적으로 오픈형 애견미용실같은 경우 창문 너머로 반려견을 지켜볼 경우, 보호자님을 보고 강아지가 흥분하거나 뛰어내리는 등 안전문제가 발생할 수
-                                    있으니 잠시
-                                    자리를
-                                    비워두시는 게 좋다고 해요.
-                                    더불어 강아지 스파&팩도 가능하며, 소형견은 물론 중형견, 대형견까지 모두 미용 가능한 곳이에요.
-                                    특히나 웰시코기는 털부자로 유명하죠? 주기적으로 털관리를 해줘야하는 아이들인데, 후기를 남겨주신 코기 보호자님께서 강력 추천을 해주신 곳이에요:)
+                                    {{ reviewVo2.rContent }}
                                 </div>
                             </div>
                         </div>
-
                         <div class="modal-btn">
-                            <button @click="reviewDetail" style="width: 200px;">닫기</button>
+                            <button @click="modalCheck = false" style="width: 200px;">닫기</button>
                         </div>
                     </div>
                 </div>
+
 
 
 
@@ -108,23 +120,71 @@ export default {
     data() {
         return {
             modalCheck: false,
+            selectedReview: null,
             reviewList: [],
             reviewVo: {
+                rNo: 0,
                 star: 0,
                 rContent: "",
                 rDate: "",
                 views: 0,
                 bNo: 1,
                 uNo: "",
-                saveName: "",
-                uName: "",
+                uId: "",
                 beauty: "",
-                rsNo:0,
+                rsNo: 0,
+                riNo: 0,
+                dogName: "",
+                dogNo: 0,
+                weight: 0.0,
+                expectedPrice: 0,
+                saveName: "",
             },
+
+            reviewVo2: {
+                rNo: 0,
+                star: 0,
+                rContent: "",
+                rDate: "",
+                views: 0,
+                bNo: 1,
+                uNo: "",
+                uId: "",
+                beauty: "",
+                rsNo: 0,
+                riNo: 0,
+                dogName: "",
+                dogNo: 0,
+                weight: 0.0,
+                expectedPrice: 0,
+
+            },
+            saveNameList: [],
 
         };
     },
     methods: {
+
+        //후기1개 가져오기
+        getOneRList(rNo) {
+            console.log("후기 1개 가져오기");
+            console.log("리뷰", rNo, "선택함");
+            axios({
+                method: 'get', // put, post, delete                   
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/getonerlist`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { rNo: rNo }, //get방식 파라미터로 값이 전달
+                responseType: 'json' //수신타입
+
+            }).then(response => {
+                console.log(response.data.apiData); //수신데이타
+                this.reviewVo2 = response.data.apiData;
+                console("후기1개만 가져와야된다~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                console.log(this.reviewVo);
+            }).catch(error => {
+                console.log(error);
+            });
+        },
 
         //후기리스트
         getRList() {
@@ -138,26 +198,99 @@ export default {
             }).then(response => {
                 console.log("성공");
                 console.log(response.data.apiData); //수신데이타
-                this.reviewVo = response.data.apiData;
+                this.reviewList = response.data.apiData;
 
                 console.log(this.businessList);
             }).catch(error => {
                 console.log(error);
             });
         },
+
+        getSaveName(rNo) {
+            console.log("후기사진 가져오기...............귀찮아...............");
+            console.log(rNo);
+            axios({
+                method: 'get',  //put,post,delete
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/getsavename`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { bNo: this.reviewVo.bNo },
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log("성공");
+                console.log(response.data.apiData); //수신데이타
+                this.reviewList = response.data.apiData;
+
+                console.log(this.businessList);
+            }).catch(error => {
+                console.log(error);
+            });
+        },
+
         // 리뷰상세보기 모달창
-        reviewDetail() {
-            console.log("리뷰상세보기클릭");
-            this.modalCheck = !this.modalCheck;
-        }
+        reviewDetail(rNo) {
+            if (rNo) {
+                this.selectedReview = this.reviewList.find((review) => review.rNo === rNo);
+                if (this.selectedReview) {
+                    this.updateViewCount(rNo);
+                }
+                this.modalCheck = true;
+            }
+            console.log("선택한 리뷰번호", rNo);
+            this.getOneRList(rNo);
+            this.getSaveName(rNo);
+        },
+
+
+        // 조회수 업데이트
+        updateViewCount(rNo) {
+            console.log("조회수 1증가!!!");
+            console.log(rNo);
+            axios({
+                method: 'post',  //put,post,delete
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/updateview`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { rNo: rNo },
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log("성공");
+                console.log(response.data.apiData); //수신데이타
+                this.reviewVo.views = response.data.apiData;
+                this.getRList();
+
+
+            }).catch(error => {
+                console.log(error);
+            });
+        },
+
+        // 날짜변환
+        formatDate(dateString) {
+            const date = new Date(dateString);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        },
+
+        // 리뷰글 미리보기
+        truncateContent(content) {
+            if (content.length > 100) {
+                return content.substring(0, 100) + '...';
+            } else {
+                return content;
+            }
+        },
 
     },
 
-    created(){
+    created() {
         this.getRList();
+        this.getSaveName();
     }
 };
 </script>
+
+
 <style>
 #reviewBoard .modal-wrap {
     position: fixed;

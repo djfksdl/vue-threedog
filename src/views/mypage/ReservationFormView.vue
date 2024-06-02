@@ -845,13 +845,13 @@ export default {
                     priceNo: this.priceVo.priceNo,
                     rsNum: this.reserveVo.rsNo,
                     priceNoPlus: this.priceVo.priceNo2,
-                    title:this.businessVo.title,
-                    dogName:this.dogVo.dogName,
-                    beauty2:this.priceVo.beauty2,
-                    bPhone:this.businessVo.bPhone,
-                    bAddress:this.businessVo.bAddress,
-                    bdAddress:this.businessVo.bdAddress,
-                    saveName:this.businessVo.saveName
+                    title: this.businessVo.title,
+                    dogName: this.dogVo.dogName,
+                    beauty2: this.priceVo.beauty2,
+                    bPhone: this.businessVo.bPhone,
+                    bAddress: this.businessVo.bAddress,
+                    bdAddress: this.businessVo.bdAddress,
+                    saveName: this.businessVo.saveName
 
                 };
 
@@ -925,7 +925,7 @@ export default {
 </script>
 
 <style>
-.selected {
+#reservationForm .selected {
     background-color: #236C3F !important;
     color: #ffffff !important;
 }
