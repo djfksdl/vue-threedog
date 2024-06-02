@@ -430,23 +430,102 @@ export default {
             });
         },
 
-        // ***** 달력 모달창 *****
-        handleEventClick(info) {
-            this.modalEvent = info.event;
-            Swal.fire({
-                title: this.modalEvent.title || '등록된 정보',
-                html: `
-                    <label><strong>등록시간:</strong></label>
-                    <input type="time" v-model="day.startTime" @input="updateWorkTime(day)" step="600" > ~
-                    <input type="time" v-model="day.endTime" @input="updateWorkTime(day)" step="600" >
-                    <br>
-                    <label><strong>점심시간:</strong></label>
-                    <input type="time" v-model="day.startTime" @input="updateWorkTime(day)" step="600" > ~
-                    <input type="time" v-model="day.endTime" @input="updateWorkTime(day)" step="600" >
-                `,
-                icon: 'info',
-                confirmButtonText: '닫기'
+        // ***** 등록되어있는 시간 가져오기(모달창 시간 입력 위해) *****
+        selectRtime(date) {
+            console.log("등록시간 가져오기");
+
+            return axios({
+
+                method: 'get',
+                url: `${this.$store.state.apiBaseUrl}/api/su/selectRtime`,
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                params: { bNo: this.rtVo.bNo, rtDate: date },
+                responseType: 'json'
+            }).then(response => {
+                console.log("등록된 시간들");
+                console.log(response.data.apiData);
+                return response.data.apiData;
+            }).catch(error => {
+                console.log(error);
+                return [];
             });
+        },
+
+        // ***** 달력 모달창 *****
+        async handleEventClick(info) {
+            const event = info.event;
+            const selectedDate = event.start.toLocaleDateString('sv-SE').replace(/-/g, '');
+
+            const rtData = await this.selectRtime(selectedDate);
+
+            if (rtData && rtData.length > 0) {
+                const rtTimes = rtData.map(item => item.rtTime);
+
+                const startTime = rtTimes[0];
+                const endTime = this.addOneHour(rtTimes[rtTimes.length - 1]);
+
+                let lunchStartTime = '';
+                let lunchEndTime = '';
+
+                for (let i = 1; i < rtTimes.length; i++) {
+                    if (this.diffInHours(rtTimes[i - 1], rtTimes[i]) > 1) {
+                        lunchStartTime = this.addOneHour(rtTimes[i - 1]);
+                        lunchEndTime = rtTimes[i];
+                        break;
+                    }
+                }
+
+                Swal.fire({
+                    title: event.title || '등록된 정보',
+                    html: `
+                        <label><strong>등록시간:</strong></label>
+                        <input type="time" id="startTime" value="${startTime}" step="600"> ~
+                        <input type="time" id="endTime" value="${endTime}" step="600">
+                        <br>
+                        <label><strong>점심시간:</strong></label>
+                        <input type="time" id="lunchStartTime" value="${lunchStartTime}" step="600"> ~
+                        <input type="time" id="lunchEndTime" value="${lunchEndTime}" step="600">
+                    `,
+                    icon: 'info',
+                    confirmButtonText: '닫기',
+                    preConfirm: () => {
+                        const startTime = document.getElementById('startTime').value;
+                        const endTime = document.getElementById('endTime').value;
+                        const lunchStartTime = document.getElementById('lunchStartTime').value;
+                        const lunchEndTime = document.getElementById('lunchEndTime').value;
+
+                        return {
+                            startTime: startTime,
+                            endTime: endTime,
+                            lunchStartTime: lunchStartTime,
+                            lunchEndTime: lunchEndTime
+                        };
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const { startTime, endTime, lunchStartTime, lunchEndTime } = result.value;
+                        event.setExtendedProp('startTime', startTime);
+                        event.setExtendedProp('endTime', endTime);
+                        event.setExtendedProp('lunchStartTime', lunchStartTime);
+                        event.setExtendedProp('lunchEndTime', lunchEndTime);
+                    }
+                });
+            }
+        },
+
+        // ***** 시간 1시간 더하기 메소드 *****
+        addOneHour(time) {
+            const [hours, minutes] = time.split(':');
+            let newHours = parseInt(hours, 10) + 1;
+            if (newHours < 10) newHours = `0${newHours}`;
+            return `${newHours}:${minutes}`;
+        },
+
+         // ***** 시간 차이 계산 메소드 *****
+        diffInHours(time1, time2) {
+            const [hours1, minutes1] = time1.split(':').map(Number);
+            const [hours2, minutes2] = time2.split(':').map(Number);
+            return (hours2 + minutes2 / 60) - (hours1 + minutes1 / 60);
         },
 
         // ***** 등록된 날짜에 이미지 추가, 공휴일은 영향안받게 *****
