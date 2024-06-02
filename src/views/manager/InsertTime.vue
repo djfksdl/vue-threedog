@@ -159,6 +159,14 @@ export default {
             if (type === 'start' || type === 'end') {
                 this.clearTimeInputs();
             }
+            
+            // '동일한 시간 추가' 체크 해제 및 originalTimes 초기화
+            const checkAllDayElement = document.getElementById('checkAllDay');
+            if (checkAllDayElement.checked) {
+                checkAllDayElement.checked = false;
+                 this.originalTimes = [];
+            this.applySameTime({ target: checkAllDayElement }, true);
+            }
         },
 
         // ***** 시간 입력창 초기화 *****
@@ -461,7 +469,7 @@ export default {
                     return;
                 }
 
-                // Store original times before applying the same time
+                // 동일시간 추가를 누르기전 원래 시간을 저장하기
                 this.originalTimes = activeDays.map(day => ({ label: day.label, startTime: day.startTime, endTime: day.endTime }));
 
                 activeDays.forEach(day => {
@@ -471,14 +479,22 @@ export default {
                     }
                 });
             } else {
-                // Restore original times when unchecked
-                this.originalTimes.forEach(original => {
-                    const day = this.workDays.find(day => day.label === original.label);
-                    if (day) {
-                        day.startTime = original.startTime;
-                        day.endTime = original.endTime;
-                    }
-                });
+
+                // 체크를 취소할때 원래 시간 복원하기
+                if (event.reset) {
+                    this.originalTimes = [];
+                } else {
+                    this.originalTimes.forEach(original => {
+                        const day = this.workDays.find(day => day.label === original.label);
+                        if (day) {
+                            day.startTime = original.startTime;
+                            day.endTime = original.endTime;
+                        }
+                    });
+                }
+
+                // originalTimes 초기화
+                this.originalTimes = [];
             }
         },
 
