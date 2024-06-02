@@ -434,11 +434,15 @@ export default {
         handleEventClick(info) {
             this.modalEvent = info.event;
             Swal.fire({
-                title: this.modalEvent.title || '이벤트 정보',
+                title: this.modalEvent.title || '등록된 정보',
                 html: `
-                    <p><strong>등록날짜:</strong> ${this.modalEvent.title || ''}</p>
-                    <p><strong>점심시간:</strong> ${this.modalEvent.start.toISOString().split('T')[0]}</p>
-                    ${this.modalEvent.extendedProps.description ? `<p><strong>설명:</strong> ${this.modalEvent.extendedProps.description}</p>` : ''}
+                    <label><strong>등록시간:</strong></label>
+                    <input type="time" v-model="day.startTime" @input="updateWorkTime(day)" step="600" > ~
+                    <input type="time" v-model="day.endTime" @input="updateWorkTime(day)" step="600" >
+                    <br>
+                    <label><strong>점심시간:</strong></label>
+                    <input type="time" v-model="day.startTime" @input="updateWorkTime(day)" step="600" > ~
+                    <input type="time" v-model="day.endTime" @input="updateWorkTime(day)" step="600" >
                 `,
                 icon: 'info',
                 confirmButtonText: '닫기'
