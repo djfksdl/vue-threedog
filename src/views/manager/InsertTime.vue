@@ -5,7 +5,7 @@
             <!-- 달력 -->
             <div class="calendarContainer">
                 <div class="calendar-container2">
-                    <FullCalendar ref="calendar" :options="calendarOptions" id="calendar2" />
+                    <FullCalendar ref="calendar" :options="calendarOptions" id="calendar2" @eventClick="handleEventClick"/>
                 </div>
             </div>
             
@@ -72,6 +72,7 @@ import TopButton from "@/components/TopButton.vue";
 import FullCalendar from "@fullcalendar/vue3";
 import interactionPlugin from "@fullcalendar/interaction"; // 상호작용 플러그인
 import dayGridPlugin from "@fullcalendar/daygrid";
+import Swal from "sweetalert2"; // 모달창
 import "@/assets/css/manager/insertTime.css"; 
 import axios from 'axios';
 
@@ -101,6 +102,7 @@ export default {
                 firstDay: 1, //월요일을 시작일로 설정
                 dateClick: this.handleDateClick, // 날짜 클릭 이벤트 핸들러 
                 dateSet: this.handleDateSet, //날짜 선택 이벤트 핸들러 
+                eventClick: this.handleEventClick, // 이벤트 클릭 핸들러 추가
                 eventContent: this.renderEventContent, // 이벤트 내용을 렌더링하는 함수 추가
             },
             holidays : [],// 공휴일 데이터를 저장할 배열
@@ -411,7 +413,7 @@ export default {
             });
         },
 
-        // ***** 등록되어있는 날짜에 달력에 추가
+        // ***** 등록되어있는 날짜에 달력에 추가 *****
         addCompletionEvents(dates) {
             const calendarApi = this.$refs.calendar.getApi();
             dates.forEach(date => {
@@ -427,6 +429,23 @@ export default {
                 });
             });
         },
+
+        // ***** 달력 모달창 *****
+        handleEventClick(info) {
+            this.modalEvent = info.event;
+            Swal.fire({
+                title: this.modalEvent.title || '이벤트 정보',
+                html: `
+                    <p><strong>등록날짜:</strong> ${this.modalEvent.title || ''}</p>
+                    <p><strong>점심시간:</strong> ${this.modalEvent.start.toISOString().split('T')[0]}</p>
+                    ${this.modalEvent.extendedProps.description ? `<p><strong>설명:</strong> ${this.modalEvent.extendedProps.description}</p>` : ''}
+                `,
+                icon: 'info',
+                confirmButtonText: '닫기'
+            });
+        },
+
+        // ***** 등록된 날짜에 이미지 추가, 공휴일은 영향안받게 *****
         renderEventContent(arg) {
             if (arg.event.extendedProps.imageUrl) {
                 // 등록 완료 이벤트에 이미지 추가
