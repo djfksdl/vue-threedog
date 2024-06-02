@@ -10,7 +10,7 @@
             </div>
             
             <!-- 시간등록 -->
-            <div class="timeContainer" >
+            <div class="timeContainer">
                 <!-- 타이틀 -->
                 <div class="timeTop">
                     <h1>영업시간 등록</h1>
@@ -30,7 +30,18 @@
                     <div class="selectWorkTimeContainer selectedTimeContainer">
                         <div class="selectWorkTimeWrapper">
                             <div class="leftColumn">
-                                <div class="selectWorkTime" v-for="(day, index) in workDays" :key="index">
+                                <div class="selectWorkTime" v-for="(day, index) in leftColumnDays" :key="index">
+                                    <div :class="['selectWorkDay', { active: day.active }]">
+                                        {{ day.label }}
+                                    </div>
+                                    <div>
+                                        <input type="time" step="600" :disabled="!day.active"> ~
+                                        <input type="time" step="600" :disabled="!day.active">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rightColumn">
+                                <div class="selectWorkTime" v-for="(day, index) in rightColumnDays" :key="index">
                                     <div :class="['selectWorkDay', { active: day.active }]">
                                         {{ day.label }}
                                     </div>
@@ -42,12 +53,10 @@
                             </div>
                         </div>
                     </div>
-
-
-                    <!-- 등록,수정버튼 -->
-                    <button type="submit" class="insertBtn" v-on:click="insertRT">등록</button>
-
                 </div>
+
+                <!-- 등록,수정버튼 -->
+                <button type="submit" class="insertBtn" v-on:click="insertRT">등록</button>
             </div>
         </div>
         <TopButton />  
@@ -119,6 +128,15 @@ export default {
             
         };
     },
+    computed: {
+        // 왼쪽, 오른쪽에 해당 요일 배치
+        leftColumnDays() {
+            return this.workDays.slice(0, 6); // 월~금, 점심
+        },
+        rightColumnDays() {
+            return this.workDays.slice(6); // 토, 일, 공휴일, 주말점심
+        }
+    },
     methods: {
 
         // ***** 기존 하이라이트 초기화 *****
@@ -171,7 +189,7 @@ export default {
         // ***** 날짜에 해당하는 요일 활성화 *****
         activateWorkDays() {
             const startDate = new Date(this.selectedStartDate);
-            const endDate = new Date(this.selectedEndDate);
+            const endDate = this.selectedEndDate ? new Date(this.selectedEndDate) : startDate;
             const daysBetween = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
 
             // 모든 요일을 비활성화
@@ -263,9 +281,11 @@ export default {
     watch: {
         selectedStartDate() {
             this.updateCalendar();
+            this.activateWorkDays();
         },
         selectedEndDate() {
             this.updateCalendar();
+            this.activateWorkDays();
         }
     },
 
