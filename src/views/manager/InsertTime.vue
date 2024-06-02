@@ -35,8 +35,8 @@
                                         {{ day.label }}
                                     </div>
                                     <div>
-                                        <input type="time" step="600" :disabled="!day.active"> ~
-                                        <input type="time" step="600" :disabled="!day.active">
+                                        <input type="time" v-model="day.startTime" @input="updateWorkTime(day)" step="600" :disabled="!day.active"> ~
+                                        <input type="time" v-model="day.endTime" @input="updateWorkTime(day)" step="600" :disabled="!day.active">
                                     </div>
                                 </div>
                             </div>
@@ -46,8 +46,8 @@
                                         {{ day.label }}
                                     </div>
                                     <div>
-                                        <input type="time" step="600" :disabled="!day.active"> ~
-                                        <input type="time" step="600" :disabled="!day.active">
+                                        <input type="time" v-model="day.startTime" @input="updateWorkTime(day)" step="600" :disabled="!day.active"> ~
+                                        <input type="time" v-model="day.endTime" @input="updateWorkTime(day)" step="600" :disabled="!day.active">
                                     </div>
                                 </div>
                             </div>
@@ -109,16 +109,16 @@ export default {
             selectedEndDate: null,//선택된 끝 날짜
             selectedDateElements: [], // 선택된 날짜 요소를 저장할 배열
             workDays: [
-                { label: '월', active: false },
-                { label: '화', active: false },
-                { label: '수', active: false },
-                { label: '목', active: false },
-                { label: '금', active: false },
-                { label: '점심', active: false },
-                { label: '토', active: false },
-                { label: '일', active: false },
-                { label: '공휴일', active: false },
-                { label: '주말점심', active: false }
+            { label: '월', active: false, startTime: '', endTime: '' },
+            { label: '화', active: false, startTime: '', endTime: '' },
+            { label: '수', active: false, startTime: '', endTime: '' },
+            { label: '목', active: false, startTime: '', endTime: '' },
+            { label: '금', active: false, startTime: '', endTime: '' },
+            { label: '점심', active: false, startTime: '', endTime: '' },
+            { label: '토', active: false, startTime: '', endTime: '' },
+            { label: '일', active: false, startTime: '', endTime: '' },
+            { label: '공휴일', active: false, startTime: '', endTime: '' },
+            { label: '주말점심', active: false, startTime: '', endTime: '' }
             ],
             rtVo:{
                 rtDates:[],
@@ -130,12 +130,13 @@ export default {
         };
     },
     computed: {
+        
         // 왼쪽, 오른쪽에 해당 요일 배치
         leftColumnDays() {
-            return this.workDays.slice(0, 6); // 월~금, 점심
+            return this.workDays.slice(0, 6) || []; // 월~금, 점심
         },
         rightColumnDays() {
-            return this.workDays.slice(6); // 토, 일, 공휴일, 주말점심
+            return this.workDays.slice(6) || []; // 토, 일, 공휴일, 주말점심
         }
     },
     methods: {
@@ -239,6 +240,15 @@ export default {
             }
         },
 
+        // ***** 입력된 시간 저장하기 *****
+        updateWorkTime(day) {
+            const dayIndex = this.workDays.findIndex(d => d.label === day.label);
+            if (dayIndex !== -1) {
+                this.workDays[dayIndex].startTime = day.startTime;
+                this.workDays[dayIndex].endTime = day.endTime;
+            }
+        },
+
         // ***** 공휴일 api불러오기 *****
         async fetchHolidays() {
             const apiKey = 'LxLWmax008pxOL9%2F%2BIFK%2BVhedunUAqbNuCcRNufjvl9k%2FRjucI7%2BNJoqtTSgEkQdXaSWSiT47iGhVevdBijjOQ%3D%3D'; // 발급받은 API 키(Encoding)
@@ -267,21 +277,109 @@ export default {
 
         // ***** 이용가능시간 등록하기 *****
         insertRT() {
-            console.log("이용시간")
+            const startDate = new Date(this.selectedStartDate);
+            const endDate = new Date(this.selectedEndDate);
+            const daysBetween = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+
+            this.rtVo.rtDates = [];
+            this.rtVo.rtTimes = [];
+
+            for (let i = 0; i < daysBetween; i++) {
+                const currentDay = new Date(startDate);
+                currentDay.setDate(currentDay.getDate() + i);
+                const dayIndex = currentDay.getDay(); // 0 (일요일) ~ 6 (토요일)
+                const formattedDate = currentDay.toISOString().split('T')[0].replace(/-/g, ''); // 공휴일 관련 변수
+
+                let dayLabel;
+                if (dayIndex === 0) dayLabel = '일';
+                else if (dayIndex === 6) dayLabel = '토';
+                else dayLabel = ['월', '화', '수', '목', '금'][dayIndex - 1];
+
+                const isHoliday = this.holidays.includes(formattedDate);
+                const isWeekend = dayIndex === 0 || dayIndex === 6;
+
+                let workTime;
+                if (isHoliday) {
+                    workTime = `${this.workDays[8].startTime} ~ ${this.workDays[8].endTime}`;
+                    workTime = this.subtractTime(workTime, `${this.workDays[9].startTime} ~ ${this.workDays[9].endTime}`);
+                } else if (isWeekend) {
+                    workTime = `${this.workDays.find(day => day.label === dayLabel).startTime} ~ ${this.workDays.find(day => day.label === dayLabel).endTime}`;
+                    workTime = this.subtractTime(workTime, `${this.workDays[9].startTime} ~ ${this.workDays[9].endTime}`);
+                } else {
+                    workTime = `${this.workDays.find(day => day.label === dayLabel).startTime} ~ ${this.workDays.find(day => day.label === dayLabel).endTime}`;
+                    workTime = this.subtractTime(workTime, `${this.workDays[5].startTime} ~ ${this.workDays[5].endTime}`);
+                }
+
+                const timeSlots = this.generateTimeSlots(workTime);
+                timeSlots.forEach(slot => {
+                    const [startTime] = slot.split(' ~ '); // 시작 시간만 저장
+                    this.rtVo.rtDates.push(formattedDate);
+                    this.rtVo.rtTimes.push(startTime);
+                });
+            }
 
             axios({
-                method: 'post', 
+                method: 'post',
                 url: `${this.$store.state.apiBaseUrl}/api/su/insertRT`,
                 headers: { "Content-Type": "application/json; charset=utf-8" },
                 data: this.rtVo,
                 responseType: 'json'
             }).then(response => {
                 console.log(response.data.apiData);
-
-                
             }).catch(error => {
                 console.log(error);
             });
+        },
+
+        // ***** 시간 빼기 메소드 *****
+        subtractTime(workTime, subtractTime) {
+            if (!workTime || !subtractTime) return workTime;
+
+            const [workStart, workEnd] = workTime.split('~').map(time => time.trim());
+            const [subtractStart, subtractEnd] = subtractTime.split('~').map(time => time.trim());
+
+            if (workStart >= subtractEnd || workEnd <= subtractStart) return workTime; // 시간대가 겹치지 않으면 그대로 반환
+
+            let resultTimes = [];
+
+            if (workStart < subtractStart) {
+                resultTimes.push(`${workStart} ~ ${subtractStart}`);
+            }
+            if (workEnd > subtractEnd) {
+                resultTimes.push(`${subtractEnd} ~ ${workEnd}`);
+            }
+
+            return resultTimes.join(', ');
+        },
+
+        // ***** 시간대 1시간 단위로 나누는 메소드 *****
+        generateTimeSlots(timeRange) {
+            const slots = [];
+            const ranges = timeRange.split(',').map(range => range.trim());
+
+            ranges.forEach(range => {
+                const [start, end] = range.split('~').map(time => time.trim());
+                let current = new Date(`1970-01-01T${start}:00`);
+                const endDate = new Date(`1970-01-01T${end}:00`);
+
+                while (current < endDate) {
+                    const next = new Date(current);
+                    next.setHours(current.getHours() + 1);
+                    if (next <= endDate) {
+                        slots.push(`${this.formatTime(current)} ~ ${this.formatTime(next)}`);
+                    }
+                    current = next;
+                }
+            });
+
+            return slots;
+        },
+
+        // 시간 형식 변환 메소드
+        formatTime(date) {
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${hours}:${minutes}`;
         },
         // 등록되어있는 날짜 가져오기
         // selectRt() {
