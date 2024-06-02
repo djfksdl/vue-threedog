@@ -205,15 +205,20 @@ export default {
                 const dayIndex = currentDay.getDay(); // 0 (일요일) ~ 6 (토요일)
                 const formattedDate = currentDay.toISOString().split('T')[0].replace(/-/g, ''); //공휴일관련변수
 
-                if (dayIndex === 0) {
-                    this.workDays[7].active = true; // 일요일
-                    this.workDays[9].active = true; // 주말 점심
-                } else if (dayIndex === 6) {
-                    this.workDays[6].active = true; // 토요일
-                    this.workDays[9].active = true; // 주말 점심
+                if (this.holidays.includes(formattedDate)) {
+                    this.workDays[8].active = true; // 공휴일 활성화
+                    this.workDays[9].active = true; // 주말 점심 활성화
                 } else {
-                    this.workDays[dayIndex - 1].active = true; // 평일
-                    this.workDays[5].active = true; // 점심
+                    if (dayIndex === 0) {
+                        this.workDays[7].active = true; // 일요일 활성화
+                        this.workDays[9].active = true; // 주말 점심 활성화
+                    } else if (dayIndex === 6) {
+                        this.workDays[6].active = true; // 토요일 활성화
+                        this.workDays[9].active = true; // 주말 점심 활성화
+                    } else {
+                        this.workDays[dayIndex - 1].active = true; // 평일 활성화
+                        this.workDays[5].active = true; // 점심 활성화
+                    }
                 }
 
                 // 공휴일 활성화
@@ -261,23 +266,23 @@ export default {
         },
 
         // ***** 이용가능시간 등록하기 *****
-        // insertRT() {
+        insertRT() {
+            console.log("이용시간")
 
-
-        //     axios({
-        //         method: 'post', 
-        //         url: `${this.$store.state.apiBaseUrl}/api/su/insertRT`,
-        //         headers: { "Content-Type": "application/json; charset=utf-8" },
-        //         data: this.rtVo,
-        //         responseType: 'json'
-        //     }).then(response => {
-        //         console.log(response.data.apiData);
+            axios({
+                method: 'post', 
+                url: `${this.$store.state.apiBaseUrl}/api/su/insertRT`,
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                data: this.rtVo,
+                responseType: 'json'
+            }).then(response => {
+                console.log(response.data.apiData);
 
                 
-        //     }).catch(error => {
-        //         console.log(error);
-        //     });
-        // },
+            }).catch(error => {
+                console.log(error);
+            });
+        },
         // 등록되어있는 날짜 가져오기
         // selectRt() {
 
