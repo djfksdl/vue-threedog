@@ -53,14 +53,6 @@
     color: #fff;
     font-weight: bold;
 }
-
-/* FullCalendar의 선택된 날짜 스타일링 */
-.container4 .calendarContainer .selected-event {
-    background-color: #f8a247;
-    color: #fff;
-    font-weight: bold;
-}
-
 /* FullCalendar의 오늘 날짜 스타일링2 - 다른 날짜가 선택되었을때 */
 .container4 .calendarContainer .fc-day-today-bold-only {
     font-weight: bold;
