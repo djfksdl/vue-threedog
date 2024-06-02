@@ -22,7 +22,7 @@
                     <div class="selectWorkDate">
                         <div>
                             <input type="date" v-model="selectedStartDate" :min="today" ref="startDateInput" @input="updateCalendar"> ~
-                            <input type="date" v-model="selectedEndDate" :min="selectedStartDate" @focus="checkStartDate" @input="updateCalendar">
+                            <input type="date" v-model="selectedEndDate" :min="selectedStartDate" ref="endDateInput" @focus="checkStartDate" @input="updateCalendar">
                         </div>
                     </div>
 
@@ -35,8 +35,8 @@
                                         {{ day.label }}
                                     </div>
                                     <div>
-                                        <input type="time" v-model="day.startTime" @input="updateWorkTime(day)" step="600" :disabled="!day.active"> ~
-                                        <input type="time" v-model="day.endTime" @input="updateWorkTime(day)" step="600" :disabled="!day.active">
+                                        <input type="time" v-model="day.startTime" @input="handleTimeInput(day)" step="600" :disabled="!day.active"> ~
+                                        <input type="time" v-model="day.endTime" @input="handleTimeInput(day)" step="600" :disabled="!day.active">
                                     </div>
                                 </div>
                             </div>
@@ -46,8 +46,8 @@
                                         {{ day.label }}
                                     </div>
                                     <div>
-                                        <input type="time" v-model="day.startTime" @input="updateWorkTime(day)" step="600" :disabled="!day.active"> ~
-                                        <input type="time" v-model="day.endTime" @input="updateWorkTime(day)" step="600" :disabled="!day.active">
+                                        <input type="time" v-model="day.startTime" @input="handleTimeInput(day)" step="600" :disabled="!day.active"> ~
+                                        <input type="time" v-model="day.endTime" @input="handleTimeInput(day)" step="600" :disabled="!day.active">
                                     </div>
                                 </div>
                             </div>
@@ -191,6 +191,14 @@ export default {
             }
         },
 
+        // ***** 첫번째 날짜만 선택하고 시간입력했을때 *****
+        handleTimeInput(day) {
+            if (this.selectedStartDate && !this.selectedEndDate) {
+                this.selectedEndDate = this.selectedStartDate;
+            }
+            this.updateWorkTime(day);
+        },
+
         // ***** 날짜에 해당하는 요일 활성화 *****
         activateWorkDays() {
             const startDate = new Date(this.selectedStartDate);
@@ -281,6 +289,12 @@ export default {
 
         // ***** 이용가능시간 등록하기 *****
         insertRT() {
+
+            // 두번째 날짜를 선택안하고 등록했을때 첫번째 날짜 할당
+            if (!this.selectedEndDate) {
+                this.selectedEndDate = this.selectedStartDate;
+            }
+            
             const startDate = new Date(this.selectedStartDate);
             const endDate = new Date(this.selectedEndDate);
             const daysBetween = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
