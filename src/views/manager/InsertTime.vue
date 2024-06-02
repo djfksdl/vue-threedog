@@ -20,11 +20,15 @@
                 <div class="insertScheduleContainer">
                     <!-- 날짜 선택 -->
                     <div class="selectWorkDate">
-                        <div>
-                            <input type="date" v-model="selectedStartDate" :min="today" ref="startDateInput" @input="updateCalendar"> ~
-                            <input type="date" v-model="selectedEndDate" :min="selectedStartDate" ref="endDateInput" @focus="checkStartDate" @input="updateCalendar">
-                        </div>
-                    </div>
+                <div>
+                    <input type="date" v-model="selectedStartDate" :min="today" ref="startDateInput" @input="handleDateChange('start')"> ~
+                    <input type="date" v-model="selectedEndDate" :min="selectedStartDate" ref="endDateInput" @focus="checkStartDate" @input="handleDateChange('end')">
+                </div>
+                <div class="weekAllDayCheck">
+                    <label id="checkAllDay">동일한 시간 추가</label>
+                    <input id="checkAllDay" type="checkbox" :disabled="!isMultipleDatesSelected" @change="applySameTime"> 
+                </div>
+            </div>
 
                     <!-- 시간 선택 -->
                     <div class="selectWorkTimeContainer selectedTimeContainer">
@@ -128,7 +132,8 @@ export default {
                 rtTimes:[],
                 bNo : this.$route.params.bNo,
             },
-            today: new Date().toISOString().split('T')[0] // 오늘 날짜
+            today: new Date().toISOString().split('T')[0], // 오늘 날짜
+            originalTimes: [], // 동일시간추가 하기전 시간을 담을 배열
             
         };
     },
@@ -140,9 +145,29 @@ export default {
         },
         rightColumnDays() {
             return this.workDays.slice(6) || []; // 토, 일, 공휴일, 주말점심
+        },
+        //동일한 시간 추가
+        isMultipleDatesSelected() {
+            return this.selectedStartDate && this.selectedEndDate && this.selectedStartDate !== this.selectedEndDate;
         }
     },
     methods: {
+        // ***** 달력에 날짜 범위 표시 및 시간 초기화 *****
+        handleDateChange(type) {
+            this.updateCalendar();
+            this.activateWorkDays();
+            if (type === 'start' || type === 'end') {
+                this.clearTimeInputs();
+            }
+        },
+
+        // ***** 시간 입력창 초기화 *****
+        clearTimeInputs() {
+            this.workDays.forEach(day => {
+                day.startTime = '';
+                day.endTime = '';
+            });
+        },
 
         // ***** 기존 하이라이트 초기화 *****
         clearHighlightedDates() {
@@ -186,6 +211,9 @@ export default {
         // ***** 달력에 날짜 범위 표시 *****
         updateCalendar() {
             if (this.selectedStartDate) {
+                if (!this.selectedEndDate || this.selectedStartDate === this.selectedEndDate) {
+                    this.selectedEndDate = this.selectedStartDate;
+                }
                 this.highlightDateRange();
                 this.activateWorkDays();
             }
@@ -294,7 +322,7 @@ export default {
             if (!this.selectedEndDate) {
                 this.selectedEndDate = this.selectedStartDate;
             }
-            
+
             const startDate = new Date(this.selectedStartDate);
             const endDate = new Date(this.selectedEndDate);
             const daysBetween = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
@@ -401,6 +429,57 @@ export default {
             const hours = String(date.getHours()).padStart(2, '0');
             const minutes = String(date.getMinutes()).padStart(2, '0');
             return `${hours}:${minutes}`;
+        },
+
+        // ***** 동일한 시간 입력하기 *****
+        applySameTime(event) {
+            const activeDays = this.workDays.filter(day => day.active && ['월', '화', '수', '목', '금', '토', '일'].includes(day.label));
+            if (activeDays.length < 2) {
+                event.target.checked = false;
+                return; // 활성화된 요일이 2개 미만일 경우 아무 일도 안 함
+            }
+
+            if (event.target.checked) {
+                const referenceDay = activeDays.find(day => day.startTime && day.endTime);
+                if (!referenceDay) {
+                    alert('시간을 선택해주세요');
+                    event.target.checked = false;
+                    return;
+                }
+
+                const { startTime, endTime } = referenceDay;
+
+                if (!startTime && !endTime) {
+                    alert('시간을 선택해주세요');
+                    event.target.checked = false;
+                    return;
+                }
+
+                if (startTime && !endTime) {
+                    alert('마치는 시간을 입력해주세요');
+                    event.target.checked = false;
+                    return;
+                }
+
+                // Store original times before applying the same time
+                this.originalTimes = activeDays.map(day => ({ label: day.label, startTime: day.startTime, endTime: day.endTime }));
+
+                activeDays.forEach(day => {
+                    if (day !== referenceDay && day.label !== '점심' && day.label !== '주말점심') {
+                        day.startTime = startTime;
+                        day.endTime = endTime;
+                    }
+                });
+            } else {
+                // Restore original times when unchecked
+                this.originalTimes.forEach(original => {
+                    const day = this.workDays.find(day => day.label === original.label);
+                    if (day) {
+                        day.startTime = original.startTime;
+                        day.endTime = original.endTime;
+                    }
+                });
+            }
         },
 
         // ***** 등록되어있는 날짜 가져오기 *****

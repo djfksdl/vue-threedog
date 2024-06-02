@@ -137,7 +137,7 @@
 .container4 .timeContainer .insertScheduleContainer .selectWorkDate .weekAllDayCheck {
     display: flex;
 }
-.container4 .timeContainer .insertScheduleContainer .selectWorkDate .weekAllDayCheck p {
+.container4 .timeContainer .insertScheduleContainer .selectWorkDate .weekAllDayCheck >label {
     padding-right: 10px;
 }
 
