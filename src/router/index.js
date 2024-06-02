@@ -21,6 +21,7 @@ import NaverLogin from '@/views/potal/NaverLogin.vue'
 import SearchMap from '@/views/potal/SearchMap.vue'
 import InsertTime from '@/views/manager/InsertTime.vue'
 import ReservationSuccessView from '@/views/mypage/ReservationSuccessView.vue'
+import PetUpdateForm from '@/views/mypage/PetUpdateForm'
 
 
 const routes = [
@@ -131,9 +132,15 @@ const routes = [
   },
   {
     path: '/reservationsuccess',
-    name: ReservationSuccessView,
+    name: 'ReservationSuccessView',
     component: ReservationSuccessView
 
+  },
+  {
+    path: '/petupdateform/:dogNo',
+    name: 'petupdateform',
+    component: PetUpdateForm,
+    props: true
   },
 ]
 

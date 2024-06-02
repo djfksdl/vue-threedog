@@ -5,9 +5,9 @@
             <div class="container">
                 <h1>후기게시판</h1>
                 <div class="reviewBoardContainerButton" style="border: 1px solid #dddddd; padding: 5px">
-                    <button>최신순</button>
-                    <button>조회수순</button>
-                    <button style="border-right: none;">평점순</button>
+                    <button @click="recentOrder">최신순</button>
+                    <button @click="viewOrder">조회수순</button>
+                    <button @click="starGradeOrder" style="border-right: none;">평점순</button>
                     <!-- <input type="search" placeholder="검색어 입력" style="padding: 5px;  border: 1px solid #dddddd; 
                         width: 250px; height: 30px; margin-left: 850px;">
                     <i class="fas fa-search" style="position: absolute; padding-left: 1360px; padding-top: 7px"></i> -->
@@ -280,6 +280,21 @@ export default {
                 return content;
             }
         },
+
+        // 최신순
+        recentOrder() {
+            console.log("최신순");
+        },
+
+        // 조회순
+        viewOrder() {
+            console.log("조회순");
+        },
+        
+        // 별점순
+        starGradeOrder() {
+            console.log("별점순");
+        }
 
     },
 
