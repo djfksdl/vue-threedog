@@ -97,6 +97,20 @@
 
 }
 
+/* FullCalendar의 x버튼 스타일링 */
+.container4 .calendarContainer .swal2-close {
+    top: 10px !important; 
+    right: 10px !important;
+    background-color: #f8a247 !important; 
+    border: 2px solid #d45d00 !important; 
+    border-radius: 50% !important; 
+    color: #fff !important; 
+    font-size: 16px !important; 
+    width: 30px !important; 
+    height: 30px !important; 
+    line-height: 25px !important; 
+}
+
 /* ************************* 시간등록 ************************* */
 .container4 .timeContainer {
     width: 45%;

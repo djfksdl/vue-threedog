@@ -475,8 +475,11 @@ export default {
                     }
                 }
 
+                // 클릭한 날짜와 요일 정의
+                const clickedDate = event.start.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' }); 
+
                 Swal.fire({
-                    title: event.title || '등록된 정보',
+                    title: `${clickedDate}`,
                     html: `
                         <label><strong>등록시간:</strong></label>
                         <input type="time" id="startTime" value="${startTime}" step="600"> ~
@@ -485,9 +488,67 @@ export default {
                         <label><strong>점심시간:</strong></label>
                         <input type="time" id="lunchStartTime" value="${lunchStartTime}" step="600"> ~
                         <input type="time" id="lunchEndTime" value="${lunchEndTime}" step="600">
+                        <br>
+                        <button id="deleteButton" class="swal2-styled">삭제</button>
+                        <button id="updateButton" class="swal2-styled">수정</button>
                     `,
                     icon: 'info',
-                    confirmButtonText: '닫기',
+                    showCloseButton: true, // 오른쪽 상단에 X 버튼 추가
+                    showConfirmButton: false, // 하단의 닫기 버튼 제거
+
+                    // 모달창 삭제, 수정 
+                    didOpen: () => {
+                        document.getElementById('deleteButton').addEventListener('click', () => {
+                            Swal.fire({
+                                title: '삭제하시겠습니까?',
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonText: '네',
+                                cancelButtonText: '아니요'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    axios({
+                                        method: 'delete', 
+                                        url: `${this.$store.state.apiBaseUrl}/api/su/deleteRtime`, 
+                                        headers: { "Content-Type": "application/json; charset=utf-8" },
+                                        data: {
+                                            bNo: this.rtVo.bNo,
+                                            rtDate: selectedDate 
+                                        }
+                                    }).then(response => {
+
+                                        console.log("여기 확인하자!!!!!!!");
+                                        console.log(response.data);
+
+                                        if (response.data.result === 'success') {
+                                            event.remove();
+                                            Swal.fire('삭제되었습니다.', '', 'success');
+
+                                            this.$router.push(`/inserttime/${this.bNo}`);
+
+                                        } else {
+                                            Swal.fire('삭제 실패', '다시 시도해주세요.', 'error');
+                                        }
+                                    }).catch(error => {
+                                        console.log(error);
+                                        Swal.fire('삭제 실패', '서버와의 통신 중 오류가 발생했습니다.', 'error');
+                                    });
+                                }
+                            });
+                        });
+                        // 수정
+                        document.getElementById('updateButton').addEventListener('click', () => {
+                            const startTime = document.getElementById('startTime').value;
+                            const endTime = document.getElementById('endTime').value;
+                            const lunchStartTime = document.getElementById('lunchStartTime').value;
+                            const lunchEndTime = document.getElementById('lunchEndTime').value;
+                            event.setExtendedProp('startTime', startTime);
+                            event.setExtendedProp('endTime', endTime);
+                            event.setExtendedProp('lunchStartTime', lunchStartTime);
+                            event.setExtendedProp('lunchEndTime', lunchEndTime);
+                            Swal.fire('수정되었습니다.', '', 'success');
+                        });
+                    },
                     preConfirm: () => {
                         const startTime = document.getElementById('startTime').value;
                         const endTime = document.getElementById('endTime').value;
