@@ -20,109 +20,23 @@
                 <div class="insertScheduleContainer">
                     <!-- 날짜 선택 -->
                     <div class="selectWorkDate">
-                        
                         <div>
                             <input type="date" v-model="selectedStartDate" @input="updateCalendar"> ~
                             <input type="date" v-model="selectedEndDate" @input="updateCalendar">
                         </div>
-                        
                     </div>
 
                     <!-- 시간 선택 -->
                     <div class="selectWorkTimeContainer selectedTimeContainer">
                         <div class="selectWorkTimeWrapper">
                             <div class="leftColumn">
-                                <div class="selectWorkTime">
-                                    <div class="selectWorkDay" >
-                                        월
+                                <div class="selectWorkTime" v-for="(day, index) in workDays" :key="index">
+                                    <div :class="['selectWorkDay', { active: day.active }]">
+                                        {{ day.label }}
                                     </div>
                                     <div>
-                                        <input type="time" step="600" > ~ 
-                                        <input type="time" step="600">
-                                    </div>
-                                </div>
-                                <div class="selectWorkTime">
-                                    <div class="selectWorkDay" >
-                                        화
-                                    </div>
-                                    <div>
-                                        <input type="time" step="600" > ~ 
-                                        <input type="time" step="600">
-                                    </div>
-                                </div>
-                                <div class="selectWorkTime">
-                                    <div class="selectWorkDay" >
-                                        수
-                                    </div>
-                                    <div>
-                                        <input type="time" step="600" > ~ 
-                                        <input type="time" step="600">
-                                    </div>
-                                </div>
-                                <div class="selectWorkTime">
-                                    <div class="selectWorkDay" >
-                                        목
-                                    </div>
-                                    <div>
-                                        <input type="time" step="600" > ~ 
-                                        <input type="time" step="600">
-                                    </div>
-                                </div>
-                                <div class="selectWorkTime">
-                                    <div class="selectWorkDay" >
-                                        금
-                                    </div>
-                                    <div>
-                                        <input type="time" step="600" > ~ 
-                                        <input type="time" step="600">
-                                    </div>
-                                </div>
-                                <div class="selectWorkTime">
-                                    <div class="selectWorkDay" >
-                                        점심
-                                    </div>
-                                    <div>
-                                        <input type="time" step="600"> ~ 
-                                        <input type="time" step="600">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="rightColumn">
-                                
-                                <div class="selectWorkTime">
-                                    <div class="selectWorkDay" >
-                                        토
-                                    </div>
-                                    <div>
-                                        <input type="time" step="600" > ~ 
-                                        <input type="time" step="600">
-                                    </div>
-                                </div>
-                                <div class="selectWorkTime">
-                                    <div class="selectWorkDay" >
-                                        일
-                                    </div>
-                                    <div>
-                                        <input type="time" step="600" > ~ 
-                                        <input type="time" step="600">
-                                    </div>
-                                </div>
-                                <div class="selectWorkTime">
-                                    <div class="selectWorkDay">
-                                        공휴일
-                                    </div>
-                                    <div>
-                                        <input type="time" step="600" > ~ 
-                                        <input type="time" step="600" >
-                                    </div>
-                                </div>
-                                <div class="selectWorkTime">
-                                    <div class="selectWorkDay" >
-                                        주말점심
-                                    </div>
-                                    <div>
-                                        <input type="time" step="600" > ~ 
-                                        <input type="time" step="600" >
+                                        <input type="time" step="600" :disabled="!day.active"> ~
+                                        <input type="time" step="600" :disabled="!day.active">
                                     </div>
                                 </div>
                             </div>
@@ -185,6 +99,18 @@ export default {
             selectedStartDate: null, //선택된 시작 날짜
             selectedEndDate: null,//선택된 끝 날짜
             selectedDateElements: [], // 선택된 날짜 요소를 저장할 배열
+            workDays: [
+                { label: '월', active: false },
+                { label: '화', active: false },
+                { label: '수', active: false },
+                { label: '목', active: false },
+                { label: '금', active: false },
+                { label: '토', active: false },
+                { label: '일', active: false },
+                { label: '점심', active: false },
+                { label: '공휴일', active: false },
+                { label: '주말점심', active: false }
+            ],
             rtVo:{
                 rtDates:[],
                 rtTimes:[],
@@ -238,8 +164,36 @@ export default {
         updateCalendar() {
             if (this.selectedStartDate) {
                 this.highlightDateRange();
+                this.activateWorkDays();
             }
-        }
+        },
+
+        // ***** 날짜에 해당하는 요일 활성화 *****
+        activateWorkDays() {
+            const startDate = new Date(this.selectedStartDate);
+            const endDate = new Date(this.selectedEndDate);
+            const daysBetween = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+
+            // 모든 요일을 비활성화
+            this.workDays.forEach(day => {
+                day.active = false;
+            });
+
+            // 선택된 날짜 범위의 요일들을 활성화
+            for (let i = 0; i < daysBetween; i++) {
+                const currentDay = new Date(startDate);
+                currentDay.setDate(currentDay.getDate() + i);
+                const dayIndex = currentDay.getDay(); // 0 (일요일) ~ 6 (토요일)
+
+                if (dayIndex === 0) this.workDays[6].active = true; // 일요일
+                else if (dayIndex === 6) this.workDays[5].active = true; // 토요일
+                else this.workDays[dayIndex - 1].active = true; // 평일
+
+                // 점심 및 주말 점심 활성화
+                this.workDays[7].active = true; // 점심
+                if (dayIndex === 0 || dayIndex === 6) this.workDays[9].active = true; // 주말 점심
+            }
+        },
 
 
         // ***** 공휴일 api불러오기 *****
