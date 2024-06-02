@@ -21,8 +21,8 @@
                     <!-- 날짜 선택 -->
                     <div class="selectWorkDate">
                         <div>
-                            <input type="date" v-model="selectedStartDate" @input="updateCalendar"> ~
-                            <input type="date" v-model="selectedEndDate" @input="updateCalendar">
+                            <input type="date" v-model="selectedStartDate" :min="today" ref="startDateInput" @input="updateCalendar"> ~
+                            <input type="date" v-model="selectedEndDate" :min="selectedStartDate" @focus="checkStartDate" @input="updateCalendar">
                         </div>
                     </div>
 
@@ -125,6 +125,7 @@ export default {
                 rtTimes:[],
                 bNo : this.$route.params.bNo,
             },
+            today: new Date().toISOString().split('T')[0] // 오늘 날짜
             
         };
     },
@@ -212,6 +213,14 @@ export default {
                 if (dayIndex === 0 || dayIndex === 6) this.workDays[9].active = true; // 주말 점심
             }
         },
+
+        // ***** 시작 날짜 확인 *****
+        checkStartDate() {
+            if (!this.selectedStartDate) {
+                alert("시작 날짜부터 선택해주세요.");
+                this.$refs.startDateInput.focus();
+            }
+        }
 
 
         // ***** 공휴일 api불러오기 *****
