@@ -498,24 +498,7 @@ export default {
                     showConfirmButton: false, // 하단의 닫기 버튼 제거
 
                     // 모달창 수정,삭제 
-                    didOpen: async () => {
-
-                        // 기존 값을 가져오기 위해 API 호출
-                        const rtData = await this.selectRtime(selectedDate);
-                        const rtTimes = rtData.map(item => item.rtTime);
-                        const initialStartTime = rtTimes[0];
-                        const initialEndTime = this.addOneHour(rtTimes[rtTimes.length - 1]);
-
-                        let initialLunchStartTime = '';
-                        let initialLunchEndTime = '';
-
-                        for (let i = 1; i < rtTimes.length; i++) {
-                            if (this.diffInHours(rtTimes[i - 1], rtTimes[i]) > 1) {
-                                initialLunchStartTime = this.addOneHour(rtTimes[i - 1]);
-                                initialLunchEndTime = rtTimes[i];
-                                break;
-                            }
-                        }
+                    didOpen: () => {
 
                         // 모달창 삭제
                         document.getElementById('deleteButton').addEventListener('click', () => {
@@ -556,21 +539,15 @@ export default {
 
                         // 모달창 수정
                         document.getElementById('updateButton').addEventListener('click', () => {
-                            const startTime = document.getElementById('startTime').value|| initialStartTime;
-                            const endTime = document.getElementById('endTime').value || initialEndTime;
-                            const lunchStartTime = document.getElementById('lunchStartTime').value || initialLunchStartTime;
-                            const lunchEndTime = document.getElementById('lunchEndTime').value || initialLunchEndTime;
+                            const startTime = document.getElementById('startTime').value;
+                            const endTime = document.getElementById('endTime').value;
+                            const lunchStartTime = document.getElementById('lunchStartTime').value;
+                            const lunchEndTime = document.getElementById('lunchEndTime').value;
 
                              // 전체 시간 범위를 점심 시간을 제외하고 1시간 단위로 나누기
                             const workTime = `${startTime} ~ ${endTime}`;
-                            console.log("workTime 확인하기");
-                            console.log(workTime);
                             const filteredTimeSlots = this.subtractTime(workTime, `${lunchStartTime} ~ ${lunchEndTime}`);
-                            console.log("filteredTimeSlots");
-                            console.log(filteredTimeSlots);
                             const updatedTimeSlots = this.generateTimeSlots(filteredTimeSlots);
-                            console.log("updatedTimeSlots 확인하기");
-                            console.log(updatedTimeSlots);
 
                             // 모든 시간을 updatedRtTimes 배열에 넣기
                             const updatedRtTimes = [];
