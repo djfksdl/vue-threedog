@@ -73,7 +73,7 @@ import FullCalendar from "@fullcalendar/vue3";
 import interactionPlugin from "@fullcalendar/interaction"; // 상호작용 플러그인
 import dayGridPlugin from "@fullcalendar/daygrid";
 import "@/assets/css/manager/insertTime.css"; 
-// import axios from 'axios';
+import axios from 'axios';
 
 
 export default {
@@ -220,28 +220,31 @@ export default {
                 alert("시작 날짜부터 선택해주세요.");
                 this.$refs.startDateInput.focus();
             }
-        }
+        },
 
 
         // ***** 공휴일 api불러오기 *****
-        // async fetchHolidays() {
-        //     try {
-        //         const response = await axios.get('API_URL_HERE'); // 공휴일 데이터를 제공하는 API의 URL
-        //         this.holidays = response.data; // API의 데이터 구조에 따라 수정
-        //         // 공휴일 데이터를 events 배열에 추가
-        //         this.holidays.forEach(holiday => {
-        //             this.events.push({
-        //                 title: holiday.name,
-        //                 start: holiday.date,
-        //                 allDay: true,
-        //                 color: 'red' // 공휴일 이벤트의 색상을 빨간색으로 설정
-        //             });
-        //         });
-        //         this.$refs.calendar.getApi().addEventSource(this.events); // 이벤트 소스를 FullCalendar에 추가
-        //     } catch (error) {
-        //         console.error('Error fetching holidays:', error);
-        //     }
-        // },
+        async fetchHolidays() {
+            const apiKey = 'LxLWmax008pxOL9%2F%2BIFK%2BVhedunUAqbNuCcRNufjvl9k%2FRjucI7%2BNJoqtTSgEkQdXaSWSiT47iGhVevdBijjOQ%3D%3D'; // 발급받은 API 키(Encoding)
+            const year = new Date().getFullYear();
+            const url = `https://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo?ServiceKey=${apiKey}&solYear=${year}&numOfRows=100&_type=json`;
+
+            try {
+                const response = await axios.get(url);
+                const holidays = response.data.response.body.items.item;
+
+                holidays.forEach(holiday => {
+                    this.$refs.calendar.getApi().addEvent({
+                        title: holiday.dateName,
+                        start: holiday.locdate.toString(),
+                        allDay: true,
+                        color: 'red' // 공휴일 이벤트의 색상을 빨간색으로 설정
+                    });
+                });
+            } catch (error) {
+                console.error('Error fetching holidays:', error);
+            }
+        },
 
         // ***** 이용가능시간 등록하기 *****
         // insertRT() {
@@ -299,7 +302,8 @@ export default {
     },
 
     created() {
-
+        // 공휴일 불러오기
+        this.fetchHolidays();
         
     },
 };
