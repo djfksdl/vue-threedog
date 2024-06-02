@@ -265,7 +265,8 @@ export default {
                         title: holiday.dateName,
                         start: holiday.locdate.toString(),
                         allDay: true,
-                        color: 'red' // 공휴일 이벤트의 색상을 빨간색으로 설정
+                        color: 'red', // 공휴일 이벤트의 색상을 빨간색으로 설정
+                        classNames: ['holiday-event'] // 공휴일 이벤트에 클래스 추가(드래그 막기 위해서)
                     });
                 });
 

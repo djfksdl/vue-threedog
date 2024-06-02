@@ -91,6 +91,12 @@
     font-size: 14px;
 }
 
+/* FullCalendar의 공휴일 드래그 막기 */
+.container4 .calendarContainer .holiday-event {
+    pointer-events: none;
+
+}
+
 /* ************************* 시간등록 ************************* */
 .container4 .timeContainer {
     width: 45%;
