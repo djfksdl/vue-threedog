@@ -119,10 +119,10 @@
 </template>
 
 <script>
-import AppFooter from "@/components/AppFooter.vue"
-import AppHeader from "@/components/AppHeader.vue"
-import TopButton from "@/components/TopButton.vue"
-import "@/assets/css/potal/search.css"
+import AppFooter from "@/components/AppFooter.vue";
+import AppHeader from "@/components/AppHeader.vue";
+import TopButton from "@/components/TopButton.vue";
+import "@/assets/css/potal/search.css";
 import axios from 'axios';
 
 export default {
@@ -130,7 +130,7 @@ export default {
   components: {
     AppFooter,
     AppHeader,
-    TopButton
+    TopButton,
   },
   data() {
     return {
@@ -146,19 +146,19 @@ export default {
         star: '',
         title: '',
         saveName: '',
-        bNo: ''
+        bNo: '',
       },
       cities: ['서울', '경기', '강원', '충북', '충남', '경북', '경남', '전북', '전남', '제주'],
       types: ['소형견', '중형견', '특수견'],
       weights: ['~2kg', '2~5kg', '5~8kg', '8~10kg', '10~12kg', '12kg~'],
-      prices: ['~20,000', '~40,000', '~60,000', '60,000~']
+      prices: ['~20,000', '~40,000', '~60,000', '60,000~'],
     };
   },
   watch: {
     selectedItems: {
       handler: 'searchList', // selectedItems가 변할 때마다 searchList 메소드 호출
-      deep: true // 중첩된 객체도 감시
-    }
+      deep: true, // 중첩된 객체도 감시
+    },
   },
   computed: {
     popularStyle() {
@@ -172,6 +172,7 @@ export default {
   },
   mounted() {
     window.addEventListener('scroll', this.handleScroll);
+    this.getList(); // 이 부분에서 getList 메소드 호출
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.handleScroll); // 컴포넌트가 소멸되기 전에 리스너 제거
@@ -188,12 +189,12 @@ export default {
       }
     },
     toggleWeight(weight) {
-      const index = this.selectedWeights.indexOf(weight);
-      if (index === -1) {
-        this.selectedWeights.push(weight);
+      const weightIndex = this.weights.indexOf(weight);
+      if (!this.selectedWeights.includes(weightIndex)) {
+        this.selectedWeights.push(weightIndex);
         this.selectedItems.push({ type: 'weight', label: weight });
       } else {
-        this.selectedWeights.splice(index, 1);
+        this.selectedWeights = this.selectedWeights.filter(item => item !== weightIndex);
         this.selectedItems = this.selectedItems.filter(item => item.label !== weight);
       }
     },
@@ -207,12 +208,12 @@ export default {
       }
     },
     togglePrice(price) {
-      const index = this.selectedPrices.indexOf(price);
-      if (index === -1) {
-        this.selectedPrices.push(price);
+      const priceIndex = this.prices.indexOf(price);
+      if (!this.selectedPrices.includes(priceIndex)) {
+        this.selectedPrices.push(priceIndex);
         this.selectedItems.push({ type: 'price', label: price });
       } else {
-        this.selectedPrices.splice(index, 1);
+        this.selectedPrices = this.selectedPrices.filter(item => item !== priceIndex);
         this.selectedItems = this.selectedItems.filter(item => item.label !== price);
       }
     },
@@ -221,7 +222,8 @@ export default {
       this.selectedItems = this.selectedItems.filter(item => item.label !== city);
     },
     cancelWeight(weight) {
-      this.selectedWeights = this.selectedWeights.filter(item => item !== weight);
+      const weightIndex = this.weights.indexOf(weight);
+      this.selectedWeights = this.selectedWeights.filter(item => item !== weightIndex);
       this.selectedItems = this.selectedItems.filter(item => item.label !== weight);
     },
     cancelType(type) {
@@ -229,7 +231,8 @@ export default {
       this.selectedItems = this.selectedItems.filter(item => item.label !== type);
     },
     cancelPrice(price) {
-      this.selectedPrices = this.selectedPrices.filter(item => item !== price);
+      const priceIndex = this.prices.indexOf(price);
+      this.selectedPrices = this.selectedPrices.filter(item => item !== priceIndex);
       this.selectedItems = this.selectedItems.filter(item => item.label !== price);
     },
     cancelSelected(item) {
@@ -257,13 +260,15 @@ export default {
         method: 'get',
         url: `${this.$store.state.apiBaseUrl}/api/searchlist`,
         headers: { "Content-Type": "application/json; charset=utf-8" },
-        responseType: 'json'
-      }).then(response => {
-        console.log(response.data.apiData);
-        this.reviewList = response.data.apiData;
-      }).catch(error => {
-        console.log(error);
-      });
+        responseType: 'json',
+      })
+        .then((response) => {
+          console.log(response.data.apiData);
+          this.reviewList = response.data.apiData;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     searchResultText() {
       return this.selectedItems.length > 0 ? '관련 검색 결과' : '검색 결과';
@@ -272,17 +277,17 @@ export default {
       console.log("데이터 가져오기");
       const searchKeyword = this.$refs.searchInput.value;
 
-      const selectedCitiesString = this.selectedCities.join(',');
-      const selectedWeightsString = this.selectedWeights.join(',');
-      const selectedTypesString = this.selectedTypes.join(',');
-      const selectedPricesString = this.selectedPrices.join(',');
+      const selectedCitiesString = this.selectedCities.join(';');
+      const selectedWeightsString = this.selectedWeights.join(';');
+      const selectedTypesString = this.selectedTypes.join(';');
+      const selectedPricesString = this.selectedPrices.join(';');
 
       const params = {
         searchKeyword: searchKeyword,
         selectedCities: selectedCitiesString,
         selectedWeights: selectedWeightsString,
         selectedTypes: selectedTypesString,
-        selectedPrices: selectedPricesString
+        selectedPrices: selectedPricesString,
       };
 
       console.log("==================");
@@ -294,18 +299,19 @@ export default {
         url: `${this.$store.state.apiBaseUrl}/api/keyword`,
         headers: { "Content-Type": "application/json; charset=utf-8" },
         params: params, // 쿼리 매개변수로 데이터를 전송
-        responseType: 'json'
-      }).then(response => {
-        console.log(response.data.apiData);
-        this.reviewList = response.data.apiData;
-      }).catch(error => {
-        console.log(error);
-      });
-    }
-
+        responseType: 'json',
+      })
+        .then((response) => {
+          console.log(response.data.apiData);
+          this.reviewList = response.data.apiData;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
   created() {
-    this.getList();
-  }
-}
+    this.getList(); // 이 부분에서 getList 메소드 호출
+  },
+};
 </script>

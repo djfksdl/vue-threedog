@@ -73,6 +73,10 @@ const addList = ref([]);
 const map = ref(null);
 const overlays = ref([]);
 
+window.closeOverlay = () => {
+  overlays.value.forEach(o => o.overlay.setMap(null));
+};
+
 const getCurrentLocation = () => {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition((position) => {
