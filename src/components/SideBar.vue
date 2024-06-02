@@ -8,8 +8,8 @@
             </div>
             <!-- 프로필 내용 -->
             <div class="profileId">
-                <label>dddddd</label> 님 <br>
-                <label>보유 마일리지: 1500</label> P
+                <label>{{ userVo.uId }}</label> 님 <br>
+                <label>보유 마일리지: {{ userVo.uPoint }}</label> P
             </div>
         </div>
 
@@ -23,16 +23,11 @@
             </div>
 
             <!-- 반려견 프로필 박스 -->
-            <div class="petProfileBox">
+            <div class="petProfileBox" v-bind:key="i" v-for="(dogVo, i) in dogList">
                 <!-- 반려견 1 -->
                 <div class="profilePet">
-                    <img src="@/assets/images/spy.jpg">
-                    <p>보리(4세)</p>
-                </div>
-                <!-- 반려견 2 -->
-                <div class="profilePet">
-                    <img src="@/assets/images/dog.jpg">
-                    <p>마리(3세)</p>
+                    <img :src=dogVo.dogImg>
+                    <p>{{ dogVo.dogName }}</p>
                 </div>
             </div>
         </div>
@@ -40,6 +35,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import '@/assets/css/mypage/sidebar.css'
 export default {
     name: "SideBar",
@@ -49,19 +45,33 @@ export default {
     data() {
         return {
             isFixed: false,
+            userVo: {
+                uProfile: "",
+                uNo: this.$store.state.authUser.uNo,
+                uId: "",
+                uPoint: 0,
+
+            },
+            dogVo: {
+                dogName: "",
+                dogImg: "",
+                dogNo: 0,
+            },
+            dogList: [],
+
         };
     },
-    computed:{
+    computed: {
         //동적으로 적용할 사이드바 스타일
-        sidebarStyle(){
-            return{
+        sidebarStyle() {
+            return {
                 position: this.isFixed ? 'fixed' : 'fixed',
-                top: this.isFixed ? '0': '138px',
+                top: this.isFixed ? '0' : '138px',
                 transition: 'top 0.3s ease',
             };
         },
     },
-    mounted(){
+    mounted() {
         window.addEventListener('scroll', this.handleScroll);
     },
     beforeUnmount() {
@@ -69,7 +79,7 @@ export default {
     },
     methods: {
         //스크롤 이벤트 핸들러
-        handleScroll(){
+        handleScroll() {
             const scrollTop = window.scrollY || window.pageYOffset; // 현재 스크롤 위치
             if (scrollTop > 138) {
                 // 스크롤 위치가 138px 이상이면
@@ -78,9 +88,58 @@ export default {
                 this.isFixed = false; // 그렇지 않으면 사이드바를 고정 해제
             }
         },
+
+        getUserInfor() {
+            console.log("사이드바정보 가져오기");
+            console.log(this.userVo.uNo);
+
+            axios({
+                method: 'get', // put, post, delete                   
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/sidebar`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { uNo: this.userVo.uNo }, //get방식 파라미터로 값이 전달
+                // data: guestbookVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log(response.data.apiData); //수신데이타
+                this.userVo = response.data.apiData;
+                console.log(this.userVo);
+
+                this.getUserInfor2();
+
+            }).catch(error => {
+                console.log(error);
+            });
+
+        },
+
+        getUserInfor2() {
+            console.log("사이드바정보 가져오기");
+            console.log(this.userVo.uNo);
+
+            axios({
+                method: 'get', // put, post, delete                   
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/sidebar2`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { uNo: this.userVo.uNo }, //get방식 파라미터로 값이 전달
+                // data: guestbookVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log(response.data.apiData); //수신데이타
+                this.dogList = response.data.apiData;
+
+                console.log(this.dogList);
+
+            }).catch(error => {
+                console.log(error);
+            });
+
+        }
     },
-    created(){
-        
+    created() {
+        this.getUserInfor();
     }
 };
 </script>

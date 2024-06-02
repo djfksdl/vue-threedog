@@ -789,9 +789,6 @@ export default {
                 const imageFile = new File([blob], 'signature.png', { type: 'image/png' });
 
 
-
-
-
                 // FormData에 이미지 파일 추가
                 formData.append('signFile', imageFile);
 
