@@ -1,0 +1,198 @@
+/* 가게별 시간 등록 페이지 */
+.container4 {
+    width: 1500px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    padding: 50px 0;
+}
+
+/* ************************* 달력 ************************* */
+.container4 .calendarContainer {
+    width: 45%;
+    padding-top: 50px;
+}
+.container4 .calendarContainer .calendar-container2 {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    margin: 20px auto;
+    padding: 20px;
+    border: 5px solid hsl(37, 91%, 67%);
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+/* FullCalendar의 요일 헤더 스타일링 */
+.container4 .calendarContainer .fc-day-header {
+    background-color: #fff;
+    color: #333;
+    font-weight: bold;
+    border: none;
+}
+
+/* FullCalendar의 이벤트 요소 스타일링 */
+.container4 .calendarContainer .fc-event {
+    background-color: #f8a247;
+    border: none;
+    border-radius: 5px;
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+/* FullCalendar의 이벤트 텍스트 스타일링 */
+.container4 .calendarContainer .fc-event-title {
+    color: #333;
+    font-weight: bold;
+}
+
+/* FullCalendar의 오늘 날짜 스타일링 */
+.container4 .calendarContainer .fc-day-today {
+    background-color: #f8a247;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* FullCalendar의 선택된 날짜 스타일링 */
+.container4 .calendarContainer .selected-event {
+    background-color: #f8a247;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* FullCalendar의 오늘 날짜 스타일링2 - 다른 날짜가 선택되었을때 */
+.container4 .calendarContainer .fc-day-today-bold-only {
+    font-weight: bold;
+    background-color: transparent;
+    color: initial;
+}
+
+/* FullCalendar의 버튼 스타일링 */
+.container4 .calendarContainer .fc-button {
+    background-color: #ffd700;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    margin: 0 4px;
+    font-size: 14px;
+
+}
+
+/* FullCalendar의 오늘 버튼 스타일링 */
+.container4 .calendarContainer .fc-today-button {
+    background-color: #ffd700;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    margin: 0 4px;
+    font-size: 14px;
+}
+
+/* FullCalendar의 공휴일 드래그 막기 */
+.container4 .calendarContainer .holiday-event {
+    pointer-events: none;
+
+}
+
+/* FullCalendar의 x버튼 스타일링 */
+.container4 .calendarContainer .swal2-close {
+    top: 10px !important; 
+    right: 10px !important;
+    background-color: #f8a247 !important; 
+    /* border: 2px solid #d45d00 !important;  */
+    /* border-radius: 50% !important;  */
+    color: #fff !important; 
+    font-size: 16px !important; 
+    width: 30px !important; 
+    height: 30px !important; 
+    line-height: 25px !important; 
+}
+
+/* ************************* 시간등록 ************************* */
+.container4 .timeContainer {
+    width: 45%;
+}
+
+.container4 .timeContainer .timeTop {}
+
+.container4 .timeContainer .timeTop h1 {
+    border-bottom: 1px solid #666;
+    padding-bottom: 10px;
+}
+
+/* 스케쥴 등록 */
+.container4 .timeContainer .insertScheduleContainer {
+    padding: 10px;
+}
+
+/* 날짜 선택 */
+.container4 .timeContainer .insertScheduleContainer .selectWorkDate {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+.container4 .timeContainer .insertScheduleContainer .selectWorkDate .weekAllDayCheck {
+    display: flex;
+}
+.container4 .timeContainer .insertScheduleContainer .selectWorkDate .weekAllDayCheck >label {
+    padding-right: 10px;
+}
+
+/* 시간 선택 */
+.container4 .timeContainer .insertScheduleContainer .selectWorkTimeContainer {
+    height: 500px;
+    padding-top: 20px;
+    /* background-color: pink; */
+}
+.container4 .timeContainer .insertScheduleContainer .selectWorkTimeWrapper {
+    display: flex;
+    flex-direction: row; /* 가로로 배치 */
+    justify-content: space-between; /* 두 칼럼 간의 간격 확보 */
+    height: 100%;
+}
+.container4 .timeContainer .insertScheduleContainer .leftColumn,
+.container4 .timeContainer .insertScheduleContainer .rightColumn {
+    display: flex;
+    flex-direction: column;
+    width: 48%; /* 두 칼럼이 나란히 배치되도록 */
+}
+.container4 .timeContainer .insertScheduleContainer .leftColumn{
+    
+}
+.container4 .timeContainer .insertScheduleContainer .selectWorkTime {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.container4 .timeContainer .insertScheduleContainer .selectedTimeContainer .selectWorkTime {
+    margin-bottom: 30px;
+}
+
+.container4 .timeContainer .insertScheduleContainer .selectWorkTime .selectWorkDay {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    background-color: #ddd;
+    border-radius: 30px;
+    margin-right: 20px;
+    transition: background-color 0.3s, color 0.3s;
+}
+.container4 .timeContainer .insertScheduleContainer .selectWorkTime .selectWorkDay.active {
+    background-color: #237140 ; 
+    color: #fff;
+    font-weight: bold;
+}
+
+/* 등록,수정 버튼 */
+.container4 .timeContainer .insertScheduleContainer .insertBtn {
+    width: 120px;
+    height: 50px;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    margin-left: 535px;
+}

@@ -152,21 +152,22 @@ export default {
         }
     },
     methods: {
-        // ***** 날짜 변경시 시간 초기화 *****
+        // ***** 달력에 날짜 범위 표시 및 시간 초기화 *****
         handleDateChange(type) {
             this.updateCalendar();
             this.activateWorkDays();
-            
             if (type === 'start' || type === 'end') {
                 this.clearTimeInputs();
             }
-
-             // '동일한 시간 추가' 체크 해제 및 originalTimes 초기화
+            
+            // '동일한 시간 추가' 체크 해제 및 originalTimes 초기화
             const checkAllDayElement = document.getElementById('checkAllDay');
-            checkAllDayElement.checked = false;
-            checkAllDayElement.disabled = !this.isMultipleDatesSelected || !this.hasValidTime();
-            this.originalTimes = [];
-            },
+            if (checkAllDayElement.checked) {
+                checkAllDayElement.checked = false;
+                 this.originalTimes = [];
+            this.applySameTime({ target: checkAllDayElement }, true);
+            }
+        },
 
         // ***** 시간 입력창 초기화 *****
         clearTimeInputs() {
@@ -232,21 +233,6 @@ export default {
                 this.selectedEndDate = this.selectedStartDate;
             }
             this.updateWorkTime(day);
-
-             // '동일한 시간 추가' 체크박스 상태 업데이트
-            const checkAllDayElement = document.getElementById('checkAllDay');
-            if (this.isMultipleDatesSelected && this.hasValidTime()) {
-                checkAllDayElement.disabled = false;
-            } else {
-                checkAllDayElement.disabled = true;
-                checkAllDayElement.checked = false;
-                this.originalTimes = [];
-            }
-        },
-
-        // ***** 유효한 시간이 있는지 확인 *****
-        hasValidTime() {
-            return this.workDays.some(day => day.startTime && day.endTime);
         },
 
         // ***** 날짜에 해당하는 요일 활성화 *****
@@ -454,8 +440,13 @@ export default {
         },
 
         // ***** 동일한 시간 입력하기 *****
-        applySameTime(event, reset = false) {
+        applySameTime(event) {
             const activeDays = this.workDays.filter(day => day.active && ['월', '화', '수', '목', '금', '토', '일'].includes(day.label));
+            if (activeDays.length < 2) {
+                event.target.checked = false;
+                return; // 활성화된 요일이 2개 미만일 경우 아무 일도 안 함
+            }
+
             if (event.target.checked) {
                 const referenceDay = activeDays.find(day => day.startTime && day.endTime);
                 if (!referenceDay) {
@@ -467,7 +458,7 @@ export default {
                 const { startTime, endTime } = referenceDay;
 
                 if (!startTime && !endTime) {
-                    alert('유효한 시간을 선택해주세요');
+                    alert('시간을 선택해주세요');
                     event.target.checked = false;
                     return;
                 }
@@ -487,11 +478,10 @@ export default {
                         day.endTime = endTime;
                     }
                 });
-        
             } else {
 
                 // 체크를 취소할때 원래 시간 복원하기
-                if (reset) {
+                if (event.reset) {
                     this.originalTimes = [];
                 } else {
                     this.originalTimes.forEach(original => {
