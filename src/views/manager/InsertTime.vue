@@ -20,15 +20,15 @@
                 <div class="insertScheduleContainer">
                     <!-- 날짜 선택 -->
                     <div class="selectWorkDate">
-                <div>
-                    <input type="date" v-model="selectedStartDate" :min="today" ref="startDateInput" @input="handleDateChange('start')"> ~
-                    <input type="date" v-model="selectedEndDate" :min="selectedStartDate" ref="endDateInput" @focus="checkStartDate" @input="handleDateChange('end')">
-                </div>
-                <div class="weekAllDayCheck">
-                    <label id="checkAllDay">동일한 시간 추가</label>
-                    <input id="checkAllDay" type="checkbox" :disabled="!isMultipleDatesSelected" @change="applySameTime"> 
-                </div>
-            </div>
+                        <div>
+                            <input type="date" v-model="selectedStartDate" :min="today" ref="startDateInput" @input="handleDateChange('start')"> ~
+                            <input type="date" v-model="selectedEndDate" :min="selectedStartDate" ref="endDateInput" @focus="checkStartDate" @input="handleDateChange('end')">
+                        </div>
+                        <div class="weekAllDayCheck">
+                            <label id="checkAllDay">동일한 시간 추가</label>
+                            <input id="checkAllDay" type="checkbox" :disabled="!isMultipleDatesSelected" @change="applySameTime"> 
+                        </div>
+                    </div>
 
                     <!-- 시간 선택 -->
                     <div class="selectWorkTimeContainer selectedTimeContainer">
