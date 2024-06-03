@@ -60,17 +60,19 @@
                             </button>
                         </div>
                         <!-- 후기 작성버튼 -->
-                        <div class="rrfChange" v-else-if="reserveVo.pushNo && reserveVo.rNo==0">
+                        <div class="rrfChange" v-else-if="reserveVo.pushNo && reserveVo.rNo == 0">
                             <router-link :to="`/reviewform/${reserveVo.rsNo}`">후기 작성</router-link>
                         </div>
                         <!-- 후기 확인버튼 -->
-                        <div class="rrfConfirm" v-else-if="reserveVo.rNo" >
+                        <div class="rrfConfirm" v-else-if="reserveVo.rNo">
                             <router-link to="/review">후기 확인</router-link>
 
                         </div>
                     </div>
 
                 </div>
+
+
 
             </div>
         </div>
@@ -107,7 +109,7 @@ export default {
                 bdAddress: "",
                 bPhone: "",
                 title: "",
-                uNo: this.$store.state.authUser.uNo,
+                uNo: this.$route.params.uNo,
                 dogName: "",
                 uPoint: "",
                 pNo: 0,
@@ -115,7 +117,7 @@ export default {
                 rsNum: 0, //rsNo
                 usePoint: 0,
                 size: "",
-                rNo:0,
+                rNo: 0,
             },
             pushVo: {
                 pushNo: 0,
@@ -142,7 +144,8 @@ export default {
                 console.log("예약내역 불러오기 성공");
                 console.log(response.data.apiData); //수신데이타
                 this.reserveList = response.data.apiData;
-                this.getPush();
+
+                console.log(this.reserveList);
             }).catch(error => {
                 console.log(error);
             });

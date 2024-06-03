@@ -26,7 +26,7 @@
                 <form v-on:submit.prevent="petUpdate" enctype="multipart/form-data">
                     <div class="petAddFormUnder">
                         <div class="filebox preview-image">
-                            <img id="preview-image" :src="dogVo.dogImg">
+                            <img id="preview-image"  v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${dogVo.dogImg}`">
                             <label for="input-file">업로드</label>
                             <input type="file" id="input-file" class="upload-hidden" @change="handleFileUpload">
                         </div>
