@@ -10,7 +10,7 @@
 /* ************************* 달력 ************************* */
 .container4 .calendarContainer {
     width: 45%;
-    padding-top: 50px;
+    padding-top: 30px;
 }
 .container4 .calendarContainer .calendar-container2 {
     position: relative;
@@ -232,21 +232,19 @@
 .container4 .timeContainer .selectScheduleTimeContainer .selectDeleteRtimeContainer{
     /* background-color: tomato; */
     padding-bottom: 50px;
+    min-height: 230px;
 }
 .container4 .timeContainer .selectScheduleTimeContainer .selectDeleteRtimeContainer h2{
     line-height: 50px;
 }
 .container4 .timeContainer .selectScheduleTimeContainer .selectDeleteRtimeContainer .RtBtnBox{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
 }
 .container4 .timeContainer .selectScheduleTimeContainer .selectDeleteRtimeContainer .RtBtnBox button{
     width: 100px;
     height: 50px;
     border: none;
     border-radius: 10px;
-    margin: 5px 0;
+    margin: 5px 10px 5px 0;
     background-color: #f8a247;
     font-size: 15px;
     cursor: pointer;
@@ -255,8 +253,18 @@
 .container4 .timeContainer .selectScheduleTimeContainer .selectDeleteRtimeContainer .RtBtnBox button:hover{
     background-color: #ffd700;
     font-weight: bold;
-    color: #000;
 }
+/* disabled된 삭제 버튼 */
+.container4 .timeContainer .selectScheduleTimeContainer .selectDeleteRtimeContainer .RtBtnBox button:disabled{
+    background-color: #d3d3d3;
+    cursor: default; 
+    color: #7d7d7d; 
+}
+.container4 .timeContainer .selectScheduleTimeContainer .selectDeleteRtimeContainer .RtBtnBox button:disabled:hover{
+    font-weight: normal;
+}
+
+
 
 /* 예약시간 추가 */
 .container4 .timeContainer .selectScheduleTimeContainer .plusRtimeContainer{
@@ -292,3 +300,4 @@
     font-weight: bold;
     color: #000;
 }
+

@@ -66,19 +66,16 @@
                     <button type="submit" class="insertBtn" v-on:click="insertRT">등록</button>
                 </div>
 
+
                 <!-- 예약날짜 불러오기 -->
                 <div v-if="selectedDate" class="selectScheduleTimeContainer"> 
                     <!-- 예약시간 삭제 -->
                     <div class="selectDeleteRtimeContainer">
                         <h2>예약된 시간 삭제</h2>
                         <div class="RtBtnBox">
-                            <button type="button">10:00</button>
-                            <button type="button">11:00</button>
-                            <button type="button">12:00</button>
-                            <button type="button">14:00</button>
-                            <button type="button">15:00</button>
-                            <button type="button">16:00</button>
-                            <button type="button">17:00</button>
+                            <button v-on:click="deleteRtime(time.rtTime)" v-for="(time, index) in registeredTimes" :key="index" type="button" :disabled="time.rtFinish === true">
+                                {{ time.rtTime }}
+                            </button>
                         </div>
                     </div>
                     <!-- 예약시간 추가 -->
@@ -167,6 +164,7 @@ export default {
             originalTimes: [], // 동일시간추가 하기전 시간을 담을 배열
             registeredDates: [], // 등록된 날짜를 저장할 배열
             selectedDate: null, // 선택된 날짜
+            registeredTimes: [], // 예약된 시간을 저장할 배열
             checkAllDay: false, //체크 표시
             
         };
@@ -645,27 +643,6 @@ export default {
             });
         },
 
-        // ***** 등록되어있는 시간 가져오기(모달창 시간 입력 위해) *****
-        selectRtime(date) {
-            console.log("등록시간 가져오기");
-
-            return axios({
-
-                method: 'get',
-                url: `${this.$store.state.apiBaseUrl}/api/su/selectRtime`,
-                headers: { "Content-Type": "application/json; charset=utf-8" },
-                params: { bNo: this.rtVo.bNo, rtDate: date },
-                responseType: 'json'
-            }).then(response => {
-                console.log("등록된 시간들");
-                console.log(response.data.apiData);
-                return response.data.apiData;
-            }).catch(error => {
-                console.log(error);
-                return [];
-            });
-        },
-
         // ***** 시간 1시간 더하기 메소드 *****
         addOneHour(time) {
             const [hours, minutes] = time.split(':');
@@ -694,9 +671,60 @@ export default {
             }
         },
 
+        // ***** 등록되어있는 시간 가져오기 *****
+        selectRtimes(date) {
+            // console.log("예약시간 가져오기");
+
+            return axios({
+
+                method: 'get',
+                url: `${this.$store.state.apiBaseUrl}/api/su/selectRtime`,
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                params: { bNo: this.rtVo.bNo, rtDate: date },
+                responseType: 'json'
+            }).then(response => {
+
+                this.registeredTimes = response.data.apiData.map(item => ({
+                    rtTime: item.rtTime.slice(0, 5), // 시간 포맷 변경하여 저장
+                    rtFinish: item.rtFinish // 예약 유무 저장
+                }));
+
+            }).catch(error => {
+                console.log(error);
+                this.registeredTimes = [];
+            });
+        },
+
+        // ***** 시간 삭제하기 *****
+        deleteRtime(rtTime){
+            console.log("시간삭제");
+
+            axios({
+                    method: 'delete', // put, post, delete 
+                    url: `${this.$store.state.apiBaseUrl}/api/su/deleteRtime`,
+                    headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                    // params: {bNo: this.bNo}, //get방식 파라미터로 값이 전달
+                    data: {
+                        bNo: this.rtVo.bNo,
+                        rtDate: this.selectedDate,
+                        rtTime: rtTime
+                    }, 
+                }).then(response => {
+                    console.log(response.data.apiData);
+                    
+                    this.selectRtimes(this.selectedDate);//변경된 예약 시간 목록 다시 받아오기
+
+                }).catch(error => {
+                    console.log(error);
+                });
+
+
+        },
         // ***** 캘린더 날짜 클릭 핸들러 *****
         handleDateClick(info) {
             this.selectedDate = info.dateStr; // 클릭된 날짜 저장
+
+            this.selectRtimes(this.selectedDate);
         },
 
         // ***** 선택 초기화 *****
@@ -706,21 +734,6 @@ export default {
 
 
     },
-
-    // ***** input창에 바로 적용시키기 위해서 감시 *****
-    watch: {
-        // selectedStartDate() {
-        //     this.updateCalendar();
-        //     console.log("와치 ㅣㅅ작")
-        //     this.activateWorkDays();
-        // },
-        // selectedEndDate() {
-        //     this.updateCalendar();
-        //     console.log("와치 끝")
-        //     this.activateWorkDays();
-        // }
-    },
-
     created() {
         // 공휴일 불러오기
         this.fetchHolidays();
