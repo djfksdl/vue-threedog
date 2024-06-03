@@ -10,8 +10,8 @@
         <!-- 일정 모달 -->
         <div v-if="selectedEvent" class="schedule-modal" @click.self="closeModal">
             <div class="schedule-modal-content">
-                <h2>일정 변경<br><br>{{ selectedEvent.title }}</h2>
-                <p>일시: {{ selectedEvent.start }}</p>
+                <!-- <h2>일정 변경<br><br>{{ selectedEvent.title }}</h2> -->
+                <h2>일시: {{ selectedEvent.start }}</h2>
 
                 <!-- 추가된 예약 정보 표시 -->
                 <p>애견명: {{ selectedEvent.extendedProps.petName }}</p>
@@ -97,24 +97,33 @@ export default {
         },
 
         updateCalendarEvents() {
-            const events = this.reservationData.map(reservation => ({
-                title: `${reservation.dogName}, ${reservation.beauty}, ${reservation.kind}, ${reservation.expectedPrice}원`,
-                start: reservation.rtDate, // 날짜와 시간을 합쳐서 start 속성에 할당
-                extendedProps: {
-                    petName: reservation.dogName,
-                    breed: reservation.kind,
-                    groomingStyle: reservation.beauty,
-                    price: reservation.expectedPrice,
-                    rsNo: reservation.rsNo // rsNo 추가
-                }
-            }));
-            console.log('변화된이벤트:', events); // 변환된 이벤트 데이터 확인
+            const events = this.reservationData.map(reservation => {
+                const dateParts = reservation.rtDate.split('-'); // rtDate를 연, 월, 일로 분리
+                const timeParts = reservation.rtTime.split(':'); // rtTime을 시간과 분으로 분리
 
-            // FullCalendar의 events 속성에 예약된 정보를 추가
+                // 연, 월, 일, 시간, 분을 각각 추출하여 Date 객체 생성
+                const startTime = new Date(
+                    parseInt(dateParts[0]),  // 연
+                    parseInt(dateParts[1]) - 1, // 월 (0부터 시작하므로 1을 빼줌)
+                    parseInt(dateParts[2]), // 일
+                    parseInt(timeParts[0]), // 시간
+                    parseInt(timeParts[1]) // 분
+                );
+
+                return {
+                    title: `${startTime}, ${reservation.dogName}, ${reservation.beauty}, ${reservation.kind}, ${reservation.expectedPrice}원`,
+                    start: startTime,
+                    extendedProps: {
+                        petName: reservation.dogName,
+                        breed: reservation.kind,
+                        groomingStyle: reservation.beauty,
+                        price: reservation.expectedPrice,
+                        rsNo: reservation.rsNo
+                    }
+                };
+            });
+
             this.calendarOptions.events = events;
-            console.log('할당된 이벤트:', this.calendarOptions.events); // 할당된 이벤트 확인
-
-            // FullCalendar를 갱신하여 새로운 이벤트를 반영
             this.$refs.calendar.getApi().refetchEvents();
         },
 
@@ -164,49 +173,44 @@ export default {
                 title: '일정 수정',
                 html: `
             <input id="editStart" class="swal2-input" type="datetime-local" placeholder="시작 시간" value="${this.formatDateTimeLocal(this.selectedEvent.start)}">
-            <input id="editEnd" class="swal2-input" type="datetime-local" placeholder="종료 시간" value="${this.formatDateTimeLocal(this.selectedEvent.end)}">
             <input id="editTitle" class="swal2-input" placeholder="일정명" value="${this.selectedEvent.title}">
-            `,
+        `,
                 focusConfirm: false,
                 preConfirm: () => {
                     const start = Swal.getPopup().querySelector('#editStart').value;
-                    const end = Swal.getPopup().querySelector('#editEnd').value;
                     const title = Swal.getPopup().querySelector('#editTitle').value;
                     if (!title || !start) {
                         Swal.showValidationMessage('일정명과 시작 시간을 모두 입력해주세요.');
                     }
-                    return { title, start, end };
+                    return { title, start };
                 }
             }).then(result => {
                 if (result.isConfirmed) {
-                    const { start, end, title } = result.value;
-                    // 수정된 일정 업데이트
-                    this.selectedEvent.setStart(new Date(start)); // 시작 시간 업데이트
-                    this.selectedEvent.setEnd(new Date(end)); // 종료 시간 업데이트
-                    this.selectedEvent.setProp('title', title); // 제목 업데이트
+                    const { start, title } = result.value;
+                    this.selectedEvent.setStart(new Date(start));
+                    this.selectedEvent.setProp('title', title);
 
                     // 서버에 변경된 예약 정보를 업데이트하는 API 호출
-                    this.updateEventTimeOnServer(this.selectedEvent.extendedProps.rsNo, start, end);
+                    this.updateEventTimeOnServer(this.selectedEvent.extendedProps.rsNo, start);
                 }
             });
         },
 
-        updateEventTimeOnServer(rsNo, start, end) {
+        updateEventTimeOnServer(rsNo, start) {
             function convertToMySQLTime(isoTime) {
-                const date = new Date(isoTime); // ISO 8601 형식의 시간을 Date 객체로 변환
-                const hours = date.getHours().toString().padStart(2, '0'); // 시간
-                const minutes = date.getMinutes().toString().padStart(2, '0'); // 분
-                const seconds = date.getSeconds().toString().padStart(2, '0'); // 초
-                return `${hours}:${minutes}:${seconds}`; // MySQL 시간 형식으로 변환하여 반환
+                const date = new Date(isoTime);
+                const hours = date.getHours().toString().padStart(2, '0');
+                const minutes = date.getMinutes().toString().padStart(2, '0');
+                const seconds = date.getSeconds().toString().padStart(2, '0');
+                return `${hours}:${minutes}:${seconds}`;
             }
 
             const startTime = convertToMySQLTime(start);
-            const endTime = end ? convertToMySQLTime(end) : null;
 
             axios({
                 method: 'put',
                 url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/time`,
-                data: { rsNo: rsNo, rtTime: startTime, rtEndTime: endTime }, // 데이터 전송
+                data: { rsNo: rsNo, rtTime: startTime },
                 headers: { "Content-Type": "application/json; charset=utf-8" },
                 responseType: 'json'
             }).then(() => {
@@ -217,6 +221,7 @@ export default {
                 Swal.fire('시간 업데이트 실패', '시간을 업데이트하는 도중 오류가 발생했습니다.', 'error');
             });
         },
+
 
         formatDateTimeLocal(date) {
             const d = new Date(Date.parse(date)); // 변경
@@ -229,7 +234,7 @@ export default {
         },
 
 
-        
+
 
         deleteEvent() {
             Swal.fire({
@@ -243,8 +248,16 @@ export default {
                 cancelButtonText: '취소'
             }).then(result => {
                 if (result.isConfirmed) {
+                    const rsNo = this.selectedEvent.extendedProps.rsNo;
+
+                    if (!rsNo) {
+                        console.error('rsNo가 정의되지 않았습니다.');
+                        Swal.fire('삭제 실패', '일정을 삭제하는 도중 오류가 발생했습니다.', 'error');
+                        return;
+                    }
+
                     this.selectedEvent.remove();
-                    this.deleteEventOnServer(this.selectedEvent.extendedProps.rsNo);
+                    this.deleteEventOnServer(rsNo);
                     this.showModal = false;
                     Swal.fire('삭제 완료', '일정이 삭제되었습니다.', 'success');
                 }
