@@ -60,6 +60,7 @@ import ManagerFooter from "@/components/ManagerFooter.vue";
 import ManagerHeader from "@/components/ManagerHeader.vue";
 import Chart from "chart.js/auto";
 import "@/assets/css/manager/totalsales.css";
+import axios from 'axios';
 
 export default {
   name: "TotalSalesView", // 컴포넌트 이름
@@ -140,6 +141,20 @@ export default {
         }
       });
     },
+    getWeekList() {
+      axios({
+        method: 'get',
+        url: `${this.$store.state.apiBaseUrl}/api/weekstats`,
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        // params: params,
+        responseType: 'json'
+      }).then(response => {
+        this.weeklySales.value = response.data.apiData;
+        console.log(response.data.apiData);
+      }).catch(error => {
+        console.log(error);
+      });
+    }
   },
   mounted() {
     // 각 그래프를 그립니다.
