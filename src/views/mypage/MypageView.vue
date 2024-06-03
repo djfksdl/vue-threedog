@@ -98,22 +98,18 @@
                         </div>
                         <!-- 알림장 내용 -->
                         <div class="mpdcInfo1">
-                            <p><span>이용일 :</span> 2024년05월13일</p>
-                            <p><span>이용펫 :</span> 보리</p>
-                            <p><span>미용예절 :</span> 아주 잘 했어요.</p>
-                            <p><span>컨디션 :</span> 좋아요</p>
-                            <p><span>엉킴(부위) :</span> 없어요.</p>
-                            <p><span>싫어했던 부위 :</span> 배, 뒷다리</p>
-                            <p><span>목욕/드라이 :</span> 매우 싫어해요.</p>
+                            <p><span>이용일 :</span> {{ formattedRtDate2 }}</p>
+                            <p><span>이용펫 :</span> {{reserveVo2.dogName}}</p>
+                            <p><span>미용예절 :</span> {{reserveVo2.attitude}} </p>
+                            <p><span>컨디션 :</span> {{reserveVo2.rCondition}}</p>
+                            <p><span>엉킴(부위) :</span> {{reserveVo2.tangle }}</p>
+                            <p><span>싫어했던 부위 :</span> {{ reserveVo2.disliked }}</p>
+                            <p><span>목욕/드라이 :</span> {{ reserveVo2.bath }}</p>
                         </div>
                         <div class="mpdcInfo2">
-                            <p><span>추가요금 :</span> 없어요.</p>
+                            <p><span>추가요금 :</span> {{reserveVo2.surcharge}}</p>
                             <p><span>전달사항 :</span>
-                                출근길 스프링클러가 동파되면서 지하철역이 한바탕 아수라장으로 변했고, 한강물은 곳곳이 꽁꽁 얼었습니다.
-                                입구에는 고드름이 주렁주렁 맺혔고, 바닥은 미끄러운 빙판으로 변했습니다.
-                                오늘(27일) 오전 6시쯤, 지하철 3호선 화정역 천장에서 스프링클러가 동파됐습니다.
-                                갑자기 천장에서 다량의 물이 쏟아지며 출근길 시민들이 큰 불편을 겪었습니다.
-                                꽁꽁 얼어붙은 한강 위로 고양이가 걸어다닙니다.
+                               {{reserveVo2.message}}
                             </p>
                         </div>
                     </div>
@@ -171,6 +167,22 @@ export default {
                 star: 0,
                 dogName: "",
                 saveName: "",
+            },
+            reserveVo2: {
+                rsNo: 0,
+                dogNo: 0,
+                dogName: "",
+                rtNo: 0,
+                expectedPrice: 0,
+                surcharge: 0,
+                attitude: "",
+                rCondition: "",
+                tangle: "",
+                disliked: "",
+                bath: "",
+                message: "",
+                saveName: "",
+                bNo:"",
 
             },
 
@@ -188,12 +200,17 @@ export default {
             const date = new Date(this.reserveVo.rtDate);
             return `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일`;
         },
+        formattedRtDate2() {
+            if (!this.reserveVo2) return '';
+            const date = new Date(this.reserveVo2.rtDate);
+            return `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일`;
+        },
         formattedRtTime() {
             if (!this.reserveVo || !this.reserveVo.rtTime) return '';
             const time = this.reserveVo.rtTime;
             const [hours, minutes] = time.split(':');
             return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
-        }
+        },
     },
     methods: {
         getReverve() {
@@ -223,7 +240,7 @@ export default {
                 params: { uNo: this.reviewVo.uNo },
                 responseType: 'json' //수신타입
             }).then(response => {
-                console.log("예약내역 불러오기 성공");
+                console.log("내가쓴후기 불러오기 성공");
                 console.log(response.data.apiData); //수신데이타
                 this.reviewVo = response.data.apiData;
 
@@ -233,6 +250,20 @@ export default {
         },
         getDiary() {
             console.log("알림장불러오기");
+            axios({
+                method: 'get',  //put,post,delete
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/mydiary`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { uNo: this.reviewVo.uNo },
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log("내가쓴후기 불러오기 성공");
+                console.log(response.data.apiData); //수신데이타
+                this.reserveVo2 = response.data.apiData;
+
+            }).catch(error => {
+                console.log(error);
+            });
         }
     },
     created() {
