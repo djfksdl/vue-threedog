@@ -81,7 +81,7 @@
                             <button v-on:click="deleteRtime(time.rtTime)" v-for="(time, index) in registeredTimes" :key="index" type="button" :disabled="time.rtFinish === true">
                                 {{ time.rtTime }}
                             </button>
-                            <p>등록된 예약 시간이 없습니다.</p>
+                            <p v-if="registeredTimes.length === 0">등록된 예약 시간이 없습니다.</p>
                         </div>
                     </div>
                     <!-- 예약시간 추가 -->
