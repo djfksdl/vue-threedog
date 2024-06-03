@@ -200,6 +200,7 @@ import { mapState } from 'vuex';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 
+
 export default {
     name: "DiaryView",
     components: {
@@ -215,7 +216,7 @@ export default {
             breed: "포메라니안", // 품종
             groomingStyle: "베이비컷", // 미용 스타일
             price: "", // 가격
-           // additionalFees: null, // 추가 요금
+            // additionalFees: null, // 추가 요금
             photoUrls: [], // 미용 사진 URL 목록
             groomingEtiquette: "", // 미용 예절
             condition: "", // 애견의 컨디션
@@ -234,7 +235,7 @@ export default {
             savedDislikedArea: "", // 저장된 싫어했던 부위
             savedBathDry: "", // 저장된 목욕/드라이 정보
             savedcurruntWeight: "", // 몸무게
-           // selectedAdditionalFee: null, // 선택된 추가 요금
+            // selectedAdditionalFee: null, // 선택된 추가 요금
             savedNote: "", // 저장된 전달 사항
             attachedPhotos: [], // 첨부된 사진 파일들
             savedAttachedPhotos: [], // 저장된 첨부 사진 URL들
@@ -260,9 +261,11 @@ export default {
         if (rsNo) {
             this.rsNo = rsNo; // rsNo 값을 설정
             this.selectGroomingRecord(rsNo);
+            // priceVo.bNo 값 설정 추가
+            this.priceVo.bNo = rsNo;
+            // 추가요금 가져오기 호출
+            this.getPlusPrice();
         }
-
-        this.getPlusPrice();
     },
 
     methods: {
@@ -288,9 +291,14 @@ export default {
                 // Vuex에 데이터 업데이트
                 this.$store.commit("setGroomingRecord", groomingRecord);
 
+                // priceVo.bNo 값을 설정
+                this.priceVo.bNo = rsNo;
+
             }).catch(error => {
                 console.error('미용 기록 조회 중 오류 발생:', error);
             });
+
+
         },
 
 
@@ -429,9 +437,14 @@ export default {
             });
         },
 
+
+
         //-------------------- 금액금액----------------------------
-        
+        // 추가요금가져오기
         getPlusPrice() {
+
+            console.log("bNo 값 확인:", this.priceVo.bNo); // bNo 값을 콘솔에 출력
+
             console.log("가격표-추가요금 가져오기");
             axios({
                 method: 'get',
@@ -440,51 +453,68 @@ export default {
                 params: { bNo: this.priceVo.bNo },
                 responseType: 'json'
             }).then(response => {
-                console.log("가격표-추가요금 가져오기");
+                console.log("가격표-추가요금 가져오기 성공");
                 console.log(response.data.apiData);
-                this.priceList2 = response.data.apiData;
+                this.priceList2 = response.data.apiData; // priceList2 업데이트
+
             }).catch(error => {
                 console.log(error);
             });
-        },
-        toggleSelected(priceItem) {
-            priceItem.selected = !priceItem.selected;
 
-            if (priceItem.selected) {
-                console.log('선택한 값 :', priceItem.onePrice);
-                this.reserveVo.expectedPrice += priceItem.onePrice;
-                console.log("priceNo:", priceItem.priceNo);
-                this.priceVo.priceNo2.push(priceItem.priceNo);
-                const thValue = priceItem.beauty;
+        },
+
+        // 추가요금 가격표
+        toggleSelected(priceList2) {
+            // 선택 상태를 토글합니다.
+            priceList2.selected = !priceList2.selected;
+
+            if (priceList2.selected) {
+                console.log('선택한 값 :', priceList2.onePrice);
+                this.reserveVo.expectedPrice += priceList2.onePrice; // 선택한 값의 누적을 수행합니다.
+
+                // 가격표 No 출력 및 추가
+                console.log("priceNo:", priceList2.priceNo);
+                this.priceVo.priceNo2.push(priceList2.priceNo); // priceNo2 배열에 추가합니다.
+
+                // 선택한 td의 가로의 th 값을 가져옵니다.
+                const thValue = priceList2.beauty;
                 console.log('선택한 td의 가로의 th 값:', thValue);
                 this.priceVo.beauty2.push(thValue);
                 console.log(this.priceVo.beauty2);
+
             } else {
-                console.log('선택 취소한 값 :', priceItem.onePrice);
-                this.reserveVo.expectedPrice -= priceItem.onePrice;
-                const thIndex = this.priceVo.beauty2.indexOf(priceItem.beauty);
+                console.log('선택 취소한 값 :', priceList2.onePrice);
+                this.reserveVo.expectedPrice -= priceList2.onePrice; // 선택 취소한 값의 차감을 수행합니다.
+
+                // 선택 취소한 th 값을 beauty2 배열에서 제거합니다.
+                const thIndex = this.priceVo.beauty2.indexOf(priceList2.beauty);
                 if (thIndex > -1) {
                     this.priceVo.beauty2.splice(thIndex, 1);
                 }
-                const priceNoIndex = this.priceVo.priceNo2.indexOf(priceItem.priceNo);
+
+                // 선택 취소한 priceNo 값을 priceNo2 배열에서 제거합니다.
+                const priceNoIndex = this.priceVo.priceNo2.indexOf(priceList2.priceNo);
                 if (priceNoIndex > -1) {
                     this.priceVo.priceNo2.splice(priceNoIndex, 1);
                 }
             }
 
+            // 콘솔에 현재 예상 가격 출력
             console.log('현재 예상 가격 :', this.reserveVo.expectedPrice);
+            // 콘솔에 현재 priceNo2 배열 출력
             console.log('현재 priceNo 배열 :', this.priceVo.priceNo2);
         },
-        // // 추가요금 선택
-        // selectAdditionalFee(item) {
-        //     this.selectedAdditionalFee = item;
-        // },
-        // // 총 금액 계산
-        // calculateTotalAmount() {
-        //     const basePrice = parseFloat(this.selectedSchedule.extendedProps.price) || 0;
-        //     const additionalFee = parseFloat(this.selectedAdditionalFee?.price) || 0;
-        //     return basePrice + additionalFee;
-        // },
+
+        // 추가요금 선택
+        selectAdditionalFee(item) {
+            this.selectedAdditionalFee = item;
+        },
+        // 총 금액 계산
+        calculateTotalAmount() {
+            const basePrice = parseFloat(this.selectedSchedule.extendedProps.price) || 0;
+            const additionalFee = parseFloat(this.selectedAdditionalFee?.price) || 0;
+            return basePrice + additionalFee;
+        },
         // 모달 닫기
         closeModal() {
             this.showModal = false;
@@ -549,7 +579,8 @@ export default {
         // },
         totalAmount() {
             const basePrice = parseFloat(this.selectedSchedule?.extendedProps?.price) || 0;
-            return basePrice + this.reserveVo.expectedPrice - this.usePoint;
+            // usePoint 변수를 적절한 변수로 대체하여 계산
+            return basePrice + this.reserveVo.expectedPrice;
         },
     },
     watch: {
