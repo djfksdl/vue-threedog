@@ -65,11 +65,52 @@
                         </div>
                         <!-- 후기 확인버튼 -->
                         <div class="rrfConfirm" v-else-if="reserveVo.rNo">
-                            <router-link to="/review">후기 확인</router-link>
-
+                            <!-- <router-link to="/review">후기 확인</router-link> -->
+                            <button @click="getReview(reserveVo.rsNo)">후기 확인</button>
                         </div>
                     </div>
 
+                </div>
+
+                <div class="modal-wrap" v-show="modalCheck">
+                    <div class="modal-container">
+                        <div class="reviewBoardDetailContainer">
+                            <div class="reviewDetailImg">
+                                <!-- <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`"
+                                    style="width: 300px; height: 350px;"> -->
+                            </div>
+                            <div>
+                                <div class="userId"><strong>{{ reviewVo.uId }}</strong>님</div>
+                                <div style="display: flex;">
+                                    <!-- <div class="beauty">zzzzzzzzzzzz</div> -->
+                                    <div class="cutInfor">{{ reviewVo.dogName }} ({{ reviewVo.weight }}kg)
+                                    </div>
+                                    <div class="date">{{ formatDate(reviewVo.rDate) }}</div>
+                                </div>
+                                <div style="display: flex;">
+                                    <div class="price">{{ reviewVo.expectedPrice.toLocaleString() }}원</div>
+
+                                    <div class="star" style="margin-top: 3px;">
+                                        <!-- Full stars -->
+                                        <span v-for="i in Math.floor(reviewVo.star)" :key="i"><img
+                                                src="@/assets/images/star_yellow.jpg" style="width: 15px;"></span>
+                                        <!-- Half star -->
+                                        <!-- <span v-if="reviewVo2.star - Math.floor(reviewVo2.star) >= 0.5">><img src="@/assets/images/star_ban.png" style="width: 15px;"></span> -->
+                                        <!-- Empty stars -->
+                                        <span v-for="i in 5 - Math.ceil(reviewVo.star)" :key="'empty_' + i"><img
+                                                src="@/assets/images/star_gray.jpg" style="width: 15px;"></span>
+                                    </div>
+                                </div>
+
+                                <div class="context">
+                                    {{ reviewVo.rContent }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-btn">
+                            <button @click="modalCheck = false" style="width: 200px;">닫기</button>
+                        </div>
+                    </div>
                 </div>
 
 
@@ -85,6 +126,9 @@ import '@/assets/css/mypage/reserve.css'
 import AppHeader from "@/components/AppHeader.vue"
 import AppFooter from "@/components/AppFooter.vue"
 import SideBar from "@/components/SideBar.vue"
+
+// import Swal from "sweetalert2"; // 모달창
+
 export default {
     name: "ReserveView",
     components: {
@@ -123,8 +167,28 @@ export default {
                 pushNo: 0,
                 rsNo: 0,
                 pushTime: "",
-            }
+            },
+            reviewVo: {
+                rNo: 0,
+                star: 0,
+                rContent: "",
+                rDate: "",
+                views: 0,
+                bNo: 1,
+                uNo: "",
+                uId: "",
+                beauty: "",
+                rsNo: 0,
+                riNo: 0,
+                dogName: "",
+                dogNo: 0,
+                weight: 0.0,
+                expectedPrice: 0,
+                saveName:""
 
+            },
+            modalCheck: false,
+            selectedReserve: null,
         };
     },
 
@@ -163,6 +227,26 @@ export default {
             const [hours, minutes] = time.split(':');
             return `${hours}:${minutes}`;
         },
+        getReview(rsNo) {
+            console.log("후기보기");
+            console.log(rsNo);
+            this.modalCheck = true;
+
+            // axios({
+            //     method: 'get',  //put,post,delete
+            //     url: `${this.$store.state.apiBaseUrl}/api/mypage/reservationlist2`,
+            //     headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+            //     params: { rsNo: this.reviewVo.rsNo },
+            //     responseType: 'json' //수신타입
+            // }).then(response => {
+            //     console.log("예약내역 불러오기 성공");
+            //     console.log(response.data.apiData); //수신데이타
+            //     this.reviewVo = response.data.apiData;
+
+            // }).catch(error => {
+            //     console.log(error);
+            // });
+        }
 
 
     },
@@ -174,4 +258,43 @@ export default {
     }
 };
 </script>
-<style></style>
+<style>
+.reseerveContainer .modal-wrap {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+/* modal or popup */
+.reseerveContainer .modal-container {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 900px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.reseerveContainer .modal-btn {
+    text-align: right;
+}
+
+.reseerveContainer .modal-btn button {
+    padding: 15px;
+    border: none;
+    font-size: 18px;
+    border-radius: 20px;
+    background-color: rgb(29, 29, 175);
+    color: white;
+}
+
+.reseerveContainer .modal-btn button:hover {
+    cursor: pointer;
+}
+</style>
