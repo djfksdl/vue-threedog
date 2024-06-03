@@ -82,9 +82,9 @@
                     <div class="plusRtimeContainer">
                         <label>추가할 시간</label>
                         <div class="plusRtimeRow">
-                            <input type="time">~
-                            <input type="time">
-                            <button>추가</button>
+                            <input type="time" v-model="startTime" @input="updateEndTime">~
+                            <input type="time" v-model="endTime" readonly>
+                            <button type="button" v-on:click="plusRtime" >추가</button>
                         </div>
                     </div>
                 </div>
@@ -104,7 +104,7 @@ import TopButton from "@/components/TopButton.vue";
 import FullCalendar from "@fullcalendar/vue3";
 import interactionPlugin from "@fullcalendar/interaction"; // 상호작용 플러그인
 import dayGridPlugin from "@fullcalendar/daygrid";
-// import Swal from "sweetalert2"; // 모달창
+import Swal from "sweetalert2"; // 모달창
 import "@/assets/css/manager/insertTime.css"; 
 import axios from 'axios';
 
@@ -166,6 +166,8 @@ export default {
             selectedDate: null, // 선택된 날짜
             registeredTimes: [], // 예약된 시간을 저장할 배열
             checkAllDay: false, //체크 표시
+            startTime: '', //추가 시작시간
+            endTime: '' //추가 끝 시간
             
         };
     },
@@ -696,30 +698,97 @@ export default {
         },
 
         // ***** 시간 삭제하기 *****
-        deleteRtime(rtTime){
-            console.log("시간삭제");
+        deleteRtime(rtTime) {
+            Swal.fire({
+                title: '정말 삭제하시겠습니까?',
+                text: "이 작업은 되돌릴 수 없습니다!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '삭제',
+                cancelButtonText: '취소'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios({
+                        method: 'delete',
+                        url: `${this.$store.state.apiBaseUrl}/api/su/deleteRtime`,
+                        headers: { "Content-Type": "application/json; charset=utf-8" },
+                        data: {
+                            bNo: this.rtVo.bNo,
+                            rtDate: this.selectedDate,
+                            rtTime: rtTime
+                        }, 
+                    }).then(response => {
+                        console.log(response.data.apiData);
+                        this.selectRtimes(this.selectedDate); // 변경된 예약 시간 목록 다시 받아오기
+                        Swal.fire(
+                            '삭제되었습니다!',
+                            '예약 시간이 삭제되었습니다.',
+                            'success'
+                        );
+                    }).catch(error => {
+                        console.log(error);
+                        Swal.fire(
+                            '삭제 실패!',
+                            '예약 시간 삭제에 실패했습니다.',
+                            'error'
+                        );
+                    });
+                }
+            });
+        },
+
+        // ***** 추가 시간 시작시간+1 *****
+        updateEndTime() {
+            if (this.startTime) {
+                // 입력된 시간이 이미 등록된 시간인지 확인
+                const isTimeRegistered = this.registeredTimes.some(time => time.rtTime === this.startTime);
+                if (isTimeRegistered) {
+                    // 이미 있는 시간이면 모달 창 띄우기
+                    Swal.fire({
+                        icon: 'error',
+                        title: '이미 있는 시간입니다',
+                        text: '다른 시간을 선택해주세요.',
+                    });
+                    this.startTime = ''; // 입력된 시간 초기화
+                    this.endTime = ''; // 종료 시간 초기화
+                } else {
+                    const [hours, minutes] = this.startTime.split(':');
+                    let endHours = parseInt(hours) + 1;
+                    if (endHours === 24) {
+                        endHours = 0; // 24시가 되면 0시로 설정
+                    }
+                    const formattedEndHours = endHours.toString().padStart(2, '0');
+                    this.endTime = `${formattedEndHours}:${minutes}`;
+                }
+            }
+        },
+
+        // ***** 시간 추가하기 *****
+        plusRtime(){
+            console.log("시간추가하기");
 
             axios({
-                    method: 'delete', // put, post, delete 
-                    url: `${this.$store.state.apiBaseUrl}/api/su/deleteRtime`,
-                    headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
-                    // params: {bNo: this.bNo}, //get방식 파라미터로 값이 전달
-                    data: {
-                        bNo: this.rtVo.bNo,
-                        rtDate: this.selectedDate,
-                        rtTime: rtTime
-                    }, 
-                }).then(response => {
-                    console.log(response.data.apiData);
-                    
-                    this.selectRtimes(this.selectedDate);//변경된 예약 시간 목록 다시 받아오기
+                method: 'post', // put, post, delete 
+                url: `${this.$store.state.apiBaseUrl}/api/su/updateRtime`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                data: {
+                    bNo: this.rtVo.bNo,
+                    rtDate: this.selectedDate,
+                    rtTime: this.startTime
+                }, 
+            }).then(response => {
+                console.log(response.data.apiData);
+                
+                this.selectRtimes(this.selectedDate);//변경된 예약 시간 목록 다시 받아오기
 
-                }).catch(error => {
-                    console.log(error);
-                });
-
+            }).catch(error => {
+                console.log(error);
+            });
 
         },
+
         // ***** 캘린더 날짜 클릭 핸들러 *****
         handleDateClick(info) {
             this.selectedDate = info.dateStr; // 클릭된 날짜 저장
