@@ -48,6 +48,7 @@
                         <div class="mprvcContentsInfo">
                             <!-- 사진 -->
                             <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`">
+                            <!-- {{ reviewVo.saveName }} -->
                             <div>
                                 <!-- 이용정보 -->
                                 <div class="mprvcContentsInfos">
@@ -107,7 +108,7 @@
                             <p><span>목욕/드라이 :</span> {{ reserveVo2.bath }}</p>
                         </div>
                         <div class="mpdcInfo2">
-                            <p><span>추가요금 :</span> {{reserveVo2.surcharge}}</p>
+                            <p><span>추가요금 :</span> {{reserveVo2.surcharge}} 원</p>
                             <p><span>전달사항 :</span>
                                {{reserveVo2.message}}
                                
@@ -151,6 +152,7 @@ export default {
                 dogName: "",
                 title: "",
                 surcharge: 0,
+
             },
             reviewVo: {
                 title: "",
@@ -184,7 +186,7 @@ export default {
                 message: "",
                 saveName: "",
                 bNo:"",
-                pushNo:"",
+                pushNo:0,
 
             },
 
