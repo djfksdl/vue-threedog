@@ -201,11 +201,15 @@ const createMap = () => {
     overlays.value.push({ id: store.id, overlay });
 
     window.kakao.maps.event.addListener(marker, 'click', () => {
-      overlays.value.forEach(o => o.setMap(null)); // 모든 오버레이를 지도에서 숨깁니다.
+      overlays.value.forEach(o => o.overlay.setMap(null)); // 모든 오버레이를 지도에서 숨깁니다.
       overlay.setMap(map.value); // 클릭한 마커에 해당하는 오버레이를 지도에 표시합니다.
     });
   });
+
+  // 오버레이 순회 및 숨기는 부분 추가
+  overlays.value.forEach(o => o.overlay.setMap(null));
 };
+
 
 onMounted(() => {
   mainList();
