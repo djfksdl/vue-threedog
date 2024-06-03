@@ -90,7 +90,7 @@ export default {
                 rDate: "",
                 file: [],
                 imgCount:0,
-                rsNo:1,
+                rsNo:this.$route.params.rsNo,
             },
             userPoint:1000,
             byteCount: 0, // 후기내용의 바이트수

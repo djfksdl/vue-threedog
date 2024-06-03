@@ -13,7 +13,7 @@
                         <router-link :to="`/reserve/${reserveVo.uNo}`">더보기 +</router-link>
                     </div>
                     <!-- 예약내역 내용 -->
-                    <div class="mprcContents">
+                    <div class="mprcContents" v-if="reserveVo">
                         <router-link :to="`/reserve/${reserveVo.uNo}`">
                             <div>
                                 <p>매장명</p>
@@ -36,14 +36,14 @@
                 </div>
 
                 <!-- 후기 -->
-                <div class="mpReviewConfirmContainer">
+                <div class="mpReviewConfirmContainer" >
                     <!-- 후기 윗부분 -->
                     <div class="mprvcTop">
                         <h2>내가 쓴 후기</h2>
                         <router-link to="/review">더보기 +</router-link>
                     </div>
                     <!-- 후기 내용 -->
-                    <div class="mprvcContents">
+                    <div class="mprvcContents" v-if="reviewVo">
                         <!-- 후기내용 예약정보부분 -->
                         <div class="mprvcContentsInfo">
                             <!-- 사진 -->
@@ -91,7 +91,7 @@
                         <router-link to="/mydiary">더보기 +</router-link>
                     </div>
                     <!-- 알림장 내용 -->
-                    <div class="mpdcContents">
+                    <div class="mpdcContents" v-if="reserveVo2">
                         <!-- 알림장 사진 -->
                         <div class="mpdcImg">
                             <img src="@/assets/images/spy2.jpg">
@@ -110,6 +110,7 @@
                             <p><span>추가요금 :</span> {{reserveVo2.surcharge}}</p>
                             <p><span>전달사항 :</span>
                                {{reserveVo2.message}}
+                               
                             </p>
                         </div>
                     </div>
@@ -183,6 +184,7 @@ export default {
                 message: "",
                 saveName: "",
                 bNo:"",
+                pushNo:"",
 
             },
 
