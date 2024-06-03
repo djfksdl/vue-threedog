@@ -27,7 +27,7 @@
       <hr>
       <div class="rank">
         <div class="rank-item" v-bind:key="i" v-for="(storeVo, i) in storeList">
-          <router-link :to="`/${storeVo.bNo}`">
+          <router-link :to="`/edit/${storeVo.bNo}`">
             <img src="../../assets/images/dog2.jpg">
             <label>{{ storeVo.title }}</label>
           </router-link>

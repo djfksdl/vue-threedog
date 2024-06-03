@@ -75,8 +75,7 @@
                     <li v-for="(price, index) in prices" :key="price" @click="togglePrice(price)"
                       :class="{ 'selected': selectedPrices.includes(index) }"
                       :style="{ 'background-color': selectedItems.find(item => item.label === price && item.isSelected) ? '#9bd89d' : 'white' }">
-                      {{ price }} <span v-if="selectedPrices.includes(index)"
-                        @click.stop="cancelPrice(index)">X</span>
+                      {{ price }} <span v-if="selectedPrices.includes(index)" @click.stop="cancelPrice(index)">X</span>
                     </li>
                   </ul>
                 </div>
@@ -100,7 +99,7 @@
         <div class="search-result">
           <div class="rank-search">
             <div class="search-item" v-bind:key="i" v-for="(reviewVo, i) in reviewList">
-              <router-link :to="`/${reviewVo.rNo}`">
+              <div @click="openModal(reviewVo.rNo)">
                 <img class="list_img" src="../../assets/images/bori.jpg">
                 <div class="star-container">
                   <div class="star_list" v-for="index in 5" :key="index">
@@ -113,12 +112,52 @@
                   </div>
                 </div>
                 <label>{{ reviewVo.title }}</label>
-              </router-link>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
+      <div class="modal-wrap-search" v-show="modalCheck">
+        <div class="modal-container-search">
+          <div class="reviewBoardDetailContainer-search">
+            <!-- Display review details in the modal -->
+            <div class="reviewDetailImg-search">
+              <!-- <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo2.saveName}`"
+                style="width: 300px; height: 350px;"> -->
+              <img src="../../assets/images/spy3.jpg" style="width: 300px; height: 350px; margin-top: 15px;">
+            </div>
+            <div class="modal-content">
+              <div class="userId"><strong>{{ reviewVo2.uId }}</strong>님</div>
+              <div style="display: flex;">
+                <div class="cutInfor">{{ reviewVo2.dogName }} ({{ reviewVo2.weight }}kg) &nbsp;   </div>
+                <div class="date">{{ formatDate(reviewVo2.rDate) }}</div>
+              </div>
+              <br>
+              <div style="display: flex;">
+                <div class="price">{{ reviewVo2.expectedPrice.toLocaleString() }}원&nbsp;</div>
+                <div class="star" style="margin-top: 3px;">
+                  <!-- Full stars -->
+                  <span v-for="i in Math.floor(reviewVo2.star)" :key="i"><img src="@/assets/images/star_yellow.jpg"
+                      style="width: 15px;"></span>
+                  <!-- Empty stars -->
+                  <span v-for="i in 5 - Math.ceil(reviewVo2.star)" :key="'empty_' + i"><img
+                      src="@/assets/images/star_gray.jpg" style="width: 15px;"></span>
+                </div>
+              </div>
+              <br>
+              <div class="modal-context">{{ reviewVo2.rContent }}</div>
+            </div>
+          </div>
+          <div class="modal-btn-search">
+            <router-link :to="`/edit/${reviewVo2.bNo}`">
+              <button style="width: 200px; margin-right: 10px;">매장 홈페이지 가기</button>
+            </router-link>
+            <button @click="modalCheck = false" style="width: 200px;">닫기</button>
+          </div>
+        </div>
+      </div>
+      
     </div>
     <TopButton />
     <AppFooter id="AppFooter" />
@@ -160,6 +199,18 @@ export default {
       types: ['소형견', '중형견', '특수견'],
       weights: ['~2kg', '2~5kg', '5~8kg', '8~10kg', '10~12kg', '12kg~'],
       prices: ['~20,000', '~40,000', '~60,000', '60,000~'],
+      modalCheck: false,
+      reviewVo2: {
+        rNo: 0,
+        star: 0,
+        rContent: "",
+        rDate: "",
+        expectedPrice: 0,
+        uId: "",
+        dogName: "",
+        weight: 0,
+        saveName: "",
+      },
     };
   },
   watch: {
@@ -318,9 +369,187 @@ export default {
           console.log(error);
         });
     },
+    openModal(rNo) {
+      if (rNo) {
+        this.getOneRList(rNo); // Fetch review details
+        this.modalCheck = true; // Open modal
+      }
+    },
+    getOneRList(rNo) {
+      console.log("후기 1개 가져오기");
+      console.log("리뷰", rNo, "선택함");
+      axios({
+        method: 'get', // put, post, delete                   
+        url: `${this.$store.state.apiBaseUrl}/api/mypage/getonerlist`,
+        headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+        params: { rNo: rNo }, //get방식 파라미터로 값이 전달
+        responseType: 'json' //수신타입
+
+      }).then(response => {
+        console.log(response.data.apiData); //수신데이타
+        this.reviewVo2 = response.data.apiData;
+        console.log(this.reviewVo);
+        console.log(this.reviewVo.bNo);
+      }).catch(error => {
+        console.log(error);
+      });
+    },
+    reviewDetail(rNo) {
+      if (rNo) {
+        this.selectedReview = this.reviewList.find((review) => review.rNo === rNo);
+        if (this.selectedReview) {
+          this.updateViewCount(rNo);
+        }
+        this.modalCheck = true;
+      }
+      console.log("선택한 리뷰번호", rNo);
+      this.getOneRList(rNo);
+      this.getSaveName(rNo);
+    },
+    // 조회수 업데이트
+    updateViewCount(rNo) {
+      console.log("조회수 1증가!!!");
+      console.log(rNo);
+      axios({
+        method: 'post',  //put,post,delete
+        url: `${this.$store.state.apiBaseUrl}/api/mypage/updateview`,
+        headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+        params: { rNo: rNo },
+        responseType: 'json' //수신타입
+      }).then(response => {
+        console.log("성공");
+        console.log(response.data.apiData); //수신데이타
+        this.reviewVo.views = response.data.apiData;
+        this.getRList();
+      }).catch(error => {
+        console.log(error);
+      });
+    },
+    getSaveName(rNo) {
+      console.log("후기사진 가져오기...............귀찮아...............");
+      console.log(rNo);
+      axios({
+        method: 'get',  //put,post,delete
+        url: `${this.$store.state.apiBaseUrl}/api/mypage/getsavename`,
+        headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+        params: { bNo: this.reviewVo.bNo },
+        responseType: 'json' //수신타입
+      }).then(response => {
+        console.log("성공");
+        console.log(response.data.apiData); //수신데이타
+        this.reviewList = response.data.apiData;
+
+        console.log(this.businessList);
+      }).catch(error => {
+        console.log(error);
+      });
+    },
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    },
   },
   created() {
     this.getList(); // 이 부분에서 getList 메소드 호출
   },
 };
 </script>
+
+<style>
+.modal-wrap-search {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-container-search {
+  width: 900px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  /* 세로 배치로 변경 */
+}
+
+.modal-container-search .userId {
+  margin-top: 20px;
+  text-align: left; /* 왼쪽 정렬 */
+  margin-bottom: 10px; /* 아래 여백 추가 */
+}
+
+.reviewDetailContent-search {
+  display: flex;
+  justify-content: space-between; /* 좌우 여백을 동일하게 분배 */
+  width: 100%;
+  margin-top: 20px; /* 위쪽 여백 추가 */
+}
+
+.reviewDetailImg-search {
+  width: 300px;
+  /* 이미지의 너비 설정 */
+  margin-right: 20px;
+  margin-bottom: 20px;
+  /* 이미지와 텍스트 사이 여백 설정 */
+}
+
+.modal-content {
+  /* 기존 스타일 유지 */
+  width: calc(100% - 320px); /* 우측 여백 고려하여 크기 지정 */
+}
+
+.reviewDetailImg-search img {
+  width: 100%;
+}
+
+.modal-btn-search {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.modal-btn-search button {
+  padding: 15px;
+  border: none;
+  font-size: 18px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.modal-btn-search button:nth-child(1) {
+  background-color: #236c3f;
+  color: white;
+  margin-right: 15px;
+}
+
+.modal-btn-search button:nth-child(2) {
+  background-color: white;
+  color: #236c3f;
+  border: 2px solid #236c3f;
+  /* 버튼 테두리 추가 */
+}
+
+.reviewBoardDetailContainer-search {
+  display: flex; /* 가로로 배치 */
+  flex-wrap: wrap; /* 필요시 줄 바꿈 */
+  justify-content: space-between; /* 좌우 여백을 동일하게 분배 */
+  align-items: flex-start; /* 수직 정렬을 위해 상단 정렬 */
+}
+
+.modal-content{
+  text-align: left;
+}
+
+</style>

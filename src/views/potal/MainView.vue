@@ -34,7 +34,7 @@
       <hr>
       <div class="rank">
           <div class="rank-item" v-bind:key="i" v-for="(storeVo, i) in storeList">
-            <router-link :to="`/${storeVo.bNo}`">
+            <router-link :to="`/edit/${storeVo.bNo}`">
               <img src="../../assets/images/dog2.jpg">
               <label>{{ storeVo.title }}</label>
             </router-link>
@@ -48,11 +48,50 @@
       <hr>
       <div class="rank">
           <div class="rank-item" v-bind:key="i" v-for="(reviewVo, i) in reviewList">
-            <router-link :to="`/${reviewVo.rNo}`">
+            <div @click="openModal(reviewVo.rNo)">
               <img src="../../assets/images/dog.jpg">
               <label>{{ reviewVo.title }}</label>
-            </router-link>
+            </div>
           </div>
+      </div>
+      <div class="modal-wrap-search" v-show="modalCheck">
+        <div class="modal-container-search">
+          <div class="reviewBoardDetailContainer-search">
+            <!-- Display review details in the modal -->
+            <div class="reviewDetailImg-search">
+              <!-- <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo2.saveName}`"
+                style="width: 300px; height: 350px;"> -->
+              <img src="../../assets/images/spy3.jpg" style="width: 300px; height: 350px; margin-top: 15px;">
+            </div>
+            <div class="modal-content">
+              <div class="userId"><strong>{{ reviewVo2.uId }}</strong>님</div>
+              <div style="display: flex;">
+                <div class="cutInfor">{{ reviewVo2.dogName }} ({{ reviewVo2.weight }}kg) &nbsp;   </div>
+                <div class="date">{{ formatDate(reviewVo2.rDate) }}</div>
+              </div>
+              <br>
+              <div style="display: flex;">
+                <div class="price">{{ reviewVo2.expectedPrice.toLocaleString() }}원&nbsp;</div>
+                <div class="star" style="margin-top: 3px;">
+                  <!-- Full stars -->
+                  <span v-for="i in Math.floor(reviewVo2.star)" :key="i"><img src="@/assets/images/star_yellow.jpg"
+                      style="width: 15px;"></span>
+                  <!-- Empty stars -->
+                  <span v-for="i in 5 - Math.ceil(reviewVo2.star)" :key="'empty_' + i"><img
+                      src="@/assets/images/star_gray.jpg" style="width: 15px;"></span>
+                </div>
+              </div>
+              <br>
+              <div class="modal-context">{{ reviewVo2.rContent }}</div>
+            </div>
+          </div>
+          <div class="modal-btn-search">
+            <router-link :to="`/edit/${reviewVo2.bNo}`">
+              <button style="width: 200px; margin-right: 10px;">매장 홈페이지 가기</button>
+            </router-link>
+            <button @click="modalCheck = false" style="width: 200px;">닫기</button>
+          </div>
+        </div>
       </div>
     </div>
     <TopButton />
@@ -260,7 +299,19 @@ export default {
         bNo: '',
         title: '',
         logo: '',
-      }
+      },
+      modalCheck: false,
+      reviewVo2: {
+        rNo: 0,
+        star: 0,
+        rContent: "",
+        rDate: "",
+        expectedPrice: 0,
+        uId: "",
+        dogName: "",
+        weight: 0,
+        saveName: "",
+      },
     };
   },
   methods: {
@@ -312,6 +363,88 @@ export default {
       if (!this.$refs.searchContainer.contains(event.target)) {
         this.suggestions = [];
       }
+    },
+    openModal(rNo) {
+      if (rNo) {
+        this.getOneRList(rNo); // Fetch review details
+        this.modalCheck = true; // Open modal
+      }
+    },
+    getOneRList(rNo) {
+      console.log("후기 1개 가져오기");
+      console.log("리뷰", rNo, "선택함");
+      axios({
+        method: 'get', // put, post, delete                   
+        url: `${this.$store.state.apiBaseUrl}/api/mypage/getonerlist`,
+        headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+        params: { rNo: rNo }, //get방식 파라미터로 값이 전달
+        responseType: 'json' //수신타입
+
+      }).then(response => {
+        console.log(response.data.apiData); //수신데이타
+        this.reviewVo2 = response.data.apiData;
+        console.log(this.reviewVo);
+        console.log(this.reviewVo.bNo);
+      }).catch(error => {
+        console.log(error);
+      });
+    },
+    reviewDetail(rNo) {
+      if (rNo) {
+        this.selectedReview = this.reviewList.find((review) => review.rNo === rNo);
+        if (this.selectedReview) {
+          this.updateViewCount(rNo);
+        }
+        this.modalCheck = true;
+      }
+      console.log("선택한 리뷰번호", rNo);
+      this.getOneRList(rNo);
+      this.getSaveName(rNo);
+    },
+    // 조회수 업데이트
+    updateViewCount(rNo) {
+      console.log("조회수 1증가!!!");
+      console.log(rNo);
+      axios({
+        method: 'post',  //put,post,delete
+        url: `${this.$store.state.apiBaseUrl}/api/mypage/updateview`,
+        headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+        params: { rNo: rNo },
+        responseType: 'json' //수신타입
+      }).then(response => {
+        console.log("성공");
+        console.log(response.data.apiData); //수신데이타
+        this.reviewVo.views = response.data.apiData;
+        this.getRList();
+      }).catch(error => {
+        console.log(error);
+      });
+    },
+    getSaveName(rNo) {
+      console.log("후기사진 가져오기...............귀찮아...............");
+      console.log(rNo);
+      axios({
+        method: 'get',  //put,post,delete
+        url: `${this.$store.state.apiBaseUrl}/api/mypage/getsavename`,
+        headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+        params: { bNo: this.reviewVo.bNo },
+        responseType: 'json' //수신타입
+      }).then(response => {
+        console.log("성공");
+        console.log(response.data.apiData); //수신데이타
+        this.reviewList = response.data.apiData;
+
+        console.log(this.businessList);
+      }).catch(error => {
+        console.log(error);
+      });
+    },
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
     },
   },
   created() {
