@@ -602,10 +602,13 @@ export default {
                         const datePart = item.rtDate.split(' ')[0].replace(/-/g, '');
                         return datePart;
                     });
+
+                    //이벤트 소스를 fullcalendar에 추가
                     this.addCompletionEvents(formattedDates); 
 
                     // 등록된 날짜 저장
                     this.registeredDates = formattedDates; 
+                    
               
             }).catch(error => {
                 console.log(error);
@@ -628,7 +631,7 @@ export default {
             return false;
         },
 
-        // ***** 등록되어있는 날짜에 달력에 추가 *****
+        // ***** 등록되어있는 날짜가 있으면 달력에 이미지추가 *****
         addCompletionEvents(dates) {
             const calendarApi = this.$refs.calendar.getApi();
             dates.forEach(date => {
