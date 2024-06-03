@@ -25,16 +25,27 @@
                     <div class="diary-info-leftitem" v-if="selectedSchedule">
                         <label class="diary-label">금액: {{ selectedSchedule.extendedProps.price }}</label>
                     </div>
-                    <div class="diary-info-leftitem" v-if="selectedSchedule">
-                        <label class="diary-label">추가요금: {{ selectedAdditionalFee?.price }}</label>
-                        <div v-if="additionalFees">{{ additionalFees }}</div>
-                        <table>
-                            <tr v-for="(item, index) in additionalFees" :key="index" @click="selectAdditionalFee(item)">
-                                <td>{{ item.name }}</td>
-                                <td>{{ item.price }}</td>
-                            </tr>
+
+
+                    <div class="diary-info-leftitem" v-if="selectedAdditionalFee">{{ selectedAdditionalFee }}</div>
+                    <label class="diary-label">추가요금:</label>
+                    <div id="reservationForm">
+                        <table style="width: 650px;">
+                            <tbody>
+                                <tr>
+                                    <th rowspan="7">추가요금</th>
+                                </tr>
+                                <tr v-for="(price, i) in priceList2" :key="i">
+                                    <th>{{ price.beauty }}</th>
+                                    <td :class="{ 'selected': price.selected }"
+                                        @click="toggleSelected(price)">{{ price.onePrice.toLocaleString() }}
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
+
+
                     <div class="diary-info-leftitem" v-if="selectedSchedule">
                         <label class="diary-label">총 금액: {{ totalAmount }}</label>
                     </div>
@@ -184,6 +195,7 @@ export default {
     },
     data() {
         return {
+            priceList2: [],
             // rsNo 값을 저장할 변수
             rsNo: null,
             selectedEvent: null, // 선택된 이벤트 정보
@@ -223,6 +235,8 @@ export default {
     },
 
     mounted() {
+        this.$store.dispatch("loadSchedules");
+        this.loadPriceList();
         // Vuex 스토어에서 rsNo 값을 가져옴
         const rsNo = this.$store.state.selectedSchedule ? this.$store.state.selectedSchedule.extendedProps.rsNo : null;
 
@@ -302,26 +316,9 @@ export default {
         // 사진 삭제 기능
         removePhoto(index) {
             this.photoUrls.splice(index, 1);
-            // this.attachedPhotos.splice(index, 1); // attachedPhotos에서의 삭제는 필요하지 않을 수 있습니다.
         },
 
-        //-------------------- 금액금액----------------------------
-
-        // 추가요금 선택
-        selectAdditionalFee(item) {
-            this.selectedAdditionalFee = item;
-        },
-        // 총 금액 계산
-        calculateTotalAmount() {
-            const basePrice = parseFloat(this.selectedSchedule.extendedProps.price) || 0;
-            const additionalFee = parseFloat(this.selectedAdditionalFee?.price) || 0;
-            return basePrice + additionalFee;
-        },
-        // 모달 닫기
-        closeModal() {
-            this.showModal = false;
-        },
-        //-------------------- 모두 저장저장----------------------------
+      //-------------------- 모두 저장저장----------------------------
         // 업데이트 및 사진 db에 저장
         saveNotification() {
             if (!this.rsNo) {
@@ -339,7 +336,7 @@ export default {
             this.savedMattedArea = this.mattedArea;
             this.savedDislikedArea = this.dislikedArea;
             this.savedBathDry = this.bathDry;
-            this.savedcurruntWeight = this.curruntWeight;
+            this.savedcurruntWeight = this.curruntWeight; // 몸무게 추가
             this.savedAdditionalFee = this.selectedAdditionalFee;
             this.savedNote = this.note;
             this.savedAttachedPhotos = this.attachedPhotos.map(file => URL.createObjectURL(file));
@@ -353,16 +350,14 @@ export default {
             formData.append('mattedArea', this.savedMattedArea);
             formData.append('dislikedArea', this.savedDislikedArea);
             formData.append('bathDry', this.savedBathDry);
-            formData.append('bathDry', this.savedcurruntWeight);
+            formData.append('curruntWeight', this.savedcurruntWeight); // 몸무게 추가
             formData.append('note', this.savedNote);
             formData.append('additionalFees', JSON.stringify(this.savedAdditionalFee));
-
 
             // 이미지 파일 추가
             this.attachedPhotos.forEach(photo => {
                 formData.append('file', photo);
             });
-
 
             // 미용 기록 업데이트 요청과 이미지 업로드 요청을 Promise.all로 동시에 실행
             Promise.all([
@@ -386,6 +381,7 @@ export default {
                 console.error('Error saving notification:', errors);
             });
         },
+
 
         // 미용 기록 업데이트
         updateGroomingRecord(rsNo, reserveVo) {
@@ -414,44 +410,78 @@ export default {
                 responseType: 'json'
             });
         },
-        // 보내기
-        sendNotification() {
+        
+        //-------------------- 금액금액----------------------------
+
+        // 추가요금 선택
+        selectAdditionalFee(item) {
+            this.selectedAdditionalFee = item;
+        },
+        // 총 금액 계산
+        calculateTotalAmount() {
+            const basePrice = parseFloat(this.selectedSchedule.extendedProps.price) || 0;
+            const additionalFee = parseFloat(this.selectedAdditionalFee?.price) || 0;
+            return basePrice + additionalFee;
+        },
+        // 모달 닫기
+        closeModal() {
+            this.showModal = false;
+        },
+        loadPriceList() {
             axios({
-                method: 'put',
-                url: `${this.$store.state.apiBaseUrl}/api/jw/${this.reserveVo.rsNo}`,
-                headers: { "Content-Type": "application/json; charset=utf-8" },
-                data: this.reserveVo,
-                responseType: 'json'
-            })
-                .then(response => {
-                    alert("수정이 완료되었습니다.");
-                    console.log(response.data.apiData);
-                })
-                .catch(error => {
-                    console.log(error);
-                });
+                method: 'get',  //put,post,delete
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/getplusprice`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { bNo: this.priceVo.bNo },
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log("가격표-추가요금 가져오기");
+                console.log(response.data.apiData); //수신데이타
+                this.priceList2 = response.data.apiData;
 
-            this.showModal = false;
-
-            Swal.fire({
-                title: '전송되었습니다!',
-                icon: 'success',
-                confirmButtonText: '확인'
-            }).then(() => {
-                this.$router.push({ name: 'reserve' });
+            }).catch(error => {
+                console.error("가격표 불러오기 오류:", error);
             });
         },
+        //-------------------- 모두 완료되었을때----------------------------
+        // // 보내기
+        // sendNotification() {
+        //     axios({
+        //         method: 'put',
+        //         url: `${this.$store.state.apiBaseUrl}/api/jw/${this.reserveVo.rsNo}`,
+        //         headers: { "Content-Type": "application/json; charset=utf-8" },
+        //         data: this.reserveVo,
+        //         responseType: 'json'
+        //     })
+        //         .then(response => {
+        //             alert("수정이 완료되었습니다.");
+        //             console.log(response.data.apiData);
+        //         })
+        //         .catch(error => {
+        //             console.log(error);
+        //         });
 
-        // 카카오톡 알림 전송
-        kakaosendNotification() {
-            Swal.fire({
-                title: '카카오톡 공유하기',
-                text: 'Notification sent via KakaoTalk!',
-                icon: 'success',
-                confirmButtonText: '확인'
-            });
-            this.showModal = false;
-        },
+        //     this.showModal = false;
+
+        //     Swal.fire({
+        //         title: '전송되었습니다!',
+        //         icon: 'success',
+        //         confirmButtonText: '확인'
+        //     }).then(() => {
+        //         this.$router.push({ name: 'reserve' });
+        //     });
+        // },
+
+        // // 카카오톡 알림 전송
+        // kakaosendNotification() {
+        //     Swal.fire({
+        //         title: '카카오톡 공유하기',
+        //         text: 'Notification sent via KakaoTalk!',
+        //         icon: 'success',
+        //         confirmButtonText: '확인'
+        //     });
+        //     this.showModal = false;
+        // },
         // 날짜 포맷팅
         formatDate(date) {
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -461,17 +491,41 @@ export default {
         formatTime(date) {
             const options = { hour: '2-digit', minute: '2-digit' };
             return new Date(date).toLocaleTimeString(undefined, options);
-        }
+        },
+        toggleSelected(price) {
+            price.selected = !price.selected;
+        },
+
+
+
+
     },
     computed: {
         // Vuex 상태 매핑
         ...mapState(['selectedSchedule']),
         // 총 금액 계산
+        // totalAmount() {
+        //     return this.calculateTotalAmount();
+        // },
         totalAmount() {
-            return this.calculateTotalAmount();
-        }
+            if (this.selectedSchedule) {
+                const basePrice = this.selectedSchedule.extendedProps.price || 0;
+                const additionalFees = this.priceList2
+                    .filter(price => price.selected)
+                    .reduce((sum, price) => sum + price.onePrice, 0);
+                return basePrice + additionalFees;
+            }
+            return 0;
+        },
     },
+
+
     watch: {
+        schedule(newSchedule) {
+            if (newSchedule && newSchedule.length > 0) {
+                this.selectedSchedule = newSchedule[0];
+            }
+        },
         // 선택된 일정이 변경될 때 처리
         selectedSchedule(newValue) {
             this.date = newValue;
