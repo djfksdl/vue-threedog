@@ -87,26 +87,27 @@
         </div>
       </div>
       <div class="bottom">
-        <h2 class="result-h2">{{ selectedItems.length > 0 ? '관련 검색 결과' : '검색 결과' }}<span class="view-count">조회수 높은
+        <h2 class="result-h2">{{ selectedItems.length > 0 ? '관련 미용 후기 😍' : '강아지 미용 후기 😍' }}<span class="view-count">조회수 높은
             순</span></h2>
         <hr>
         <div class="search-result">
           <div class="rank-search">
             <div class="search-item" v-bind:key="i" v-for="(reviewVo, i) in reviewList">
-              <img class="list_img" src="../../assets/images/bori.jpg">
-              <div class="star-container">
-                <div class="star_list" v-for="index in 5" :key="index">
-                  <span v-if="index <= reviewVo.star" class="yellowStar">
-                    <img class="yellowStar_list" src="@/assets/images/star_yellow.jpg">
-                  </span>
-                  <span v-else class="grayStar">
-                    <img class="grayStar_list" src="@/assets/images/star_gray.jpg">
-                  </span>
+              <router-link :to="`/${reviewVo.rNo}`">
+                <img class="list_img" src="../../assets/images/bori.jpg">
+                <div class="star-container">
+                  <div class="star_list" v-for="index in 5" :key="index">
+                    <span v-if="index <= reviewVo.star" class="yellowStar">
+                      <img class="yellowStar_list" src="@/assets/images/star_yellow.jpg">
+                    </span>
+                    <span v-else class="grayStar">
+                      <img class="grayStar_list" src="@/assets/images/star_gray.jpg">
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <label>{{ reviewVo.title }}</label>
+                <label>{{ reviewVo.title }}</label>
+              </router-link>
             </div>
-
           </div>
         </div>
       </div>
