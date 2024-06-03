@@ -91,7 +91,7 @@ const routes = [
     component: ReviewView
   },
   {
-    path: '/reserve',
+    path: '/reserve/:uNo',
     name: 'reserve',
     component: ReserveView
   },

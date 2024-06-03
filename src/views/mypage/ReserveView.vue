@@ -2,7 +2,7 @@
     <div id="wrap">
         <AppHeader />
         <div class="reseerveContainer">
-            
+
             <!-- 사이드 바 자리 -->
             <SideBar />
             <div class="container">
@@ -121,13 +121,13 @@
         </div>
         <AppFooter />
     </div>
- </template>
- <script>
- import '@/assets/css/mypage/reserve.css'
- import AppHeader from "@/components/AppHeader.vue"
- import AppFooter from "@/components/AppFooter.vue"
- import SideBar from "@/components/SideBar.vue"
- export default {
+</template>
+<script>
+import '@/assets/css/mypage/reserve.css'
+import AppHeader from "@/components/AppHeader.vue"
+import AppFooter from "@/components/AppFooter.vue"
+import SideBar from "@/components/SideBar.vue"
+export default {
     name: "ReserveView",
     components: {
         AppHeader,
@@ -137,8 +137,14 @@
     data() {
         return {};
     },
-    methods: {},
-    created(){}
- };
- </script>
- <style></style>
+    methods: {
+        getReserveList() {
+            console.log("예약내역 가져오기");
+        }
+    },
+    created() {
+        this.getReserveList();
+    }
+};
+</script>
+<style></style>

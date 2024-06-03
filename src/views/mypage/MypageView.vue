@@ -10,11 +10,11 @@
                     <!-- 예약내역 윗부분 -->
                     <div class="mprcTop">
                         <h2>예약내역</h2>
-                        <router-link to="/reserve">더보기 +</router-link>
+                        <router-link :to="`/reserve/${reserveVo.uNo}`">더보기 +</router-link>
                     </div>
                     <!-- 예약내역 내용 -->
                     <div class="mprcContents">
-                        <router-link to="/reserve">
+                        <router-link :to="`/reserve/${reserveVo.uNo}`">
                             <div>
                                 <p>매장명</p>
                                 <p>{{ reserveVo.title }}</p>
