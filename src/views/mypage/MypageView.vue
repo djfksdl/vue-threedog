@@ -47,7 +47,7 @@
                         <!-- 후기내용 예약정보부분 -->
                         <div class="mprvcContentsInfo">
                             <!-- 사진 -->
-                            <img src="@/assets/images/spy2.jpg" alt="">
+                            <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`">
                             <div>
                                 <!-- 이용정보 -->
                                 <div class="mprvcContentsInfos">
@@ -170,6 +170,7 @@ export default {
                 riNo: 0,
                 star: 0,
                 dogName: "",
+                saveName: "",
 
             },
 
