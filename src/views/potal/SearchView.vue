@@ -37,9 +37,9 @@
               <td>
                 <div class="city-box">
                   <ul class="city-list">
-                    <li v-for="type in types" :key="type" @click="toggleType(type)"
-                      :class="{ 'selected': selectedTypes.includes(type) }">{{ type }} <span
-                        v-if="selectedTypes.includes(type)" @click.stop="cancelType(type)">X</span></li>
+                    <li v-for="size in types" :key="size" @click="toggleType(size)"
+                      :class="{ 'selected': selectedTypes.includes(size) }">{{ size }}<span
+                        v-if="selectedTypes.includes(size)" @click.stop="cancelType(size)">X</span></li>
                   </ul>
                 </div>
               </td>
@@ -53,9 +53,12 @@
               <td>
                 <div class="city-box">
                   <ul class="city-list">
-                    <li v-for="weight in weights" :key="weight" @click="toggleWeight(weight)"
-                      :class="{ 'selected': selectedWeights.includes(weight) }">{{ weight }} <span
-                        v-if="selectedWeights.includes(weight)" @click.stop="cancelWeight(weight)">X</span></li>
+                    <li v-for="(weight, index) in weights" :key="weight" @click="toggleWeight(weight)"
+                      :class="{ 'selected': selectedWeights.includes(index) }"
+                      :style="{ 'background-color': selectedItems.find(item => item.label === weight && item.isSelected) ? '#9bd89d' : 'white' }">
+                      {{ weight }} <span v-if="selectedWeights.includes(index)"
+                        @click.stop="cancelWeight(index)">X</span>
+                    </li>
                   </ul>
                 </div>
               </td>
@@ -69,9 +72,12 @@
               <td>
                 <div class="city-box">
                   <ul class="city-list">
-                    <li v-for="price in prices" :key="price" @click="togglePrice(price)"
-                      :class="{ 'selected': selectedPrices.includes(price) }">{{ price }} <span
-                        v-if="selectedPrices.includes(price)" @click.stop="cancelPrice(price)">X</span></li>
+                    <li v-for="(price, index) in prices" :key="price" @click="togglePrice(price)"
+                      :class="{ 'selected': selectedPrices.includes(index) }"
+                      :style="{ 'background-color': selectedItems.find(item => item.label === price && item.isSelected) ? '#9bd89d' : 'white' }">
+                      {{ price }} <span v-if="selectedPrices.includes(index)"
+                        @click.stop="cancelPrice(index)">X</span>
+                    </li>
                   </ul>
                 </div>
               </td>
@@ -87,7 +93,8 @@
         </div>
       </div>
       <div class="bottom">
-        <h2 class="result-h2">{{ selectedItems.length > 0 ? '관련 미용 후기 😍' : '강아지 미용 후기 😍' }}<span class="view-count">조회수 높은
+        <h2 class="result-h2">{{ selectedItems.length > 0 ? '관련 미용 후기 😍' : '강아지 미용 후기 😍' }}<span
+            class="view-count">조회수 높은
             순</span></h2>
         <hr>
         <div class="search-result">
@@ -189,16 +196,6 @@ export default {
         this.selectedItems = this.selectedItems.filter(item => item.label !== city);
       }
     },
-    toggleWeight(weight) {
-      const weightIndex = this.weights.indexOf(weight);
-      if (!this.selectedWeights.includes(weightIndex)) {
-        this.selectedWeights.push(weightIndex);
-        this.selectedItems.push({ type: 'weight', label: weight });
-      } else {
-        this.selectedWeights = this.selectedWeights.filter(item => item !== weightIndex);
-        this.selectedItems = this.selectedItems.filter(item => item.label !== weight);
-      }
-    },
     toggleType(type) {
       if (!this.selectedTypes.includes(type)) {
         this.selectedTypes.push(type);
@@ -208,16 +205,27 @@ export default {
         this.selectedItems = this.selectedItems.filter(item => item.label !== type);
       }
     },
+    toggleWeight(weight) {
+      const weightIndex = this.weights.indexOf(weight);
+      if (!this.selectedWeights.includes(weightIndex)) {
+        this.selectedWeights.push(weightIndex);
+        this.selectedItems.push({ type: 'weight', label: weight, isSelected: true }); // isSelected 변수 추가
+      } else {
+        this.selectedWeights = this.selectedWeights.filter(item => item !== weightIndex);
+        this.selectedItems = this.selectedItems.filter(item => item.label !== weight);
+      }
+    },
     togglePrice(price) {
       const priceIndex = this.prices.indexOf(price);
       if (!this.selectedPrices.includes(priceIndex)) {
         this.selectedPrices.push(priceIndex);
-        this.selectedItems.push({ type: 'price', label: price });
+        this.selectedItems.push({ type: 'price', label: price, isSelected: true }); // isSelected 변수 추가
       } else {
         this.selectedPrices = this.selectedPrices.filter(item => item !== priceIndex);
         this.selectedItems = this.selectedItems.filter(item => item.label !== price);
       }
     },
+
     cancelCity(city) {
       this.selectedCities = this.selectedCities.filter(item => item !== city);
       this.selectedItems = this.selectedItems.filter(item => item.label !== city);
