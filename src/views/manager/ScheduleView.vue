@@ -12,6 +12,7 @@
             <div class="schedule-modal-content">
                 <h2>일정 변경<br><br>{{ selectedEvent.title }}</h2>
                 <p>일시: {{ selectedEvent.start }}</p>
+
                 <!-- 추가된 예약 정보 표시 -->
                 <p>애견명: {{ selectedEvent.extendedProps.petName }}</p>
                 <p>품종: {{ selectedEvent.extendedProps.breed }}</p>
@@ -20,7 +21,6 @@
                 <span class="schedule-edit" @click="editEvent">시간수정</span>
                 <span class="schedule-delete" @click="deleteEvent">삭제</span>
                 <span class="schedule-close" @click="closeModal">확인</span>
-
             </div>
         </div>
     </div>
@@ -33,7 +33,7 @@ import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import Swal from "sweetalert2";
 import interactionPlugin from "@fullcalendar/interaction"; // 드래그 앤 드롭 플러그인 추가
-import { mapMutations } from 'vuex'; // Vuex 변이 사용을 위해 mapMutations 추가
+import { mapGetters, mapMutations } from 'vuex'; // Vuex 변이 사용을 위해 mapMutations 추가
 import "@/assets/css/manager/schedule.css"; // 추가적인 스타일링을 위한 CSS 파일
 import axios from 'axios';
 
@@ -49,7 +49,6 @@ export default {
         return {
             showModal: false, // 모달 표시 여부
             selectedEvent: null, // 선택된 이벤트 정보
-            reservations: [], // 예약 데이터를 저장할 배열
             calendarOptions: {
                 plugins: [dayGridPlugin, interactionPlugin], // interactionPlugin 추가
                 initialView: "dayGridMonth",
@@ -68,15 +67,17 @@ export default {
             }
         };
     },
+    computed: {
+        ...mapGetters(['reservationData']) // Vuex의 reservationData를 계산된 속성으로 가져옴
+    },
     mounted() {
-        const bNo = 1;
+        this.$store.commit('setReservationData', this.reservations);
+        const bNo = this.$route.params.bNo || 1; // 라우트 파라미터에서 가게 번호를 받아옴, 없으면 기본값 1
         this.fetchReserveList(bNo); // bNo를 이용하여 예약 리스트를 가져옴
     },
     methods: {
-        ...mapMutations(['setSelectedSchedule']), // Vuex 변이 매핑
-        ...mapMutations(['setGroomingRecord']), // Vuex 변이 매핑
+        ...mapMutations(['setSelectedSchedule', 'setGroomingRecord']), // Vuex 변이 매핑
 
-        //-------------------- 예약내역 가져오는 리스트   ----------------------------
         fetchReserveList(bNo) {
             axios({
                 method: 'get',
@@ -86,8 +87,8 @@ export default {
             }).then(response => {
                 // 요청이 성공적으로 완료된 경우의 처리
                 console.log('불러와진다 우히히:', response.data.apiData); // 응답데이터 확인
-
                 this.reservations = Array.isArray(response.data.apiData) ? response.data.apiData : [];
+                this.$store.commit('setReservationData', this.reservations); // 스토어에 데이터 업데이트
                 this.updateCalendarEvents(); // 예약 데이터로 캘린더 이벤트 업데이트
             }).catch(error => {
                 // 오류 처리
@@ -96,10 +97,9 @@ export default {
         },
 
         updateCalendarEvents() {
-            const events = this.reservations.map(reservation => ({
-                title: `${reservation.dogName},  ${reservation.beauty}, ${reservation.kind},${reservation.expectedPrice}원`,
-                start: reservation.rtDate,
-                end: reservation.endDate,
+            const events = this.reservationData.map(reservation => ({
+                title: `${reservation.dogName}, ${reservation.beauty}, ${reservation.kind}, ${reservation.expectedPrice}원`,
+                start: reservation.rtDate, // 날짜와 시간을 합쳐서 start 속성에 할당
                 extendedProps: {
                     petName: reservation.dogName,
                     breed: reservation.kind,
@@ -116,13 +116,8 @@ export default {
 
             // FullCalendar를 갱신하여 새로운 이벤트를 반영
             this.$refs.calendar.getApi().refetchEvents();
-
         },
 
-
-        //-------------------- 드롭 이벤트  화면 ----------------------------
-
-        //드롭 일정변경
         handleEventDrop(info) {
             console.log("handleEventDrop");
 
@@ -144,14 +139,12 @@ export default {
         updateEventOnServer(rsNo, event) {
             console.log("updateEventOnServer");
             const start = event.start.toISOString().slice(0, 19).replace('T', ' '); // ISO 8601 형식을 MySQL 형식으로 변환
-            // const end = event.end ? event.end.toISOString().slice(0, 19).replace('T', ' ') : null; // ISO 8601 형식을 MySQL 형식으로 변환
 
             // 서버에 변경된 일정 정보를 업데이트하는 API 호출
             axios({
                 method: 'put',
                 url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/date`,
                 data: { rsNo: rsNo, rtDate: start }, // 데이터 전송
-                // data: { rsNo: rsNo, rtDate: start, rtDateTime: end }, // 데이터 전송
                 headers: { "Content-Type": "application/json; charset=utf-8" },
                 responseType: 'json'
             }).then(response => {
@@ -166,7 +159,6 @@ export default {
             });
         },
 
-        //드롭 후 시간수정
         editEvent() {
             Swal.fire({
                 title: '일정 수정',
@@ -177,8 +169,6 @@ export default {
             `,
                 focusConfirm: false,
                 preConfirm: () => {
-                    // console.log("시간수정");
-
                     const start = Swal.getPopup().querySelector('#editStart').value;
                     const end = Swal.getPopup().querySelector('#editEnd').value;
                     const title = Swal.getPopup().querySelector('#editTitle').value;
@@ -197,14 +187,11 @@ export default {
 
                     // 서버에 변경된 예약 정보를 업데이트하는 API 호출
                     this.updateEventTimeOnServer(this.selectedEvent.extendedProps.rsNo, start, end);
-
-                    // Swal.fire('수정 완료', '일정이 수정되었습니다.', 'success');
                 }
             });
         },
 
         updateEventTimeOnServer(rsNo, start, end) {
-            // ISO 8601 형식을 MySQL 시간 형식으로 변환하는 함수
             function convertToMySQLTime(isoTime) {
                 const date = new Date(isoTime); // ISO 8601 형식의 시간을 Date 객체로 변환
                 const hours = date.getHours().toString().padStart(2, '0'); // 시간
@@ -213,12 +200,9 @@ export default {
                 return `${hours}:${minutes}:${seconds}`; // MySQL 시간 형식으로 변환하여 반환
             }
 
-            // 예약 시작 시간을 MySQL 시간 형식으로 변환
             const startTime = convertToMySQLTime(start);
-            // 예약 종료 시간이 있는 경우 MySQL 시간 형식으로 변환, 없는 경우 null로 설정
             const endTime = end ? convertToMySQLTime(end) : null;
 
-            // 서버에 변경된 일정 정보를 업데이트하는 API 호출
             axios({
                 method: 'put',
                 url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/time`,
@@ -226,27 +210,27 @@ export default {
                 headers: { "Content-Type": "application/json; charset=utf-8" },
                 responseType: 'json'
             }).then(() => {
-                //console.log(response.data.apiData); //수신데이타
-                // 성공적으로 업데이트된 경우의 처리
                 console.log('시간이 성공적으로 업데이트되었습니다.');
                 Swal.fire('시간 업데이트', '시간이 성공적으로 업데이트되었습니다.', 'success');
-
             }).catch(error => {
-                console.error('시간 업데이트 에러:', error); // 에러 처리
+                console.error('시간 업데이트 에러:', error);
                 Swal.fire('시간 업데이트 실패', '시간을 업데이트하는 도중 오류가 발생했습니다.', 'error');
             });
         },
-        // 추가: 날짜 형식을 'YYYY-MM-DDTHH:mm' 형식으로 변환하는 헬퍼 함수
-        // formatDateTimeLocal() 함수 내용 수정
+
         formatDateTimeLocal(date) {
             const d = new Date(Date.parse(date)); // 변경
-            const pad = (n) => n < 10 ? '0' + n : n;
-            return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+            const year = d.getFullYear();
+            const month = (d.getMonth() + 1).toString().padStart(2, '0');
+            const day = d.getDate().toString().padStart(2, '0');
+            const hours = d.getHours().toString().padStart(2, '0');
+            const minutes = d.getMinutes().toString().padStart(2, '0');
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
         },
 
 
-        // deleteEvent() 함수 내용 수정
-        //드롭 후 삭제
+        
+
         deleteEvent() {
             Swal.fire({
                 title: '일정 삭제',
@@ -259,12 +243,8 @@ export default {
                 cancelButtonText: '취소'
             }).then(result => {
                 if (result.isConfirmed) {
-                    // 선택된 이벤트 삭제
                     this.selectedEvent.remove();
-
-                    // 서버에 삭제 요청 보내기
                     this.deleteEventOnServer(this.selectedEvent.extendedProps.rsNo);
-
                     this.showModal = false;
                     Swal.fire('삭제 완료', '일정이 삭제되었습니다.', 'success');
                 }
@@ -279,7 +259,6 @@ export default {
                 responseType: 'json'
             }).then(response => {
                 console.log(response.data.apiData); // 응답 데이터 확인
-                // 성공적으로 삭제된 경우의 처리
                 console.log('일정이 성공적으로 삭제되었습니다.');
             }).catch(error => {
                 console.error('Error deleting event:', error);
@@ -287,10 +266,6 @@ export default {
             });
         },
 
-
-
-        //-------------------- 알림장 화면으로 이동  ----------------------------
-        // 예약 일정 클릭 이벤트 처리
         handleEventClick(info) {
             if (!info || !info.event) {
                 console.error('클릭된 예약 정보가 없습니다.');
@@ -308,12 +283,9 @@ export default {
                 html: "스케줄: " + eventTitle + "<br/>일시: " + eventStart,
             });
 
-            // 선택된 예약 정보를 Vuex에 저장
             this.$store.commit("setSelectedSchedule", event);
 
-            // 선택된 예약 정보와 함께 다이어리 화면으로 이동
             this.$router.push({ name: 'diary' }).then(() => {
-                // 다이어리 화면으로 이동 후 미용 기록 조회
                 if (!event.extendedProps) {
                     console.error('event.extendedProps가 없습니다.');
                     return;
@@ -326,18 +298,14 @@ export default {
 
                 console.log('예약 번호 (rsNo):', event.extendedProps.rsNo);
 
-                // 다이어리 컴포넌트의 selectGroomingRecord 메서드 호출
                 this.$root.$emit('selectGroomingRecord', event.extendedProps.rsNo);
             });
         },
 
-        //확인
         closeModal() {
             this.selectedEvent = null;
             this.showModal = false;
         },
-
-
     }
 };
 </script>
