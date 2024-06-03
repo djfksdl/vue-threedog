@@ -17,8 +17,9 @@
                     <!--  -->
                     <div class="reviewCon03">
                         <div>
+                            <!-- {{ reviewVo.saveName }} -->
                             <div class="mypetImgSlider">
-                                <img :src="reviewVo.saveName" style="width: 100px; height: 100px; border-radius: 50%;">
+                                <img  v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`" style="width: 100px; height: 100px; border-radius: 50%;">
                             </div>
                         </div>
                         <div style="margin-top: 20px;">
@@ -57,7 +58,7 @@
                     <div class="modal-container">
                         <div class="reviewBoardDetailContainer">
                             <div class="reviewDetailImg">
-                                <img src="" style="width: 300px; height: 350px;">
+                                <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo2.saveName}`" style="width: 300px; height: 350px;">
                             </div>
                             <div>
                                 <div class="userId"><strong>{{ reviewVo2.uId }}</strong>님</div>

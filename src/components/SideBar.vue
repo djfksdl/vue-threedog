@@ -3,8 +3,9 @@
         <!-- 유저 프로필 -->
         <div class="profile">
             <!-- 프로필 사진 -->
+            <!-- {{ userVo.uProfile }} -->
             <div class="profileImg">
-                <!-- <img :src="userVo.uProfile"> -->
+                <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${userVo.uProfile}`">
             </div>
             <!-- 프로필 내용 -->
             <div class="profileId">
@@ -26,7 +27,8 @@
             <div class="petProfileBox" v-bind:key="i" v-for="(dogVo, i) in dogList">
                 <!-- 반려견 1 -->
                 <div class="profilePet">
-                    <!-- <img :src=dogVo.dogImg> -->
+
+                    <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${dogVo.dogImg}`">
                     <p>{{ dogVo.dogName }} <router-link :to="`/petupdateform/${dogVo.dogNo}`"> 
                         <label style="cursor: pointer;">✏️</label></router-link></p>
                 </div>
