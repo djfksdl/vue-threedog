@@ -30,25 +30,29 @@
         </KakaoMap> -->
       </div>
 
-      <h2 class="result-h2">동네 랭킹 Best <a class="view-count" href="/searchmap">더보기</a></h2>
+      <h2 class="result-h2">동네 랭킹 Best 👍<a class="view-count" href="/searchmap">더보기</a></h2>
       <hr>
       <div class="rank">
-        <div class="rank-item" v-bind:key="i" v-for="(storeVo, i) in storeList">
-          <img src="../../assets/images/dog2.jpg">
-          <label>{{ storeVo.title }}</label>
-        </div>
+          <div class="rank-item" v-bind:key="i" v-for="(storeVo, i) in storeList">
+            <router-link :to="`/${storeVo.bNo}`">
+              <img src="../../assets/images/dog2.jpg">
+              <label>{{ storeVo.title }}</label>
+            </router-link>
+          </div>
       </div>
 
       <div class="event-banner">
         <SlideViewBanner />
       </div>
-      <h2 class="result-h2">인기짱강아지 Best<span class="view-count">조회수 높은 순</span></h2>
+      <h2 class="result-h2">인기짱강아지 Best 👍<span class="view-count">조회수 높은 순</span></h2>
       <hr>
       <div class="rank">
-        <div class="rank-item" v-bind:key="i" v-for="(reviewVo, i) in reviewList">
-          <img src="../../assets/images/dog.jpg">
-          <label>{{ reviewVo.title }}</label>
-        </div>
+          <div class="rank-item" v-bind:key="i" v-for="(reviewVo, i) in reviewList">
+            <router-link :to="`/${reviewVo.rNo}`">
+              <img src="../../assets/images/dog.jpg">
+              <label>{{ reviewVo.title }}</label>
+            </router-link>
+          </div>
       </div>
     </div>
     <TopButton />
@@ -173,7 +177,7 @@ const createMap = () => {
       <div class="map-wrap">
         <div class="info">
           <div class="title">${store.title}
-            <div class="close" @click="closeOverlay(overlay)" title="닫기"></div>
+            <div class="close" onclick="closeOverlay()" title="닫기"></div>
           </div>
           <div class="body">
             <div class="img">
@@ -194,7 +198,7 @@ const createMap = () => {
       position: marker.getPosition()
     });
 
-    overlays.value.push(overlay);
+    overlays.value.push({ id: store.id, overlay });
 
     window.kakao.maps.event.addListener(marker, 'click', () => {
       overlays.value.forEach(o => o.setMap(null)); // 모든 오버레이를 지도에서 숨깁니다.
@@ -202,11 +206,6 @@ const createMap = () => {
     });
   });
 };
-
-const closeOverlay = (overlay) => {
-  overlay.setMap(null);
-};
-console.log(closeOverlay);
 
 onMounted(() => {
   mainList();
