@@ -13,7 +13,12 @@
             <div class="timeContainer">
                 <!-- 타이틀 -->
                 <div class="timeTop">
-                    <h1 v-if="!selectedDate">영업시간 등록</h1>
+                    <!-- 기본 타이틀 -->
+                    <div v-if="!selectedDate" class="whenSelectNo">
+                        <h1 >영업시간 등록</h1>
+                        <small>*달력의 날짜를 클릭하면 삭제,시간 추가를 할 수 있습니다.</small>
+                    </div>
+                    <!-- 날짜 선택했을때 타이틀 -->
                     <div v-if="selectedDate" class="whenSelect">
                         <h1 >{{ formattedSelectedDate }}</h1>
                         <p @click="resetSelection">영업시간 등록으로 돌아가기</p>
@@ -76,6 +81,7 @@
                             <button v-on:click="deleteRtime(time.rtTime)" v-for="(time, index) in registeredTimes" :key="index" type="button" :disabled="time.rtFinish === true">
                                 {{ time.rtTime }}
                             </button>
+                            <p>등록된 예약 시간이 없습니다.</p>
                         </div>
                     </div>
                     <!-- 예약시간 추가 -->
@@ -213,7 +219,11 @@ export default {
 
             // 이미 등록된 날짜가 포함되어 있는지 확인
             if (this.checkRegisteredDates()) {
-                alert('이미 등록되어있는 날짜가 포함되어있습니다. 제외하고 선택해주세요.');
+                Swal.fire({
+                    icon: 'warning',
+                    title: '날짜 범위를 확인해주세요.',
+                    text: '이미 등록되어있는 날짜가 포함되어있습니다.',
+                });
                 this.selectedEndDate = null; // 끝 날짜 초기화
                 this.selectedStartDate = null; // 시작 날짜 초기화
                 this.clearTimeInputs(); //시간초기화
@@ -429,6 +439,27 @@ export default {
                 this.selectedEndDate = this.selectedStartDate;
             }
 
+            // 날짜 입력 유효성 검사
+            if (!this.selectedStartDate || !this.selectedEndDate) {
+                Swal.fire({
+                    icon: 'error',
+                    title: '등록할 날짜를 입력해주세요',
+                    text: '시작 날짜와 종료 날짜를 모두 선택해주세요.',
+                });
+                return;
+            }
+
+            // 시간 입력 유효성 검사
+            const invalidWorkDay = this.workDays.find(day => day.active && (!day.startTime || !day.endTime));
+            if (invalidWorkDay) {
+                Swal.fire({
+                    icon: 'error',
+                    title: '시간을 입력해주세요',
+                    text: '선택한 요일의 시작 시간과 종료 시간을 모두 입력해주세요.',
+                });
+                return;
+            }
+
             const startDate = new Date(this.selectedStartDate);
             const endDate = new Date(this.selectedEndDate);
             const daysBetween = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
@@ -543,7 +574,11 @@ export default {
             if (event.target.checked) {
                 const referenceDay = activeDays.find(day => day.startTime && day.endTime);
                 if (!referenceDay) {
-                    alert('시간을 선택해주세요');
+                    Swal.fire({
+                        icon: 'error',
+                        title: '시간을 입력해주세요',
+                        text: '기준 시간을 먼저 입력해주세요.',
+                    });
                     event.target.checked = false;
                     return;
                 }

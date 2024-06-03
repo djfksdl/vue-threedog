@@ -122,6 +122,19 @@
     border-bottom: 1px solid #666;
     padding-bottom: 10px;
 }
+/* 기본 타이틀 */
+.container4 .timeContainer .timeTop .whenSelectNo {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    border-bottom: 1px solid #666;
+}
+.container4 .timeContainer .timeTop .whenSelectNo h1{
+    border: none;
+    margin-right: 10px;
+}
+
+/* 날짜 선택했을떄 타이틀 */
 .container4 .timeContainer .timeTop .whenSelect {
     display: flex;
     justify-content: space-between;
@@ -217,6 +230,13 @@
     border-radius: 10px;
     font-size: 18px;
     margin-left: 535px;
+    cursor: pointer;
+    background-color: #237140 ; 
+    color: #fff;
+}
+.container4 .timeContainer .insertScheduleContainer .insertBtn:hover{
+    background-color:#ffd700 ;
+    font-weight: bold;
 }
 
 
