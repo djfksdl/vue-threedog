@@ -33,12 +33,14 @@
                     </div>
                     <div class="routerlinkBox">
                         <div class="routerlink1">
-                            <button style="background-color: #236C3F; color: white; border: none; color: white;"><router-link
+                            <button
+                                style="background-color: #236C3F; color: white; border: none; color: white;"><router-link
                                     :to="`/mypage/${this.$store.state.authUser.uNo}`">마이페이지로
                                     돌아가기</router-link></button>
                         </div>
                         <div class="routerlink2">
-                            <button style="background-color: white; border: 1px solid  #236C3F;"><router-link :to="`/`">홈으로 돌아가기</router-link></button>
+                            <button style="background-color: white; border: 1px solid  #236C3F;"><router-link
+                                    :to="`/`">홈으로 돌아가기</router-link></button>
                         </div>
                     </div>
                 </div>
@@ -68,7 +70,18 @@ export default {
         AppFooter,
     },
     computed: {
-        ...mapGetters(['reservationData'])
+        ...mapGetters(['reservationData']),
+        formattedBeauty2() {
+            try {
+                // 문자열을 배열로 변환
+                const beauty2Array = JSON.parse(this.reservationData.beauty2);
+                // 배열을 문자열로 변환 (대괄호와 따옴표 제거)
+                return beauty2Array.join(', ');
+            } catch (e) {
+                console.error("Error parsing beauty2 data:", e);
+                return this.reservationData.beauty2;
+            }
+        }
     },
     data() {
         return {};

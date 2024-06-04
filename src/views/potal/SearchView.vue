@@ -133,7 +133,7 @@
             </Swiper>
             <!-- <img src="../../assets/images/spy3.jpg" style="width: 300px; height: 350px; margin-top: 15px;"> -->
           </div>
-          <div class="modal-content">
+          <div class="modal-content" style="padding-left: 50px;">
             <div class="userId"><strong>{{ reviewVo2.uId }}</strong>님</div>
             <div style="display: flex;">
               <div class="cutInfor">{{ reviewVo2.dogName }} ({{ reviewVo2.weight }}kg) &nbsp; </div>
