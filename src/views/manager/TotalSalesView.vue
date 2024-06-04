@@ -5,20 +5,15 @@
     <!-- 일 매출통계 -->
     <div class="chart-container">
       <div style="display: flex;">
-        <div>
-          <!-- 일별 매출 그래프 -->
-          <canvas width="418" height="410" ref="dailyChartCanvas"></canvas>
-          <div class="total-sales">일별 매출 합계: {{ dailyTotal }}</div>
-        </div>
         <!-- 엑셀 표 -->
         <div class="sales-table">
           <table>
             <thead>
               <tr>
-                <th>날짜</th>
-                <th>가위 컷</th>
-                <th>부분 미용</th>
-                <th>전체 미용</th>
+                <th>종류</th>
+                <th>소형견</th>
+                <th>중형견</th>
+                <th>특수견</th>
               </tr>
             </thead>
             <tbody>
@@ -32,26 +27,27 @@
           </table>
         </div>
       </div>
+      <div class="total-sales">일일 매출 합계:</div>
     </div>
 
     <!-- 주 매출통계 -->
     <div class="chart-container">
       <!-- 주별 매출 그래프 -->
-      <canvas width="300" height="200" ref="weeklyChartCanvas"></canvas>
+      <canvas class="week" width="300" height="200" ref="weeklyChartCanvas"></canvas>
       <div class="total-sales">주별 매출 합계: {{ weeklyTotal }}</div>
     </div>
 
     <!-- 월 매출통계 -->
     <div class="chart-container">
       <!-- 월별 매출 그래프 -->
-      <canvas width="300" height="200" ref="monthlyChartCanvas"></canvas>
+      <canvas class="month" width="300" height="200" ref="monthlyChartCanvas"></canvas>
       <div class="total-sales">월별 매출 합계: {{ monthlyTotal }}</div>
     </div>
 
     <!-- 년도별 매출통계 -->
     <div class="chart-container">
       <!-- 년도별 매출 그래프 -->
-      <canvas width="300" height="200" ref="yearlyChartCanvas"></canvas>
+      <canvas class="year" width="300" height="200" ref="yearlyChartCanvas"></canvas>
       <div class="total-sales">년도별 매출 합계: {{ yearlyTotal }}</div>
     </div>
 
@@ -64,6 +60,7 @@ import ManagerFooter from "@/components/ManagerFooter.vue";
 import ManagerHeader from "@/components/ManagerHeader.vue";
 import Chart from "chart.js/auto";
 import "@/assets/css/manager/totalsales.css";
+import axios from 'axios';
 
 export default {
   name: "TotalSalesView", // 컴포넌트 이름
@@ -144,12 +141,25 @@ export default {
         }
       });
     },
+    getWeekList() {
+      axios({
+        method: 'get',
+        url: `${this.$store.state.apiBaseUrl}/api/weekstats`,
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        // params: params,
+        responseType: 'json'
+      }).then(response => {
+        this.weeklySales.value = response.data.apiData;
+        console.log(response.data.apiData);
+      }).catch(error => {
+        console.log(error);
+      });
+    }
   },
   mounted() {
     // 각 그래프를 그립니다.
-    this.drawChart(this.$refs.dailyChartCanvas, ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], this.dailySales, 'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 1)', '일별 매출', 'doughnut');
     this.drawChart(this.$refs.weeklyChartCanvas, ['1주', '2주', '3주', '4주'], this.weeklySales, 'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 1)', '주별 매출', 'line');
-    this.drawChart(this.$refs.monthlyChartCanvas, ['1월', '2월', '3월', '4월', '5월', '6월'], this.monthlySales, 'rgba(255, 206, 86, 0.2)', 'rgba(255, 206, 86, 1)', '월별 매출', 'bar');
+    this.drawChart(this.$refs.monthlyChartCanvas, ['1월', '2월', '3월', '4월', '5월', '6월'], this.monthlySales, 'rgba(255, 206, 86, 0.2)', 'rgba(255, 206, 86, 1)', '월별 매출', 'doughnut');
     this.drawChart(this.$refs.yearlyChartCanvas, ['2021', '2022', '2023', '2024'], this.yearlySales, 'rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 1)', '년도별 매출', 'bar');
   },
   created() {
@@ -161,7 +171,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-/* 여기에 스타일링 코드 추가 */
-</style>

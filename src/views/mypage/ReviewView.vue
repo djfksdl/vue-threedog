@@ -236,7 +236,6 @@ export default {
                 }
                 this.modalCheck = true;
             }
-            console.log("선택한 리뷰번호", rNo);
             this.getOneRList(rNo);
             this.getSaveName(rNo);
         },

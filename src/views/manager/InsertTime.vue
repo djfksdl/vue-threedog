@@ -13,22 +13,31 @@
             <div class="timeContainer">
                 <!-- 타이틀 -->
                 <div class="timeTop">
-                    <h1>영업시간 등록</h1>
+                    <!-- 기본 타이틀 -->
+                    <div v-if="!selectedDate" class="whenSelectNo">
+                        <h1 >영업시간 등록</h1>
+                        <small>*달력의 날짜를 클릭하면 삭제,시간 추가를 할 수 있습니다.</small>
+                    </div>
+                    <!-- 날짜 선택했을때 타이틀 -->
+                    <div v-if="selectedDate" class="whenSelect">
+                        <h1 >{{ formattedSelectedDate }}</h1>
+                        <p @click="resetSelection">영업시간 등록으로 돌아가기</p>
+                    </div>
                 </div>
 
                 <!-- 스케쥴 등록 -->
-                <div class="insertScheduleContainer">
+                <div v-if="!selectedDate" class="insertScheduleContainer">
                     <!-- 날짜 선택 -->
                     <div class="selectWorkDate">
-                <div>
-                    <input type="date" v-model="selectedStartDate" :min="today" ref="startDateInput" @input="handleDateChange('start')"> ~
-                    <input type="date" v-model="selectedEndDate" :min="selectedStartDate" ref="endDateInput" @focus="checkStartDate" @input="handleDateChange('end')">
-                </div>
-                <div class="weekAllDayCheck">
-                    <label id="checkAllDay">동일한 시간 추가</label>
-                    <input id="checkAllDay" type="checkbox" :disabled="!isMultipleDatesSelected" @change="applySameTime"> 
-                </div>
-            </div>
+                        <div>
+                            <input type="date" v-model="selectedStartDate" :min="today" ref="startDateInput" @input="handleDateChange('start')"> ~
+                            <input type="date" v-model="selectedEndDate" :min="selectedStartDate" ref="endDateInput" @focus="checkStartDate" @input="handleDateChange('end')">
+                        </div>
+                        <div class="weekAllDayCheck">
+                            <label id="checkAllDay">동일한 시간 추가</label>
+                            <input id="checkAllDay" type="checkbox" v-model="checkAllDay" :disabled="!isMultipleDatesSelected" @change="applySameTime"> 
+                        </div>
+                    </div>
 
                     <!-- 시간 선택 -->
                     <div class="selectWorkTimeContainer selectedTimeContainer">
@@ -57,11 +66,36 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- 등록,수정버튼 -->
+                    <button type="submit" class="insertBtn" v-on:click="insertRT">등록</button>
                 </div>
 
-                <!-- 등록,수정버튼 -->
-                <button type="submit" class="insertBtn" v-on:click="insertRT">등록</button>
+
+                <!-- 예약날짜 불러오기 -->
+                <div v-if="selectedDate" class="selectScheduleTimeContainer"> 
+                    <!-- 예약시간 삭제 -->
+                    <div class="selectDeleteRtimeContainer">
+                        <h2>예약된 시간 삭제</h2>
+                        <div class="RtBtnBox">
+                            <button v-on:click="deleteRtime(time.rtTime)" v-for="(time, index) in registeredTimes" :key="index" type="button" :disabled="time.rtFinish === true">
+                                {{ time.rtTime }}
+                            </button>
+                            <p v-if="registeredTimes.length === 0">등록된 예약 시간이 없습니다.</p>
+                        </div>
+                    </div>
+                    <!-- 예약시간 추가 -->
+                    <div class="plusRtimeContainer">
+                        <label>추가할 시간</label>
+                        <div class="plusRtimeRow">
+                            <input type="time" v-model="startTime" @input="updateEndTime">~
+                            <input type="time" v-model="endTime" readonly>
+                            <button type="button" v-on:click="plusRtime" >추가</button>
+                        </div>
+                    </div>
+                </div>
             </div>
+            
         </div>
         <TopButton />  
         <ManagerFooter /> 
@@ -103,7 +137,7 @@ export default {
                 editable: true, // 드래그 앤 드롭 및 크기 조정 활성화
                 contentHeight: 500,
                 locale: "ko",
-                firstDay: 1, //월요일을 시작일로 설정
+                // firstDay: 1, //월요일을 시작일로 설정
                 dateClick: this.handleDateClick, // 날짜 클릭 이벤트 핸들러 
                 dateSet: this.handleDateSet, //날짜 선택 이벤트 핸들러 
                 eventClick: this.handleEventClick, // 이벤트 클릭 핸들러 추가
@@ -134,6 +168,12 @@ export default {
             },
             today: new Date().toISOString().split('T')[0], // 오늘 날짜
             originalTimes: [], // 동일시간추가 하기전 시간을 담을 배열
+            registeredDates: [], // 등록된 날짜를 저장할 배열
+            selectedDate: null, // 선택된 날짜
+            registeredTimes: [], // 예약된 시간을 저장할 배열
+            checkAllDay: false, //체크 표시
+            startTime: '', //추가 시작시간
+            endTime: '' //추가 끝 시간
             
         };
     },
@@ -149,6 +189,14 @@ export default {
         //동일한 시간 추가
         isMultipleDatesSelected() {
             return this.selectedStartDate && this.selectedEndDate && this.selectedStartDate !== this.selectedEndDate;
+        },
+        formattedSelectedDate() {
+            if (!this.selectedDate) return '';
+            const date = new Date(this.selectedDate);
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
+            return `${year}-${month}-${day}`;
         }
     },
     methods: {
@@ -164,16 +212,65 @@ export default {
              // '동일한 시간 추가' 체크 해제 및 originalTimes 초기화
             const checkAllDayElement = document.getElementById('checkAllDay');
             checkAllDayElement.checked = false;
-            checkAllDayElement.disabled = !this.isMultipleDatesSelected || !this.hasValidTime();
+            checkAllDayElement.disabled = true; // 무조건 비활성화
+            // this.updateCheckAllDayState(); // 체크박스 활성화/비활성화 상태 업데이트 
+            this.checkAllDay = false;
             this.originalTimes = [];
-            },
+
+            // 이미 등록된 날짜가 포함되어 있는지 확인
+            if (this.checkRegisteredDates()) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: '날짜 범위를 확인해주세요.',
+                    text: '이미 등록되어있는 날짜가 포함되어있습니다.',
+                });
+                this.selectedEndDate = null; // 끝 날짜 초기화
+                this.selectedStartDate = null; // 시작 날짜 초기화
+                this.clearTimeInputs(); //시간초기화
+                this.deactivateWorkDays(); // 요일 비활성화
+                this.clearHighlightedDates(); // 선택된 날짜의 하이라이트 초기화
+                this.highlightToday(); // 오늘 날짜 달력에 표기
+            }
+        },
+
+        // ***** 동일한 시간 추가 체크박스 상태 업데이트 *****
+        updateCheckAllDayState() {
+            const checkAllDayElement = document.getElementById('checkAllDay');
+            if (this.isMultipleDatesSelected && this.hasValidTime()) {
+                checkAllDayElement.disabled = false;
+                checkAllDayElement.checked = false;
+            } else {
+                checkAllDayElement.disabled = true;
+                checkAllDayElement.checked = false;
+            }
+        },
+
+        // ***** 오늘 날짜 달력에 표시 *****
+        highlightToday() {
+            const todayStr = new Date().toISOString().split('T')[0];
+            const todayElement = document.querySelector(`[data-date="${todayStr}"]`);
+            if (todayElement) {
+                todayElement.style.backgroundColor = '#f8a247'; // 원하는 배경색
+            }
+        },  
+
+        // ***** 날짜에 해당하는 요일 비활성화 *****
+        deactivateWorkDays() {
+          
+            this.workDays.forEach(day => {
+                day.active = false;
+            });
+            
+        },
 
         // ***** 시간 입력창 초기화 *****
         clearTimeInputs() {
+            
             this.workDays.forEach(day => {
                 day.startTime = '';
                 day.endTime = '';
             });
+            
         },
 
         // ***** 기존 하이라이트 초기화 *****
@@ -233,15 +330,8 @@ export default {
             }
             this.updateWorkTime(day);
 
-             // '동일한 시간 추가' 체크박스 상태 업데이트
-            const checkAllDayElement = document.getElementById('checkAllDay');
-            if (this.isMultipleDatesSelected && this.hasValidTime()) {
-                checkAllDayElement.disabled = false;
-            } else {
-                checkAllDayElement.disabled = true;
-                checkAllDayElement.checked = false;
-                this.originalTimes = [];
-            }
+            // '동일한 시간 추가' 체크박스 상태 업데이트
+            this.updateCheckAllDayState(); // 체크박스 활성화/비활성화 상태 업데이트
         },
 
         // ***** 유효한 시간이 있는지 확인 *****
@@ -255,10 +345,14 @@ export default {
             const endDate = this.selectedEndDate ? new Date(this.selectedEndDate) : startDate;
             const daysBetween = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
 
+       
+            console.log(startDate);
+            console.log(endDate);
+            console.log(daysBetween);
+
             // 모든 요일을 비활성화
-            this.workDays.forEach(day => {
-                day.active = false;
-            });
+            console.log("모든 요일을 비활성화");
+            this.deactivateWorkDays();
 
             // 선택된 날짜 범위의 요일들을 활성화
             for (let i = 0; i < daysBetween; i++) {
@@ -296,7 +390,7 @@ export default {
         // ***** 시작 날짜 확인 *****
         checkStartDate() {
             if (!this.selectedStartDate) {
-                alert("시작 날짜부터 선택해주세요.");
+                // alert("시작 날짜부터 선택해주세요.");
                 this.$refs.startDateInput.focus();
             }
         },
@@ -343,6 +437,27 @@ export default {
             // 두번째 날짜를 선택안하고 등록했을때 첫번째 날짜 할당
             if (!this.selectedEndDate) {
                 this.selectedEndDate = this.selectedStartDate;
+            }
+
+            // 날짜 입력 유효성 검사
+            if (!this.selectedStartDate || !this.selectedEndDate) {
+                Swal.fire({
+                    icon: 'error',
+                    title: '등록할 날짜를 입력해주세요',
+                    text: '시작 날짜와 종료 날짜를 모두 선택해주세요.',
+                });
+                return;
+            }
+
+            // 시간 입력 유효성 검사
+            const invalidWorkDay = this.workDays.find(day => day.active && (!day.startTime || !day.endTime));
+            if (invalidWorkDay) {
+                Swal.fire({
+                    icon: 'error',
+                    title: '시간을 입력해주세요',
+                    text: '선택한 요일의 시작 시간과 종료 시간을 모두 입력해주세요.',
+                });
+                return;
             }
 
             const startDate = new Date(this.selectedStartDate);
@@ -459,24 +574,17 @@ export default {
             if (event.target.checked) {
                 const referenceDay = activeDays.find(day => day.startTime && day.endTime);
                 if (!referenceDay) {
-                    alert('시간을 선택해주세요');
+                    Swal.fire({
+                        icon: 'error',
+                        title: '시간을 입력해주세요',
+                        text: '기준 시간을 먼저 입력해주세요.',
+                    });
                     event.target.checked = false;
                     return;
                 }
 
                 const { startTime, endTime } = referenceDay;
 
-                if (!startTime && !endTime) {
-                    alert('유효한 시간을 선택해주세요');
-                    event.target.checked = false;
-                    return;
-                }
-
-                if (startTime && !endTime) {
-                    alert('마치는 시간을 입력해주세요');
-                    event.target.checked = false;
-                    return;
-                }
 
                 // 동일시간 추가를 누르기전 원래 시간을 저장하기
                 this.originalTimes = activeDays.map(day => ({ label: day.label, startTime: day.startTime, endTime: day.endTime }));
@@ -520,20 +628,45 @@ export default {
                 params : {bNo: this.rtVo.bNo},
                 responseType: 'json'
             }).then(response => {
-                    console.log("화깅ㄴ하기")
-                    console.log(response.data.apiData);
+                    // console.log(response.data.apiData);
 
                     // 이벤트 소스를 FullCalendar에 추가
                     const rtData = response.data.apiData;
-                    const formattedDates = rtData.map(item => item.rtDate);
+                    const formattedDates = rtData.map(item => {
+                        // '2024-06-04 15:00:00' 형식에서 날짜 부분만 추출
+                        const datePart = item.rtDate.split(' ')[0].replace(/-/g, '');
+                        return datePart;
+                    });
+
+                    //이벤트 소스를 fullcalendar에 추가
                     this.addCompletionEvents(formattedDates); 
+
+                    // 등록된 날짜 저장
+                    this.registeredDates = formattedDates; 
+                    
               
             }).catch(error => {
                 console.log(error);
             });
         },
+        // ***** 등록된 날짜 input창 날짜와 비교하기 *****
+        checkRegisteredDates() {
+            const startDate = new Date(this.selectedStartDate);
+            const endDate = this.selectedEndDate ? new Date(this.selectedEndDate) : startDate;
+            const daysBetween = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
 
-        // ***** 등록되어있는 날짜에 달력에 추가 *****
+            for (let i = 0; i < daysBetween; i++) {
+                const currentDay = new Date(startDate);
+                currentDay.setDate(currentDay.getDate() + i);
+                const formattedDate = currentDay.toISOString().split('T')[0].replace(/-/g, '');
+                if (this.registeredDates.includes(formattedDate)) {
+                    return true;
+                }
+            }
+            return false;
+        },
+
+        // ***** 등록되어있는 날짜가 있으면 달력에 이미지추가 *****
         addCompletionEvents(dates) {
             const calendarApi = this.$refs.calendar.getApi();
             dates.forEach(date => {
@@ -548,181 +681,6 @@ export default {
                     }
                 });
             });
-        },
-
-        // ***** 등록되어있는 시간 가져오기(모달창 시간 입력 위해) *****
-        selectRtime(date) {
-            console.log("등록시간 가져오기");
-
-            return axios({
-
-                method: 'get',
-                url: `${this.$store.state.apiBaseUrl}/api/su/selectRtime`,
-                headers: { "Content-Type": "application/json; charset=utf-8" },
-                params: { bNo: this.rtVo.bNo, rtDate: date },
-                responseType: 'json'
-            }).then(response => {
-                console.log("등록된 시간들");
-                console.log(response.data.apiData);
-                return response.data.apiData;
-            }).catch(error => {
-                console.log(error);
-                return [];
-            });
-        },
-
-        // ***** 달력 모달창 *****
-        async handleEventClick(info) {
-            const event = info.event;
-            const selectedDate = event.start.toLocaleDateString('sv-SE').replace(/-/g, '');
-
-            const rtData = await this.selectRtime(selectedDate);
-
-            if (rtData && rtData.length > 0) {
-                const rtTimes = rtData.map(item => item.rtTime);
-
-                const startTime = rtTimes[0];
-                const endTime = this.addOneHour(rtTimes[rtTimes.length - 1]);
-
-                let lunchStartTime = '';
-                let lunchEndTime = '';
-
-                for (let i = 1; i < rtTimes.length; i++) {
-                    if (this.diffInHours(rtTimes[i - 1], rtTimes[i]) > 1) {
-                        lunchStartTime = this.addOneHour(rtTimes[i - 1]);
-                        lunchEndTime = rtTimes[i];
-                        break;
-                    }
-                }
-
-                // 클릭한 날짜와 요일 정의
-                const clickedDate = event.start.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' }); 
-
-                Swal.fire({
-                    title: `${clickedDate}`,
-                    html: `
-                        <label><strong>등록시간:</strong></label>
-                        <input type="time" id="startTime" value="${startTime}" step="600"> ~
-                        <input type="time" id="endTime" value="${endTime}" step="600">
-                        <br>
-                        <label><strong>점심시간:</strong></label>
-                        <input type="time" id="lunchStartTime" value="${lunchStartTime}" step="600"> ~
-                        <input type="time" id="lunchEndTime" value="${lunchEndTime}" step="600">
-                        <br>
-                        <button id="deleteButton" class="swal2-styled">삭제</button>
-                        <button id="updateButton" class="swal2-styled">수정</button>
-                    `,
-                    icon: 'info',
-                    showCloseButton: true, // 오른쪽 상단에 X 버튼 추가
-                    showConfirmButton: false, // 하단의 닫기 버튼 제거
-
-                    // 모달창 수정,삭제 
-                    didOpen: () => {
-
-                        // 모달창 삭제
-                        document.getElementById('deleteButton').addEventListener('click', () => {
-                            Swal.fire({
-                                title: '삭제하시겠습니까?',
-                                icon: 'warning',
-                                showCancelButton: true,
-                                confirmButtonText: '네',
-                                cancelButtonText: '아니요'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    axios({
-                                        method: 'delete', 
-                                        url: `${this.$store.state.apiBaseUrl}/api/su/deleteRtime`, 
-                                        headers: { "Content-Type": "application/json; charset=utf-8" },
-                                        data: {
-                                            bNo: this.rtVo.bNo,
-                                            rtDate: selectedDate 
-                                        }
-                                    }).then(response => {
-
-                                        if (response.data.result === 'success') {
-                                            event.remove();
-                                            Swal.fire('삭제되었습니다.', '', 'success');
-
-                                            this.$router.push(`/inserttime/${this.bNo}`);
-
-                                        } else {
-                                            Swal.fire('삭제 실패', '다시 시도해주세요.', 'error');
-                                        }
-                                    }).catch(error => {
-                                        console.log(error);
-                                        Swal.fire('삭제 실패', '서버와의 통신 중 오류가 발생했습니다.', 'error');
-                                    });
-                                }
-                            });
-                        });
-
-                        // 모달창 수정
-                        document.getElementById('updateButton').addEventListener('click', () => {
-                            const startTime = document.getElementById('startTime').value;
-                            const endTime = document.getElementById('endTime').value;
-                            const lunchStartTime = document.getElementById('lunchStartTime').value;
-                            const lunchEndTime = document.getElementById('lunchEndTime').value;
-
-                             // 전체 시간 범위를 점심 시간을 제외하고 1시간 단위로 나누기
-                            const workTime = `${startTime} ~ ${endTime}`;
-                            const filteredTimeSlots = this.subtractTime(workTime, `${lunchStartTime} ~ ${lunchEndTime}`);
-                            const updatedTimeSlots = this.generateTimeSlots(filteredTimeSlots);
-
-                            // 모든 시간을 updatedRtTimes 배열에 넣기
-                            const updatedRtTimes = [];
-                            updatedTimeSlots.forEach(slot => {
-                                const [startTime] = slot.split(' ~ '); // 시작 시간만 저장
-                                updatedRtTimes.push(startTime);
-                            });
-
-                            console.log(this.rtVo.bNo);
-                            console.log(selectedDate);
-                            console.log(updatedRtTimes);
-
-                            axios({
-                                method: 'post',
-                                url: `${this.$store.state.apiBaseUrl}/api/su/updateRtime`, 
-                                headers: { "Content-Type": "application/json; charset=utf-8" },
-                                data: {
-                                    bNo: this.rtVo.bNo,
-                                    rtDate: selectedDate,
-                                    rtTimes: updatedRtTimes
-                                }
-                            }).then(response => {
-                                if (response.data.result === 'success') {
-                                    Swal.fire('수정되었습니다.', '', 'success');
-                                } else {
-                                    Swal.fire('수정 실패', '다시 시도해주세요.', 'error');
-                                }
-                            }).catch(error => {
-                                console.log(error);
-                                Swal.fire('수정 실패', '서버와의 통신 중 오류가 발생했습니다.', 'error');
-                            });
-                        });
-                    },
-                    preConfirm: () => {
-                        const startTime = document.getElementById('startTime').value;
-                        const endTime = document.getElementById('endTime').value;
-                        const lunchStartTime = document.getElementById('lunchStartTime').value;
-                        const lunchEndTime = document.getElementById('lunchEndTime').value;
-
-                        return {
-                            startTime: startTime,
-                            endTime: endTime,
-                            lunchStartTime: lunchStartTime,
-                            lunchEndTime: lunchEndTime
-                        };
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        const { startTime, endTime, lunchStartTime, lunchEndTime } = result.value;
-                        event.setExtendedProp('startTime', startTime);
-                        event.setExtendedProp('endTime', endTime);
-                        event.setExtendedProp('lunchStartTime', lunchStartTime);
-                        event.setExtendedProp('lunchEndTime', lunchEndTime);
-                    }
-                });
-            }
         },
 
         // ***** 시간 1시간 더하기 메소드 *****
@@ -753,22 +711,136 @@ export default {
             }
         },
 
+        // ***** 등록되어있는 시간 가져오기 *****
+        selectRtimes(date) {
+            // console.log("예약시간 가져오기");
 
+            return axios({
 
-    },
+                method: 'get',
+                url: `${this.$store.state.apiBaseUrl}/api/su/selectRtime`,
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                params: { bNo: this.rtVo.bNo, rtDate: date },
+                responseType: 'json'
+            }).then(response => {
 
-    // ***** input창에 바로 적용시키기 위해서 감시 *****
-    watch: {
-        selectedStartDate() {
-            this.updateCalendar();
-            this.activateWorkDays();
+                this.registeredTimes = response.data.apiData.map(item => ({
+                    rtTime: item.rtTime.slice(0, 5), // 시간 포맷 변경하여 저장
+                    rtFinish: item.rtFinish // 예약 유무 저장
+                }));
+
+            }).catch(error => {
+                console.log(error);
+                this.registeredTimes = [];
+            });
         },
-        selectedEndDate() {
-            this.updateCalendar();
-            this.activateWorkDays();
-        }
-    },
 
+        // ***** 시간 삭제하기 *****
+        deleteRtime(rtTime) {
+            Swal.fire({
+                title: '정말 삭제하시겠습니까?',
+                text: "이 작업은 되돌릴 수 없습니다!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '삭제',
+                cancelButtonText: '취소'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios({
+                        method: 'delete',
+                        url: `${this.$store.state.apiBaseUrl}/api/su/deleteRtime`,
+                        headers: { "Content-Type": "application/json; charset=utf-8" },
+                        data: {
+                            bNo: this.rtVo.bNo,
+                            rtDate: this.selectedDate,
+                            rtTime: rtTime
+                        }, 
+                    }).then(response => {
+                        console.log(response.data.apiData);
+                        this.selectRtimes(this.selectedDate); // 변경된 예약 시간 목록 다시 받아오기
+                        Swal.fire(
+                            '삭제되었습니다!',
+                            '예약 시간이 삭제되었습니다.',
+                            'success'
+                        );
+                    }).catch(error => {
+                        console.log(error);
+                        Swal.fire(
+                            '삭제 실패!',
+                            '예약 시간 삭제에 실패했습니다.',
+                            'error'
+                        );
+                    });
+                }
+            });
+        },
+
+        // ***** 추가 시간 시작시간+1 *****
+        updateEndTime() {
+            if (this.startTime) {
+                // 입력된 시간이 이미 등록된 시간인지 확인
+                const isTimeRegistered = this.registeredTimes.some(time => time.rtTime === this.startTime);
+                if (isTimeRegistered) {
+                    // 이미 있는 시간이면 모달 창 띄우기
+                    Swal.fire({
+                        icon: 'error',
+                        title: '이미 있는 시간입니다',
+                        text: '다른 시간을 선택해주세요.',
+                    });
+                    this.startTime = ''; // 입력된 시간 초기화
+                    this.endTime = ''; // 종료 시간 초기화
+                } else {
+                    const [hours, minutes] = this.startTime.split(':');
+                    let endHours = parseInt(hours) + 1;
+                    if (endHours === 24) {
+                        endHours = 0; // 24시가 되면 0시로 설정
+                    }
+                    const formattedEndHours = endHours.toString().padStart(2, '0');
+                    this.endTime = `${formattedEndHours}:${minutes}`;
+                }
+            }
+        },
+
+        // ***** 시간 추가하기 *****
+        plusRtime(){
+            console.log("시간추가하기");
+
+            axios({
+                method: 'post', // put, post, delete 
+                url: `${this.$store.state.apiBaseUrl}/api/su/updateRtime`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                data: {
+                    bNo: this.rtVo.bNo,
+                    rtDate: this.selectedDate,
+                    rtTime: this.startTime
+                }, 
+            }).then(response => {
+                console.log(response.data.apiData);
+                
+                this.selectRtimes(this.selectedDate);//변경된 예약 시간 목록 다시 받아오기
+
+            }).catch(error => {
+                console.log(error);
+            });
+
+        },
+
+        // ***** 캘린더 날짜 클릭 핸들러 *****
+        handleDateClick(info) {
+            this.selectedDate = info.dateStr; // 클릭된 날짜 저장
+
+            this.selectRtimes(this.selectedDate);
+        },
+
+        // ***** 선택 초기화 *****
+        resetSelection() {
+            this.selectedDate = null;
+        },
+
+
+    },
     created() {
         // 공휴일 불러오기
         this.fetchHolidays();

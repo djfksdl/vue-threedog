@@ -14,13 +14,15 @@
                     <li><router-link to="/announcements">공지사항</router-link></li>
                 </ul>
 
-                <span>HOT 가게 TOP 5</span>
+                <div class="hot">
+                    <img src="../assets/images/hot.png">
+                </div>
                 <!-- <div class="popRank" v-if="popList.length > 0">
                     <ul id="best_search">
                         <li v-for="(popVo, i) in popList" :key="i">
                             <dl :class="'time' + (i + 1)" v-show="i === viewcount">
                                 <dd>
-                                    <a class="t" href="#">
+                                    <a class="t" href="`/edit/${popVo.bNo}`">
                                         <div class="num">{{ i + 1 }}</div>
                                         {{ popVo.title }}
                                     </a>
@@ -163,6 +165,10 @@ export default {
     data() {
         return {
             popList: [],
+            popVo: {
+                bNo: '',
+                title: ''
+            }
         };
     },
     methods: {

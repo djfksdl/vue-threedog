@@ -10,7 +10,7 @@
 /* ************************* 달력 ************************* */
 .container4 .calendarContainer {
     width: 45%;
-    padding-top: 50px;
+    padding-top: 30px;
 }
 .container4 .calendarContainer .calendar-container2 {
     position: relative;
@@ -122,10 +122,45 @@
     border-bottom: 1px solid #666;
     padding-bottom: 10px;
 }
+/* 기본 타이틀 */
+.container4 .timeContainer .timeTop .whenSelectNo {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    border-bottom: 1px solid #666;
+}
+.container4 .timeContainer .timeTop .whenSelectNo h1{
+    border: none;
+    margin-right: 10px;
+}
+
+/* 날짜 선택했을떄 타이틀 */
+.container4 .timeContainer .timeTop .whenSelect {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #666;
+}
+.container4 .timeContainer .timeTop .whenSelect h1{
+    border: none;
+}
+.container4 .timeContainer .timeTop .whenSelect p{
+    cursor: pointer;
+    border: 1px solid #f8a247;
+    border-radius: 5px;
+    padding: 5px ;
+}
+.container4 .timeContainer .timeTop .whenSelect p:hover{
+    background-color: #f8a247;
+    color: #fff;
+}
 
 /* 스케쥴 등록 */
 .container4 .timeContainer .insertScheduleContainer {
     padding: 10px;
+     /*여기 나중에 풀기*/
+    /* display: none; */
+    /* background-color: tan; */
 }
 
 /* 날짜 선택 */
@@ -195,4 +230,94 @@
     border-radius: 10px;
     font-size: 18px;
     margin-left: 535px;
+    cursor: pointer;
+    background-color: #237140 ; 
+    color: #fff;
 }
+.container4 .timeContainer .insertScheduleContainer .insertBtn:hover{
+    background-color:#ffd700 ;
+    font-weight: bold;
+}
+
+
+/* 예약날짜 불러오기 */
+.container4 .timeContainer .selectScheduleTimeContainer{
+    /* background-color: pink; */
+    padding: 10px;
+    height: 500px;
+    padding-top: 20px;
+}
+
+/* 예약시간 삭제 */
+.container4 .timeContainer .selectScheduleTimeContainer .selectDeleteRtimeContainer{
+    /* background-color: tomato; */
+    padding-bottom: 50px;
+    min-height: 230px;
+}
+.container4 .timeContainer .selectScheduleTimeContainer .selectDeleteRtimeContainer h2{
+    line-height: 50px;
+}
+.container4 .timeContainer .selectScheduleTimeContainer .selectDeleteRtimeContainer .RtBtnBox{
+}
+.container4 .timeContainer .selectScheduleTimeContainer .selectDeleteRtimeContainer .RtBtnBox button{
+    width: 100px;
+    height: 50px;
+    border: none;
+    border-radius: 10px;
+    margin: 5px 10px 5px 0;
+    background-color: #f8a247;
+    font-size: 15px;
+    cursor: pointer;
+    color: #fff;
+}
+.container4 .timeContainer .selectScheduleTimeContainer .selectDeleteRtimeContainer .RtBtnBox button:hover{
+    background-color: #ffd700;
+    font-weight: bold;
+}
+/* disabled된 삭제 버튼 */
+.container4 .timeContainer .selectScheduleTimeContainer .selectDeleteRtimeContainer .RtBtnBox button:disabled{
+    background-color: #d3d3d3;
+    cursor: default; 
+    color: #7d7d7d; 
+}
+.container4 .timeContainer .selectScheduleTimeContainer .selectDeleteRtimeContainer .RtBtnBox button:disabled:hover{
+    font-weight: normal;
+}
+
+
+
+/* 예약시간 추가 */
+.container4 .timeContainer .selectScheduleTimeContainer .plusRtimeContainer{
+    /* background-color: yellow; */
+}
+.container4 .timeContainer .selectScheduleTimeContainer .plusRtimeContainer label{
+    margin-right: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    display: block;
+    line-height: 50px;
+}
+.container4 .timeContainer .selectScheduleTimeContainer .plusRtimeContainer .plusRtimeRow{
+    display: flex;
+    align-items: center;
+}
+.container4 .timeContainer .selectScheduleTimeContainer .plusRtimeContainer .plusRtimeRow input{
+    height: 30px;
+    padding: 2px;
+}
+.container4 .timeContainer .selectScheduleTimeContainer .plusRtimeContainer .plusRtimeRow button{
+    margin-left: 10px;
+    border: none;
+    border-radius: 5px;
+    width: 50px;
+    height: 30px;
+    background-color: #f8a247;
+    cursor: pointer;
+    color: #fff;
+}
+.container4 .timeContainer .selectScheduleTimeContainer .plusRtimeContainer .plusRtimeRow button:hover{
+    background-color: #ffd700;
+    font-weight: bold;
+    color: #000;
+}
+

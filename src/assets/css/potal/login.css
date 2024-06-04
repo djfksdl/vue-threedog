@@ -168,6 +168,7 @@
     display: inline;
     margin-right: 10px;
     color: #666;
+    line-height: 20px;
 }
 
 .login-footer-ul li::after {
