@@ -213,7 +213,6 @@ export default {
             const checkAllDayElement = document.getElementById('checkAllDay');
             checkAllDayElement.checked = false;
             checkAllDayElement.disabled = true; // 무조건 비활성화
-            // this.updateCheckAllDayState(); // 체크박스 활성화/비활성화 상태 업데이트 
             this.checkAllDay = false;
             this.originalTimes = [];
 
@@ -231,6 +230,10 @@ export default {
                 this.clearHighlightedDates(); // 선택된 날짜의 하이라이트 초기화
                 this.highlightToday(); // 오늘 날짜 달력에 표기
             }
+            else{                
+                this.highlightDateRange();// 선택된 날짜 범위 하이라이트 및 오늘 날짜 배경색 초기화
+                this.highlightToday(true); // 오늘 날짜 배경색 초기화
+            }
         },
 
         // ***** 동일한 시간 추가 체크박스 상태 업데이트 *****
@@ -246,15 +249,20 @@ export default {
         },
 
         // ***** 오늘 날짜 달력에 표시 *****
-        highlightToday() {
+        highlightToday(resetBackground = false) {
             const todayStr = new Date().toISOString().split('T')[0];
             const todayElement = document.querySelector(`[data-date="${todayStr}"]`);
             if (todayElement) {
-                todayElement.style.backgroundColor = '#f8a247'; // 원하는 배경색
-            }
+                if (resetBackground) {
+                    todayElement.style.backgroundColor = ''; // 배경색 초기화
+                } else {
+                    todayElement.style.backgroundColor = '#DFD0B8'; // 원하는 배경색
+                }
+                todayElement.style.fontWeight = 'bold'; // bold 적용
+                    }
         },  
 
-        // ***** 날짜에 해당하는 요일 비활성화 *****
+        // ***** 날짜에 해당하는 요일div 비활성화 *****
         deactivateWorkDays() {
           
             this.workDays.forEach(day => {
@@ -277,6 +285,7 @@ export default {
         clearHighlightedDates() {
             this.selectedDateElements.forEach(element => {
                 element.style.backgroundColor = ''; // 배경색 초기화
+                element.style.fontWeight = 'normal'// 글씨 굵기 초기화
             });
             this.selectedDateElements = [];
         },
@@ -302,11 +311,13 @@ export default {
                 }
             }
 
+            // 선택된 날짜 범위를 하이라이트
             for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
                 const dateStr = d.toISOString().split('T')[0];
                 const dateElement = document.querySelector(`[data-date="${dateStr}"]`);
                 if (dateElement) {
-                    dateElement.style.backgroundColor = '#f8a247'; // 원하는 배경색
+                    dateElement.style.backgroundColor = '#DFD0B8'; 
+                    dateElement.style.fontWeight = 'bold'; 
                     this.selectedDateElements.push(dateElement);
                 }
             }

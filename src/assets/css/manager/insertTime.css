@@ -18,7 +18,7 @@
     width: 100%;
     margin: 20px auto;
     padding: 20px;
-    border: 5px solid hsl(37, 91%, 67%);
+    border: 5px solid #153448;
     border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #fff;
@@ -34,7 +34,7 @@
 
 /* FullCalendar의 이벤트 요소 스타일링 */
 .container4 .calendarContainer .fc-event {
-    background-color: #f8a247;
+    background-color: #DFD0B8;
     border: none;
     border-radius: 5px;
     padding: 4px 8px;
@@ -49,7 +49,7 @@
 
 /* FullCalendar의 오늘 날짜 스타일링 */
 .container4 .calendarContainer .fc-day-today {
-    background-color: #f8a247;
+    background-color: #DFD0B8;
     color: #fff;
     font-weight: bold;
 }
@@ -70,8 +70,8 @@
 
 /* FullCalendar의 버튼 스타일링 */
 .container4 .calendarContainer .fc-button {
-    background-color: #ffd700;
-    color: #333;
+    background-color: #3C5B6F;
+    color: #fff;
     border: none;
     border-radius: 5px;
     padding: 8px 12px;
@@ -82,8 +82,8 @@
 
 /* FullCalendar의 오늘 버튼 스타일링 */
 .container4 .calendarContainer .fc-today-button {
-    background-color: #ffd700;
-    color: #333;
+    background-color: #3C5B6F;
+    color: #fff;
     border: none;
     border-radius: 5px;
     padding: 8px 12px;
@@ -95,20 +95,6 @@
 .container4 .calendarContainer .holiday-event {
     pointer-events: none;
 
-}
-
-/* FullCalendar의 x버튼 스타일링 */
-.container4 .calendarContainer .swal2-close {
-    top: 10px !important; 
-    right: 10px !important;
-    background-color: #f8a247 !important; 
-    /* border: 2px solid #d45d00 !important;  */
-    /* border-radius: 50% !important;  */
-    color: #fff !important; 
-    font-size: 16px !important; 
-    width: 30px !important; 
-    height: 30px !important; 
-    line-height: 25px !important; 
 }
 
 /* ************************* 시간등록 ************************* */
