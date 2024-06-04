@@ -143,30 +143,32 @@ export default {
 
         // ***** 카카오 로그인 *****
         kakaoLogin() {
-            window.Kakao.Auth.login({
-                scope: "profile_image, account_email, name, phone_number",
-                success: this.getKakaoAccount,
-            });
+            console.log("카카오 로그인");
+            
+            // window.Kakao.Auth.login({
+            //     scope: "profile_image, account_email, name, phone_number",
+            //     success: this.getKakaoAccount,
+            // });
         },
         getKakaoAccount() {
-            window.Kakao.API.request({
-                url: "/v2/user/me",
-                success: (res) => {
-                    const kakao_account = res.kakao_account;
-                    const email = kakao_account.email;
-                    const name = kakao_account.name;
-                    const phone_number = kakao_account.phone_number;
+            // window.Kakao.API.request({
+            //     url: "/v2/user/me",
+            //     success: (res) => {
+            //         const kakao_account = res.kakao_account;
+            //         const email = kakao_account.email;
+            //         const name = kakao_account.name;
+            //         const phone_number = kakao_account.phone_number;
 
-                    alert("로그인 성공!");
-                    console.log(kakao_account);
-                    console.log(email);
-                    console.log(name);
-                    console.log(phone_number);
-                },
-                fail: (error) => {
-                    console.log(error);
-                },
-            });
+            //         alert("로그인 성공!");
+            //         console.log(kakao_account);
+            //         console.log(email);
+            //         console.log(name);
+            //         console.log(phone_number);
+            //     },
+            //     fail: (error) => {
+            //         console.log(error);
+            //     },
+            // });
         },
     },
     mounted() {

@@ -8,7 +8,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 
 window.Kakao.init("c0e61a675067767007fc527e42495678");
 useKakao('c0e61a675067767007fc527e42495678');
-createApp(App).use(router).use(router)
+createApp(App).use(router)
     .use(store)
     .use(router)
     .component('VueDatePicker', VueDatePicker)
