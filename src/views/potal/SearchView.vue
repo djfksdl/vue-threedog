@@ -98,77 +98,75 @@
         <hr>
         <div class="search-result">
           <div class="rank-search">
-            <div class="search-item" v-bind:key="i" v-for="(reviewVo, i) in reviewList">
-              <div @click="openModal(reviewVo.rNo)">
-                <img class="list_img" src="../../assets/images/bori.jpg">
-                <div class="star-container">
-                  <div class="star_list" v-for="index in 5" :key="index">
-                    <span v-if="index <= reviewVo.star" class="yellowStar">
-                      <img class="yellowStar_list" src="@/assets/images/star_yellow.jpg">
-                    </span>
-                    <span v-else class="grayStar">
-                      <img class="grayStar_list" src="@/assets/images/star_gray.jpg">
-                    </span>
-                  </div>
+            <div class="search-item" @click="reviewDetail(reviewVo.rNo)" v-bind:key="i"
+              v-for="(reviewVo, i) in reviewList">
+              <img class="list_img" src="../../assets/images/bori.jpg">
+              <div class="star-container">
+                <div class="star_list" v-for="index in 5" :key="index">
+                  <span v-if="index <= reviewVo.star" class="yellowStar">
+                    <img class="yellowStar_list" src="@/assets/images/star_yellow.jpg">
+                  </span>
+                  <span v-else class="grayStar">
+                    <img class="grayStar_list" src="@/assets/images/star_gray.jpg">
+                  </span>
                 </div>
-                <label>{{ reviewVo.title }}</label>
               </div>
+              <label>{{ reviewVo.title }}</label>
             </div>
           </div>
         </div>
       </div>
-
-      <div class="modal-wrap-search" v-show="modalCheck">
-        <div class="modal-container-search">
-          <div class="reviewBoardDetailContainer-search">
-            <!-- Display review details in the modal -->
-            <div class="reviewDetailImg-search">
-              <Swiper :slides-per-view="1" style="width: 350px;">
-                <SwiperSlide v-for="(reviewVo, i) in reviewList2" :key="i">
-                  <div class="reviewDetailImg">
-                    <img :src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`"
-                      style="width: 350px; height: 350px;">
-                  </div>
-                </SwiperSlide>
-              </Swiper>
-              <!-- <img src="../../assets/images/spy3.jpg" style="width: 300px; height: 350px; margin-top: 15px;"> -->
-            </div>
-            <div class="modal-content">
-              <div class="userId"><strong>{{ reviewVo2.uId }}</strong>님</div>
-              <div style="display: flex;">
-                <div class="cutInfor">{{ reviewVo2.dogName }} ({{ reviewVo2.weight }}kg) &nbsp; </div>
-                <div class="date">{{ formatDate(reviewVo2.rDate) }}</div>
-              </div>
-              <br>
-              <div style="display: flex;">
-                <div class="price">{{ reviewVo2.expectedPrice.toLocaleString() }}원&nbsp;</div>
-                <div class="star" style="margin-top: 3px;">
-                  <!-- Full stars -->
-                  <span v-for="i in Math.floor(reviewVo2.star)" :key="i"><img src="@/assets/images/star_yellow.jpg"
-                      style="width: 15px;"></span>
-                  <!-- Empty stars -->
-                  <span v-for="i in 5 - Math.ceil(reviewVo2.star)" :key="'empty_' + i"><img
-                      src="@/assets/images/star_gray.jpg" style="width: 15px;"></span>
-                </div>
-              </div>
-              <br>
-              <div class="modal-context">{{ reviewVo2.rContent }}</div>
-            </div>
-          </div>
-          <div class="modal-btn-search">
-            <router-link :to="`/edit/${reviewVo2.bNo}`">
-              <button style="width: 200px; margin-right: 10px;">매장 홈페이지 가기</button>
-            </router-link>
-            <button @click="modalCheck = false" style="width: 200px;">닫기</button>
-          </div>
-        </div>
-      </div>
-
     </div>
-    <TopButton />
-    <AppFooter id="AppFooter" />
+
+    <div class="modal-wrap-search" v-show="modalCheck">
+      <div class="modal-container-search">
+        <div class="reviewBoardDetailContainer-search">
+          <!-- Display review details in the modal -->
+          <div class="reviewDetailImg-search">
+            <Swiper :slides-per-view="1" style="width: 350px;">
+              <SwiperSlide v-for="(reviewVo, i) in reviewList2" :key="i">
+                <div class="reviewDetailImg">
+                  <img :src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`"
+                    style="width: 350px; height: 350px;">
+                </div>
+              </SwiperSlide>
+            </Swiper>
+            <!-- <img src="../../assets/images/spy3.jpg" style="width: 300px; height: 350px; margin-top: 15px;"> -->
+          </div>
+          <div class="modal-content">
+            <div class="userId"><strong>{{ reviewVo2.uId }}</strong>님</div>
+            <div style="display: flex;">
+              <div class="cutInfor">{{ reviewVo2.dogName }} ({{ reviewVo2.weight }}kg) &nbsp; </div>
+              <div class="date">{{ formatDate(reviewVo2.rDate) }}</div>
+            </div>
+            <br>
+            <div style="display: flex;">
+              <div class="price">{{ reviewVo2.expectedPrice.toLocaleString() }}원&nbsp;</div>
+              <div class="star" style="margin-top: 3px;">
+                <!-- Full stars -->
+                <span v-for="i in Math.floor(reviewVo2.star)" :key="i"><img src="@/assets/images/star_yellow.jpg"
+                    style="width: 15px;"></span>
+                <!-- Empty stars -->
+                <span v-for="i in 5 - Math.ceil(reviewVo2.star)" :key="'empty_' + i"><img
+                    src="@/assets/images/star_gray.jpg" style="width: 15px;"></span>
+              </div>
+            </div>
+            <br>
+            <div class="modal-context">{{ reviewVo2.rContent }}</div>
+          </div>
+        </div>
+        <div class="modal-btn-search">
+          <router-link :to="`/edit/${reviewVo2.bNo}`">
+            <button style="width: 200px; margin-right: 10px;">매장 홈페이지 가기</button>
+          </router-link>
+          <button @click="modalCheck = false" style="width: 200px;">닫기</button>
+        </div>
+      </div>
+    </div>
 
   </div>
+  <TopButton />
+  <AppFooter id="AppFooter" />
 </template>
 
 <script>
@@ -399,8 +397,7 @@ export default {
       }).then(response => {
         console.log(response.data.apiData); //수신데이타
         this.reviewVo2 = response.data.apiData;
-        console.log(this.reviewVo);
-        console.log(this.reviewVo.bNo);
+        this.getSaveName(rNo);
       }).catch(error => {
         console.log(error);
       });
@@ -413,9 +410,8 @@ export default {
         }
         this.modalCheck = true;
       }
-      console.log("선택한 리뷰번호", rNo);
       this.getOneRList(rNo);
-      this.getSaveName(rNo);
+      // this.getSaveName(rNo);
     },
     // 조회수 업데이트
     updateViewCount(rNo) {
@@ -428,7 +424,6 @@ export default {
         params: { rNo: rNo },
         responseType: 'json' //수신타입
       }).then(response => {
-        console.log("성공");
         console.log(response.data.apiData); //수신데이타
         this.reviewVo.views = response.data.apiData;
         this.getRList();
@@ -443,14 +438,12 @@ export default {
         method: 'get',  //put,post,delete
         url: `${this.$store.state.apiBaseUrl}/api/mypage/getsavename`,
         headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
-        params: { bNo: this.reviewVo.bNo },
+        params: { rNo: rNo },
         responseType: 'json' //수신타입
       }).then(response => {
-        console.log("성공");
+        console.log("후기사진가져오기성공");
         console.log(response.data.apiData); //수신데이타
         this.reviewList2 = response.data.apiData;
-
-        console.log(this.businessList);
       }).catch(error => {
         console.log(error);
       });

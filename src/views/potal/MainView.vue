@@ -391,6 +391,7 @@ export default {
         responseType: 'json' //수신타입
 
       }).then(response => {
+        this.getSaveName(rNo)
         console.log(response.data.apiData); //수신데이타
         this.reviewVo2 = response.data.apiData;
         console.log(this.reviewVo);
@@ -437,14 +438,12 @@ export default {
         method: 'get',  //put,post,delete
         url: `${this.$store.state.apiBaseUrl}/api/mypage/getsavename`,
         headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
-        params: { bNo: this.reviewVo.bNo },
+        params: { rNo: rNo },
         responseType: 'json' //수신타입
       }).then(response => {
-        console.log("성공");
+        console.log("후기사진가져오기성공");
         console.log(response.data.apiData); //수신데이타
         this.reviewList2 = response.data.apiData;
-
-        console.log(this.businessList);
       }).catch(error => {
         console.log(error);
       });
