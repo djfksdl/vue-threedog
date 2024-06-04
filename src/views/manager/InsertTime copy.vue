@@ -48,8 +48,8 @@
                                         {{ day.label }}
                                     </div>
                                     <div>
-                                        <input type="time" v-model="day.startTime" @input="handleTimeInput(day ,'start')"  :disabled="!day.active"> ~
-                                        <input type="time" v-model="day.endTime" @input="handleTimeInput(day)" :disabled="!day.active">
+                                        <input type="time" v-model="day.startTime" @input="handleTimeInput(day, 'start')"  @change="adjustMinutes(day, 'start')" :disabled="!day.active"> ~
+                                        <input type="time" v-model="day.endTime" @focus="syncEndTimeMinutes(day)" :disabled="!day.active">
                                     </div>
                                 </div>
                             </div>
@@ -59,8 +59,8 @@
                                         <span v-html="day.label.replace('휴일점심', '휴일<br>점심').replace('공휴일', '공휴일')"></span>
                                     </div>
                                     <div>
-                                        <input type="time" v-model="day.startTime" @input="handleTimeInput(day, 'start')"  :disabled="!day.active"> ~
-                                        <input type="time" v-model="day.endTime" @input="handleTimeInput(day)" :disabled="!day.active">
+                                        <input type="time" v-model="day.startTime" @input="handleTimeInput(day, 'start')"  @change="adjustMinutes(day, 'start')" :disabled="!day.active"> ~
+                                        <input type="time" v-model="day.endTime"  @input="syncEndTimeMinutes(day)" :disabled="!day.active">
                                     </div>
                                 </div>
                             </div>
@@ -89,9 +89,7 @@
                         <div class="RtBtnBox">
                             <button v-on:click="deleteRtime(time.rtTime)" v-for="(time, index) in registeredTimes" :key="index" type="button" :disabled="time.rtFinish === true">
                                 {{ time.rtTime }}
-                                <span>x</span>
                             </button>
-                            
                             <p v-if="registeredTimes.length === 0">등록된 예약 시간이 없습니다.</p>
                         </div>
                     </div>
@@ -99,7 +97,7 @@
                     <div class="plusRtimeContainer">
                         <label>추가할 시간 <small>(한시간 단위로 추가 됩니다.)</small></label>
                         <div class="plusRtimeRow">
-                            <input type="time" v-model="startTime" @input="updateEndTime">~
+                            <input type="time" v-model="startTime" @input="updateEndTime" >~
                             <input type="time" v-model="endTime" readonly>
                             <button type="button" v-on:click="plusRtime" >추가</button>
                         </div>
@@ -215,7 +213,7 @@ export default {
         // 등록버튼 날짜,시간 유효성 검사후 활성화
         isDateSelected() {
         return this.selectedStartDate && this.selectedEndDate;
-    }
+        }
     },
     methods: {
 
@@ -363,19 +361,74 @@ export default {
             }
         },
 
-        // ***** 첫번째 날짜만 선택하고 시간입력했을때 *****
-        handleTimeInput(day) {
+        // ***** 시간 입력했을때 *****
+        handleTimeInput(day,type) {
 
-            //이부분 day-> type을 넣으니까 동일한 시간 추가가 시작시간만 입력해도 추가가 되버림!
-            
+            // 시작시간의 '분'과 끝시간의 '분'일치
+            if (type === 'start') {
+                const startTime = day.startTime;
+                if (startTime) {
+                    const [, minutes] = startTime.split(':');
+                    day.endTime = `${day.endTime.split(':')[0]}:${minutes}`;
+
+                    // 점심시간과 휴일 점심의 시작 시간과 끝 시간도 동기화
+                    this.workDays.forEach(workDay => {
+                        if (workDay.label === '점심' || workDay.label === '휴일점심') {
+                            workDay.startTime = `${workDay.startTime.split(':')[0]}:${minutes}`;
+                            workDay.endTime = `${workDay.endTime.split(':')[0]}:${minutes}`;
+                        }
+                    });
+                } 
+            }
+
+            // 시작날짜 선택하면 두번째 날짜 입력창에 넣기
             if (this.selectedStartDate && !this.selectedEndDate) {
                 this.selectedEndDate = this.selectedStartDate;
             }
+
+            console.log('Updating work time with day:', day);
             this.updateWorkTime(day);
 
             // '동일한 시간 추가' 체크박스 상태 업데이트
             this.updateCheckAllDayState(); // 체크박스 활성화/비활성화 상태 업데이트
         },
+
+        // ***** 시작시간의 분과 끝시간의 분 일치 
+        syncEndTimeMinutes(day) {
+            if (day.startTime && day.endTime) {
+                const [, startMinutes] = day.startTime.split(':');
+                const [endHours] = day.endTime.split(':');
+                day.endTime = `${endHours}:${startMinutes}`;
+
+                // 점심시간과 휴일 점심의 끝 시간도 동기화
+                this.workDays.forEach(workDay => {
+                    if (workDay.label === '점심' || workDay.label === '주말점심' || workDay.label === '휴일점심') {
+                        workDay.endTime = `${workDay.endTime.split(':')[0]}:${startMinutes}`;
+                    }
+                });
+            }
+            this.updateCheckAllDayState();
+        },
+
+        // ***** 분을 00과 30분만 선택 가능하도록 조정
+        adjustMinutes(day, type) {
+            if (type === 'start' && day.startTime) {
+                let [hours, minutes] = day.startTime.split(':');
+                minutes = minutes >= 30 ? '30' : '00';
+                day.startTime = `${hours}:${minutes}`;
+                this.handleTimeInput(day, 'start'); // 분이 변경되었을 때도 handleTimeInput 호출
+
+                // 점심시간과 휴일 점심 시간도 동기화
+                this.workDays.forEach(workDay => {
+                    if (workDay.label === '점심' || workDay.label === '주말점심' || workDay.label === '휴일점심') {
+                        workDay.startTime = `${workDay.startTime.split(':')[0]}:${minutes}`;
+                        workDay.endTime = `${workDay.endTime.split(':')[0]}:${minutes}`;
+                    }
+                });
+            } 
+            
+        },
+
 
         // ***** 유효한 시간이 있는지 확인 *****
         hasValidTime() {
@@ -440,6 +493,8 @@ export default {
 
         // ***** 입력된 시간 저장하기 *****
         updateWorkTime(day) {
+
+            console.log('Inside updateWorkTime with day2:', day);
             const dayIndex = this.workDays.findIndex(d => d.label === day.label);
             if (dayIndex !== -1) {
                 this.workDays[dayIndex].startTime = day.startTime;
@@ -858,42 +913,22 @@ export default {
         plusRtime(){
             console.log("시간추가하기");
 
-            Swal.fire({
-                html: `<span style="font-size:20px"><strong>${this.selectedDate}<br>${this.startTime}~${this.endTime}</strong><span><br>추가하시겠습니까?`,
-                icon: 'info',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: '추가',
-                cancelButtonText: '취소'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    axios({
-                        method: 'post', // put, post, delete 
-                        url: `${this.$store.state.apiBaseUrl}/api/su/updateRtime`,
-                        headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
-                        data: {
-                            bNo: this.rtVo.bNo,
-                            rtDate: this.selectedDate,
-                            rtTime: this.startTime
-                        }, 
-                    }).then(response => {
-                        console.log(response.data.apiData);
-                        this.selectRtimes(this.selectedDate); // 변경된 예약 시간 목록 다시 받아오기
-                        Swal.fire(
-                            '추가 되었습니다!',
-                            '예약 시간이 추가되었습니다.',
-                            'success'
-                        );
-                    }).catch(error => {
-                        console.log(error);
-                        Swal.fire(
-                            '추가 실패!',
-                            '예약 시간 추가를 실패했습니다.',
-                            'error'
-                        );
-                    });
-                }
+            axios({
+                method: 'post', // put, post, delete 
+                url: `${this.$store.state.apiBaseUrl}/api/su/updateRtime`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                data: {
+                    bNo: this.rtVo.bNo,
+                    rtDate: this.selectedDate,
+                    rtTime: this.startTime
+                }, 
+            }).then(response => {
+                console.log(response.data.apiData);
+                
+                this.selectRtimes(this.selectedDate);//변경된 예약 시간 목록 다시 받아오기
+
+            }).catch(error => {
+                console.log(error);
             });
 
         },
