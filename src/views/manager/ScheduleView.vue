@@ -10,8 +10,8 @@
         <!-- 일정 모달 -->
         <div v-if="selectedEvent" class="schedule-modal" @click.self="closeModal">
             <div class="schedule-modal-content">
-                <!-- <h2>일정 변경<br><br>{{ selectedEvent.title }}</h2> -->
-                <h2>일시: {{ selectedEvent.start }}</h2>
+                <h2>일정 변경<br><br>{{ selectedEvent.title }}</h2>
+                <p>일시: {{ selectedEvent.start }}</p>
 
                 <!-- 추가된 예약 정보 표시 -->
                 <p>애견명: {{ selectedEvent.extendedProps.petName }}</p>
@@ -78,6 +78,8 @@ export default {
     methods: {
         ...mapMutations(['setSelectedSchedule', 'setGroomingRecord']), // Vuex 변이 매핑
 
+        //-------------------- 한 가게의 예약 리스트 정보 조회 ----------------------------
+
         fetchReserveList(bNo) {
             axios({
                 method: 'get',
@@ -111,7 +113,7 @@ export default {
                 );
 
                 return {
-                    title: `${startTime}, ${reservation.dogName}, ${reservation.beauty}, ${reservation.kind}, ${reservation.expectedPrice}원`,
+                    title: `${reservation.dogName}, ${reservation.beauty}, ${reservation.kind}, ${reservation.expectedPrice}원`,
                     start: startTime,
                     extendedProps: {
                         petName: reservation.dogName,
@@ -144,7 +146,7 @@ export default {
             // 서버에 변경된 예약 정보를 업데이트하는 API 호출
             this.updateEventOnServer(rsNo, info.event);
         },
-
+        //-------------------- 일자 수정 ----------------------------
         updateEventOnServer(rsNo, event) {
             console.log("updateEventOnServer");
             const start = event.start.toISOString().slice(0, 19).replace('T', ' '); // ISO 8601 형식을 MySQL 형식으로 변환
@@ -195,7 +197,7 @@ export default {
                 }
             });
         },
-
+        //-------------------- 시간 수정 ----------------------------
         updateEventTimeOnServer(rsNo, start) {
             function convertToMySQLTime(isoTime) {
                 const date = new Date(isoTime);
@@ -234,7 +236,7 @@ export default {
         },
 
 
-
+        //-------------------- 예약 정보 삭제 및 업데이트 ----------------------------
 
         deleteEvent() {
             Swal.fire({
@@ -278,6 +280,8 @@ export default {
                 Swal.fire('일정 삭제 실패', '일정을 삭제하는 도중 오류가 발생했습니다.', 'error');
             });
         },
+
+        // ------------------알림장 보내보내----------------------------
 
         handleEventClick(info) {
             if (!info || !info.event) {
