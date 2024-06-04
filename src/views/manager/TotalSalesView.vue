@@ -7,41 +7,41 @@
       <div style="display: flex;">
         <!-- 엑셀 표 -->
         <div class="sales-table">
-          <table>
+          <table style="text-align: center; margin-top: 20px;">
             <thead>
               <tr>
-                <th>종류</th>
-                <th>소형견</th>
-                <th>중형견</th>
-                <th>특수견</th>
+                <th style="width: 100px;">요일</th>
+                <th style="width: 150px;">소형견</th>
+                <th style="width: 150px;">중형견</th>
+                <th style="width: 150px;">특수견</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(sales, index) in dailySales" :key="index">
-                <td>{{ index + 1 }}일</td>
-                <td>{{ sales.scissor }}</td>
-                <td>{{ sales.partial }}</td>
-                <td>{{ sales.full }}</td>
+              <tr v-for="(dayStats, index) in dayStatsBySize" :key="index">
+                <td>{{ getDayOfWeek(dayStats.dayOfWeek) }}요일</td>
+                <td>{{ getSalesBySize(dayStats, '소형견') }}</td>
+                <td>{{ getSalesBySize(dayStats, '중형견') }}</td>
+                <td>{{ getSalesBySize(dayStats, '특수견') }}</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-      <div class="total-sales">일일 매출 합계:</div>
+      <div class="total-sales">[이번 주 매출 현황]</div>
     </div>
 
     <!-- 주 매출통계 -->
     <div class="chart-container">
       <!-- 주별 매출 그래프 -->
       <canvas class="week" width="300" height="200" ref="weeklyChartCanvas"></canvas>
-      <div class="total-sales">주별 매출 합계: {{ weeklyTotal }}</div>
+      <div class="total-sales">이번 달 매출 합계: {{ weeklyTotal }}</div>
     </div>
 
     <!-- 월 매출통계 -->
     <div class="chart-container">
       <!-- 월별 매출 그래프 -->
       <canvas class="month" width="300" height="200" ref="monthlyChartCanvas"></canvas>
-      <div class="total-sales">월별 매출 합계: {{ monthlyTotal }}</div>
+      <div class="total-sales">올해 월별 매출 합계: {{ monthlyTotal }}</div>
     </div>
 
     <!-- 년도별 매출통계 -->
@@ -70,25 +70,14 @@ export default {
   },
   data() {
     return {
-      dailySales: [ // 일별 매출 데이터 배열
-        { scissor: 50, partial: 30, full: 20 },
-        { scissor: 60, partial: 40, full: 25 },
-        { scissor: 70, partial: 35, full: 30 },
-        { scissor: 80, partial: 50, full: 35 },
-        { scissor: 90, partial: 45, full: 40 },
-        { scissor: 100, partial: 55, full: 50 },
-        { scissor: 110, partial: 60, full: 55 }
-      ],
+      dailySales: [], // 일별 매출 데이터 배열
       weeklySales: [], // 주별 매출 데이터 배열
       monthlySales: [], // 월별 매출 데이터 배열
       yearlySales: [], // 년도별 매출 데이터 배열
+      dayStatsBySize: [],
     };
   },
   computed: {
-    // 매출 합계 계산
-    dailyTotal() {
-      return this.dailySales.reduce((total, sales) => total + sales.scissor + sales.partial + sales.full, 0);
-    },
     weeklyTotal() {
       return this.weeklySales.reduce((total, sale) => total + sale, 0);
     },
@@ -100,19 +89,6 @@ export default {
     },
   },
   methods: {
-    // 각 기간별 매출 데이터를 가져오는 메서드
-    fetchDailySales() {
-      this.dailySales = [100, 200, 300, 400, 500, 600, 700]; // 일
-    },
-    fetchWeeklySales() {
-      this.weeklySales = [500, 600, 700, 800]; // 주
-    },
-    fetchMonthlySales() {
-      this.monthlySales = [1500, 1600, 1700, 1800, 1900, 2000]; // 월
-    },
-    fetchYearlySales() {
-      this.yearlySales = [18000, 19000, 20000, 21000, 22000]; // 년
-    },
     // 차트를 그리는 메서드
     drawChart(canvasRef, labels, data, backgroundColor, borderColor, label, type) {
       new Chart(canvasRef, {
@@ -141,33 +117,150 @@ export default {
         }
       });
     },
-    getWeekList() {
+    getWeekList(bNo) {
       axios({
         method: 'get',
         url: `${this.$store.state.apiBaseUrl}/api/weekstats`,
         headers: { "Content-Type": "application/json; charset=utf-8" },
-        // params: params,
+        params: { bNo: bNo },
         responseType: 'json'
       }).then(response => {
-        this.weeklySales.value = response.data.apiData;
-        console.log(response.data.apiData);
+        this.weeklySales = response.data.apiData.map(sale => sale.totalPrice);
+        const labels = response.data.apiData.map(sale => `${sale.month}월 ${sale.week}주`);
+        console.log('Weekly Sales:', this.weeklySales);
+        this.drawChart(
+          this.$refs.weeklyChartCanvas,
+          labels,
+          this.weeklySales,
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(54, 162, 235, 1)',
+          '주별 매출',
+          'line'
+        );
       }).catch(error => {
         console.log(error);
       });
+    },
+    getMonthList(bNo) {
+      axios({
+        method: 'get',
+        url: `${this.$store.state.apiBaseUrl}/api/monthstats`,
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        params: { bNo: bNo },
+        responseType: 'json'
+      }).then(response => {
+        this.monthlySales = response.data.apiData.map(sale => sale.totalPrice);
+        const labels = response.data.apiData.map(sale => `${sale.month}월`);
+        console.log('Monthly Sales:', this.monthlySales);
+        this.drawChart(
+          this.$refs.monthlyChartCanvas,
+          labels,
+          this.monthlySales,
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(255, 206, 86, 1)',
+          '월별 매출',
+          'doughnut'
+        );
+      }).catch(error => {
+        console.log(error);
+      });
+    },
+    getYearList(bNo) {
+      axios({
+        method: 'get',
+        url: `${this.$store.state.apiBaseUrl}/api/yearstats`,
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        params: { bNo: bNo },
+        responseType: 'json'
+      }).then(response => {
+        this.yearlySales = response.data.apiData.map(sale => sale.totalPrice);
+        const labels = response.data.apiData.map(sale => `${sale.year}`);
+        console.log('Yearly Sales:', this.yearlySales);
+        this.drawChart(
+          this.$refs.yearlyChartCanvas,
+          labels,
+          this.yearlySales,
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(75, 192, 192, 1)',
+          '년도별 매출',
+          'bar'
+        );
+      }).catch(error => {
+        console.log(error);
+      });
+    },
+    async getDayList(bNo) {
+      axios({
+        method: 'get',
+        url: `${this.$store.state.apiBaseUrl}/api/daystats`,
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        params: { bNo: bNo },
+        responseType: 'json'
+      }).then(response => {
+        console.log(response.data.apiData);
+        this.dailySales = response.data.apiData;
+        this.fillEmptyDays();
+        this.groupDayStatsBySize();
+      }).catch(error => {
+        console.log(error);
+      });
+    },
+    fillEmptyDays() {
+      // dailySales 배열에 빈 매출 데이터가 있는지 확인
+      const existingDays = this.dailySales.map(dayStats => dayStats.dayOfWeek);
+      const allDays = [0, 1, 2, 3, 4, 5, 6]; // 모든 요일
+      const missingDays = allDays.filter(day => !existingDays.includes(day));
+
+      // 빈 매출 데이터가 있는 경우 해당 요일의 데이터 추가
+      missingDays.forEach(day => {
+        this.dailySales.push({
+          dayOfWeek: day,
+          size: '',
+          totalPrice: 0,
+        });
+      });
+
+      // 요일 순서대로 정렬
+      this.dailySales.sort((a, b) => a.dayOfWeek - b.dayOfWeek);
+    },
+    groupDayStatsBySize() {
+      const groupedDayStats = {};
+      this.dailySales.forEach(dayStats => {
+        const key = `${dayStats.dayOfWeek}_${dayStats.size}`;
+        if (!groupedDayStats[key]) {
+          groupedDayStats[key] = {
+            dayOfWeek: dayStats.dayOfWeek,
+            size: dayStats.size,
+            소형견: 0,
+            중형견: 0,
+            특수견: 0,
+          };
+        }
+        groupedDayStats[key][dayStats.size] += dayStats.totalPrice;
+      });
+      this.dayStatsBySize = Object.values(groupedDayStats);
+    },
+    getSalesBySize(dayStats, size) {
+      return dayStats[size] || 0;
+    },
+    getDayOfWeek(dayNumber) {
+      const days = ['일', '월', '화', '수', '목', '금', '토'];
+      if (dayNumber >= 0 && dayNumber < 7) {
+        return days[dayNumber];
+      } else {
+        return ''; // 요일이 없는 경우, 빈 문자열 반환
+      }
     }
   },
   mounted() {
-    // 각 그래프를 그립니다.
-    this.drawChart(this.$refs.weeklyChartCanvas, ['1주', '2주', '3주', '4주'], this.weeklySales, 'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 1)', '주별 매출', 'line');
-    this.drawChart(this.$refs.monthlyChartCanvas, ['1월', '2월', '3월', '4월', '5월', '6월'], this.monthlySales, 'rgba(255, 206, 86, 0.2)', 'rgba(255, 206, 86, 1)', '월별 매출', 'doughnut');
-    this.drawChart(this.$refs.yearlyChartCanvas, ['2021', '2022', '2023', '2024'], this.yearlySales, 'rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 1)', '년도별 매출', 'bar');
+    const bNo = 1; // 예를 들어 bNo가 1인 경우
+    this.getWeekList(bNo);
+    this.getMonthList(bNo);
+    this.getYearList(bNo);
+    this.getDayList(bNo);
   },
   created() {
-    // 컴포넌트가 생성될 때 각 기간별 매출 데이터를 가져오는 메서드 호출
-    this.fetchDailySales();
-    this.fetchWeeklySales();
-    this.fetchMonthlySales();
-    this.fetchYearlySales();
+    this.groupDayStatsBySize();
   }
 };
 </script>

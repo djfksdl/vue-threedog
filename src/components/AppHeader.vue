@@ -12,11 +12,12 @@
                     <li><router-link to="/searchmap">매장검색</router-link></li>
                     <li><router-link to="/search">후기</router-link></li>
                     <li><router-link to="/announcements">공지사항</router-link></li>
+                    <li><router-link to="/reservationform">예약</router-link></li>
                 </ul>
 
-                <div class="hot">
+                <!-- <div class="hot">
                     <img src="../assets/images/hot.png">
-                </div>
+                </div> -->
                 <!-- <div class="popRank" v-if="popList.length > 0">
                     <ul id="best_search">
                         <li v-for="(popVo, i) in popList" :key="i">
