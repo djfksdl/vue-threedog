@@ -57,7 +57,7 @@
                         <div class="reviewBoardDetailContainer">
                             <div class="reviewDetailImg">
 
-                                <Swiper :slides-per-view="1">
+                                <Swiper :slides-per-view="1" style="width: 350px;">
                                     <SwiperSlide v-for="(reviewVo, i) in reviewList2" :key="i">
                                         <div class="reviewDetailImg">
                                             <img :src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`"
@@ -200,7 +200,7 @@ export default {
             }).then(response => {
                 console.log(response.data.apiData); //수신데이타
                 this.reviewVo2 = response.data.apiData;
-                console("후기1개만 가져와야된다~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                console.log("후기1개만 가져와야된다~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                 console.log(this.reviewVo2);
                 this.getSaveName(rNo);
             }).catch(error => {
@@ -233,7 +233,7 @@ export default {
             console.log(rNo);
             axios({
                 method: 'get',  //put,post,delete
-                url: `${this.$store.state.apiBaseUrl}/api/mypage/getsavenamelist`,
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/getsavename`,
                 headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
                 params: { rNo: rNo },
                 responseType: 'json' //수신타입
@@ -241,7 +241,6 @@ export default {
                 console.log("zzzzzzzzzzzzzzzzzzzz성공");
                 console.log(response.data.apiData); //수신데이타
                 this.reviewList2 = response.data.apiData;
-                this.getOneRList(rNo);
             }).catch(error => {
                 console.log(error);
             });
@@ -257,7 +256,7 @@ export default {
                 this.modalCheck = true;
             }
             this.getOneRList(rNo);
-            this.getSaveName(rNo);
+            // this.getSaveName(rNo);
         },
 
 

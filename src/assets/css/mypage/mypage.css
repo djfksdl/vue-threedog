@@ -730,25 +730,67 @@ datalist {
 /* reservationSuccess */
 
 .reservationSuccess {
-    width: 1200px;
+    width: 700px;
     /* background-color: red; */
     margin: 0 auto;
     /* border: 1px solid black; */
 }
 
 .reservationSuccess .reservationSuccessHp {
-    padding: 30px 30px;
     text-align: center;
+    padding: 30px 30px;
     /* background-color: #236C3F; */
     /* color: white; */
+    border-bottom: 1px solid #d8d2d2;
 }
 
 .reservationSuccess .reservationSuccessHp p {
     /* color: rgb(255, 255, 255); */
     margin-top: 10px;
+    
+    color: #a7a4a4;
 }
+
+.reservationSuccess ul{
+    /* background-color: red; */
+    width: 700px;
+    /* margin-left: 150px; */
+}
+
+
+.reservationSuccess label{
+    width: 200px;
+    display: inline-block;
+    /* background-color: red; */
+    color: #236C3F;
+    font-weight: bold;
+    padding: 10px;
+}
+
+
+
+
 
 .reservationSuccess .routerlinkBox{
     display: flex;
+    margin: 50px 0 100px 0;
    
+}
+.reservationSuccess .routerlinkBox button{
+    width: 300px;
+    padding: 15px;
+    font-size: 18px;
+    border-radius: 8px;
+    margin: 25px;
+}
+
+.reservationSuccess .routerlinkBox button:hover{
+    cursor: pointer;
+}
+.reservationSuccess .routerlink1 a{
+    color: white;
+}
+.reservationSuccess .routerlink2 a{
+    color: #236C3F;
+    font-weight: bold;
 }
