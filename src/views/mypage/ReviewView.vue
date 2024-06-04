@@ -4,11 +4,23 @@
         <div id="reviewBoard">
             <div class="container">
                 <h1>후기게시판</h1>
+
+
                 <div class="reviewBoardContainerButton" style="border: 1px solid #dddddd; padding: 5px">
-                    <button @click="recentOrder">최신순</button>
-                    <button @click="viewOrder">조회수순</button>
-                    <button @click="starGradeOrder" style="border-right: none;">평점순</button>
+                    <button :class="{ selected: selectedButton === 'recentOrder' }"
+                        @click="toggleSelection('recentOrder')">
+                        최신순
+                    </button>
+                    <button :class="{ selected: selectedButton === 'viewOrder' }" @click="toggleSelection('viewOrder')">
+                        조회수순
+                    </button>
+                    <button :class="{ selected: selectedButton === 'starGradeOrder' }"
+                        @click="toggleSelection('starGradeOrder')" style="border-right: none;">
+                        평점순
+                    </button>
                 </div>
+
+
                 <div class="reviewBoardContainer" @click="reviewDetail(reviewVo.rNo)" v-bind:key="i"
                     v-for="(reviewVo, i) in reviewList">
                     <!--  -->
@@ -80,7 +92,9 @@
                                     <div class="date">{{ formatDate(reviewVo2.rDate) }}</div>
                                 </div>
                                 <div style="display: flex;">
-                                    <div class="price">{{ (reviewVo2.expectedPrice+reviewVo2.surcharge).toLocaleString() }}원</div>
+                                    <div class="price">{{ (reviewVo2.expectedPrice +
+                        reviewVo2.surcharge).toLocaleString()
+                                        }}원</div>
 
                                     <div class="star" style="margin-top: 3px;">
                                         <!-- Full stars -->
@@ -137,6 +151,7 @@ export default {
     },
     data() {
         return {
+            selectedButton: 'recentOrder',
             modalCheck: false,
             selectedReview: null,
             reviewList: [],
@@ -156,8 +171,8 @@ export default {
                 dogNo: 0,
                 weight: 0.0,
                 expectedPrice: 0,
-                surcharge:0,
-                saveName:""
+                surcharge: 0,
+                saveName: ""
             },
 
             reviewVo2: {
@@ -176,8 +191,8 @@ export default {
                 dogNo: 0,
                 weight: 0.0,
                 expectedPrice: 0,
-                surcharge:0,
-                saveName:""
+                surcharge: 0,
+                saveName: ""
 
             },
             reviewList2: [],
@@ -186,6 +201,23 @@ export default {
     },
     methods: {
 
+        toggleSelection(buttonType) {
+            this.selectedButton = buttonType;
+            this.executeMethod(buttonType);
+        },
+        executeMethod(buttonType) {
+            switch (buttonType) {
+                case 'recentOrder':
+                    this.recentOrder();
+                    break;
+                case 'viewOrder':
+                    this.viewOrder();
+                    break;
+                case 'starGradeOrder':
+                    this.starGradeOrder();
+                    break;
+            }
+        },
         //후기1개 가져오기
         getOneRList(rNo) {
             console.log("후기 1개 가져오기");
@@ -303,29 +335,77 @@ export default {
         // 최신순
         recentOrder() {
             console.log("최신순");
+            axios({
+                method: 'get',  //put,post,delete
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/recentorder`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { bNo: this.reviewVo.bNo },
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log("zzzzzzzzzzzzzzzzzzzz성공");
+                console.log(response.data.apiData); //수신데이타
+                this.reviewList = response.data.apiData;
+            }).catch(error => {
+                console.log(error);
+            });
         },
 
         // 조회순
         viewOrder() {
             console.log("조회순");
+            axios({
+                method: 'get',  //put,post,delete
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/vieworder`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { bNo: this.reviewVo.bNo },
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log("zzzzzzzzzzzzzzzzzzzz성공");
+                console.log(response.data.apiData); //수신데이타
+                this.reviewList = response.data.apiData;
+            }).catch(error => {
+                console.log(error);
+            });
         },
 
         // 별점순
         starGradeOrder() {
             console.log("별점순");
+
+            axios({
+                method: 'get',  //put,post,delete
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/stargradeorder`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { bNo: this.reviewVo.bNo },
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log("zzzzzzzzzzzzzzzzzzzz성공");
+                console.log(response.data.apiData); //수신데이타
+                this.reviewList = response.data.apiData;
+            }).catch(error => {
+                console.log(error);
+            });
         }
+
+
 
     },
 
     created() {
         this.getRList();
-
     }
 };
 </script>
 
 
 <style>
+#reviewBoard .selected {
+    background-color: #a7a4a4;
+    /* 원하는 색상으로 변경 */
+    color: white;
+}
+
+
 #reviewBoard .modal-wrap {
     position: fixed;
     left: 0;
