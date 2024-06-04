@@ -18,10 +18,15 @@
     width: 100%;
     margin: 20px auto;
     padding: 20px;
-    border: 5px solid hsl(37, 91%, 67%);
+    border: 5px solid #153448;
     border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #fff;
+}
+.container4 .calendarContainer .calendar-container2 small {
+    text-align: right;
+    display: block;
+    color: #3C5B6F;
 }
 
 /* FullCalendar의 요일 헤더 스타일링 */
@@ -34,7 +39,7 @@
 
 /* FullCalendar의 이벤트 요소 스타일링 */
 .container4 .calendarContainer .fc-event {
-    background-color: #f8a247;
+    background-color: #DFD0B8;
     border: none;
     border-radius: 5px;
     padding: 4px 8px;
@@ -49,7 +54,7 @@
 
 /* FullCalendar의 오늘 날짜 스타일링 */
 .container4 .calendarContainer .fc-day-today {
-    background-color: #f8a247;
+    background-color: #DFD0B8;
     color: #fff;
     font-weight: bold;
 }
@@ -70,8 +75,8 @@
 
 /* FullCalendar의 버튼 스타일링 */
 .container4 .calendarContainer .fc-button {
-    background-color: #ffd700;
-    color: #333;
+    background-color: #3C5B6F;
+    color: #fff;
     border: none;
     border-radius: 5px;
     padding: 8px 12px;
@@ -82,8 +87,8 @@
 
 /* FullCalendar의 오늘 버튼 스타일링 */
 .container4 .calendarContainer .fc-today-button {
-    background-color: #ffd700;
-    color: #333;
+    background-color: #3C5B6F;
+    color: #fff;
     border: none;
     border-radius: 5px;
     padding: 8px 12px;
@@ -95,20 +100,6 @@
 .container4 .calendarContainer .holiday-event {
     pointer-events: none;
 
-}
-
-/* FullCalendar의 x버튼 스타일링 */
-.container4 .calendarContainer .swal2-close {
-    top: 10px !important; 
-    right: 10px !important;
-    background-color: #f8a247 !important; 
-    /* border: 2px solid #d45d00 !important;  */
-    /* border-radius: 50% !important;  */
-    color: #fff !important; 
-    font-size: 16px !important; 
-    width: 30px !important; 
-    height: 30px !important; 
-    line-height: 25px !important; 
 }
 
 /* ************************* 시간등록 ************************* */
@@ -207,23 +198,36 @@
 }
 
 .container4 .timeContainer .insertScheduleContainer .selectWorkTime .selectWorkDay {
-    width: 50px;
-    height: 50px;
-    text-align: center;
-    line-height: 50px;
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: #ddd;
     border-radius: 30px;
     margin-right: 20px;
     transition: background-color 0.3s, color 0.3s;
+    text-align: center;
+    white-space: pre-line;
 }
+
+/* 주말점심과 공휴일에만 적용되는 스타일 */
+.container4 .timeContainer .insertScheduleContainer .selectWorkTime .selectWorkDay.smallFont {
+    font-size: 15px; /* 원하는 폰트 크기로 조정 */
+}
+
 .container4 .timeContainer .insertScheduleContainer .selectWorkTime .selectWorkDay.active {
     background-color: #237140 ; 
     color: #fff;
     font-weight: bold;
 }
 
-/* 등록,수정 버튼 */
-.container4 .timeContainer .insertScheduleContainer .insertBtn {
+/* 등록 버튼 */
+.container4 .timeContainer .insertScheduleContainer .button-container {
+    position: relative;
+    display: inline-block;
+}
+.container4 .timeContainer .insertScheduleContainer .button-container .insertBtn {
     width: 120px;
     height: 50px;
     border: none;
@@ -231,16 +235,36 @@
     font-size: 18px;
     margin-left: 535px;
     cursor: pointer;
-    background-color: #237140 ; 
+    background-color: #153448 ; 
     color: #fff;
+    position: relative;
+    display: inline-block;
+    
 }
-.container4 .timeContainer .insertScheduleContainer .insertBtn:hover{
-    background-color:#ffd700 ;
-    font-weight: bold;
+.container4 .timeContainer .insertScheduleContainer .button-container  .insertBtn:disabled {
+    background-color: #3C5B6F ; 
+    cursor: default;
+    
+}
+
+.container4 .timeContainer .insertScheduleContainer .button-container .tooltip-text {
+    visibility: visible;
+    color: red;
+    font-size: 12px;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    bottom: 110%; 
+    right: 0;
+    opacity: 0;
+}
+
+.container4 .timeContainer .insertScheduleContainer .button-container:hover .tooltip-text {
+    opacity: 1;
 }
 
 
-/* 예약날짜 불러오기 */
+/* +++++++ 예약날짜 불러오기 +++++++ */
 .container4 .timeContainer .selectScheduleTimeContainer{
     /* background-color: pink; */
     padding: 10px;

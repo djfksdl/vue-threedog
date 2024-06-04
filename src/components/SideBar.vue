@@ -10,7 +10,7 @@
             <!-- 프로필 내용 -->
             <div class="profileId">
                 <label>{{ userVo.uId }}</label> 님 <br>
-                <label>보유 마일리지: {{ userVo.uPoint }}</label> P
+                <label>보유 마일리지: {{ userVo.uPoint.toLocaleString() }}</label> P
             </div>
         </div>
 
