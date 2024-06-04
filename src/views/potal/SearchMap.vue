@@ -13,12 +13,6 @@
 
       <div class="map-cal">
         <div id="map-search">
-          <!-- <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true"
-            style="width: 1300px; height: 494px; margin-left: 20px;">
-            <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
-            <KakaoMapMarker v-for="(store, index) in addList" :key="index" :lat="store.latitude" :lng="store.longitude" @click="openInfoWindow(store)">
-            </KakaoMapMarker>
-          </KakaoMap> -->
         </div>
         <DatePicker02 @selectedDate="handleDateChange" @customAction="getList" />
       </div>
@@ -95,6 +89,7 @@ const searchLocation = async () => {
       coordinate.value.lng = parseFloat(place.lon);
       location.value = searchQuery.value;
       createMap();
+      getList();
     } else {
       alert('위치를 찾을 수 없습니다.');
     }
@@ -155,6 +150,7 @@ const getCurrentLocation = () => {
       coordinate.value.lat = lat;
       coordinate.value.lng = lng;
       createMap();
+      getList();
     }, (error) => {
       handleLocationError(error);
     });
