@@ -48,8 +48,8 @@
                                         {{ day.label }}
                                     </div>
                                     <div>
-                                        <input type="time" v-model="day.startTime" @input="handleTimeInput(day ,'start')"  :disabled="!day.active"> ~
-                                        <input type="time" v-model="day.endTime" @input="handleTimeInput(day)" :disabled="!day.active">
+                                        <input type="time" v-model="day.startTime" @input="handleTimeInput(day ,'start')" @change="adjustMinutes(day, 'start')" :disabled="!day.active"> ~
+                                        <input type="time" v-model="day.endTime" @input="syncEndTimeMinutes(day)" :disabled="!day.active">
                                     </div>
                                 </div>
                             </div>
@@ -59,8 +59,8 @@
                                         <span v-html="day.label.replace('휴일점심', '휴일<br>점심').replace('공휴일', '공휴일')"></span>
                                     </div>
                                     <div>
-                                        <input type="time" v-model="day.startTime" @input="handleTimeInput(day, 'start')"  :disabled="!day.active"> ~
-                                        <input type="time" v-model="day.endTime" @input="handleTimeInput(day)" :disabled="!day.active">
+                                        <input type="time" v-model="day.startTime" @input="handleTimeInput(day, 'start')"  @change="adjustMinutes(day, 'start')" :disabled="!day.active"> ~
+                                        <input type="time" v-model="day.endTime" @input="syncEndTimeMinutes(day)" :disabled="!day.active">
                                     </div>
                                 </div>
                             </div>
@@ -267,6 +267,7 @@ export default {
 
         // ***** 동일한 시간 추가 체크박스 상태 업데이트 *****
         updateCheckAllDayState() {
+
             const checkAllDayElement = document.getElementById('checkAllDay');
             if (this.isMultipleDatesSelected && this.hasValidTime()) {
                 checkAllDayElement.disabled = false;
@@ -364,17 +365,81 @@ export default {
         },
 
         // ***** 첫번째 날짜만 선택하고 시간입력했을때 *****
-        handleTimeInput(day) {
+        handleTimeInput(day ,type) {
 
-            //이부분 day-> type을 넣으니까 동일한 시간 추가가 시작시간만 입력해도 추가가 되버림!
-            
+            // 시작시간의 '분'과 끝시간의 '분'일치
+            if (type === 'start') {
+                const startTime = day.startTime;
+                if (startTime) {
+                    const [, minutes] = startTime.split(':');
+                    day.endTime = `${day.endTime.split(':')[0]}:${minutes}`;
+
+                    // 점심시간과 휴일 점심의 시작 시간과 끝 시간도 동기화
+                    this.workDays.forEach(workDay => {
+                        if (workDay.label === '점심' || workDay.label === '휴일점심') {
+                            workDay.startTime = `${workDay.startTime.split(':')[0]}:${minutes}`;
+                            workDay.endTime = `${workDay.endTime.split(':')[0]}:${minutes}`;
+                        }
+                    });
+                } 
+            }
+
             if (this.selectedStartDate && !this.selectedEndDate) {
                 this.selectedEndDate = this.selectedStartDate;
             }
+
             this.updateWorkTime(day);
 
-            // '동일한 시간 추가' 체크박스 상태 업데이트
-            this.updateCheckAllDayState(); // 체크박스 활성화/비활성화 상태 업데이트
+            // 시작 시간과 끝나는 시간이 모두 입력된 경우에만 체크박스 상태 업데이트
+            this.updateCheckAllDayState();
+
+        },
+      
+        syncEndTimeMinutes(day) {
+            if (day.startTime && day.endTime) {
+                const [, startMinutes] = day.startTime.split(':');
+                const [endHours] = day.endTime.split(':');
+                day.endTime = `${endHours}:${startMinutes}`;
+
+                // 점심시간과 휴일 점심의 끝 시간도 동기화
+                this.workDays.forEach(workDay => {
+                    if (workDay.label === '점심' || workDay.label === '휴일점심') {
+                        workDay.endTime = `${workDay.endTime.split(':')[0]}:${startMinutes}`;
+                    }
+                });
+            }
+            this.updateCheckAllDayState();
+        },
+
+        // ***** 분을 00과 30분만 선택 가능하도록 조정
+        adjustMinutes(day, type) {
+
+            let hours,minutes;
+
+            //시작 시간 분 조정
+            if (type === 'start' && day.startTime) {
+                // 시작 시간 분 조정
+                [hours, minutes] = day.startTime.split(':');
+                minutes = minutes >= 30 ? '30' : '00';
+                day.startTime = `${hours}:${minutes}`;
+                this.handleTimeInput(day, 'start'); // 분이 변경되었을 때도 handleTimeInput 호출
+
+            }
+
+            // 점심시간과 휴일 점심 시간 동기화
+            this.workDays.forEach(workDay => {
+                if (workDay.label === '점심' || workDay.label === '휴일점심') {
+                    if (workDay.startTime) {
+                        workDay.startTime = `${workDay.startTime.split(':')[0]}:${minutes}`;
+                    }
+                    if (workDay.endTime) {
+                        workDay.endTime = `${workDay.endTime.split(':')[0]}:${minutes}`;
+                    }
+                }
+            });
+
+            this.updateCheckAllDayState();
+            
         },
 
         // ***** 유효한 시간이 있는지 확인 *****
@@ -621,9 +686,13 @@ export default {
 
         // ***** 동일한 시간 입력하기 *****
         applySameTime(event, reset = false) {
+
+
             const activeDays = this.workDays.filter(day => day.active && ['월', '화', '수', '목', '금', '토', '일'].includes(day.label));
+
             if (event.target.checked) {
-                const referenceDay = activeDays.find(day => day.startTime && day.endTime);
+                const referenceDay = activeDays.find(day => day.startTime && day.endTime.length>3);
+
                 if (!referenceDay) {
                     Swal.fire({
                         icon: 'error',
