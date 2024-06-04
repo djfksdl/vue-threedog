@@ -57,11 +57,10 @@
                         <div class="reviewBoardDetailContainer">
                             <div class="reviewDetailImg">
 
-                                <Swiper :slides-per-view="1" navigation :prevButton="'.swiper-button-prev'"
-                                    :nextButton="'.swiper-button-next'">
-                                    <SwiperSlide v-for="(reviewVo2, i) in reviewList2" :key="i">
+                                <Swiper :slides-per-view="1">
+                                    <SwiperSlide v-for="(reviewVo, i) in reviewList2" :key="i">
                                         <div class="reviewDetailImg">
-                                            <img :src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo2.saveName}`"
+                                            <img :src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`"
                                                 style="width: 350px; height: 350px;">
                                         </div>
                                     </SwiperSlide>
@@ -81,7 +80,7 @@
                                     <div class="date">{{ formatDate(reviewVo2.rDate) }}</div>
                                 </div>
                                 <div style="display: flex;">
-                                    <div class="price">{{ reviewVo2.expectedPrice.toLocaleString() }}원</div>
+                                    <div class="price">{{ (reviewVo2.expectedPrice+reviewVo2.surcharge).toLocaleString() }}원</div>
 
                                     <div class="star" style="margin-top: 3px;">
                                         <!-- Full stars -->
@@ -157,7 +156,8 @@ export default {
                 dogNo: 0,
                 weight: 0.0,
                 expectedPrice: 0,
-                saveName: "",
+                surcharge:0,
+                saveName:""
             },
 
             reviewVo2: {
@@ -176,6 +176,8 @@ export default {
                 dogNo: 0,
                 weight: 0.0,
                 expectedPrice: 0,
+                surcharge:0,
+                saveName:""
 
             },
             reviewList2: [],
@@ -184,7 +186,27 @@ export default {
     },
     methods: {
 
+        //후기1개 가져오기
+        getOneRList(rNo) {
+            console.log("후기 1개 가져오기");
+            console.log("리뷰", rNo, "선택함");
+            axios({
+                method: 'get', // put, post, delete                   
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/getonerlist`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { rNo: rNo }, //get방식 파라미터로 값이 전달
+                responseType: 'json' //수신타입
 
+            }).then(response => {
+                console.log(response.data.apiData); //수신데이타
+                this.reviewVo2 = response.data.apiData;
+                console("후기1개만 가져와야된다~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                console.log(this.reviewVo2);
+                this.getSaveName(rNo);
+            }).catch(error => {
+                console.log(error);
+            });
+        },
 
         //후기리스트
         getRList() {
@@ -206,63 +228,37 @@ export default {
             });
         },
 
-
-        
-
-        // 리뷰상세보기 모달창
-        reviewDetail(rNo) {
-            if (rNo) {
-                this.selectedReview = this.reviewList.find((review) => review.rNo == rNo);
-                if (this.selectedReview) {
-                    this.updateViewCount(rNo);
-                }
-                this.modalCheck = true;
-
-            }
-            this.getOneRList(rNo);
-        },
-
-
-        //후기1개 가져오기
-        getOneRList(rNo) {
-            console.log("후기 1개 가져오기");
-            console.log("리뷰", rNo, "선택함");
-            axios({
-                method: 'get', // put, post, delete                   
-                url: `${this.$store.state.apiBaseUrl}/api/mypage/getonerlist`,
-                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
-                params: { rNo: rNo }, //get방식 파라미터로 값이 전달
-                responseType: 'json' //수신타입
-            }).then(response => {
-                console.log(response.data.apiData); //수신데이타
-                this.reviewVo2 = response.data.apiData; // reviewVo2 업데이트
-                console.log("후기1개만 가져와야된다~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                // this.getSaveName(rNo); // 이 부분은 주석 처리하여 불러오지 않도록 수정
-            }).catch(error => {
-                console.log(error);
-            });
-        },
-
         getSaveName(rNo) {
             console.log("후기사진 가져오기...............귀찮아...............");
             console.log(rNo);
             axios({
                 method: 'get',  //put,post,delete
-                url: `${this.$store.state.apiBaseUrl}/api/mypage/getsavename`,
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/getsavenamelist`,
                 headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
                 params: { rNo: rNo },
                 responseType: 'json' //수신타입
             }).then(response => {
-                console.log("성공");
+                console.log("zzzzzzzzzzzzzzzzzzzz성공");
                 console.log(response.data.apiData); //수신데이타
                 this.reviewList2 = response.data.apiData;
-
+                this.getOneRList(rNo);
             }).catch(error => {
                 console.log(error);
             });
         },
 
-
+        // 리뷰상세보기 모달창
+        reviewDetail(rNo) {
+            if (rNo) {
+                this.selectedReview = this.reviewList.find((review) => review.rNo === rNo);
+                if (this.selectedReview) {
+                    this.updateViewCount(rNo);
+                }
+                this.modalCheck = true;
+            }
+            this.getOneRList(rNo);
+            this.getSaveName(rNo);
+        },
 
 
         // 조회수 업데이트
@@ -280,6 +276,7 @@ export default {
                 console.log(response.data.apiData); //수신데이타
                 this.reviewVo.views = response.data.apiData;
                 this.getRList();
+
 
             }).catch(error => {
                 console.log(error);
