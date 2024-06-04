@@ -123,14 +123,20 @@
           <div class="reviewBoardDetailContainer-search">
             <!-- Display review details in the modal -->
             <div class="reviewDetailImg-search">
-              <!-- <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo2.saveName}`"
-                style="width: 300px; height: 350px;"> -->
-              <img src="../../assets/images/spy3.jpg" style="width: 300px; height: 350px; margin-top: 15px;">
+              <Swiper :slides-per-view="1" style="width: 350px;">
+                <SwiperSlide v-for="(reviewVo, i) in reviewList2" :key="i">
+                  <div class="reviewDetailImg">
+                    <img :src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`"
+                      style="width: 350px; height: 350px;">
+                  </div>
+                </SwiperSlide>
+              </Swiper>
+              <!-- <img src="../../assets/images/spy3.jpg" style="width: 300px; height: 350px; margin-top: 15px;"> -->
             </div>
             <div class="modal-content">
               <div class="userId"><strong>{{ reviewVo2.uId }}</strong>님</div>
               <div style="display: flex;">
-                <div class="cutInfor">{{ reviewVo2.dogName }} ({{ reviewVo2.weight }}kg) &nbsp;   </div>
+                <div class="cutInfor">{{ reviewVo2.dogName }} ({{ reviewVo2.weight }}kg) &nbsp; </div>
                 <div class="date">{{ formatDate(reviewVo2.rDate) }}</div>
               </div>
               <br>
@@ -157,7 +163,7 @@
           </div>
         </div>
       </div>
-      
+
     </div>
     <TopButton />
     <AppFooter id="AppFooter" />
@@ -171,6 +177,8 @@ import AppHeader from "@/components/AppHeader.vue";
 import TopButton from "@/components/TopButton.vue";
 import "@/assets/css/potal/search.css";
 import axios from 'axios';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import 'swiper/swiper-bundle.css';
 
 export default {
   name: "SearchView",
@@ -178,6 +186,8 @@ export default {
     AppFooter,
     AppHeader,
     TopButton,
+    Swiper,
+    SwiperSlide,
   },
   data() {
     return {
@@ -211,6 +221,7 @@ export default {
         weight: 0,
         saveName: "",
       },
+      reviewList2: [],
     };
   },
   watch: {
@@ -437,7 +448,7 @@ export default {
       }).then(response => {
         console.log("성공");
         console.log(response.data.apiData); //수신데이타
-        this.reviewList = response.data.apiData;
+        this.reviewList2 = response.data.apiData;
 
         console.log(this.businessList);
       }).catch(error => {
@@ -480,21 +491,25 @@ export default {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; 
+  justify-content: space-between;
   /* 세로 배치로 변경 */
 }
 
 .modal-container-search .userId {
   margin-top: 20px;
-  text-align: left; /* 왼쪽 정렬 */
-  margin-bottom: 10px; /* 아래 여백 추가 */
+  text-align: left;
+  /* 왼쪽 정렬 */
+  margin-bottom: 10px;
+  /* 아래 여백 추가 */
 }
 
 .reviewDetailContent-search {
   display: flex;
-  justify-content: space-between; /* 좌우 여백을 동일하게 분배 */
+  justify-content: space-between;
+  /* 좌우 여백을 동일하게 분배 */
   width: 100%;
-  margin-top: 20px; /* 위쪽 여백 추가 */
+  margin-top: 20px;
+  /* 위쪽 여백 추가 */
 }
 
 .reviewDetailImg-search {
@@ -507,7 +522,8 @@ export default {
 
 .modal-content {
   /* 기존 스타일 유지 */
-  width: calc(100% - 320px); /* 우측 여백 고려하여 크기 지정 */
+  width: calc(100% - 320px);
+  /* 우측 여백 고려하여 크기 지정 */
 }
 
 .reviewDetailImg-search img {
@@ -542,14 +558,17 @@ export default {
 }
 
 .reviewBoardDetailContainer-search {
-  display: flex; /* 가로로 배치 */
-  flex-wrap: wrap; /* 필요시 줄 바꿈 */
-  justify-content: space-between; /* 좌우 여백을 동일하게 분배 */
-  align-items: flex-start; /* 수직 정렬을 위해 상단 정렬 */
+  display: flex;
+  /* 가로로 배치 */
+  flex-wrap: wrap;
+  /* 필요시 줄 바꿈 */
+  justify-content: space-between;
+  /* 좌우 여백을 동일하게 분배 */
+  align-items: flex-start;
+  /* 수직 정렬을 위해 상단 정렬 */
 }
 
-.modal-content{
+.modal-content {
   text-align: left;
 }
-
 </style>

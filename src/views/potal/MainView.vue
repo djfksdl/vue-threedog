@@ -33,12 +33,12 @@
       <h2 class="result-h2">동네 랭킹 Best 👍<a class="view-count" href="/searchmap">더보기</a></h2>
       <hr>
       <div class="rank">
-          <div class="rank-item" v-bind:key="i" v-for="(storeVo, i) in storeList">
-            <router-link :to="`/edit/${storeVo.bNo}`">
-              <img src="../../assets/images/dog2.jpg">
-              <label>{{ storeVo.title }}</label>
-            </router-link>
-          </div>
+        <div class="rank-item" v-bind:key="i" v-for="(storeVo, i) in storeList">
+          <router-link :to="`/edit/${storeVo.bNo}`">
+            <img src="../../assets/images/dog2.jpg">
+            <label>{{ storeVo.title }}</label>
+          </router-link>
+        </div>
       </div>
 
       <div class="event-banner">
@@ -47,26 +47,31 @@
       <h2 class="result-h2">인기짱강아지 Best 👍<span class="view-count">조회수 높은 순</span></h2>
       <hr>
       <div class="rank">
-          <div class="rank-item" v-bind:key="i" v-for="(reviewVo, i) in reviewList">
-            <div @click="openModal(reviewVo.rNo)">
-              <img src="../../assets/images/dog.jpg">
-              <label>{{ reviewVo.title }}</label>
-            </div>
+        <div class="rank-item" v-bind:key="i" v-for="(reviewVo, i) in reviewList">
+          <div @click="openModal(reviewVo.rNo)">
+            <img src="../../assets/images/dog.jpg">
+            <label>{{ reviewVo.title }}</label>
           </div>
+        </div>
       </div>
       <div class="modal-wrap-search" v-show="modalCheck">
         <div class="modal-container-search">
           <div class="reviewBoardDetailContainer-search">
             <!-- Display review details in the modal -->
             <div class="reviewDetailImg-search">
-              <!-- <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo2.saveName}`"
-                style="width: 300px; height: 350px;"> -->
-              <img src="../../assets/images/spy3.jpg" style="width: 300px; height: 350px; margin-top: 15px;">
+              <Swiper :slides-per-view="1" style="width: 350px;">
+                <SwiperSlide v-for="(reviewVo, i) in reviewList2" :key="i">
+                  <div class="reviewDetailImg">
+                    <img :src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`"
+                      style="width: 350px; height: 350px;">
+                  </div>
+                </SwiperSlide>
+              </Swiper>
             </div>
             <div class="modal-content">
               <div class="userId"><strong>{{ reviewVo2.uId }}</strong>님</div>
               <div style="display: flex;">
-                <div class="cutInfor">{{ reviewVo2.dogName }} ({{ reviewVo2.weight }}kg) &nbsp;   </div>
+                <div class="cutInfor">{{ reviewVo2.dogName }} ({{ reviewVo2.weight }}kg) &nbsp; </div>
                 <div class="date">{{ formatDate(reviewVo2.rDate) }}</div>
               </div>
               <br>
@@ -265,6 +270,8 @@ import AppFooter from "@/components/AppFooter.vue"
 import AppHeader from "@/components/AppHeader.vue"
 import TopButton from "@/components/TopButton.vue"
 import "@/assets/css/potal/main.css"
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import 'swiper/swiper-bundle.css';
 // import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
 
 export default {
@@ -274,7 +281,9 @@ export default {
     AppHeader,
     SlideView,
     SlideViewBanner,
-    TopButton
+    TopButton,
+    Swiper,
+    SwiperSlide,
   },
   mounted() {
     document.addEventListener('click', this.handleClickOutside);
@@ -312,6 +321,7 @@ export default {
         weight: 0,
         saveName: "",
       },
+      reviewList2: [],
     };
   },
   methods: {
@@ -432,7 +442,7 @@ export default {
       }).then(response => {
         console.log("성공");
         console.log(response.data.apiData); //수신데이타
-        this.reviewList = response.data.apiData;
+        this.reviewList2 = response.data.apiData;
 
         console.log(this.businessList);
       }).catch(error => {
