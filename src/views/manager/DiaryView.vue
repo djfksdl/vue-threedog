@@ -27,7 +27,7 @@
                     </div>
 
                     <div class="diary-info-leftitem2" v-if="selectedSchedule">
-                        <label class="diary-label">추가요금:{{ toggleSelectedAdditionalFee?.price }} </label>
+                        <label class="diary-label">추가요금:</label>
                         <table style="width: 100%;">
                             <tbody>
                                 <tr v-for="(priceItem, index) in priceList2" :key="index">
@@ -45,7 +45,7 @@
                     </div>
 
 
-                    <div v-if="selectedAdditionalFee">{{ toggleSelectedAdditionalFee }}</div>
+                    <!-- <div v-if="selectedAdditionalFee">{{ toggleSelectedAdditionalFee }}</div> -->
 
                     <div>
                         <div class="diary-info-leftitem">
@@ -218,8 +218,9 @@ export default {
             savedMattedArea: "", // 저장된 엉킨 부위
             savedDislikedArea: "", // 저장된 싫어했던 부위
             savedBathDry: "", // 저장된 목욕/드라이 정보
-            savedcurruntWeight: "", // 몸무게
-            selectedAdditionalFee: null, // 선택된 추가 요금
+            savedcurruntWeight: 0, // 몸무게
+            additionalFee: 0,
+            //selectedAdditionalFee: 0, // 선택된 추가 요금
             savedAdditionalFee: [], // 저장된 추가 요금
             savedNote: "", // 저장된 전달 사항
             attachedPhotos: [], // 첨부된 사진 파일들
@@ -360,16 +361,16 @@ export default {
             this.savedDislikedArea = this.dislikedArea;
             this.savedBathDry = this.bathDry;
             this.savedcurruntWeight = this.curruntWeight; // 몸무게 추가
-            this.savedAdditionalFee = this.selectedAdditionalFee;
+            this.savedAdditionalFee = this.additionalFee;
             this.savedNote = this.note;
             this.savedAttachedPhotos = this.attachedPhotos.map(file => URL.createObjectURL(file));
             this.showModal = true;
 
             console.log("ssssssssssssssssssssssssssssssss");
 
-            console.log(this.rsNo);
-            console.log(this.savedMattedArea);
-            console.log(this.savedcurruntWeight);
+            console.log(this.savedAdditionalFee);
+            // console.log(this.savedMattedArea);
+            // console.log(this.savedcurruntWeight);
 
             // FormData 생성
             const formData = new FormData();
@@ -381,14 +382,17 @@ export default {
             formData.append('bathDry', this.savedBathDry);
             formData.append('curruntWeight', this.savedcurruntWeight); // 몸무게 추가
             formData.append('note', this.savedNote);
-            formData.append('priceList2', JSON.stringify(this.savedAdditionalFee));
+            formData.append('priceList2',(this.savedAdditionalFee));
+
+           // basePrice + additionalFee
 
             // 이미지 파일 추가
             this.attachedPhotos.forEach(photo => {
                 formData.append('file', photo);
             });
-
             
+
+
             // 폼데이터 화면에 찍는 방법
             function logFormData(formData) {
                 for (let [key, value] of formData.entries()) {
@@ -422,9 +426,6 @@ export default {
                 console.error('에러에러에러ㅔㅇ러:', errors);
             });
         },
-
-
-
 
 
         // 미용 기록 업데이트
@@ -496,15 +497,13 @@ export default {
 
         },
 
-        // 추가요금 가격표
         toggleSelectedAdditionalFee(priceList2) {
             // 선택 상태를 토글합니다.
             priceList2.selected = !priceList2.selected;
-            this.reserveVo.expectedPrice2 = parseFloat(this.reserveVo.expectedPrice2) + parseFloat(priceList2.onePrice); // 수정
 
             if (priceList2.selected) {
                 console.log('선택한 값 :', priceList2.onePrice);
-                this.reserveVo.expectedPrice2 += priceList2.onePrice; // 선택한 값의 누적을 수행합니다.
+                this.reserveVo.expectedPrice2 = parseFloat(this.reserveVo.expectedPrice2) + parseFloat(priceList2.onePrice); // 선택한 값의 누적을 수행합니다.
 
                 // 가격표 No 출력 및 추가
                 console.log("priceNo:", priceList2.priceNo);
@@ -518,7 +517,7 @@ export default {
 
             } else {
                 console.log('선택 취소한 값 :', priceList2.onePrice);
-                this.reserveVo.expectedPrice2 -= priceList2.onePrice; // 선택 취소한 값의 차감을 수행합니다.
+                this.reserveVo.expectedPrice2 = parseFloat(this.reserveVo.expectedPrice2) - parseFloat(priceList2.onePrice); // 선택 취소한 값을 차감합니다.
 
                 // 선택 취소한 th 값을 beauty2 배열에서 제거합니다.
                 const thIndex = this.priceVo.beauty2.indexOf(priceList2.beauty);
@@ -538,7 +537,6 @@ export default {
 
             // 콘솔에 현재 priceNo2 배열 출력
             console.log('현재 priceNo 배열 :', this.priceVo.priceNo2);
-
         },
 
         // 총 금액 계산
@@ -547,6 +545,7 @@ export default {
             const additionalFee = parseFloat(this.reserveVo.expectedPrice2) || 0; // 추가 요금 합산
             return basePrice + additionalFee; // 기본 금액과 추가 요금을 합산하여 총 금액을 반환합니다.
         },
+
         // 모달 닫기
         closeModal() {
             this.showModal = false;
@@ -618,6 +617,7 @@ export default {
         totalAmount() {
             return this.calculateTotalAmount();
         },
+
 
     },
     watch: {
