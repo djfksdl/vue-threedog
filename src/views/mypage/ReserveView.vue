@@ -2,8 +2,6 @@
     <div id="wrap">
         <AppHeader />
         <div class="reseerveContainer">
-
-            <!-- 사이드 바 자리 -->
             <SideBar />
             <div class="container">
                 <!-- 예약상세 내역 -->
@@ -21,8 +19,6 @@
                         <div>
                             <p>예약일시</p>
                             <p>{{ formatDate(reserveVo.rtDate) }} {{ formatTime(reserveVo.rtTime) }}</p>
-
-
                         </div>
                         <div>
                             <p>매장주소</p>
@@ -34,7 +30,6 @@
                         <div>
                             <p>결제상품</p>
                             <p>{{ reserveVo.size }} {{ reserveVo.beauty }}</p>
-
                         </div>
                         <div>
                             <p>예상가격</p>
@@ -46,98 +41,112 @@
                         </div>
                         <div>
                             <p>최종 결제 금액</p>
-                            <p>{{ (reserveVo.expectedPrice + reserveVo.surcharge -
-                    reserveVo.usePoint).toLocaleString() }}원</p>
-
+                            <p>{{ (reserveVo.expectedPrice + reserveVo.surcharge - reserveVo.usePoint).toLocaleString()
+                                }}원</p>
                         </div>
                     </div>
                     <!-- {{ reserveVo.rNo }} -->
                     <div>
-                        <!-- 취소/변경안내버튼 -->
                         <div class="rcfChange" v-if="!reserveVo.pushNo">
                             <button>
                                 예약 변경/취소는 매장<span>({{ reserveVo.bPhone }})</span>으로 전화주세요.
                             </button>
                         </div>
-                        <!-- 후기 작성버튼 -->
                         <div class="rrfChange" v-else-if="reserveVo.pushNo && reserveVo.rNo == 0">
                             <router-link :to="`/reviewform/${reserveVo.rsNo}`">후기 작성</router-link>
                         </div>
-                        <!-- 후기 확인버튼 -->
                         <div class="rrfConfirm" v-else-if="reserveVo.rNo">
-                            <!-- <router-link to="/review">후기 확인</router-link> -->
                             <button @click="getReview(reserveVo.rsNo)">후기 확인</button>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="modal-wrap" v-show="modalCheck">
                     <div class="modal-container">
                         <div class="reviewBoardDetailContainer">
-                            <div class="reviewDetailImg" v-bind:key="i" v-for="(reviewVo, i) in reviewList">
+
+                            <Swiper :slides-per-view="1" navigation :prevButton="'.swiper-button-prev'"
+                                :nextButton="'.swiper-button-next'">
+                                <SwiperSlide v-for="(reviewVo, i) in reviewList" :key="i">
+                                    <div class="reviewDetailImg">
+                                        <img :src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`"
+                                            style="width: 350px; height: 350px;">
+                                    </div>
+                                </SwiperSlide>
+                            </Swiper>
+
+                            <!-- <div class="reviewDetailImg" v-bind:key="i" v-for="(reviewVo, i) in reviewList">
                                 <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`"
                                     style="width: 300px; height: 350px;">
-                            </div>
+                            </div> -->
+
+
                             <div>
                                 <div class="userId"><strong>{{ reviewVo.uId }}</strong>님</div>
                                 <div style="display: flex;">
-                                    <!-- <div class="beauty">zzzzzzzzzzzz</div> -->
-                                    <div class="cutInfor">{{ reviewVo.dogName }} ({{ reviewVo.weight }}kg)
-                                    </div>
+                                    <div class="cutInfor">{{ reviewVo.dogName }} ({{ reviewVo.weight }}kg)</div>
                                     <div class="date">{{ formatDate(reviewVo.rDate) }}</div>
                                 </div>
                                 <div style="display: flex;">
                                     <div class="price">{{ reviewVo.expectedPrice.toLocaleString() }}원</div>
-
                                     <div class="star" style="margin-top: 3px;">
-                                        <!-- Full stars -->
                                         <span v-for="i in Math.floor(reviewVo.star)" :key="i"><img
                                                 src="@/assets/images/star_yellow.jpg" style="width: 15px;"></span>
-                                        <!-- Half star -->
-                                        <!-- <span v-if="reviewVo2.star - Math.floor(reviewVo2.star) >= 0.5">><img src="@/assets/images/star_ban.png" style="width: 15px;"></span> -->
-                                        <!-- Empty stars -->
                                         <span v-for="i in 5 - Math.ceil(reviewVo.star)" :key="'empty_' + i"><img
                                                 src="@/assets/images/star_gray.jpg" style="width: 15px;"></span>
                                     </div>
                                 </div>
-
                                 <div class="context">
                                     {{ reviewVo.rContent }}
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-btn">
-                            <button @click="modalCheck = false" style="width: 200px;">닫기</button>
+                        <div style="display: flex; margin-top: 30px">
+                            <div class="modal-btn" style="margin-left: 400px;">
+                                <router-link :to="`/edit/${reviewVo.bNo}`">
+                                    <button style="width: 200px; margin-right: 10px;">매장 홈페이지 가기</button>
+                                </router-link>
+                            </div>
+                            <div class="modal-btn" style="margin-left: 20px;">
+                                <button @click="modalCheck = false"
+                                    style="width: 200px; background-color: white; color: black; border: 1px solid #1d5e35;">닫기</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
         </div>
         <AppFooter />
     </div>
 </template>
 <script>
+import 'swiper/swiper-bundle.css';
 import axios from "axios"
 import '@/assets/css/mypage/reserve.css'
 import AppHeader from "@/components/AppHeader.vue"
 import AppFooter from "@/components/AppFooter.vue"
 import SideBar from "@/components/SideBar.vue"
 
-// import Swal from "sweetalert2"; // 모달창
+import { Swiper, SwiperSlide } from 'swiper/vue';
+
 
 export default {
     name: "ReserveView",
     components: {
         AppHeader,
         AppFooter,
-        SideBar
+        SideBar,
+        Swiper,
+        SwiperSlide
+    },
+    setup() {
+        return {
+
+        };
     },
     data() {
         return {
+
             reserveList: [],
             reserveVo: {
                 rsNo: 0,
@@ -174,7 +183,7 @@ export default {
                 rContent: "",
                 rDate: "",
                 views: 0,
-                bNo: 1,
+                bNo: 0,
                 uNo: "",
                 uId: "",
                 beauty: "",
@@ -186,8 +195,8 @@ export default {
                 expectedPrice: 0,
                 saveName: "",
             },
-            
-            reviewList:[],
+
+            reviewList: [],
             modalCheck: false,
             selectedReserve: null,
 
@@ -280,43 +289,4 @@ export default {
     }
 };
 </script>
-<style>
-.reseerveContainer .modal-wrap {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-}
-
-/* modal or popup */
-.reseerveContainer .modal-container {
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 900px;
-    background: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-.reseerveContainer .modal-btn {
-    text-align: right;
-}
-
-.reseerveContainer .modal-btn button {
-    padding: 15px;
-    border: none;
-    font-size: 18px;
-    border-radius: 20px;
-    background-color: rgb(29, 29, 175);
-    color: white;
-}
-
-.reseerveContainer .modal-btn button:hover {
-    cursor: pointer;
-}
-</style>
+<style></style>

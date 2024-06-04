@@ -86,7 +86,7 @@ const routes = [
     component: ReservationFormView
   },
   {
-    path: '/review',
+    path: '/review/:bNo',
     name: 'review',
     component: ReviewView
   },
