@@ -26,24 +26,6 @@
                         <label class="diary-label">금액: {{ selectedSchedule.extendedProps.price }}</label>
                     </div>
 
-
-                    <!-- <div class="diary-info-leftitem" v-if="selectedSchedule">
-                        <label class="diary-label">추가요금: {{ selectedAdditionalFee?.price }}</label>
-                        <div v-if="additionalFees">{{ additionalFees }}</div>
-                        <table>
-                            <tr v-for="(item, index) in additionalFees" :key="index"
-                             @click="selectAdditionalFee(item)">
-                                <td>{{ item.name }}</td>
-                                <td>{{ item.price }}</td>
-                            </tr>
-                        </table>
-                    </div> -->
-
-                    <!-- <div class="diary-info-leftitem" v-if="selectedSchedule">
-                        <label class="diary-label">총 금액: {{ totalAmount }}</label>
-                    </div> -->
-
-
                     <div class="diary-info-leftitem2" v-if="selectedSchedule">
                         <label class="diary-label">추가요금:{{ toggleSelectedAdditionalFee?.price }} </label>
                         <table style="width: 100%;">
@@ -174,9 +156,9 @@
                             <td>몸무게</td>
                             <td>{{ curruntWeight }}</td>
                         </tr>
-                        <tr>
+                        <tr v-if="reserveVo.expectedPrice2 > 0">
                             <td>추가요금</td>
-                            <td>{{ savedAdditionalFee?.price }}</td>
+                            <td>{{ reserveVo.expectedPrice2 }}</td>
                         </tr>
                         <tr>
                             <td>전달사항</td>
@@ -225,7 +207,7 @@ export default {
             mattedArea: "", // 엉킨 부위
             dislikedArea: "", // 싫어했던 부위
             bathDry: "", // 목욕/드라이 정보
-            curruntWeight: "",//몸무게
+            curruntWeight: "",//몸무게currentWeight
             note: "", // 전달 사항
             showModal: false, // 모달 표시 여부
             savedDate: "", // 저장된 이용일
@@ -238,6 +220,7 @@ export default {
             savedBathDry: "", // 저장된 목욕/드라이 정보
             savedcurruntWeight: "", // 몸무게
             selectedAdditionalFee: null, // 선택된 추가 요금
+            savedAdditionalFee: [], // 저장된 추가 요금
             savedNote: "", // 저장된 전달 사항
             attachedPhotos: [], // 첨부된 사진 파일들
             savedAttachedPhotos: [], // 저장된 첨부 사진 URL들
@@ -268,6 +251,9 @@ export default {
             this.priceVo.bNo = rsNo;
             // 추가요금 가져오기 호출
             this.getPlusPrice();
+            // ...
+            // date 변수를 selectedSchedule.start 값을 사용하여 초기화
+            this.date = this.selectedSchedule.start;
         }
     },
 
@@ -347,11 +333,18 @@ export default {
             this.photoUrls.splice(index, 1);
         },
 
+
+
+
+
         //-------------------- 모두 저장저장----------------------------
         // 업데이트 및 사진 db에 저장
         saveNotification() {
-            if (!this.rsNo) {
-                console.error('rsNo 값이 없습니다.');
+
+            console.log('초기 rsNo:', this.rsNo);
+
+            if (!this.selectedSchedule) {
+                console.error('selectedSchedule이 없습니다.');
                 return;
             }
             if (this.selectedSchedule) {
@@ -359,6 +352,7 @@ export default {
                 this.savedTime = this.formatTime(this.selectedSchedule.start);
                 this.savedPetName = this.selectedSchedule.extendedProps.petName;
                 this.reserveVo.rsNo = this.rsNo; // rsNo 값을 설정
+                console.log('예약 번호 설정 후:', this.reserveVo.rsNo);
             }
             this.savedGroomingEtiquette = this.groomingEtiquette;
             this.savedCondition = this.condition;
@@ -370,6 +364,12 @@ export default {
             this.savedNote = this.note;
             this.savedAttachedPhotos = this.attachedPhotos.map(file => URL.createObjectURL(file));
             this.showModal = true;
+
+            console.log("ssssssssssssssssssssssssssssssss");
+
+            console.log(this.rsNo);
+            console.log(this.savedMattedArea);
+            console.log(this.savedcurruntWeight);
 
             // FormData 생성
             const formData = new FormData();
@@ -388,61 +388,91 @@ export default {
                 formData.append('file', photo);
             });
 
+            
+            // 폼데이터 화면에 찍는 방법
+            function logFormData(formData) {
+                for (let [key, value] of formData.entries()) {
+                    console.log(`${key}:`, value);
+                }
+            }
+            // FormData 내용을 콘솔에 출력
+            logFormData(formData);
+
             // 미용 기록 업데이트 요청과 이미지 업로드 요청을 Promise.all로 동시에 실행
             Promise.all([
-                this.updateGroomingRecord(this.rsNo, this.reserveVo),
+                this.updateGroomingRecord(this.rsNo, formData),
                 this.uploadImages(this.rsNo)
             ]).then(([groomingRecordResponse, imageUploadResponse]) => {
+
                 // 여기서 각각의 응답을 처리합니다.
-                console.log('Grooming Record Response:', groomingRecordResponse);
-                console.log('Image Upload Response:', imageUploadResponse);
+                console.log('FormData 확인:', formData);
+                console.log('업데이트:', groomingRecordResponse);
+                console.log('이미지 업로드:', imageUploadResponse);
 
                 // 두 요청 모두 성공했을 때 알림 표시
                 Swal.fire({
-                    title: '알림이 저장되었습니다!',
+                    title: '저장되었습니다!',
                     icon: 'success',
                     confirmButtonText: '확인'
                 }).then(() => {
-                    this.$router.push({ name: 'reserve' });
+
                 });
             }).catch(errors => {
                 // 하나 이상의 요청이 실패했을 때 에러 처리
-                console.error('Error saving notification:', errors);
+                console.error('에러에러에러ㅔㅇ러:', errors);
             });
         },
+
+
+
 
 
         // 미용 기록 업데이트
-        updateGroomingRecord(rsNo, reserveVo) {
-            return axios({
+        updateGroomingRecord(rsNo, formData) {
+            axios({
                 method: 'put',
                 url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/updategroomingrecord`,
                 headers: { "Content-Type": "application/json; charset=utf-8" },
-                data: reserveVo,
+                data: formData,
                 responseType: 'json'
+
+            }).then(response => {
+                console.log("미용 기록 업데이트");
+                console.log(response.data.apiData);
+
+
+            }).catch(error => {
+                console.log(error);
             });
         },
 
-        // 이미지 업로드 관련 수정
+
+        // 이미지 업로드 관련 
         uploadImages(rsNo) {
             const formData = new FormData();
             this.attachedPhotos.forEach(photo => {
                 formData.append('file', photo);
             });
-
             // FormData에 추가된 이미지 데이터 전송
-            return axios({
+            axios({
                 method: 'post',
                 url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/uploadimage`,
                 headers: { "Content-Type": "multipart/form-data" },
                 data: formData,
                 responseType: 'json'
+            }).then(response => {
+                console.log("이미지 ");
+                console.log(response.data.apiData);
+
+            }).catch(error => {
+                console.log(error);
             });
         },
 
 
 
         //-------------------- 금액금액----------------------------
+
         // 추가요금가져오기
         getPlusPrice() {
 
@@ -470,6 +500,7 @@ export default {
         toggleSelectedAdditionalFee(priceList2) {
             // 선택 상태를 토글합니다.
             priceList2.selected = !priceList2.selected;
+            this.reserveVo.expectedPrice2 = parseFloat(this.reserveVo.expectedPrice2) + parseFloat(priceList2.onePrice); // 수정
 
             if (priceList2.selected) {
                 console.log('선택한 값 :', priceList2.onePrice);
@@ -508,16 +539,8 @@ export default {
             // 콘솔에 현재 priceNo2 배열 출력
             console.log('현재 priceNo 배열 :', this.priceVo.priceNo2);
 
-            // 총 금액을 다시 계산하고 업데이트합니다.
-            // this.$nextTick(() => {
-            //     this.$forceUpdate(); // Vue 강제 갱신
-            // });
         },
 
-        // // 추가요금 선택
-        // selectAdditionalFee(item) {
-        //     this.selectedAdditionalFee = item;
-        // },
         // 총 금액 계산
         calculateTotalAmount() {
             const basePrice = parseFloat(this.selectedSchedule?.extendedProps?.price) || 0;
@@ -528,12 +551,20 @@ export default {
         closeModal() {
             this.showModal = false;
         },
+
         //-------------------- 모두 완료되었을때----------------------------
         // 보내기
         sendNotification() {
+            // 추가요금 데이터 반영
+            this.reserveVo.priceNo2 = this.priceVo.priceNo2;
+            this.reserveVo.beauty2 = this.priceVo.beauty2;
+
+            // 몸무게 데이터 반영
+            this.reserveVo.curruntWeight = this.curruntWeight;
+            // URL에서 `{rsNo}`를 실제 값으로 대체
             axios({
-                method: 'put',
-                url: `${this.$store.state.apiBaseUrl}/api/jw/${this.reserveVo.rsNo}`,
+                method: 'Post',
+                url: `${this.$store.state.apiBaseUrl}/api/jw/${this.reserveVo.rsNo}/pushnotification`,
                 headers: { "Content-Type": "application/json; charset=utf-8" },
                 data: this.reserveVo,
                 responseType: 'json'
@@ -553,7 +584,7 @@ export default {
                 icon: 'success',
                 confirmButtonText: '확인'
             }).then(() => {
-                this.$router.push({ name: 'reserve' });
+                this.$router.push({ name: 'schedule' });
             });
         },
 
