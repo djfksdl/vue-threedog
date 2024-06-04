@@ -6,6 +6,7 @@
             <div class="calendarContainer">
                 <div class="calendar-container2">
                     <FullCalendar ref="calendar" :options="calendarOptions" id="calendar2" @eventClick="handleEventClick"/>
+                    <small>달력의 날짜를 클릭하면 등록된 시간을 볼 수 있습니다.</small>
                 </div>
             </div>
             
@@ -16,7 +17,6 @@
                     <!-- 기본 타이틀 -->
                     <div v-if="!selectedDate" class="whenSelectNo">
                         <h1 >영업시간 등록</h1>
-                        <small>*달력의 날짜를 클릭하면 삭제,시간 추가를 할 수 있습니다.</small>
                     </div>
                     <!-- 날짜 선택했을때 타이틀 -->
                     <div v-if="selectedDate" class="whenSelect">
@@ -48,31 +48,40 @@
                                         {{ day.label }}
                                     </div>
                                     <div>
-                                        <input type="time" v-model="day.startTime" @input="handleTimeInput(day)" step="600" :disabled="!day.active"> ~
-                                        <input type="time" v-model="day.endTime" @input="handleTimeInput(day)" step="600" :disabled="!day.active">
+                                        <input type="time" v-model="day.startTime" @input="handleTimeInput(day)" step="1800" :disabled="!day.active"> ~
+                                        <input type="time" v-model="day.endTime" @input="handleTimeInput(day)" step="1800" :disabled="!day.active">
                                     </div>
                                 </div>
                             </div>
                             <div class="rightColumn">
                                 <div class="selectWorkTime" v-for="(day, index) in rightColumnDays" :key="index">
-                                    <div :class="['selectWorkDay', { active: day.active }]">
-                                        {{ day.label }}
+                                    <div :class="['selectWorkDay', { active: day.active, smallFont: day.label === '휴일점심' || day.label === '공휴일' }]">
+                                        <span v-html="day.label.replace('휴일점심', '휴일<br>점심').replace('공휴일', '공휴일')"></span>
                                     </div>
                                     <div>
-                                        <input type="time" v-model="day.startTime" @input="handleTimeInput(day)" step="600" :disabled="!day.active"> ~
-                                        <input type="time" v-model="day.endTime" @input="handleTimeInput(day)" step="600" :disabled="!day.active">
+                                        <input type="time" v-model="day.startTime" @input="handleTimeInput(day)" step="1800" :disabled="!day.active"> ~
+                                        <input type="time" v-model="day.endTime" @input="handleTimeInput(day)" step="1800" :disabled="!day.active">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 등록,수정버튼 -->
-                    <button type="submit" class="insertBtn" v-on:click="insertRT">등록</button>
+                    <!-- 등록 버튼 -->
+                    <div class="button-container" @mouseenter="showTooltip" @mouseleave="hideTooltip">
+                        <button 
+                            type="submit" 
+                            class="insertBtn" 
+                            v-on:click="insertRT" 
+                            :disabled="!isDateSelected">
+                            등록
+                        </button>
+                        <span v-if="!isDateSelected && showTooltipText" class="tooltip-text">등록할 날짜를 선택해주세요.</span>
+                    </div>
                 </div>
 
 
-                <!-- 예약날짜 불러오기 -->
+                <!-- +++++++ 예약날짜 불러오기 +++++++ -->
                 <div v-if="selectedDate" class="selectScheduleTimeContainer"> 
                     <!-- 예약시간 삭제 -->
                     <div class="selectDeleteRtimeContainer">
@@ -86,7 +95,7 @@
                     </div>
                     <!-- 예약시간 추가 -->
                     <div class="plusRtimeContainer">
-                        <label>추가할 시간</label>
+                        <label>추가할 시간 <small>(한시간 단위로 추가 됩니다.)</small></label>
                         <div class="plusRtimeRow">
                             <input type="time" v-model="startTime" @input="updateEndTime">~
                             <input type="time" v-model="endTime" readonly>
@@ -159,7 +168,7 @@ export default {
             { label: '토', active: false, startTime: '', endTime: '' },
             { label: '일', active: false, startTime: '', endTime: '' },
             { label: '공휴일', active: false, startTime: '', endTime: '' },
-            { label: '주말점심', active: false, startTime: '', endTime: '' }
+            { label: '휴일점심', active: false, startTime: '', endTime: '' }
             ],
             rtVo:{
                 rtDates:[],
@@ -173,7 +182,8 @@ export default {
             registeredTimes: [], // 예약된 시간을 저장할 배열
             checkAllDay: false, //체크 표시
             startTime: '', //추가 시작시간
-            endTime: '' //추가 끝 시간
+            endTime: '' ,//추가 끝 시간
+            showTooltipText: false, // 등록버튼 위 안내 메세지
             
         };
     },
@@ -184,8 +194,9 @@ export default {
             return this.workDays.slice(0, 6) || []; // 월~금, 점심
         },
         rightColumnDays() {
-            return this.workDays.slice(6) || []; // 토, 일, 공휴일, 주말점심
+            return this.workDays.slice(6) || []; // 토, 일, 공휴일, 휴일점심
         },
+
         //동일한 시간 추가
         isMultipleDatesSelected() {
             return this.selectedStartDate && this.selectedEndDate && this.selectedStartDate !== this.selectedEndDate;
@@ -197,9 +208,25 @@ export default {
             const month = (date.getMonth() + 1).toString().padStart(2, '0');
             const day = date.getDate().toString().padStart(2, '0');
             return `${year}-${month}-${day}`;
-        }
+        },
+
+        // 등록버튼 날짜,시간 유효성 검사후 활성화
+        isDateSelected() {
+        return this.selectedStartDate && this.selectedEndDate;
+    }
     },
     methods: {
+
+        // ***** 등록버튼 호버시 안내메세지 *****
+        showTooltip() {
+            if (!this.isDateSelected) {
+                this.showTooltipText = true;
+            }
+        },
+        hideTooltip() {
+            this.showTooltipText = false;
+        },
+
         // ***** 날짜 변경시 시간 초기화 *****
         handleDateChange(type) {
             this.updateCalendar();
@@ -374,14 +401,14 @@ export default {
 
                 if (this.holidays.includes(formattedDate)) {
                     this.workDays[8].active = true; // 공휴일 활성화
-                    this.workDays[9].active = true; // 주말 점심 활성화
+                    this.workDays[9].active = true; // 휴일 점심 활성화
                 } else {
                     if (dayIndex === 0) {
                         this.workDays[7].active = true; // 일요일 활성화
-                        this.workDays[9].active = true; // 주말 점심 활성화
+                        this.workDays[9].active = true; // 휴일 점심 활성화
                     } else if (dayIndex === 6) {
                         this.workDays[6].active = true; // 토요일 활성화
-                        this.workDays[9].active = true; // 주말 점심 활성화
+                        this.workDays[9].active = true; // 휴일 점심 활성화
                     } else {
                         this.workDays[dayIndex - 1].active = true; // 평일 활성화
                         this.workDays[5].active = true; // 점심 활성화
@@ -391,9 +418,9 @@ export default {
                 // 공휴일 활성화
                 if (this.holidays.includes(formattedDate)) {
                     this.workDays[8].active = true; // 공휴일
-                    // 공휴일이면 점심 비활성화하고 주말 점심 활성화
+                    // 공휴일이면 점심 비활성화하고 휴일 점심 활성화
                     this.workDays[5].active = false; // 점심 비활성화
-                    this.workDays[9].active = true; // 주말 점심 활성화
+                    this.workDays[9].active = true; // 휴일 점심 활성화
                 }
             }
         },
@@ -442,35 +469,43 @@ export default {
             }
         },
 
-        // ***** 이용가능시간 등록하기 *****
+        // ***** 이용가능시간 등록버튼 눌렀을때 *****
         insertRT() {
+            // 날짜 입력 유효성 검사 - 안해도됨. 버튼 비활성화로 무조건 들어가게 되어있음
 
-            // 두번째 날짜를 선택안하고 등록했을때 첫번째 날짜 할당
-            if (!this.selectedEndDate) {
-                this.selectedEndDate = this.selectedStartDate;
-            }
-
-            // 날짜 입력 유효성 검사
-            if (!this.selectedStartDate || !this.selectedEndDate) {
-                Swal.fire({
-                    icon: 'error',
-                    title: '등록할 날짜를 입력해주세요',
-                    text: '시작 날짜와 종료 날짜를 모두 선택해주세요.',
-                });
-                return;
-            }
-
-            // 시간 입력 유효성 검사
-            const invalidWorkDay = this.workDays.find(day => day.active && (!day.startTime || !day.endTime));
+            // 시간 입력 유효성 검사(점심시간 제외)
+            const invalidWorkDay = this.workDays.find(day => 
+                day.active && 
+                day.label !== '점심' && 
+                day.label !== '휴일점심' &&
+                (!day.startTime || !day.endTime)
+            );
             if (invalidWorkDay) {
                 Swal.fire({
                     icon: 'error',
-                    title: '시간을 입력해주세요',
-                    text: '선택한 요일의 시작 시간과 종료 시간을 모두 입력해주세요.',
+                    html: '<strong>시작 시간과 종료 시간</strong>을 모두 입력해주세요.',
+                    text:'(점심시간은 제외)'
                 });
                 return;
             }
 
+            // 등록 확인 메시지 표시
+            Swal.fire({
+                title: '등록하시겠습니까?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: '등록',
+                cancelButtonText: '취소'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // 사용자가 확인 버튼을 누른 경우 등록 진행
+                    this.registerRT();
+                }
+            });
+        },
+
+        // ***** 이용가능시간 등록하기 *****
+        registerRT(){
             const startDate = new Date(this.selectedStartDate);
             const endDate = new Date(this.selectedEndDate);
             const daysBetween = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
@@ -601,7 +636,7 @@ export default {
                 this.originalTimes = activeDays.map(day => ({ label: day.label, startTime: day.startTime, endTime: day.endTime }));
 
                 activeDays.forEach(day => {
-                    if (day !== referenceDay && day.label !== '점심' && day.label !== '주말점심') {
+                    if (day !== referenceDay && day.label !== '점심' && day.label !== '휴일점심') {
                         day.startTime = startTime;
                         day.endTime = endTime;
                     }
