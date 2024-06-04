@@ -89,10 +89,10 @@ export default {
                 uNo: this.$store.state.authUser.uNo,
                 rDate: "",
                 file: [],
-                imgCount:0,
-                rsNo:this.$route.params.rsNo,
+                imgCount: 0,
+                rsNo: this.$route.params.rsNo,
             },
-            userPoint:1000,
+            userPoint: 1000,
             byteCount: 0, // 후기내용의 바이트수
             images: [],
         };
@@ -105,7 +105,14 @@ export default {
 
         // 후기작성 바이트수
         checkByte() {
-            this.byteCount = this.reviewVo.rContent.length;
+            
+            if (this.reviewVo.rContent.length > 500) {
+                this.reviewVo.rContent = this.reviewVo.rContent.slice(0, 500); // 500자 이후의 문자열을 잘라냄
+                alert("후기 내용은 최대 500자까지 입력할 수 있습니다.");
+            }else{
+                this.byteCount = this.reviewVo.rContent.length;
+            }
+
         },
 
         // 리뷰등록
@@ -117,23 +124,26 @@ export default {
             console.log("----------images-----------");
             console.log(this.images);
 
+
+
+
             let formData = new FormData();
-            formData.append('star', this.reviewVo.star-1);
+            formData.append('star', this.reviewVo.star - 1);
             formData.append('rContent', this.reviewVo.rContent);
             formData.append('rNo', this.reviewVo.rNo);
             formData.append('bNo', this.reviewVo.bNo);
             formData.append('uNo', this.reviewVo.uNo);
             formData.append('rDate', this.reviewVo.rDate);
-            formData.append('userPoint',this.userPoint);
-            formData.append('rsNo',this.reviewVo.rsNo);
-            
+            formData.append('userPoint', this.userPoint);
+            formData.append('rsNo', this.reviewVo.rsNo);
+
             for (let i = 0; i < this.images.length; i++) {
-                formData.append('file',this.images[i]);
+                formData.append('file', this.images[i]);
             }
 
-            this.reviewVo.imgCount= this.images.length;
+            this.reviewVo.imgCount = this.images.length;
             console.log(this.reviewVo.imgCount);
-            formData.append('imgCount',this.reviewVo.imgCount);
+            formData.append('imgCount', this.reviewVo.imgCount);
 
             axios({
                 method: 'post', // put, post, delete 

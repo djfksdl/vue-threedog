@@ -287,3 +287,46 @@
     font-weight: bold;
     cursor: pointer;
 }
+
+
+
+
+/* 모달창 */
+.reseerveContainer .modal-wrap {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+/* modal or popup */
+.reseerveContainer .modal-container {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 900px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.reseerveContainer .modal-btn {
+    text-align: right;
+}
+
+.reseerveContainer .modal-btn button {
+    padding: 15px;
+    border: none;
+    font-size: 18px;
+    border-radius: 20px;
+    background-color: #1d5e35;
+    color: white;
+}
+
+.reseerveContainer .modal-btn button:hover {
+    cursor: pointer;
+}

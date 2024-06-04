@@ -9,7 +9,7 @@
                 </div>
                 <!-- 메뉴(회원+원장) -->
                 <ul class="mMenu" v-if="this.$store.state.auth == null ">
-                    <li><router-link to="/review">후기게시판</router-link></li>
+                    <li><router-link :to="`/review/${bNo}`">후기게시판</router-link></li>
                 </ul>
                 <!-- 메뉴(원장) -->
                 <ul class="mMenu" v-if="this.$store.state.auth != null">
