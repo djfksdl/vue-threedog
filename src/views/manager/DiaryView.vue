@@ -31,7 +31,8 @@
                         <label class="diary-label">추가요금: {{ selectedAdditionalFee?.price }}</label>
                         <div v-if="additionalFees">{{ additionalFees }}</div>
                         <table>
-                            <tr v-for="(item, index) in additionalFees" :key="index" @click="selectAdditionalFee(item)">
+                            <tr v-for="(item, index) in additionalFees" :key="index"
+                             @click="selectAdditionalFee(item)">
                                 <td>{{ item.name }}</td>
                                 <td>{{ item.price }}</td>
                             </tr>
@@ -43,13 +44,14 @@
                     </div> -->
 
 
-                    <div class="diary-info-leftitem" v-if="selectedSchedule">
-                        <label class="diary-label">추가요금:</label>
+                    <div class="diary-info-leftitem2" v-if="selectedSchedule">
+                        <label class="diary-label">추가요금:{{ toggleSelectedAdditionalFee?.price }} </label>
                         <table style="width: 100%;">
                             <tbody>
                                 <tr v-for="(priceItem, index) in priceList2" :key="index">
                                     <th>{{ priceItem.beauty }}</th>
-                                    <td :class="{ 'selected': priceItem.selected }" @click="toggleSelected(priceItem)">
+                                    <td :class="{ 'selected': priceItem.selected }"
+                                        @click="toggleSelectedAdditionalFee(priceItem)">
                                         {{ priceItem.onePrice.toLocaleString() }}</td>
                                 </tr>
                             </tbody>
@@ -61,13 +63,8 @@
                     </div>
 
 
+                    <div v-if="selectedAdditionalFee">{{ toggleSelectedAdditionalFee }}</div>
 
-                    <div v-if="selectedAdditionalFee">{{ selectedAdditionalFee }}</div>
-                </div>
-                <!-- 오른쪽 박스: 미용 기록 입력 -->
-                <div class="diary-right-box">
-                    <h2>미용 기록</h2>
-                    <br>
                     <div>
                         <div class="diary-info-leftitem">
                             <label class="diary-label" for="grooming-photo">미용 사진:</label>
@@ -87,6 +84,12 @@
                             <img v-for="(photo, index) in attachedPhotos" :src="photo" :key="index" alt="첨부된 사진">
                         </div>
                     </div>
+                </div>
+                <!-- 오른쪽 박스: 미용 기록 입력 -->
+                <div class="diary-right-box">
+                    <h2>미용 기록</h2>
+                    <br>
+
                     <!-- 미용 기록 입력 폼 -->
                     <div class="diary-info-rightitem">
                         <label class="diary-label" for="grooming-etiquette">미용예절</label>
@@ -216,7 +219,6 @@ export default {
             breed: "포메라니안", // 품종
             groomingStyle: "베이비컷", // 미용 스타일
             price: "", // 가격
-            // additionalFees: null, // 추가 요금
             photoUrls: [], // 미용 사진 URL 목록
             groomingEtiquette: "", // 미용 예절
             condition: "", // 애견의 컨디션
@@ -235,14 +237,15 @@ export default {
             savedDislikedArea: "", // 저장된 싫어했던 부위
             savedBathDry: "", // 저장된 목욕/드라이 정보
             savedcurruntWeight: "", // 몸무게
-            // selectedAdditionalFee: null, // 선택된 추가 요금
+            selectedAdditionalFee: null, // 선택된 추가 요금
             savedNote: "", // 저장된 전달 사항
             attachedPhotos: [], // 첨부된 사진 파일들
             savedAttachedPhotos: [], // 저장된 첨부 사진 URL들
             images: [], // 이미지 리스트
             currentIndex: 0, // 현재 이미지 인덱스
             reserveVo: {
-                rsNo: null // 예약 번호
+                rsNo: null, // 예약 번호
+                expectedPrice2: 0 // 예상 가격 초기화
             },
             priceList2: [], // 추가요금 데이터를 저장할 배열
             priceVo: {
@@ -378,7 +381,7 @@ export default {
             formData.append('bathDry', this.savedBathDry);
             formData.append('curruntWeight', this.savedcurruntWeight); // 몸무게 추가
             formData.append('note', this.savedNote);
-            formData.append('additionalFees', JSON.stringify(this.savedAdditionalFee));
+            formData.append('priceList2', JSON.stringify(this.savedAdditionalFee));
 
             // 이미지 파일 추가
             this.attachedPhotos.forEach(photo => {
@@ -464,13 +467,13 @@ export default {
         },
 
         // 추가요금 가격표
-        toggleSelected(priceList2) {
+        toggleSelectedAdditionalFee(priceList2) {
             // 선택 상태를 토글합니다.
             priceList2.selected = !priceList2.selected;
 
             if (priceList2.selected) {
                 console.log('선택한 값 :', priceList2.onePrice);
-                this.reserveVo.expectedPrice += priceList2.onePrice; // 선택한 값의 누적을 수행합니다.
+                this.reserveVo.expectedPrice2 += priceList2.onePrice; // 선택한 값의 누적을 수행합니다.
 
                 // 가격표 No 출력 및 추가
                 console.log("priceNo:", priceList2.priceNo);
@@ -484,7 +487,7 @@ export default {
 
             } else {
                 console.log('선택 취소한 값 :', priceList2.onePrice);
-                this.reserveVo.expectedPrice -= priceList2.onePrice; // 선택 취소한 값의 차감을 수행합니다.
+                this.reserveVo.expectedPrice2 -= priceList2.onePrice; // 선택 취소한 값의 차감을 수행합니다.
 
                 // 선택 취소한 th 값을 beauty2 배열에서 제거합니다.
                 const thIndex = this.priceVo.beauty2.indexOf(priceList2.beauty);
@@ -500,64 +503,70 @@ export default {
             }
 
             // 콘솔에 현재 예상 가격 출력
-            console.log('현재 예상 가격 :', this.reserveVo.expectedPrice);
+            console.log('현재 예상 가격 :', this.reserveVo.expectedPrice2);
+
             // 콘솔에 현재 priceNo2 배열 출력
             console.log('현재 priceNo 배열 :', this.priceVo.priceNo2);
+
+            // 총 금액을 다시 계산하고 업데이트합니다.
+            // this.$nextTick(() => {
+            //     this.$forceUpdate(); // Vue 강제 갱신
+            // });
         },
 
-        // 추가요금 선택
-        selectAdditionalFee(item) {
-            this.selectedAdditionalFee = item;
-        },
+        // // 추가요금 선택
+        // selectAdditionalFee(item) {
+        //     this.selectedAdditionalFee = item;
+        // },
         // 총 금액 계산
         calculateTotalAmount() {
-            const basePrice = parseFloat(this.selectedSchedule.extendedProps.price) || 0;
-            const additionalFee = parseFloat(this.selectedAdditionalFee?.price) || 0;
-            return basePrice + additionalFee;
+            const basePrice = parseFloat(this.selectedSchedule?.extendedProps?.price) || 0;
+            const additionalFee = parseFloat(this.reserveVo.expectedPrice2) || 0; // 추가 요금 합산
+            return basePrice + additionalFee; // 기본 금액과 추가 요금을 합산하여 총 금액을 반환합니다.
         },
         // 모달 닫기
         closeModal() {
             this.showModal = false;
         },
         //-------------------- 모두 완료되었을때----------------------------
-        // // 보내기
-        // sendNotification() {
-        //     axios({
-        //         method: 'put',
-        //         url: `${this.$store.state.apiBaseUrl}/api/jw/${this.reserveVo.rsNo}`,
-        //         headers: { "Content-Type": "application/json; charset=utf-8" },
-        //         data: this.reserveVo,
-        //         responseType: 'json'
-        //     })
-        //         .then(response => {
-        //             alert("수정이 완료되었습니다.");
-        //             console.log(response.data.apiData);
-        //         })
-        //         .catch(error => {
-        //             console.log(error);
-        //         });
+        // 보내기
+        sendNotification() {
+            axios({
+                method: 'put',
+                url: `${this.$store.state.apiBaseUrl}/api/jw/${this.reserveVo.rsNo}`,
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                data: this.reserveVo,
+                responseType: 'json'
+            })
+                .then(response => {
+                    alert("수정이 완료되었습니다.");
+                    console.log(response.data.apiData);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
 
-        //     this.showModal = false;
+            this.showModal = false;
 
-        //     Swal.fire({
-        //         title: '전송되었습니다!',
-        //         icon: 'success',
-        //         confirmButtonText: '확인'
-        //     }).then(() => {
-        //         this.$router.push({ name: 'reserve' });
-        //     });
-        // },
+            Swal.fire({
+                title: '전송되었습니다!',
+                icon: 'success',
+                confirmButtonText: '확인'
+            }).then(() => {
+                this.$router.push({ name: 'reserve' });
+            });
+        },
 
-        // // 카카오톡 알림 전송
-        // kakaosendNotification() {
-        //     Swal.fire({
-        //         title: '카카오톡 공유하기',
-        //         text: 'Notification sent via KakaoTalk!',
-        //         icon: 'success',
-        //         confirmButtonText: '확인'
-        //     });
-        //     this.showModal = false;
-        // },
+        // 카카오톡 알림 전송
+        kakaosendNotification() {
+            Swal.fire({
+                title: '카카오톡 공유하기',
+                text: 'Notification sent via KakaoTalk!',
+                icon: 'success',
+                confirmButtonText: '확인'
+            });
+            this.showModal = false;
+        },
 
         // 날짜 포맷팅
         formatDate(date) {
@@ -573,15 +582,12 @@ export default {
     computed: {
         // Vuex 상태 매핑
         ...mapState(['selectedSchedule']),
+
         // 총 금액 계산
-        // totalAmount() {
-        //     return this.calculateTotalAmount();
-        // },
         totalAmount() {
-            const basePrice = parseFloat(this.selectedSchedule?.extendedProps?.price) || 0;
-            // usePoint 변수를 적절한 변수로 대체하여 계산
-            return basePrice + this.reserveVo.expectedPrice;
+            return this.calculateTotalAmount();
         },
+
     },
     watch: {
         // 선택된 일정이 변경될 때 처리

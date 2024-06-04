@@ -56,6 +56,7 @@
 .diary-label {
     font-weight: bold; /* 폰트 굵기 */
     margin-bottom: 10px;
+    margin-top: 10px; /* 위쪽 간격 추가 */
     display: inline-block; /* 라벨을 한 줄에 표시 */
 }
 .diary-input {
@@ -398,4 +399,91 @@
     border-radius: 50%;
     cursor: pointer;
 }
+/* 추가요금 테이블 스타일링 */
+.diary-info-leftitem2 table {
+    width: 100%; /* 테이블의 너비를 100%로 설정 */
+    border-collapse: collapse; /* 테이블 셀 경계를 겹치도록 설정 */
+    margin-top: 10px; /* 테이블 상단에 여백 추가 */
+    font-family: 'Nanum Gothic', sans-serif; /* 한글 글꼴 추가 */
+}
 
+.diary-info-leftitem2 th, 
+.diary-info-leftitem2 td {
+    padding: 10px; /* 셀 내부 여백 추가 */
+    text-align: left; /* 텍스트를 왼쪽 정렬 */
+    border-bottom: 1px solid #ddd; /* 셀 하단 경계선 추가 */
+    transition: background-color 0.3s ease; /* 배경색 전환 애니메이션 추가 */
+}
+
+/* 테이블 헤더 스타일 */
+.diary-info-leftitem2 th {
+    background-color: #f2f2f2; /* 헤더 배경색 */
+    color: #333; /* 헤더 텍스트 색상 */
+    font-weight: bold; /* 텍스트 굵게 설정 */
+    text-align: center; /* 텍스트를 가운데 정렬 */
+}
+
+/* 테이블 본문 스타일 */
+.diary-info-leftitem2 td {
+    background-color: #fff; /* 셀 배경색 */
+    color: #333; /* 셀 텍스트 색상 */
+    text-align: center; /* 텍스트를 가운데 정렬 */
+    cursor: pointer; /* 마우스 포인터를 클릭 가능 아이콘으로 변경 */
+}
+
+/* 선택된 행 스타일 */
+.diary-info-leftitem2 td.selected {
+    background-color: #f39c12; /* 선택된 행 배경색 */
+    color: #fff; /* 선택된 행 텍스트 색상 */
+}
+
+/* 행 마우스 오버 스타일 */
+.diary-info-leftitem2 td:hover {
+    background-color: #f1c40f; /* 마우스 오버 시 배경색 변경 */
+}
+
+/* 금액 셀을 더 넓게 설정 */
+.diary-info-leftitem2 th:nth-child(1),
+.diary-info-leftitem2 td:nth-child(1) {
+    width: 30%; /* 첫 번째 열 너비 설정 */
+}
+
+.diary-info-leftitem2 th:nth-child(2),
+.diary-info-leftitem2 td:nth-child(2) {
+    width: 70%; /* 두 번째 열 너비 설정 */
+}
+
+/* 반응형 테이블 */
+@media (max-width: 768px) {
+    .diary-info-leftitem2 table, 
+    .diary-info-leftitem2 th, 
+    .diary-info-leftitem2 td {
+        display: block; /* 블록 요소로 변경 */
+        width: 100%; /* 너비를 100%로 설정 */
+    }
+
+    .diary-info-leftitem2 th {
+        text-align: right; /* 텍스트를 오른쪽 정렬 */
+        padding-right: 10px; /* 오른쪽 여백 추가 */
+    }
+
+    .diary-info-leftitem2 th::after {
+        content: ":"; /* 콜론 추가 */
+        padding-left: 5px; /* 왼쪽 여백 추가 */
+    }
+
+    .diary-info-leftitem2 td {
+        text-align: right; /* 텍스트를 오른쪽 정렬 */
+        padding-left: 50%; /* 왼쪽 여백 추가 */
+        position: relative; /* 상대 위치 설정 */
+    }
+
+    .diary-info-leftitem2 td::before {
+        content: attr(data-label); /* 데이터 라벨 추가 */
+        position: absolute; /* 절대 위치 설정 */
+        left: 10px; /* 왼쪽 위치 설정 */
+        width: calc(50% - 20px); /* 너비 계산 */
+        text-align: left; /* 텍스트를 왼쪽 정렬 */
+        white-space: nowrap; /* 줄바꿈 없음 */
+    }
+}
