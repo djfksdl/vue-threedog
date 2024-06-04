@@ -219,7 +219,7 @@ export default {
             savedDislikedArea: "", // 저장된 싫어했던 부위
             savedBathDry: "", // 저장된 목욕/드라이 정보
             savedcurruntWeight: 0, // 몸무게
-            additionalFee: 0,
+            additionalFee: 0,// 추가 요금 초기화
             //selectedAdditionalFee: 0, // 선택된 추가 요금
             savedAdditionalFee: [], // 저장된 추가 요금
             savedNote: "", // 저장된 전달 사항
@@ -229,11 +229,14 @@ export default {
             currentIndex: 0, // 현재 이미지 인덱스
             reserveVo: {
                 rsNo: null, // 예약 번호
-                expectedPrice2: 0 // 예상 가격 초기화
+                expectedPrice2: 0, // 예상 가격 초기화
+                priceNo2: [],
+                beauty2: []
             },
-            priceList2: [], // 추가요금 데이터를 저장할 배열
+            priceList2: [], // 추가 요금 리스트 초기화
             priceVo: {
                 bNo: null,
+                expectedPrice2: 0,
                 priceNo2: [],
                 beauty2: [],
             },
@@ -337,7 +340,6 @@ export default {
 
 
 
-
         //-------------------- 모두 저장저장----------------------------
         // 업데이트 및 사진 db에 저장
         saveNotification() {
@@ -361,7 +363,7 @@ export default {
             this.savedDislikedArea = this.dislikedArea;
             this.savedBathDry = this.bathDry;
             this.savedcurruntWeight = this.curruntWeight; // 몸무게 추가
-            this.savedAdditionalFee = this.additionalFee;
+            this.savedAdditionalFee = this.additionalFee; // 추가요금
             this.savedNote = this.note;
             this.savedAttachedPhotos = this.attachedPhotos.map(file => URL.createObjectURL(file));
             this.showModal = true;
@@ -382,15 +384,15 @@ export default {
             formData.append('bathDry', this.savedBathDry);
             formData.append('curruntWeight', this.savedcurruntWeight); // 몸무게 추가
             formData.append('note', this.savedNote);
-            formData.append('priceList2',(this.savedAdditionalFee));
+            formData.append('additionalFee', this.additionalFee); // 추가 요금을 추가합니다
 
-           // basePrice + additionalFee
+            // basePrice + additionalFee
 
             // 이미지 파일 추가
             this.attachedPhotos.forEach(photo => {
                 formData.append('file', photo);
             });
-            
+
 
 
             // 폼데이터 화면에 찍는 방법
@@ -436,12 +438,10 @@ export default {
                 headers: { "Content-Type": "application/json; charset=utf-8" },
                 data: formData,
                 responseType: 'json'
-
             }).then(response => {
                 console.log("미용 기록 업데이트");
                 console.log(response.data.apiData);
-
-
+                // 여기서 미용 기록을 업데이트한 후의 작업을 수행합니다.
             }).catch(error => {
                 console.log(error);
             });
@@ -462,9 +462,9 @@ export default {
                 data: formData,
                 responseType: 'json'
             }).then(response => {
-                console.log("이미지 ");
+                console.log("이미지 업로드 완료");
                 console.log(response.data.apiData);
-
+                // 이미지를 업로드한 후의 작업을 수행합니다.
             }).catch(error => {
                 console.log(error);
             });
@@ -504,6 +504,8 @@ export default {
             if (priceList2.selected) {
                 console.log('선택한 값 :', priceList2.onePrice);
                 this.reserveVo.expectedPrice2 = parseFloat(this.reserveVo.expectedPrice2) + parseFloat(priceList2.onePrice); // 선택한 값의 누적을 수행합니다.
+                this.priceVo.priceNo2.push(priceList2.priceNo);
+                this.priceVo.beauty2.push(priceList2.beauty);
 
                 // 가격표 No 출력 및 추가
                 console.log("priceNo:", priceList2.priceNo);
@@ -532,6 +534,8 @@ export default {
                 }
             }
 
+            this.additionalFee = this.reserveVo.expectedPrice2;
+
             // 콘솔에 현재 예상 가격 출력
             console.log('현재 예상 가격 :', this.reserveVo.expectedPrice2);
 
@@ -552,38 +556,61 @@ export default {
         },
 
         //-------------------- 모두 완료되었을때----------------------------
-        // 보내기
+        // 보내기 누르면 푸쉬완료
         sendNotification() {
-            // 추가요금 데이터 반영
-            this.reserveVo.priceNo2 = this.priceVo.priceNo2;
-            this.reserveVo.beauty2 = this.priceVo.beauty2;
+            // 추가 요금 데이터 반영
+            this.reserveVo.additionalFee = this.additionalFee;
 
             // 몸무게 데이터 반영
             this.reserveVo.curruntWeight = this.curruntWeight;
-            // URL에서 `{rsNo}`를 실제 값으로 대체
-            axios({
-                method: 'Post',
-                url: `${this.$store.state.apiBaseUrl}/api/jw/${this.reserveVo.rsNo}/pushnotification`,
-                headers: { "Content-Type": "application/json; charset=utf-8" },
-                data: this.reserveVo,
-                responseType: 'json'
-            })
-                .then(response => {
-                    alert("수정이 완료되었습니다.");
-                    console.log(response.data.apiData);
-                })
-                .catch(error => {
-                    console.log(error);
-                });
 
-            this.showModal = false;
+            // 이미지 업로드
+            this.uploadImages(this.rsNo);
 
+            // 미용 기록 업데이트
+            this.updateGroomingRecord(this.rsNo, this.formData);
+
+            // 푸시 알림 보내기
+            this.sendPushNotification(this.rsNo);
+
+            // 모든 데이터가 저장되었음을 알림
             Swal.fire({
                 title: '전송되었습니다!',
                 icon: 'success',
                 confirmButtonText: '확인'
             }).then(() => {
+                
+                // 예약 스케줄 화면으로 이동하고 알림 표시 색상 변경
                 this.$router.push({ name: 'schedule' });
+                this.scheduleNotificationStatus = 'completed';
+            });
+        },
+
+        // 푸시 알림 보내기
+        sendPushNotification(rsNo) {
+            const notificationData = {
+                title: '미용 기록이 업데이트 되었습니다.',
+                body: '애견의 미용 기록이 성공적으로 업데이트되었습니다.',
+                icon: 'https://example.com/icon.png', // 알림 아이콘
+                data: {
+                    rsNo: rsNo // 업데이트된 미용 기록의 고유 번호
+                }
+            };
+
+            // 서버로 푸시 알림 요청을 보냅니다.
+            axios({
+                method: 'post',
+                url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/insertPushNotification`,
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                data: notificationData,
+                responseType: 'json'
+            }).then(response => {
+                console.log("푸시 알림이 성공적으로 전송되었습니다.");
+                console.log(response.data.apiData);
+                // 푸시 알림 전송 후의 작업을 수행합니다.
+            }).catch(error => {
+                console.log("푸시 알림 전송 중 오류가 발생했습니다.");
+                console.log(error);
             });
         },
 
