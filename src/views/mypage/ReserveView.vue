@@ -75,9 +75,9 @@
                 <div class="modal-wrap" v-show="modalCheck">
                     <div class="modal-container">
                         <div class="reviewBoardDetailContainer">
-                            <div class="reviewDetailImg">
-                                <!-- <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`"
-                                    style="width: 300px; height: 350px;"> -->
+                            <div class="reviewDetailImg" v-bind:key="i" v-for="(reviewVo, i) in reviewList">
+                                <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`"
+                                    style="width: 300px; height: 350px;">
                             </div>
                             <div>
                                 <div class="userId"><strong>{{ reviewVo.uId }}</strong>님</div>
@@ -184,11 +184,13 @@ export default {
                 dogNo: 0,
                 weight: 0.0,
                 expectedPrice: 0,
-                saveName:""
-
+                saveName: "",
             },
+            
+            reviewList:[],
             modalCheck: false,
             selectedReserve: null,
+
         };
     },
 
@@ -232,24 +234,44 @@ export default {
             console.log(rsNo);
             this.modalCheck = true;
 
-            // axios({
-            //     method: 'get',  //put,post,delete
-            //     url: `${this.$store.state.apiBaseUrl}/api/mypage/reservationlist2`,
-            //     headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
-            //     params: { rsNo: this.reviewVo.rsNo },
-            //     responseType: 'json' //수신타입
-            // }).then(response => {
-            //     console.log("예약내역 불러오기 성공");
-            //     console.log(response.data.apiData); //수신데이타
-            //     this.reviewVo = response.data.apiData;
+            axios({
+                method: 'get',  //put,post,delete
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/reservationlist2`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { rsNo: rsNo },
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log("예약내역 불러오기 성공");
+                console.log(response.data.apiData); //수신데이타
+                this.reviewVo = response.data.apiData;
+                this.getReviewList(rsNo);
+            }).catch(error => {
+                console.log(error);
+            });
+        },
+        getReviewList(rsNo) {
+            console.log(rsNo);
+            console.log("이미지불러오기");
 
-            // }).catch(error => {
-            //     console.log(error);
-            // });
+            axios({
+                method: 'get',  //put,post,delete
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/getsavenamelist`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { rsNo: rsNo },
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log("이미지불러오기 불러오기 성공");
+                console.log(response.data.apiData); //수신데이타
+                this.reviewList = response.data.apiData;
+            }).catch(error => {
+                console.log(error);
+            });
+
         }
 
 
     },
+
 
 
     created() {

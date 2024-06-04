@@ -267,7 +267,7 @@
 
 
 /* 후기 작성버튼 */
-.reserveCheckForm .rrfConfirm >a{
+.reserveCheckForm .rrfConfirm >button{
     display: block;
     margin: 0 auto;
     border: 1px solid #237140;
@@ -280,7 +280,8 @@
     font-weight: bold;
     text-align: center;
 }
-.reserveCheckForm .rrfConfirm >a:hover{
+.reserveCheckForm .rrfConfirm >a:hover,
+.reserveCheckForm .rrfConfirm >button{
     color: #fff;
     background-color: #237140;
     font-weight: bold;
