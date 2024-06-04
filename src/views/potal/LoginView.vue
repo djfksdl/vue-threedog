@@ -82,6 +82,8 @@ export default {
         };
     },
     methods: {
+
+        // ***** 비밀번호 보이기/감추기 *****
         togglePasswordVisibility() {
             this.showPassword = !this.showPassword; // 비밀번호 보이기/감추기 전환
             const passwordInput = document.getElementById('password');
@@ -91,7 +93,7 @@ export default {
                 passwordInput.type = 'password'; // 비밀번호 감추기
             }
         },
-        // 로그인
+        // ***** 로그인 *****
         login(){
             // console.log("로그인버튼 클릭");
             console.log(this.userVo);
@@ -138,6 +140,8 @@ export default {
 
 
         },
+
+        // ***** 카카오 로그인 *****
         kakaoLogin() {
             window.Kakao.Auth.login({
                 scope: "profile_image, account_email, name, phone_number",
