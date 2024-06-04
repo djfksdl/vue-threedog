@@ -57,3 +57,7 @@
     font-weight: bold; /* 굵은 글꼴 설정 */
     text-align: center; /* 가운데 정렬 */
 }
+
+.year{
+    margin-top: 80px;
+}
