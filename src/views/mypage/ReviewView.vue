@@ -166,7 +166,7 @@ export default {
                 rContent: "",
                 rDate: "",
                 views: 0,
-                bNo: 1,
+                bNo: this.$route.params.bNo,
                 uNo: "",
                 uId: "",
                 beauty: "",
@@ -207,6 +207,84 @@ export default {
         },
 
 
+        
+
+        // 리뷰상세보기 모달창
+        reviewDetail(rNo) {
+            if (rNo) {
+                this.selectedReview = this.reviewList.find((review) => review.rNo == rNo);
+                if (this.selectedReview) {
+                    this.updateViewCount(rNo);
+                }
+                this.modalCheck = true;
+
+            }
+            this.getOneRList(rNo);
+        },
+
+
+        //후기1개 가져오기
+        getOneRList(rNo) {
+            console.log("후기 1개 가져오기");
+            console.log("리뷰", rNo, "선택함");
+            axios({
+                method: 'get', // put, post, delete                   
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/getonerlist`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { rNo: rNo }, //get방식 파라미터로 값이 전달
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log(response.data.apiData); //수신데이타
+                this.reviewVo2 = response.data.apiData; // reviewVo2 업데이트
+                console.log("후기1개만 가져와야된다~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                // this.getSaveName(rNo); // 이 부분은 주석 처리하여 불러오지 않도록 수정
+            }).catch(error => {
+                console.log(error);
+            });
+        },
+
+        getSaveName(rNo) {
+            console.log("후기사진 가져오기...............귀찮아...............");
+            console.log(rNo);
+            axios({
+                method: 'get',  //put,post,delete
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/getsavename`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { rNo: rNo },
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log("성공");
+                console.log(response.data.apiData); //수신데이타
+                this.reviewList2 = response.data.apiData;
+
+            }).catch(error => {
+                console.log(error);
+            });
+        },
+
+
+
+
+        // 조회수 업데이트
+        updateViewCount(rNo) {
+            console.log("조회수 1증가!!!");
+            console.log(rNo);
+            axios({
+                method: 'post',  //put,post,delete
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/updateview`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { rNo: rNo },
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log("성공");
+                console.log(response.data.apiData); //수신데이타
+                this.reviewVo.views = response.data.apiData;
+                this.getRList();
+
+            }).catch(error => {
+                console.log(error);
+            });
+        },
 
         // 날짜변환
         formatDate(dateString) {
