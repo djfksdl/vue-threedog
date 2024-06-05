@@ -68,6 +68,57 @@ import axios from "axios";
 
 const clientId = "dc1j0BkcYhtjZfREkzlH";
 
+// 2. 해당 인증코드 가지고 토큰 요청
+const getKakaoToken = async (code) => {
+    try {
+        const data = {
+            grant_type: "authorization_code",
+            client_id: "0e2f4296c5ab39f843a685fe91dd9b8a", // REST API 키
+            redirect_uri: "http://localhost:8080/login",
+            code: code,
+        };
+
+        const queryString = Object.keys(data)
+            .map((k) => encodeURIComponent(k) + "=" + encodeURIComponent(data[k]))
+            .join("&");
+
+            console.log(queryString);
+
+        const result = await axios.post(
+            "https://kauth.kakao.com/oauth/token",
+            queryString,
+            {
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
+                },
+            }
+        );
+        console.log(result);
+        return result;
+    } catch (e) {
+        console.log(e);
+    return e;
+  }
+};
+
+//3. 사용자 정보 조회
+const getKakaoUserInfo = async () => {
+    let data = "";
+    await window.Kakao.API.request({
+        url: "/v2/user/me",
+    })
+    .then(function (response) {
+        console.log(response);
+        data = response;
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+        console.log("카카오 계정 정보", data);
+    return data;
+};
+
+
 export default {
     name: "LoginView",
     components: {
@@ -79,6 +130,7 @@ export default {
                 uId: "",
                 uPw: "",
             }, 
+            kakaoUser:{}
         };
     },
     methods: {
@@ -142,16 +194,42 @@ export default {
         },
 
         // ***** 카카오 로그인 *****
+        // 로그인 버튼 눌렀을때 
         kakaoLogin() {
             console.log("카카오 로그인");
 
-            
             // 1. 인가 코드 얻기
             window.Kakao.Auth.authorize({
                 redirectUri : 'http://localhost:8080/login',
-                prompt : 'login'
+                prompt : 'login' //강제로 로그인 화면 표시
             })
         },
+
+        // 2. 토큰 조회
+        async setKakaoToken(code) {
+            const { data } = await getKakaoToken(code);
+            if (data.error) {
+                console.log(data.error);
+                return;
+            }
+            console.log(data);
+            window.Kakao.Auth.setAccessToken(data.access_token);
+            await this.setUserInfo();
+            this.$router.push({ path: "/login" });
+        },
+
+        // 3. 사용자 정보 조회
+        async setUserInfo() {
+            const res = await getKakaoUserInfo();
+            const userInfo = {
+                name: res.kakao_account.profile.nickname,
+                profile: res.kakao_account.profile.profile_image_url,
+            };
+            console.log(userInfo);
+            this.kakaoUser = userInfo;
+        },  
+
+
         // getKakaoAccount() {
         //     window.Kakao.API.request({
         //         url: "/v2/user/me",
@@ -184,5 +262,15 @@ export default {
         this.naverLogin.setState(state);
         this.naverLogin.init_naver_id_login();
     },
+    created(){
+
+        // 카카오톡 로그인 값 확인용
+        if(this.$route.query.code != undefined){
+            console.log("로그인 되었을때 코드확인");
+            console.log(this.$route.query.code);
+            console.log("토큰 찍기");
+            this.setKakaoToken(this.$route.query.code);
+        }
+    }
 };
 </script>
