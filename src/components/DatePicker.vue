@@ -1,20 +1,28 @@
 <template>
   <div id="reservationFormDatePicker">
-    <div>
+    <div class="dateBox">
       <Datepicker locale="ko" v-model="date" format="yyyy-MM-dd" :enable-time-picker="false" :inline="true"
         :min-date="minDate" @update:model-value="onDateChange" />
     </div>
+
     <div class="time">
-      <!-- {{ currentDate }} -->
-      <!-- <p>오전</p>
-      <p>오후</p> -->
-      <p>시간선택</p>
-      <div v-for="time in reserveList" :key="time" style="display: inline-block;">
-        <button type="button" :class="{ selected: isSelected(time.rtTime), disabled: time.rtFinish }"
-          @click="toggleTime(time)" :disabled="time.rtFinish">
-          {{ formatTime(time.rtTime) }}
-        </button>
-        <!-- {{ time.rtNo }} -->
+      <div v-if="amTimes.length > 0">
+        <p>오전</p>
+        <div v-for="time in amTimes" :key="time.rtNo" style="display: inline-block;">
+          <button type="button" :class="{ selected: isSelected(time.rtTime), disabled: time.rtFinish }"
+            @click="toggleTime(time)" :disabled="time.rtFinish">
+            {{ formatTime(time.rtTime) }}
+          </button>
+        </div>
+      </div>
+      <div v-if="pmTimes.length > 0">
+        <p>오후</p>
+        <div v-for="time in pmTimes" :key="time.rtNo" style="display: inline-block;">
+          <button type="button" :class="{ selected: isSelected(time.rtTime), disabled: time.rtFinish }"
+            @click="toggleTime(time)" :disabled="time.rtFinish">
+            {{ formatTime(time.rtTime) }}
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -27,6 +35,9 @@ import { useStore } from 'vuex';
 import axios from 'axios';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
+import { useRoute } from 'vue-router';
+
+
 
 const store = useStore();
 const date = ref(new Date());
@@ -34,15 +45,24 @@ const minDate = ref(new Date());
 
 const reserveTime = ref({
   rtNo: 0,
-  bNo: 1,
+  bNo: 0,
   rtDate: "",
   rtTime: "",
   rtFinish: false,
 });
 
+const route = useRoute(); // 현재 라우트 정보 가져오기
+
+// 라우트 파라미터를 사용해 bNo 설정
+reserveTime.value.bNo = route.params.bNo;
+
+
 const reserveList = ref([]);
+const amTimes = ref([]);
+const pmTimes = ref([]);
 
 const emit = defineEmits(['selectedDateTime']);
+
 
 // Datepicker에서 날짜가 변경될 때 실행되는 함수
 const onDateChange = (newDate) => {
@@ -61,15 +81,14 @@ const onDateChange = (newDate) => {
         console.log("성공");
         console.log(response.data.apiData);
         reserveList.value = response.data.apiData;
-        console.log(reserveList.value);
-        // emit('selectedDate',reserveTime.value.rtDate);
+        amTimes.value = reserveList.value.filter(time => getTimePeriod(time.rtTime) === 'AM');
+        pmTimes.value = reserveList.value.filter(time => getTimePeriod(time.rtTime) === 'PM');
       })
       .catch(error => {
         console.log(error);
       });
   }
   reserveTime.value.rtTime = '';
-
 };
 
 // 시간 형식을 시와 분으로 추출하는 함수
@@ -84,11 +103,19 @@ const formatTime = (timeString) => {
   return `${hour}:${minute}`;
 };
 
+// 시간대 (AM/PM) 판별 함수
+const getTimePeriod = (timeString) => {
+  const hour = parseInt(extractHourAndMinute(timeString).hour, 10);
+  return hour < 12 ? 'AM' : 'PM';
+};
+
 // 시간 선택 함수
 const toggleTime = (time) => {
-  if (reserveTime.value.rtTime === time) {
+  if (reserveTime.value.rtTime == time.rtTime) {
     reserveTime.value.rtTime = '';  // 선택 해제 (빈 문자열 할당)
     reserveTime.value.rtNo = 0;
+
+
   } else {
     reserveTime.value.rtTime = time.rtTime;  // 시간 선택
     reserveTime.value.rtNo = time.rtNo;      // rtNo 설정
@@ -104,32 +131,29 @@ const toggleTime = (time) => {
       rtFinish: reserveTime.value.rtFinish
     });
   }
-
 };
 
 const isSelected = (time) => {
-  return reserveTime.value.rtTime === time;
+  return reserveTime.value.rtTime == time;
 };
-
 </script>
-
 
 <style>
 #reservationFormDatePicker {
   display: flex;
+  width: 1300px;
+  margin: 0 auto;
 }
 
 #reservationFormDatePicker .disabled {
   color: gray;
   pointer-events: none;
-  /* border: 1px solid red; */
 }
 
 #reservationFormDatePicker .dp__theme_light {
-  /* --dp-menu-border-color: #a7a4a4; */
   --dp-menu-border-color: none;
   --dp-primary-color: #236C3F;
-
+  --dp-cell-size: 46px;
   --dp-cell-border-radius: 50%;
 }
 
@@ -137,60 +161,45 @@ const isSelected = (time) => {
   width: 500px;
   font-size: 20px;
   padding: 10px;
+  border-bottom: none;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  margin-left: 11px;
 }
-
-/* select Button */
-/* .dp__action_buttons {
-    visibility: hidden;
-} */
 
 #reservationFormDatePicker .dp__calendar_item {
   padding: 10px;
-}
-
-#reservationFormDatePicker .dp__button {
-  /* background-color: #236C3F; */
-  width: 500px;
-  /* height: 80px; */
 }
 
 #reservationFormDatePicker .dp__calendar_header_item {
   margin: 20px 0 20px 0;
 }
 
-#reservationFormDatePicker :root {
-  --dp-cell-size: 46px;
-}
-
 #reservationFormDatePicker .dp__action_button.dp__action_select {
   color: #236C3F;
   font-size: 0px;
-  width: 300px;
+  width: 420px;
   height: 50px;
+  margin-right: 30px;
+  margin-top: -13px;
 }
 
 #reservationFormDatePicker .dp__action_button.dp__action_select::after {
   content: "날짜 선택";
   color: white;
-  font-size: 16px;
-  padding-left: 100px;
+  font-size: 18px;
+  padding-left: 170px;
 }
 
 #reservationFormDatePicker .dp__selection_preview {
   color: white;
+  font-size: 0px;
 }
-
-
-
-
-
 
 #reservationFormDatePicker .time {
   width: 500px;
   height: 400px;
-  /* background-color: red; */
-  margin: 70px 150px 0 120px;
-
+  margin: 70px 150px 0 80px;
 }
 
 #reservationFormDatePicker .time p {
@@ -200,7 +209,7 @@ const isSelected = (time) => {
 #reservationFormDatePicker .time button {
   padding: 12px;
   margin: 8px;
-  width: 100px;
+  width: 110px;
   background-color: white;
   border: 1px solid #236C3F;
   border-radius: 5px;
@@ -209,6 +218,11 @@ const isSelected = (time) => {
 }
 
 #reservationFormDatePicker .time button:hover {
+  background-color: #236C3F;
+  color: white;
+}
+
+#reservationFormDatePicker .time button.selected {
   background-color: #236C3F;
   color: white;
 }

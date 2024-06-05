@@ -16,7 +16,7 @@
 }
 
 
-#petAddForm .petAddFormUnder{
+#petAddForm .petAddFormUnder {
     display: flex;
 }
 
@@ -89,9 +89,10 @@
     width: 500px;
     height: 600px;
 }
-#petAddForm .petAddFormUnder img{
-    border: 1px  solid #a7a4a4;
-    
+
+#petAddForm .petAddFormUnder img {
+    border: 1px solid #a7a4a4;
+
 }
 
 #petAddForm .container .detailBox {
@@ -130,16 +131,18 @@
 }
 
 
-#petAddForm .container .detail span{
+#petAddForm .container .detail span {
     font-weight: bold;
     display: block;
     margin-top: 20px;
     margin-bottom: 20px;
 }
-#petAddForm .container .detail .size label{
+
+#petAddForm .container .detail .size label {
     margin-right: 10px;
 }
-#petAddForm .container .detail .size input{
+
+#petAddForm .container .detail .size input {
     margin-right: 30px;
 }
 
@@ -224,7 +227,7 @@ datalist {
     margin: 100px 0 0 300px;
 }
 
-#petAddForm button:active{
+#petAddForm button:active {
     background-color: #236C3F;
     color: white;
 
@@ -380,49 +383,55 @@ datalist {
     width: 1200px;
     margin: 0px auto;
 }
+/* 
+#reservationForm .h2Box1 h2 {
+    width: 1300px;
+    margin: 30px 0 30px 40px;
+
+} */
+
 
 #reservationForm .managerInfor {
     padding: 15px;
-    border: 1px solid #a7a4a4;
+    /* border: 1px solid #a7a4a4; */
     border-radius: 10px;
     width: 1200px;
-    margin: 0 0 0 40px;
+    margin: 0 0 30px 40px;
+    box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1);
+    
 }
 
 #reservationForm .managerInfor .managerInfor2 {
     display: flex;
-
 }
-#reservationForm .managerInfor .managerInfor3{
+
+
+
+#reservationForm .managerInfor .managerInfor3 {
     margin: 10px 0 0 60px;
 }
-#reservationForm .managerInfor .managerInfor3 p{
-    padding-bottom: 10px;
+
+#reservationForm .managerInfor .managerInfor3 p {
+    padding: 10px 0 10px 0;
 }
+
 #reservationForm .managerInfor .managerInfor2 label {
     color: #236C3F;
     font-weight: bold;
 }
-#reservationForm .h2Box1 h2 {
-    font-size: 25px;
-    margin-bottom: 15px;
+
+
+#reservationForm form{
+    width: 1200px;
+    margin: 0 0 30px 40px;
+    box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1);
+    /* background-color: red; */
+    padding: 10px 0 0 50px;
 }
-
-
 
 #reservationForm form h2 {
-    font-size: 25px;
     margin: 30px 0 30px 0;
 }
-
-#reservationForm .choiceBox {
-    /* margin: 0 auto; */
-    width: 1300px;
-    display: flex;
-    /* background-color: red; */
-    justify-content: space-between;
-}
-
 
 
 
@@ -443,7 +452,7 @@ datalist {
 
 
 #reservationForm .reservationBox .petChoice {
-    padding: 30px 0 30px 0;
+    /* padding: 30px 0 30px 0; */
 
 }
 
@@ -467,7 +476,8 @@ datalist {
     border: none;
     border-bottom: 1px solid #a7a4a4;
 }
-#reservationForm .reservationBox .petKg label{
+
+#reservationForm .reservationBox .petKg label {
     padding-top: 5px;
 }
 
@@ -642,7 +652,8 @@ datalist {
 #reservationForm .price input {
     margin-right: 30px;
 }
-#reservationForm .price .tableBox{
+
+#reservationForm .price .tableBox {
     height: 300px;
     /* padding: 20px; */
     margin-top: 30px;
@@ -747,18 +758,18 @@ datalist {
 .reservationSuccess .reservationSuccessHp p {
     /* color: rgb(255, 255, 255); */
     margin-top: 10px;
-    
+
     color: #a7a4a4;
 }
 
-.reservationSuccess ul{
+.reservationSuccess ul {
     /* background-color: red; */
     width: 700px;
     /* margin-left: 150px; */
 }
 
 
-.reservationSuccess label{
+.reservationSuccess label {
     width: 200px;
     display: inline-block;
     /* background-color: red; */
@@ -771,12 +782,13 @@ datalist {
 
 
 
-.reservationSuccess .routerlinkBox{
+.reservationSuccess .routerlinkBox {
     display: flex;
     margin: 50px 0 100px 0;
-   
+
 }
-.reservationSuccess .routerlinkBox button{
+
+.reservationSuccess .routerlinkBox button {
     width: 300px;
     padding: 15px;
     font-size: 18px;
@@ -784,13 +796,15 @@ datalist {
     margin: 25px;
 }
 
-.reservationSuccess .routerlinkBox button:hover{
+.reservationSuccess .routerlinkBox button:hover {
     cursor: pointer;
 }
-.reservationSuccess .routerlink1 a{
+
+.reservationSuccess .routerlink1 a {
     color: white;
 }
-.reservationSuccess .routerlink2 a{
+
+.reservationSuccess .routerlink2 a {
     color: #236C3F;
     font-weight: bold;
 }

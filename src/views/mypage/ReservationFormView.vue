@@ -4,59 +4,64 @@
         <div id="reservationForm">
             <SideBar />
             <div class="container">
-                <div class="h2Box1">
-                    <h2>가게정보</h2>
-                </div>
-                <div class="managerInfor">
-                    <div class="managerInfor2">
-                        <div>
-                            <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${businessVo.logo}`"
-                                style="margin-left:30px; width: 220px;height: 220px; border-radius: 5%;">
-                        </div>
+                <div style=" width: 1300px; margin-bottom: 30px;">
+                    <!-- <div class="h2Box1">
+                        <h2>가게정보</h2>
+                    </div> -->
+                    <div class="managerInfor">
+                        <div class="managerInfor2">
+                            <div>
+                                <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${businessVo.logo}`"
+                                    style="margin: 20px 0 0 30px; width: 220px;height: 220px; border-radius: 5%; border: 1px solid #a7a4a4;">
+                            </div>
 
-                        <div class="managerInfor3">
-                            <label>매장명</label>
-                            <p>{{ businessVo.title }}</p>
-                            <label>전화번호</label>
-                            <p>{{ businessVo.bPhone }}</p>
-                            <label>장소</label>
-                            <p>{{ businessVo.bAddress }} {{ businessVo.bdAddress }}</p>
-                            <label>평균별점</label>
-                            <!-- <p>⭐⭐⭐⭐⭐ {{ businessVo.averageStar }}</p> -->
+                            <div class="managerInfor3">
+                                <label>매장명</label>
+                                <p>{{ businessVo.title }}</p>
+                                <label>전화번호</label>
+                                <p>{{ businessVo.bPhone }}</p>
+                                <label>장소</label>
+                                <p>{{ businessVo.bAddress }} {{ businessVo.bdAddress }}</p>
+                                <label>평균별점</label>
+                                <!-- <p>⭐⭐⭐⭐⭐ {{ businessVo.averageStar }}</p> -->
 
-                            <p class="star" style="margin-top: 2px;">
-                                <!-- Full stars -->
-                                <span v-for="i in Math.floor(businessVo.averageStar)" :key="i"
-                                    style="padding: none;"><img src="@/assets/images/star_yellow.jpg"
-                                        style="width: 15px;"></span>
-                                <!-- Half star -->
-                                <span v-if="businessVo.averageStar - Math.floor(businessVo.averageStar) >= 0.5"><img
-                                        src="@/assets/images/star_ban.png" style="width: 15px;"></span>
-                                <!-- Empty stars -->
-                                <span v-for="i in 5 - Math.ceil(businessVo.averageStar)" :key="'empty_' + i"><img
-                                        src="@/assets/images/star_gray.jpg" style="width: 15px;"></span>
-                                {{ businessVo.averageStar }}
-                            </p>
+                                <p class="star" style="margin-top: 2px;">
+                                    <!-- Full stars -->
+                                    <span v-for="i in Math.floor(businessVo.averageStar)" :key="i"
+                                        style="padding: none;"><img src="@/assets/images/star_yellow.jpg"
+                                            style="width: 15px;"></span>
+                                    <!-- Half star -->
+                                    <span v-if="businessVo.averageStar - Math.floor(businessVo.averageStar) >= 0.5"><img
+                                            src="@/assets/images/star_ban.png" style="width: 15px;"></span>
+                                    <!-- Empty stars -->
+                                    <span v-for="i in 5 - Math.ceil(businessVo.averageStar)" :key="'empty_' + i"><img
+                                            src="@/assets/images/star_gray.jpg" style="width: 15px;"></span>
+                                    {{ businessVo.averageStar }}
+                                </p>
 
 
+                            </div>
                         </div>
                     </div>
 
                 </div>
+                <!-- <div class="h2Box1">
+                    <h2>예약하기</h2>
+                </div> -->
                 <!-- {{ this.dogVo.uNo }} -->
                 <form v-on:submit.prevent="reserveInsert">
                     <h2>📅 날짜와 시간을 선택해주세요</h2>
                     <div class="choiceBox">
                         <div class="calendar">
-                            <Datepicker @selectedDateTime="handleSelectedDateTime" />
+                            <Datepicker @selectedDateTime="handleSelectedDateTime"/>
                         </div>
 
                         <!-- v-bind:key="i" v-for="(reserveVo, i) in reserveList" -->
                     </div>
                     <div class="reservationBox">
-
+                        <h2 >반려견선택</h2>
                         <div class="petChoice">
-                            <div class="petChoice" style="font-size: 16px; font-weight: bold">반려견 선택</div>
+                            <!-- <div class="petChoice" style="font-size: 16px; font-weight: bold">반려견 선택</div> -->
                             <span v-for="dogVo in dogList" :key="dogVo.dogNo">
                                 {{ dogVo.dogNo }}
                                 <label :for="'pet-' + dogVo.dogNo">{{ dogVo.dogName }}</label>
@@ -143,19 +148,19 @@
                                             <th>{{ priceVo.weightDiv }}</th>
                                             <td :class="{ selected: selectedPriceIndex == i }"
                                                 @click="addPrice(priceVo.onePrice, i)">{{
-                                priceVo.onePrice.toLocaleString() }}</td>
+                                    priceVo.onePrice.toLocaleString() }}</td>
                                             <td :class="{ selected: selectedPriceIndex == i + 1 }"
                                                 @click="addPrice(priceList[i + 1]?.onePrice, i + 1)">{{ priceList[i +
-                                1]?.onePrice.toLocaleString() }}</td>
+                                    1]?.onePrice.toLocaleString() }}</td>
                                             <td :class="{ selected: selectedPriceIndex == i + 2 }"
                                                 @click="addPrice(priceList[i + 2]?.onePrice, i + 2)">{{ priceList[i +
-                                2]?.onePrice.toLocaleString() }}</td>
+                                    2]?.onePrice.toLocaleString() }}</td>
                                             <td :class="{ selected: selectedPriceIndex == i + 3 }"
                                                 @click="addPrice(priceList[i + 3]?.onePrice, i + 3)">{{ priceList[i +
-                                3]?.onePrice.toLocaleString() }}</td>
+                                    3]?.onePrice.toLocaleString() }}</td>
                                             <td :class="{ selected: selectedPriceIndex == i + 4 }"
                                                 @click="addPrice(priceList[i + 4]?.onePrice, i + 4)">{{ priceList[i +
-                                4]?.onePrice.toLocaleString() }}</td>
+                                    4]?.onePrice.toLocaleString() }}</td>
                                         </tr>
                                     </tbody>
 
@@ -179,19 +184,19 @@
                                             <th>{{ priceVo.weightDiv }}</th>
                                             <td :class="{ selected: selectedPriceIndex == i }"
                                                 @click="addPrice(priceVo.onePrice, i)">{{
-                                priceVo.onePrice.toLocaleString() }}</td>
+                                    priceVo.onePrice.toLocaleString() }}</td>
                                             <td :class="{ selected: selectedPriceIndex == i + 1 }"
                                                 @click="addPrice(priceList[i + 1]?.onePrice, i + 1)">{{ priceList[i +
-                                1]?.onePrice.toLocaleString() }}</td>
+                                    1]?.onePrice.toLocaleString() }}</td>
                                             <td :class="{ selected: selectedPriceIndex == i + 2 }"
                                                 @click="addPrice(priceList[i + 2]?.onePrice, i + 2)">{{ priceList[i +
-                                2]?.onePrice.toLocaleString() }}</td>
+                                    2]?.onePrice.toLocaleString() }}</td>
                                             <td :class="{ selected: selectedPriceIndex == i + 3 }"
                                                 @click="addPrice(priceList[i + 3]?.onePrice, i + 3)">{{ priceList[i +
-                                3]?.onePrice.toLocaleString() }}</td>
+                                    3]?.onePrice.toLocaleString() }}</td>
                                             <td :class="{ selected: selectedPriceIndex == i + 4 }"
                                                 @click="addPrice(priceList[i + 4]?.onePrice, i + 4)">{{ priceList[i +
-                                4]?.onePrice.toLocaleString() }}</td>
+                                    4]?.onePrice.toLocaleString() }}</td>
                                         </tr>
 
                                     </tbody>
@@ -217,23 +222,23 @@
                                             <th>{{ priceVo.weightDiv }}</th>
                                             <td :class="{ selected: selectedPriceIndex == i }"
                                                 @click="addPrice(priceList[i]?.onePrice, i)">{{
-                                priceVo.onePrice.toLocaleString()
-                            }}</td>
+                                    priceVo.onePrice.toLocaleString()
+                                }}</td>
                                             <td :class="{ selected: selectedPriceIndex == i + 1 }"
                                                 @click="addPrice(priceList[i + 1]?.onePrice, i + 1)">{{ priceList[i +
-                                1]?.onePrice.toLocaleString() }}</td>
+                                    1]?.onePrice.toLocaleString() }}</td>
                                             <td :class="{ selected: selectedPriceIndex == i + 2 }"
                                                 @click="addPrice(priceList[i + 2]?.onePrice, i + 2)">{{ priceList[i +
-                                2]?.onePrice.toLocaleString() }}</td>
+                                    2]?.onePrice.toLocaleString() }}</td>
                                             <td :class="{ selected: selectedPriceIndex == i + 3 }"
                                                 @click="addPrice(priceList[i + 3]?.onePrice, i + 3)">{{ priceList[i +
-                                3]?.onePrice.toLocaleString() }}</td>
+                                    3]?.onePrice.toLocaleString() }}</td>
                                             <td :class="{ selected: selectedPriceIndex == i + 4 }"
                                                 @click="addPrice(priceList[i + 4]?.onePrice, i + 4)">{{ priceList[i +
-                                4]?.onePrice.toLocaleString() }}</td>
+                                    4]?.onePrice.toLocaleString() }}</td>
                                             <td :class="{ selected: selectedPriceIndex == i + 5 }"
                                                 @click="addPrice(priceList[i + 5]?.onePrice, i + 5)">{{ priceList[i +
-                                5]?.onePrice.toLocaleString() }}</td>
+                                    5]?.onePrice.toLocaleString() }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -375,7 +380,7 @@ export default {
             // 고객
             reserveVo: {
                 rsNo: 0,
-                bNo: 1,
+                bNo: this.$route.params.bNo,
                 dogNo: 0,
                 rtDate: "",
                 rtTime: "",
@@ -395,7 +400,7 @@ export default {
             // 사업자
             businessVo: {
                 saveName: "",
-                bNo: 1,
+                bNo: this.$route.params.bNo,
                 title: "",
                 bPhone: "",
                 bAddress: "",
@@ -424,7 +429,7 @@ export default {
             priceVo: {
                 priceNo: 0,
                 beautyNo: 0,
-                bNo: 1,
+                bNo: this.$route.params.bNo,
                 onePrice: 0,
                 sizeDiv: "",
                 weightDiv: "",
