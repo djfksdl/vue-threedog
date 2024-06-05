@@ -453,6 +453,7 @@ import { reactive, onMounted } from 'vue';
                     this.updateShopInfo();
                 }
             },
+            
             // ========== 가게정보 등록하기 ==========
             addShopInfo(){
                 console.log("가게정보 등록하기 버튼");
