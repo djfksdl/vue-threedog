@@ -568,7 +568,7 @@ export default {
             this.uploadImages(this.rsNo);
 
             // 미용 기록 업데이트
-            this.updateGroomingRecord(this.rsNo, this.formData);
+            //this.updateGroomingRecord(this.rsNo, this.formData);
 
             // 푸시 알림 보내기
             this.sendPushNotification(this.rsNo);
@@ -579,7 +579,7 @@ export default {
                 icon: 'success',
                 confirmButtonText: '확인'
             }).then(() => {
-                
+
                 // 예약 스케줄 화면으로 이동하고 알림 표시 색상 변경
                 this.$router.push({ name: 'schedule' });
                 this.scheduleNotificationStatus = 'completed';
