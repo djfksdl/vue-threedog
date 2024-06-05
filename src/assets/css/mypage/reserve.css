@@ -206,7 +206,7 @@
     /* display: flex; */
 }
 .reserveCheckForm .rcfInfo >div{
-    display: flex;
+    /* display: flex; */
     margin: 10px 0;
 }
 .reserveCheckForm .rcfInfo >div p:first-child{
