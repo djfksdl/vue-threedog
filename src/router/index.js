@@ -81,7 +81,7 @@ const routes = [
     component: MyDiaryView
   },
   {
-    path: '/reservationform',
+    path: '/reservationform/:bNo',
     name: 'reservationform',
     component: ReservationFormView
   },
@@ -106,7 +106,7 @@ const routes = [
     component: SearchView
   },
   {
-    path: '/editform/:bNo',
+    path: '/editform',
     name: 'editform',
     component: EditFormView
   },
@@ -126,7 +126,7 @@ const routes = [
     component: SearchMap
   },
   {
-    path: '/inserttime/:bNo',
+    path: '/inserttime',
     name: 'insertTime',
     component: InsertTime
   },

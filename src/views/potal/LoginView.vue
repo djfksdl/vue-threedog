@@ -213,43 +213,68 @@ export default {
                 return;
             }
             console.log(data);
-            window.Kakao.Auth.setAccessToken(data.access_token);
-            await this.setUserInfo();
+            const access_token = data.access_token;
+            window.Kakao.Auth.setAccessToken(access_token);
+            await this.setUserInfo(access_token);
             this.$router.push({ path: "/login" });
         },
 
         // 3. 사용자 정보 조회
-        async setUserInfo() {
+        async setUserInfo(access_token) {
             const res = await getKakaoUserInfo();
             const userInfo = {
-                name: res.kakao_account.profile.nickname,
-                profile: res.kakao_account.profile.profile_image_url,
+                uId: 'kakao '+ res.id,
+                uName: res.kakao_account.profile.nickname,
+                uProfile: res.kakao_account.profile.profile_image_url,
             };
             console.log(userInfo);
             this.kakaoUser = userInfo;
+
+            this.$store.commit('setKakaoToken',access_token);
+
+            this.kakaoCheck(this.kakaoUser);
         },  
 
+        // 4. 유저정보 가입 여부 체크
+        kakaoCheck(kakaoUser){
+            console.log("가입했는지 체크하기");
+            console.log(kakaoUser);
 
-        // getKakaoAccount() {
-        //     window.Kakao.API.request({
-        //         url: "/v2/user/me",
-        //         success: (res) => {
-        //             const kakao_account = res.kakao_account;
-        //             // const email = kakao_account.account_email;
-        //             const name = kakao_account.profile_nickname;
-        //             const profile_image = kakao_account.profile_image;
+            axios({
+                method: 'post',
+                url: `${this.$store.state.apiBaseUrl}/api/su/kakao`,
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                data: kakaoUser,
+                responseType: 'json'
+            }).then(response => {
+                console.log(response.data.apiData);
 
-        //             alert("로그인 성공!");
-        //             console.log(kakao_account);
-        //             // console.log(email);
-        //             console.log(name);
-        //             console.log(profile_image);
-        //         },
-        //         fail: (error) => {
-        //             console.log(error);
-        //         },
-        //     });
-        // },
+                if(response.data.result == "success"){
+
+                    //로그인 사용자 정보
+                    let authUser = response.data.apiData;
+
+                    //token은 응답문서의 헤더에 있음 
+                    console.log(response.headers.authorization.split(" ")[1]);
+                    const token = response.headers.authorization.split(" ")[1];
+
+                    
+                    //vuex 저장
+                    this.$store.commit("setAuthUser", authUser);
+                    this.$store.commit("setToken", token);
+
+                    this.$router.push("/");
+
+                
+                } else {
+                    console.log(response.data.message);
+                    alert("아이디 패스워드를 확인하세요.");
+                }
+            }).catch(error => {
+                console.log(error);
+            });
+        }
+
     },
     mounted() {
         this.naverLogin = new window.naver_id_login(

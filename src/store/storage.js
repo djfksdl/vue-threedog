@@ -7,6 +7,7 @@ export default createStore({
             // apiBaseUrl: "http://43.200.182.62:9033",
             authUser: null,
             token: null,
+            kakaoToken : '',
             selectedSchedule: null,
             auth: null,
             groomingRecord: null, // groomingRecord 속성 추가
@@ -22,6 +23,9 @@ export default createStore({
         },
         setToken(state, payload) {
             state.token = payload;
+        },
+        setKakaoToken(state,payload){
+            state.kakaoToken = payload;
         },
         setSelectedSchedule(state, schedule) {
             state.selectedSchedule = schedule;
@@ -39,7 +43,7 @@ export default createStore({
     },
     plugins: [
         createPersistedState({
-            paths: ['authUser', 'token']
+            paths: ['authUser', 'token','kakaoToken']
         })
     ],
     actions: {

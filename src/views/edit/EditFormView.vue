@@ -402,7 +402,7 @@ import { reactive, onMounted } from 'vue';
         },
         data() {
             return{
-                bNo: this.$route.params.bNo,
+                bNo: this.$store.state.authUser.bNo,
                 shopInfo: {
                     bZipCode: "",
                     bAddress: "",
@@ -453,6 +453,7 @@ import { reactive, onMounted } from 'vue';
                     this.updateShopInfo();
                 }
             },
+            
             // ========== 가게정보 등록하기 ==========
             addShopInfo(){
                 console.log("가게정보 등록하기 버튼");

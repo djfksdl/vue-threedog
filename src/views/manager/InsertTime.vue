@@ -175,7 +175,7 @@ export default {
             rtVo:{
                 rtDates:[],
                 rtTimes:[],
-                bNo : this.$route.params.bNo,
+                bNo : this.$store.state.authUser.bNo,
             },
             today: new Date().toISOString().split('T')[0], // 오늘 날짜
             originalTimes: [], // 동일시간추가 하기전 시간을 담을 배열
@@ -627,7 +627,7 @@ export default {
                 responseType: 'json'
             }).then(response => {
                 console.log(response.data.apiData);
-                this.$router.push(`/inserttime/${this.bNo}`);
+                this.$router.push(`/inserttime`);
             }).catch(error => {
                 console.log(error);
             });
