@@ -487,12 +487,12 @@ export default {
             Promise.all([
                 this.updateGroomingRecord(this.rsNo, formData),
                 this.uploadImages(this.rsNo)
-            ]).then(([groomingRecordResponse, imageUploadResponse]) => {
+            ]).then(([formData]) => {
 
                 // 여기서 각각의 응답을 처리합니다.
-                console.log('FormData 확인:', formData);
-                console.log('업데이트:', groomingRecordResponse);
-                console.log('이미지 업로드:', imageUploadResponse);
+                 console.log('FormData 확인:', formData);
+                // console.log('업데이트:', groomingRecordResponse);
+                // console.log('이미지 업로드:', imageUploadResponse);
 
                 // 두 요청 모두 성공했을 때 알림 표시
                 Swal.fire({

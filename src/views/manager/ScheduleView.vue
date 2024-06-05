@@ -50,6 +50,7 @@ export default {
             showModal: false, // 모달 표시 여부
             selectedEvent: null, // 선택된 이벤트 정보
             calendarOptions: {
+
                 plugins: [dayGridPlugin, interactionPlugin], // interactionPlugin 추가
                 initialView: "dayGridMonth",
                 headerToolbar: {
@@ -64,7 +65,8 @@ export default {
                 eventClick: this.handleEventClick,
                 eventDrop: this.handleEventDrop, // 이벤트 드롭 핸들러 추가
                 eventResize: this.handleEventResize // 이벤트 크기 조정 핸들러 추가
-            }
+            },
+            availableTimes: [] // 예약 가능한 시간대 배열 추가
         };
     },
     computed: {
@@ -146,7 +148,25 @@ export default {
 
             // 서버에 변경된 예약 정보를 업데이트하는 API 호출
             this.updateEventOnServer(rsNo, info.event);
+
+            // 예약 가능한 시간대를 유지하도록 예약화면에 해당 시간대 추가
+            this.addAvailableTime(info.event.start, info.event.end);
         },
+
+        addAvailableTime(startTime, endTime) {
+            // 예약 가능한 시간대 배열에서 해당 시간대를 제거하는 대신, 이를 유지하도록 새로운 배열을 생성합니다.
+            const newAvailableTimes = [];
+
+            this.availableTimes.forEach(time => {
+                // 예약 내역의 시간대와 겹치는 경우에는 해당 시간대를 유지합니다.
+                if (time.start.getTime() < startTime.getTime() || time.end.getTime() > endTime.getTime()) {
+                    newAvailableTimes.push(time);
+                }
+            });
+            this.availableTimes = newAvailableTimes;
+        },
+
+
         //-------------------- 일자 수정 ----------------------------
         updateEventOnServer(rsNo, event) {
             console.log("updateEventOnServer");
@@ -182,15 +202,17 @@ export default {
                 preConfirm: () => {
                     const start = Swal.getPopup().querySelector('#editStart').value;
                     const title = Swal.getPopup().querySelector('#editTitle').value;
+
                     if (!title || !start) {
                         Swal.showValidationMessage('일정명과 시작 시간을 모두 입력해주세요.');
                     }
+
                     return { title, start };
                 }
             }).then(result => {
                 if (result.isConfirmed) {
                     const { start, title } = result.value;
-                    this.selectedEvent.setStart(new Date(start));
+                    //  this.selectedEvent.setStart(new Date(start));
                     this.selectedEvent.setProp('title', title);
 
                     // 서버에 변경된 예약 정보를 업데이트하는 API 호출
@@ -198,6 +220,8 @@ export default {
                 }
             });
         },
+
+
         //-------------------- 시간 수정 ----------------------------
         updateEventTimeOnServer(rsNo, start) {
             function convertToMySQLTime(isoTime) {
@@ -260,7 +284,17 @@ export default {
                     }
 
                     this.selectedEvent.remove();
+
+                    // 서버에서 예약 정보를 삭제하는 API 호출
                     this.deleteEventOnServer(rsNo);
+
+                    // 선택된 이벤트만 삭제하지 않고, 화면에서 사라지게 하는 대신 상태를 변경합니다.
+                    // 삭제된 예약 시간을 사용 가능한 시간대로 추가합니다.
+                    this.availableTimes.push({
+                        start: this.selectedEvent.start,
+                        end: this.selectedEvent.end
+                    });
+
                     this.showModal = false;
                     Swal.fire('삭제 완료', '일정이 삭제되었습니다.', 'success');
                 }
