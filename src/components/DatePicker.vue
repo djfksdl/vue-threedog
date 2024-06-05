@@ -151,7 +151,7 @@ const isSelected = (time) => {
 #reservationFormDatePicker .dp__button {
   /* background-color: #236C3F; */
   width: 500px;
-  height: 80px;
+  /* height: 80px; */
 }
 
 #reservationFormDatePicker .dp__calendar_header_item {
@@ -165,13 +165,15 @@ const isSelected = (time) => {
 #reservationFormDatePicker .dp__action_button.dp__action_select {
   color: #236C3F;
   font-size: 0px;
+  width: 300px;
+  height: 50px;
 }
 
 #reservationFormDatePicker .dp__action_button.dp__action_select::after {
-  content: "선택";
+  content: "날짜 선택";
   color: white;
   font-size: 16px;
-  padding: 20px;
+  padding-left: 100px;
 }
 
 #reservationFormDatePicker .dp__selection_preview {

@@ -22,7 +22,23 @@
                             <label>장소</label>
                             <p>{{ businessVo.bAddress }} {{ businessVo.bdAddress }}</p>
                             <label>평균별점</label>
-                            <p>⭐⭐⭐⭐⭐ {{ businessVo.averageStar }}</p>
+                            <!-- <p>⭐⭐⭐⭐⭐ {{ businessVo.averageStar }}</p> -->
+
+                            <p class="star" style="margin-top: 2px;">
+                                <!-- Full stars -->
+                                <span v-for="i in Math.floor(businessVo.averageStar)" :key="i"
+                                    style="padding: none;"><img src="@/assets/images/star_yellow.jpg"
+                                        style="width: 15px;"></span>
+                                <!-- Half star -->
+                                <span v-if="businessVo.averageStar - Math.floor(businessVo.averageStar) >= 0.5"><img
+                                        src="@/assets/images/star_ban.png" style="width: 15px;"></span>
+                                <!-- Empty stars -->
+                                <span v-for="i in 5 - Math.ceil(businessVo.averageStar)" :key="'empty_' + i"><img
+                                        src="@/assets/images/star_gray.jpg" style="width: 15px;"></span>
+                                {{ businessVo.averageStar }}
+                            </p>
+
+
                         </div>
                     </div>
 
