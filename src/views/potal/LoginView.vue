@@ -148,7 +148,7 @@ export default {
             
             // 1. 인가 코드 얻기
             window.Kakao.Auth.authorize({
-                redirectUri : 'https://localhost:8080/login',
+                redirectUri : 'http://localhost:8080/login',
                 prompt : 'login'
             })
         },
