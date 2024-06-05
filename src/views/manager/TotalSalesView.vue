@@ -125,8 +125,19 @@ export default {
         params: { bNo: bNo },
         responseType: 'json'
       }).then(response => {
-        this.weeklySales = response.data.apiData.map(sale => sale.totalPrice);
-        const labels = response.data.apiData.map(sale => `${sale.month}월 ${sale.week}주`);
+        let weeklySalesData = response.data.apiData;
+
+        // 데이터를 월과 주 기준으로 정렬
+        weeklySalesData.sort((a, b) => {
+          if (a.month === b.month) {
+            return a.week - b.week;
+          }
+          return a.month - b.month;
+        });
+
+        this.weeklySales = weeklySalesData.map(sale => sale.totalPrice);
+        const labels = weeklySalesData.map(sale => `${sale.month}월 ${sale.week}주`);
+
         console.log('Weekly Sales:', this.weeklySales);
         this.drawChart(
           this.$refs.weeklyChartCanvas,
