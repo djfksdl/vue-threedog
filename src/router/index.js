@@ -149,6 +149,7 @@ const router = createRouter({
   routes
 })
 
+// 페이지 이동시 스크롤 높이 0으로 이동
 router.beforeEach((to, from, next) => {
   window.scrollTo(0, 0)
   next()
