@@ -99,7 +99,7 @@
                     <div class="plusRtimeContainer">
                         <label>추가할 시간 <small>(한시간 단위로 추가 됩니다.)</small></label>
                         <div class="plusRtimeRow">
-                            <input type="time" v-model="startTime" @input="updateEndTime">~
+                            <input type="time" v-model="startTime" @input="updateEndTime" >~
                             <input type="time" v-model="endTime" readonly>
                             <button type="button" v-on:click="plusRtime" >추가</button>
                         </div>

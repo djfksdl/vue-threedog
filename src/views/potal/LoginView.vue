@@ -144,32 +144,34 @@ export default {
         // ***** 카카오 로그인 *****
         kakaoLogin() {
             console.log("카카오 로그인");
-            
-            // window.Kakao.Auth.login({
-            //     scope: "profile_image, account_email, name, phone_number",
-            //     success: this.getKakaoAccount,
-            // });
-        },
-        getKakaoAccount() {
-            // window.Kakao.API.request({
-            //     url: "/v2/user/me",
-            //     success: (res) => {
-            //         const kakao_account = res.kakao_account;
-            //         const email = kakao_account.email;
-            //         const name = kakao_account.name;
-            //         const phone_number = kakao_account.phone_number;
 
-            //         alert("로그인 성공!");
-            //         console.log(kakao_account);
-            //         console.log(email);
-            //         console.log(name);
-            //         console.log(phone_number);
-            //     },
-            //     fail: (error) => {
-            //         console.log(error);
-            //     },
-            // });
+            
+            // 1. 인가 코드 얻기
+            window.Kakao.Auth.authorize({
+                redirectUri : 'https://localhost:8080/login',
+                prompt : 'login'
+            })
         },
+        // getKakaoAccount() {
+        //     window.Kakao.API.request({
+        //         url: "/v2/user/me",
+        //         success: (res) => {
+        //             const kakao_account = res.kakao_account;
+        //             // const email = kakao_account.account_email;
+        //             const name = kakao_account.profile_nickname;
+        //             const profile_image = kakao_account.profile_image;
+
+        //             alert("로그인 성공!");
+        //             console.log(kakao_account);
+        //             // console.log(email);
+        //             console.log(name);
+        //             console.log(profile_image);
+        //         },
+        //         fail: (error) => {
+        //             console.log(error);
+        //         },
+        //     });
+        // },
     },
     mounted() {
         this.naverLogin = new window.naver_id_login(

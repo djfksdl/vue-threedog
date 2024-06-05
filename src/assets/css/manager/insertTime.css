@@ -318,6 +318,11 @@
     font-weight: normal;
     border: none;
 }
+.container4 .timeContainer .selectScheduleTimeContainer .selectDeleteRtimeContainer .RtBtnBox button:disabled:hover span{
+    font-weight: normal;
+    border: none;
+    display: none;
+}
 
 
 
