@@ -34,12 +34,19 @@
 
       <hr>
       <div class="rank">
-        <div class="rank-item" v-bind:key="i" v-for="(storeVo, i) in storeList">
-          <router-link :to="`/edit/${storeVo.bNo}`">
-            <img src="../../assets/images/dog2.jpg">
-            <label>{{ storeVo.title }}</label>
-          </router-link>
-        </div>
+        <template v-if="storeList.length > 0">
+          <div class="rank-item" v-bind:key="i" v-for="(storeVo, i) in storeList">
+            <router-link :to="`/edit/${storeVo.bNo}`">
+              <img src="../../assets/images/dog2.jpg">
+              <label>{{ storeVo.title }}</label>
+            </router-link>
+          </div>
+        </template>
+        <template v-else>
+          <div class="no-results">
+            예약 가능한 가게가 없습니다.
+          </div>
+        </template>
       </div>
     </div>
     <TopButton />

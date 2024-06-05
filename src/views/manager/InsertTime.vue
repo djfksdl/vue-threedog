@@ -627,7 +627,7 @@ export default {
                 responseType: 'json'
             }).then(response => {
                 console.log(response.data.apiData);
-                this.$router.push(`/inserttime`);
+                this.$router.push(`/inserttime/${this.bNo}`);
             }).catch(error => {
                 console.log(error);
             });

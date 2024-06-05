@@ -97,7 +97,7 @@
             순</span></h2>
         <hr>
         <div class="search-result">
-          <div class="rank-search">
+          <div v-if="reviewList.length > 0" class="rank-search">
             <div class="search-item" @click="reviewDetail(reviewVo.rNo)" v-bind:key="i"
               v-for="(reviewVo, i) in reviewList">
               <img class="list_img" src="../../assets/images/bori.jpg">
@@ -113,6 +113,9 @@
               </div>
               <label>{{ reviewVo.title }}</label>
             </div>
+          </div>
+          <div v-else class="no-results">
+            관련된 후기가 없습니다
           </div>
         </div>
       </div>
@@ -168,6 +171,7 @@
   <TopButton />
   <AppFooter id="AppFooter" />
 </template>
+
 
 <script>
 import AppFooter from "@/components/AppFooter.vue";
@@ -461,107 +465,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.modal-wrap-search {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 9999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-container-search {
-  width: 900px;
-  background: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  /* 세로 배치로 변경 */
-}
-
-.modal-container-search .userId {
-  margin-top: 20px;
-  text-align: left;
-  /* 왼쪽 정렬 */
-  margin-bottom: 10px;
-  /* 아래 여백 추가 */
-}
-
-.reviewDetailContent-search {
-  display: flex;
-  justify-content: space-between;
-  /* 좌우 여백을 동일하게 분배 */
-  width: 100%;
-  margin-top: 20px;
-  /* 위쪽 여백 추가 */
-}
-
-.reviewDetailImg-search {
-  width: 300px;
-  /* 이미지의 너비 설정 */
-  margin-right: 20px;
-  margin-bottom: 20px;
-  /* 이미지와 텍스트 사이 여백 설정 */
-}
-
-.modal-content {
-  /* 기존 스타일 유지 */
-  width: calc(100% - 320px);
-  /* 우측 여백 고려하여 크기 지정 */
-}
-
-.reviewDetailImg-search img {
-  width: 100%;
-}
-
-.modal-btn-search {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.modal-btn-search button {
-  padding: 15px;
-  border: none;
-  font-size: 18px;
-  border-radius: 20px;
-  cursor: pointer;
-}
-
-.modal-btn-search button:nth-child(1) {
-  background-color: #236c3f;
-  color: white;
-  margin-right: 15px;
-}
-
-.modal-btn-search button:nth-child(2) {
-  background-color: white;
-  color: #236c3f;
-  border: 2px solid #236c3f;
-  /* 버튼 테두리 추가 */
-}
-
-.reviewBoardDetailContainer-search {
-  display: flex;
-  /* 가로로 배치 */
-  flex-wrap: wrap;
-  /* 필요시 줄 바꿈 */
-  justify-content: space-between;
-  /* 좌우 여백을 동일하게 분배 */
-  align-items: flex-start;
-  /* 수직 정렬을 위해 상단 정렬 */
-}
-
-.modal-content {
-  text-align: left;
-}
-</style>

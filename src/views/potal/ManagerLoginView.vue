@@ -8,10 +8,10 @@
                 <div class="login-form">
                     <form @submit.prevent="mLogin">
                         <div class="form-group-login">
-                            <input type="text" id="id" name="id" placeholder="아이디" v-model="id">
+                            <input type="text" id="id" name="id" placeholder="아이디" v-model="businessVo.bId">
                         </div>
                         <div class="form-group-login">
-                            <input type="password" id="password" name="password" placeholder="비밀번호" v-model="password"
+                            <input type="password" id="password" name="password" placeholder="비밀번호" v-model="businessVo.bPw"
                                 @keyup="checkCapsLock">
                             <span class="toggle-password" @click="togglePasswordVisibility">
                                 <i :class="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
@@ -54,7 +54,11 @@ export default {
             id: "", // 아이디를 위한 데이터
             password: "", // 비밀번호를 위한 데이터
             showPassword: false, // 초기에는 비밀번호 감춤
-            isCapsLockOn: false
+            isCapsLockOn: false,
+            businessVo:{
+                bId: "",
+                bPw: "",
+            }, 
         };
     },
     methods: {
@@ -73,11 +77,9 @@ export default {
         },
         mLogin() {
             console.log("로그인");
-
-            const formData = new FormData();
-            formData.append("bId", this.id);
-            formData.append("bPw", this.password);
-
+            // const formData = new FormData();
+            // formData.append("bId", this.id);
+            // formData.append("bPw", this.password);
             // console.log(formData);
             // console.log(this.password);
 
@@ -85,7 +87,7 @@ export default {
                 method: 'post',
                 url: `${this.$store.state.apiBaseUrl}/api/mlogin`,
                 headers: { "Content-Type": "multipart/form-data" },
-                data: formData,
+                data: this.businessVo,
                 responseType: 'json' // 수신 형식 지정
             }).then(response => {
                 console.log(response.data.apiData);
