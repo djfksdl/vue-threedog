@@ -5,7 +5,9 @@
         :min-date="minDate" @update:model-value="onDateChange" />
     </div>
 
+    
     <div class="time">
+      <!-- <div>선택한 날짜 {{ reserveTime.rtDate }}</div> -->
       <div v-if="amTimes.length > 0">
         <p>오전</p>
         <div v-for="time in amTimes" :key="time.rtNo" style="display: inline-block;">
@@ -182,6 +184,7 @@ const isSelected = (time) => {
   height: 50px;
   margin-right: 30px;
   margin-top: -13px;
+  margin-bottom: 70px;
 }
 
 #reservationFormDatePicker .dp__action_button.dp__action_select::after {

@@ -95,7 +95,7 @@
                     <div class="mpdcContents" v-if="reserveVo2">
                         <!-- 알림장 사진 -->
                         <div class="mpdcImg">
-                            <img src="@/assets/images/spy2.jpg">
+                            <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reserveVo2.saveName}`">
                         </div>
                         <!-- 알림장 내용 -->
                         <div class="mpdcInfo1">
@@ -108,7 +108,7 @@
                             <p><span>목욕/드라이 :</span> {{ reserveVo2.bath }}</p>
                         </div>
                         <div class="mpdcInfo2">
-                            <p><span>추가요금 :</span> {{reserveVo2.surcharge}} 원</p>
+                            <p><span>추가요금 :</span> {{reserveVo2.surcharge.toLocaleString()}} 원</p>
                             <p><span>전달사항 :</span>
                                {{reserveVo2.message}}
                                
