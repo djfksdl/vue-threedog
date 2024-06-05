@@ -15,7 +15,8 @@
 
                 <div class="reserveCheckForm" v-bind:key="i" v-for="(reserveVo, i) in reserveList">
                     <!-- 예약정보 -->
-                    <div class="rcfInfo">
+                    <div class="rcfInfo" style="display: flex; ">
+                        <div>
                             <div>
                                 <p>매장명</p>
                                 <p>{{ reserveVo.title }}</p>
@@ -28,10 +29,12 @@
                                 <p>예약일시</p>
                                 <p>{{ formatDate(reserveVo.rtDate) }} {{ formatTime(reserveVo.rtTime) }}</p>
                             </div>
+
                             <div>
                                 <p>매장주소</p>
                                 <p>{{ reserveVo.bAddress }} 번지{{ reserveVo.bdAddress }}</p>
                             </div>
+                        </div>
                         <div>
                             <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reserveVo.logo}`"
                                 style="width: 100px; height: 100px;">
