@@ -175,7 +175,7 @@ export default {
             rtVo:{
                 rtDates:[],
                 rtTimes:[],
-                bNo : this.$store.state.authUser.bNo,
+                bNo : this.$store.state.auth.bNo,
             },
             today: new Date().toISOString().split('T')[0], // 오늘 날짜
             originalTimes: [], // 동일시간추가 하기전 시간을 담을 배열
@@ -740,6 +740,7 @@ export default {
         selectRt() {
 
             console.log("등록여부 확인");
+            console.log(this.rtVo.bNo);
 
             axios({
                 method: 'get',

@@ -402,7 +402,7 @@ import { reactive, onMounted } from 'vue';
         },
         data() {
             return{
-                bNo: this.$store.state.authUser.bNo,
+                bNo: this.$store.state.auth.bNo,
                 shopInfo: {
                     bZipCode: "",
                     bAddress: "",
