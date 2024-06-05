@@ -5,25 +5,38 @@
             <SideBar />
             <div class="container">
                 <!-- 예약상세 내역 -->
+                <!-- <div style="margin: 30px;padding-left: 100px;">
+                    <h2>예약내역</h2>
+                </div>
+                <div class="inputSearch">
+                   <label for="reserveSearch">예약조회</label>
+                   <input type="search" id="reserveSearch">
+                </div> -->
+
                 <div class="reserveCheckForm" v-bind:key="i" v-for="(reserveVo, i) in reserveList">
                     <!-- 예약정보 -->
                     <div class="rcfInfo">
+                            <div>
+                                <p>매장명</p>
+                                <p>{{ reserveVo.title }}</p>
+                            </div>
+                            <div>
+                                <p>펫명</p>
+                                <p>{{ reserveVo.dogName }}</p>
+                            </div>
+                            <div>
+                                <p>예약일시</p>
+                                <p>{{ formatDate(reserveVo.rtDate) }} {{ formatTime(reserveVo.rtTime) }}</p>
+                            </div>
+                            <div>
+                                <p>매장주소</p>
+                                <p>{{ reserveVo.bAddress }} 번지{{ reserveVo.bdAddress }}</p>
+                            </div>
                         <div>
-                            <p>매장명</p>
-                            <p>{{ reserveVo.title }}</p>
+                            <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reserveVo.logo}`"
+                                style="width: 100px; height: 100px;">
                         </div>
-                        <div>
-                            <p>펫명</p>
-                            <p>{{ reserveVo.dogName }}</p>
-                        </div>
-                        <div>
-                            <p>예약일시</p>
-                            <p>{{ formatDate(reserveVo.rtDate) }} {{ formatTime(reserveVo.rtTime) }}</p>
-                        </div>
-                        <div>
-                            <p>매장주소</p>
-                            <p>{{ reserveVo.bAddress }} 번지{{ reserveVo.bdAddress }}</p>
-                        </div>
+
                     </div>
                     <!-- 결제금액 -->
                     <div class="rcfSum">
@@ -171,6 +184,7 @@ export default {
                 usePoint: 0,
                 size: "",
                 rNo: 0,
+                logo: "",
             },
             pushVo: {
                 pushNo: 0,
