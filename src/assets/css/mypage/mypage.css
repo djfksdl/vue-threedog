@@ -380,22 +380,15 @@ datalist {
 /* 예약폼 */
 /* reservationForm */
 #reservationForm {
-    width: 1200px;
+    width: 1400px;
     margin: 0px auto;
 }
-/* 
-#reservationForm .h2Box1 h2 {
-    width: 1300px;
-    margin: 30px 0 30px 40px;
-
-} */
-
 
 #reservationForm .managerInfor {
     padding: 15px;
     /* border: 1px solid #a7a4a4; */
     border-radius: 10px;
-    width: 1200px;
+    width: 1400px;
     margin: 0 0 30px 40px;
     box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1);
     
@@ -422,22 +415,12 @@ datalist {
 
 
 #reservationForm form{
-    width: 1200px;
+    width: 1400px;
     margin: 0 0 30px 40px;
     box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1);
     /* background-color: red; */
     padding: 10px 0 0 50px;
 }
-
-#reservationForm form h2 {
-    margin: 30px 0 30px 0;
-}
-
-
-
-
-
-
 
 
 
@@ -446,14 +429,15 @@ datalist {
 #reservationForm .reservationBox {
     width: 1000px;
     /* background-color: pink; */
-    margin: 0 auto;
+    /* margin: 0 auto; */
     /* padding-left: 200px; */
+    margin: 30px 0 30px 30px;
 }
 
 
 #reservationForm .reservationBox .petChoice {
-    /* padding: 30px 0 30px 0; */
-
+    padding: 30px 0 30px 0;
+    font-size: 20px;
 }
 
 #reservationForm .reservationBox .petChoice input {
@@ -468,18 +452,7 @@ datalist {
     padding: 30px 0 30px 0;
 }
 
-#reservationForm .reservationBox .petKg input {
-    margin-left: 150px;
-    margin-right: 30px;
-    width: 200px;
-    padding: 10px;
-    border: none;
-    border-bottom: 1px solid #a7a4a4;
-}
 
-#reservationForm .reservationBox .petKg label {
-    padding-top: 5px;
-}
 
 #reservationForm .reservationBox .character {
     padding: 30px 0 30px 0;
@@ -488,6 +461,7 @@ datalist {
 #reservationForm .reservationBox .character label {
     padding-right: 50px;
     margin-bottom: 20px;
+    font-size: 20px;
     display: block;
 }
 
@@ -498,6 +472,7 @@ datalist {
     border-radius: 5px;
     font-size: 18px;
     padding: 10px;
+    margin-top: 30px;
 }
 
 #reservationForm .reservationBox .character button:hover {
