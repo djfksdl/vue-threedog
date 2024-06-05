@@ -91,14 +91,14 @@ export default {
                 console.log('불러와진다 우히히:', response.data.apiData); // 응답데이터 확인
                 this.reservations = Array.isArray(response.data.apiData) ? response.data.apiData : [];
                 this.$store.commit('setReservationData', this.reservations); // 스토어에 데이터 업데이트
-                this.updateCalendarEvents(); // 예약 데이터로 캘린더 이벤트 업데이트
+                this.updateCalendarEvents(bNo); // 예약 데이터로 캘린더 이벤트 업데이트
             }).catch(error => {
                 // 오류 처리
                 console.error('Error fetching reservations:', error);
             });
         },
 
-        updateCalendarEvents() {
+        updateCalendarEvents(bNo) {
             const events = this.reservationData.map(reservation => {
                 const dateParts = reservation.rtDate.split('-'); // rtDate를 연, 월, 일로 분리
                 const timeParts = reservation.rtTime.split(':'); // rtTime을 시간과 분으로 분리
@@ -120,7 +120,8 @@ export default {
                         breed: reservation.kind,
                         groomingStyle: reservation.beauty,
                         price: reservation.expectedPrice,
-                        rsNo: reservation.rsNo
+                        rsNo: reservation.rsNo,
+                        bNo: bNo // bNo 값을 설정
                     }
                 };
             });
@@ -308,14 +309,21 @@ export default {
                     return;
                 }
 
-                if (!event.extendedProps.rsNo) {
+                const rsNo = event.extendedProps.rsNo;
+                const bNo = event.extendedProps.bNo;
+
+
+                if (!rsNo) {
                     console.error('event.extendedProps.rsNo가 정의되지 않았습니다.');
                     return;
                 }
+                console.log('예약 번호 (rsNo):', rsNo);
+                console.log('bNo 값:', bNo);
 
-                console.log('예약 번호 (rsNo):', event.extendedProps.rsNo);
 
-                this.$root.$emit('selectGroomingRecord', event.extendedProps.rsNo);
+
+                // rsNo와 bNo 값을 함께 전달
+                this.$root.$emit('selectGroomingRecord', { rsNo, bNo });
             });
         },
 
