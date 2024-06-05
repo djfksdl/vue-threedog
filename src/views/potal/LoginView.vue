@@ -253,8 +253,6 @@ export default {
 
                     //로그인 사용자 정보
                     let authUser = response.data.apiData;
-                    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                    console.log(authUser);
 
                     //token은 응답문서의 헤더에 있음 
                     console.log(response.headers.authorization.split(" ")[1]);
@@ -265,9 +263,6 @@ export default {
                     this.$store.commit("setAuthUser", authUser);
                     this.$store.commit("setToken", token);
 
-                    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                    console.log(this.$store.state.authUser);
-
                     this.$router.push("/");
 
                 
@@ -275,8 +270,6 @@ export default {
                     console.log(response.data.message);
                     alert("아이디 패스워드를 확인하세요.");
                 }
-
-                // this.$router.push(`/inserttime/${this.bNo}`);
             }).catch(error => {
                 console.log(error);
             });
