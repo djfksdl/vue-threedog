@@ -55,10 +55,10 @@ export default {
     components: {},
     data() {
         return {
-            bNo : this.$store.state.authUser.bNo,
+            bNo: this.$route.params.bNo,
             shopInfo:{
                 logo:""
-            }
+            },
         };
     },
     methods: {
