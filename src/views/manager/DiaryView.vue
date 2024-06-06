@@ -410,6 +410,8 @@ export default {
                 console.error('rsNo 값이 없습니다.');
                 return;
             }
+            // saveNotification 메서드 호출 시 formData를 전달합니다.
+            this.saveNotification(formData);
         },
         // 사진 삭제 기능
         removePhoto(index) {
@@ -454,7 +456,7 @@ export default {
             // console.log(this.savedcurruntWeight);
 
             // FormData 생성
-            const formData = new FormData();
+             const formData = new FormData();
             formData.append('rsNo', this.rsNo);
             formData.append('groomingEtiquette', this.savedGroomingEtiquette);
             formData.append('condition', this.savedCondition);
@@ -490,7 +492,7 @@ export default {
             ]).then(([formData]) => {
 
                 // 여기서 각각의 응답을 처리합니다.
-                 console.log('FormData 확인:', formData);
+                console.log('FormData 확인:', formData);
                 // console.log('업데이트:', groomingRecordResponse);
                 // console.log('이미지 업로드:', imageUploadResponse);
 
@@ -521,6 +523,7 @@ export default {
                 console.log("미용 기록 업데이트");
                 console.log(response.data.apiData);
                 // 여기서 미용 기록을 업데이트한 후의 작업을 수행합니다.
+
             }).catch(error => {
                 console.log(error);
             });
@@ -544,6 +547,13 @@ export default {
                 console.log("이미지 업로드 완료");
                 console.log(response.data.apiData);
                 // 이미지를 업로드한 후의 작업을 수행합니다.
+
+                // 업로드된 이미지 URL을 받아와서 저장합니다.
+                // const uploadedImageUrl = response.data.apiData;
+
+                // 업로드된 이미지의 URL을 savedAttachedPhotos 배열에 추가합니다.
+                // this.savedAttachedPhotos.push(uploadedImageUrl);
+
             }).catch(error => {
                 console.log(error);
             });

@@ -114,9 +114,13 @@ export default {
                     parseInt(timeParts[1]) // 분
                 );
 
+                // 발송이 완료된 경우 해당 이벤트의 색상을 변경
+                const backgroundColor = '#FFFFFF';// 발송이 완료된 경우 회색 배경 색상
+
                 return {
                     title: `${reservation.dogName}, ${reservation.beauty}, ${reservation.kind}, ${reservation.expectedPrice}원`,
                     start: startTime,
+                    backgroundColor,
                     extendedProps: {
                         petName: reservation.dogName,
                         breed: reservation.kind,
@@ -321,10 +325,14 @@ export default {
         handleEventClick(info) {
             if (!info || !info.event) {
                 console.error('클릭된 예약 정보가 없습니다.');
+
                 return;
             }
 
             const event = info.event;
+            if (!event.extendedProps || event.extendedProps.sent) {
+                return; // 발송 완료된 이벤트는 클릭 불가
+            }
             console.log('Event 정보:', event);
 
             const eventTitle = event.title || '';
@@ -360,11 +368,22 @@ export default {
                 this.$root.$emit('selectGroomingRecord', { rsNo, bNo });
             });
         },
+        // 예약 목록에서 발송이 완료된 일정을 식별하여 sent 속성을 true로 설정하는 메서드 추가
+        updateReservationSentStatus(rsNo) {
+            const reservation = this.reservations.find(res => res.rsNo === rsNo);
+            if (reservation) {
+                reservation.sent = true;
+            }
+        },
+
 
         closeModal() {
             this.selectedEvent = null;
             this.showModal = false;
         },
+
+
+
     }
 };
 </script>

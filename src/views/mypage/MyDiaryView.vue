@@ -14,48 +14,53 @@
                             <div class="petProfile">
                                 <div class="store">
                                     <p><strong>◆ 가게명</strong></p>
-                                    <p>{{ entry.storeName }} ({{ entry.storePhone }})</p>
+                                    <p>{{ entry.title }}</p>
+                                </div>
+                                <div class="date">
+                                    <p><strong>◆ 가게번호</strong></p>
+                                    <p>{{ entry.bPhone }}</p>
                                 </div>
                                 <div class="date">
                                     <p><strong>◆ 이용일</strong></p>
-                                    <p>{{ entry.rtDate  }}</p>
+                                    <p>{{ getUsageDate(entry.rtDate) }} ({{ entry.rtTime }})</p>
                                 </div>
                                 <div class="petName">
                                     <p><strong>◆ 애견명</strong></p>
-                                    <p>{{ entry.dogName  }}</p>
+                                    <p>{{ entry.dogName }}</p>
                                 </div>
                                 <div class="mypetImgSlider">
-                                    <img :src="entry.petImage" alt="Pet Image">
+                                    <p><strong> ◆ 미용 후 이미지</strong></p>
+                                    <img :src="entry.afterImg" alt="After Grooming Image">
                                 </div>
                             </div>
                             <div class="context">
                                 <div class="weight">
                                     <p>☉ 몸무게</p>
-                                    <p>{{ entry.curruntWeight  }}</p>
+                                    <p>{{ entry.curruntWeight }}</p>
                                 </div>
                                 <div>
                                     <p>☉ 미용예절</p>
-                                    <p>{{ entry.attitude  }}</p>
+                                    <p>{{ entry.attitude }}</p>
                                 </div>
                                 <div>
                                     <p>☉ 컨디션</p>
-                                    <p>{{ entry.rCondition  }}</p>
+                                    <p>{{ entry.rCondition }}</p>
                                 </div>
                                 <div>
                                     <p>☉ 엉킴(부위)</p>
-                                    <p>{{ entry.tangle  }}</p>
+                                    <p>{{ entry.tangle }}</p>
                                 </div>
                                 <div>
                                     <p>☉ 싫어했던 부위</p>
-                                    <p>{{ entry.disliked  }}</p>
+                                    <p>{{ entry.disliked }}</p>
                                 </div>
                                 <div>
                                     <p>☉ 추가요금</p>
-                                    <p>{{ entry.surcharge  }}</p>
+                                    <p>{{ entry.surcharge }}</p>
                                 </div>
                                 <div>
                                     <p>☉ 전달사항</p>
-                                    <p>{{ entry.message  }}</p>
+                                    <p>{{ entry.message }}</p>
                                 </div>
                             </div>
                         </div>
@@ -119,7 +124,13 @@ export default {
             if (this.currentIndex > 0) {
                 this.currentIndex--;
             }
-        }
+        },
+       // 이용일자만 표시하는 메서드
+       getUsageDate(rtDate) {
+            // 예시: rtDate가 'YYYY년 MM월 DD일 HH:mm:ss' 형식일 경우
+            const parts = rtDate.split(' '); // 공백을 기준으로 분할
+            return parts[0]; // YYYY년 MM월 DD일 부분만 반환
+        },
     },
     watch: {
         currentIndex(newIndex) {
