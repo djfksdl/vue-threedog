@@ -40,7 +40,7 @@
                     <!-- 후기 윗부분 -->
                     <div class="mprvcTop">
                         <h2>내가 쓴 후기</h2>
-                        <router-link to="/review">더보기 +</router-link>
+                        <router-link :to="`/myreview/${this.reviewVo.uNo}`">더보기 +</router-link>
                     </div>
                     <!-- 후기 내용 -->
                     <div class="mprvcContents" v-if="reviewVo">

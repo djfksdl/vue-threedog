@@ -97,3 +97,48 @@
     width: 500px;
     padding: 20px;
 }
+
+
+
+
+/* ************************************************** 
+MyReview
+*****************************************************/
+.reviewContainer .myreviewContainer{
+    width: 700px;
+    background-color: #fff;
+    margin: 0 auto;
+    padding: 30px;
+    border: 1px solid #237140;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+.reviewContainer .myreviewContainer img{
+    width: 200px;
+    height: 250px;
+    /* margin: 50px 30px 0 0; */
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+
+.reviewContainer .myreviewContainer label{
+    color: #237140;
+    font-weight: bold;
+    /* margin-left: 10px; */
+}
+
+.reviewContainer .myreviewContainer .reviewInfor{
+    width: 500px;
+    padding: 10px;
+    /* background-color: red; */
+}
+.reviewContainer .myreviewContainer .reviewInfor div{
+    padding: 5px 0 5px 0;
+    width: 625px;
+    /* background-color: red; */
+}
+
+.reviewContainer .myreviewContainer .reviewInfor .context3{
+    width: 625px;
+}

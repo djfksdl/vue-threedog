@@ -22,6 +22,7 @@ import SearchMap from '@/views/potal/SearchMap.vue'
 import InsertTime from '@/views/manager/InsertTime.vue'
 import ReservationSuccessView from '@/views/mypage/ReservationSuccessView.vue'
 import PetUpdateForm from '@/views/mypage/PetUpdateForm'
+import MyReview from '@/views/mypage/MyReview.vue'
 
 
 const routes = [
@@ -141,7 +142,11 @@ const routes = [
     name: 'petupdateform',
     component: PetUpdateForm,
     props: true
-  },
+  }, {
+    path: '/myreview/:uNo',
+    name: 'myreview',
+    component: MyReview,
+  }
 ]
 
 const router = createRouter({
