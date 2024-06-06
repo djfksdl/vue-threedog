@@ -13,7 +13,7 @@
                         <router-link :to="`/reserve/${reserveVo.uNo}`">더보기 +</router-link>
                     </div>
                     <!-- 예약내역 내용 -->
-                    <div class="mprcContents" v-if="reserveVo">
+                    <div class="mprcContents" v-if="reserveVo.uNo">
                         <router-link :to="`/reserve/${reserveVo.uNo}`">
                             <div>
                                 <p>매장명</p>
@@ -43,7 +43,7 @@
                         <router-link :to="`/myreview/${this.reviewVo.uNo}`">더보기 +</router-link>
                     </div>
                     <!-- 후기 내용 -->
-                    <div class="mprvcContents" v-if="reviewVo">
+                    <div class="mprvcContents" v-if="reviewVo.uNo">
                         <!-- 후기내용 예약정보부분 -->
                         <div class="mprvcContentsInfo">
                             <!-- 사진 -->
@@ -92,7 +92,7 @@
                         <router-link to="/mydiary">더보기 +</router-link>
                     </div>
                     <!-- 알림장 내용 -->
-                    <div class="mpdcContents" v-if="reserveVo2">
+                    <div class="mpdcContents" v-if="reserveVo2.uNo">
                         <!-- 알림장 사진 -->
                         <div class="mpdcImg">
                             <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reserveVo2.saveName}`">
@@ -172,6 +172,7 @@ export default {
                 saveName: "",
             },
             reserveVo2: {
+                uNo: this.$store.state.authUser.uNo,
                 rsNo: 0,
                 dogNo: 0,
                 dogName: "",
