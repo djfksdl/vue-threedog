@@ -4,9 +4,9 @@
 /* 알림장 */
 /* Mydiary */
 #myDiary {
-    width: 100%; /* Full width */
+    width: 100%;
     margin: 0 auto;
-    overflow-x: hidden; /* Prevents horizontal overflow */
+    overflow: hidden; /* Prevents horizontal overflow */
 }
 
 #myDiary .title {
@@ -48,13 +48,24 @@
     padding-top: 30px;
 }
 
+#myDiary .slider-container {
+    position: relative;
+    overflow: hidden;
+    margin: 20px auto;
+    width: 90%;
+}
+
+#myDiary .slider {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
 #myDiary .myDiary02 {
     display: flex;
-    overflow-x: auto; /* Enables horizontal scrolling */
+    flex: 0 0 auto;
+    width: 100%;
     padding: 20px;
     border-radius: 20px;
-    margin-top: 10px;
-    margin-bottom: 100px;
     background-color: #236C3F;
 }
 
@@ -62,9 +73,9 @@
     background-color: white;
     border-radius: 20px;
     font-size: 20px;
-    margin-right: 20px; /* Spacing between items */
-    flex: 0 0 auto; /* Prevents items from shrinking */
-    width: 600px; /* Fixed width */
+    margin-right: 20px;
+    flex: 0 0 300px;
+    width: 300px; /* Fixed width */
 }
 
 #myDiary .myDiary02 .petProfile p:last-child {
@@ -87,7 +98,7 @@
 
 #myDiary .myDiary02 .context {
     width: 100%;
-    margin-left: 30px;
+   
     border-radius: 20px;
     background-color: white;
     font-size: 20px;
@@ -112,4 +123,29 @@
     margin-top: 15px;
     margin-bottom: 15px;
     padding-left: 30px;
+}
+
+/* 슬라이더 컨트롤 버튼 */
+.slider-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.slider-control.left {
+    left: 10px;
+}
+
+.slider-control.right {
+    right: 10px;
+}
+#myDiary .slider-container .slider {
+    display: flex;
+    transition: transform 0.5s ease; /* 이동을 부드럽게 하기 위한 전환 효과 */
 }
