@@ -6,19 +6,21 @@
             <div class="container">
                 <h1>후기등록</h1>
                 <form v-on:submit.prevent="reviewInsert" enctype="multipart/form-data">
-                    <h2>평점을 선택해주세요</h2>
-                    <!-- {{ this.$store.state.authUser.uNo }} -->
-                    <!-- 별점 -->
-                    <div class="star-rating">
-                        <div class="star" v-for="index in 5" :key="index" @click="check(index)">
-                            <span v-if="index < reviewVo.star" class="yellowStar"><img
-                                    src="@/assets/images/star_yellow.jpg"></span>
-                            <span v-if="index >= reviewVo.star" class="grayStar"><img
-                                    src="@/assets/images/star_gray.jpg"></span>
-                        </div>
-                        <div class="reviewScore">
-                            <p v-if="reviewVo.star > 0"> {{ reviewVo.star - 1 }}.0 </p>
-                            <p v-else>{{ reviewVo.star }}.0 </p>
+                    <div>
+                        <h2>평점을 선택해주세요</h2>
+                        <!-- {{ this.$store.state.authUser.uNo }} -->
+                        <!-- 별점 -->
+                        <div class="star-rating">
+                            <div class="star" v-for="index in 5" :key="index" @click="check(index)">
+                                <span v-if="index < reviewVo.star" class="yellowStar"><img
+                                        src="@/assets/images/star_yellow.jpg"></span>
+                                <span v-if="index >= reviewVo.star" class="grayStar"><img
+                                        src="@/assets/images/star_gray.jpg"></span>
+                            </div>
+                            <div class="reviewScore">
+                                <p v-if="reviewVo.star > 0"> {{ reviewVo.star - 1 }}.0 </p>
+                                <p v-else>{{ reviewVo.star }}.0 </p>
+                            </div>
                         </div>
                     </div>
 
@@ -38,13 +40,14 @@
                     <div class="reviewPhoto">
                         <div class="reviewPhoto2">
                             <h2>사진등록</h2>
-                            <div class="pull">포토후기 작성하면 <p> 1000P </p>지급!</div>
+                            <div class="pull">사진필수등록!</div>
                         </div>
                         <p class="pBox1">* 사진은 최대 3장까지 첨부할수있습니다.</p>
 
                         <!-- 이미지 미리보기 -->
                         <div id='image_preview'>
-                            <input type='file' id='btnAtt' multiple='multiple' style="margin: 20px 0 0 20px;">
+                            <input type='file' id='btnAtt' multiple='multiple' style="margin: 20px 0 0 20px; "
+                                accept="image/*">
                             <div id='att_zone' data-placeholder='파일을 첨부 하려면 파일 선택 버튼을 클릭하거나 파일을 드래그앤드롭 하세요'></div>
                         </div>
                     </div>
@@ -105,11 +108,11 @@ export default {
 
         // 후기작성 바이트수
         checkByte() {
-            
+
             if (this.reviewVo.rContent.length > 500) {
                 this.reviewVo.rContent = this.reviewVo.rContent.slice(0, 500); // 500자 이후의 문자열을 잘라냄
                 alert("후기 내용은 최대 500자까지 입력할 수 있습니다.");
-            }else{
+            } else {
                 this.byteCount = this.reviewVo.rContent.length;
             }
 
@@ -137,13 +140,25 @@ export default {
             formData.append('userPoint', this.userPoint);
             formData.append('rsNo', this.reviewVo.rsNo);
 
-            for (let i = 0; i < this.images.length; i++) {
-                formData.append('file', this.images[i]);
+
+            if (this.images.length > 0) {
+                for (let i = 0; i < this.images.length; i++) {
+                    formData.append('file', this.images[i]);
+                }
+                this.reviewVo.imgCount = this.images.length;
+                formData.append('imgCount', this.reviewVo.imgCount);
+                
             }
 
-            this.reviewVo.imgCount = this.images.length;
-            console.log(this.reviewVo.imgCount);
-            formData.append('imgCount', this.reviewVo.imgCount);
+
+
+            // for (let i = 0; i < this.images.length; i++) {
+            //     formData.append('file', this.images[i]);
+            // }
+
+            // this.reviewVo.imgCount = this.images.length;
+            // console.log(this.reviewVo.imgCount);
+            // formData.append('imgCount', this.reviewVo.imgCount);
 
             axios({
                 method: 'post', // put, post, delete 

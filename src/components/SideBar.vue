@@ -19,8 +19,8 @@
 
             <!-- 반려견 등록 윗부분 -->
             <div class="profileTitle">
-                <p>반려견</p>
-                <router-link to="/petaddform">➕</router-link>
+                <p style="width: 50px;">반려견</p>
+                <router-link to="/petaddform"><img src="@/assets/images/add_icon_143118.png" style="width: 24px;"></router-link>
             </div>
 
             <!-- 반려견 프로필 박스 -->

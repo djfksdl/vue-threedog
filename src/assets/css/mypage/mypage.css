@@ -293,7 +293,7 @@ datalist {
 }
 
 #reviewAddForm .reviewWrite textarea {
-    width: 700px;
+    width: 900px;
     height: 300px;
     padding: 15px;
     resize: none;
@@ -302,11 +302,14 @@ datalist {
 
 #reviewAddForm .reviewWrite textarea::placeholder {
     color: #a7a4a4;
+    
 }
 
 #reviewAddForm .reviewWrite .add_area {
-    margin-left: 130px;
+    margin-left: 500px;
     margin-bottom: 80px;
+    color: #a7a4a4;
+    font-weight: bold;
 }
 
 #reviewAddForm .reviewPhoto2 {
@@ -320,9 +323,9 @@ datalist {
 /* 사진등록  말풍선 */
 #reviewAddForm .pull {
     position: relative;
-    width: 240px;
+    width: 140px;
     height: 40px;
-    padding: 10px 0 10px 16px;
+    padding: 10px 0 10px 25px;
     color: #FFF;
     border-radius: 20px;
     background-color: #414141;
@@ -358,8 +361,9 @@ datalist {
 }
 
 #reviewAddForm .submitBtn {
-    text-align: center;
+    /* text-align: center; */
     margin-top: 100px;
+    margin-left: 300px;
 }
 
 #reviewAddForm .submitBtn button {

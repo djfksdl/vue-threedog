@@ -37,7 +37,7 @@
                         </div>
                         <div>
                             <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reserveVo.logo}`"
-                                style="width: 100px; height: 100px;">
+                                style="width: 200px; height: 200px; margin-left: 180px;">
                         </div>
 
                     </div>
@@ -72,7 +72,7 @@
                             <router-link :to="`/reviewform/${reserveVo.rsNo}`">후기 작성</router-link>
                         </div>
                         <div class="rrfConfirm" v-else-if="reserveVo.rNo">
-                            <button @click="getReview(reserveVo.rsNo)">후기 확인</button>
+                            <button @click="getReview(reserveVo.rsNo)" style="background-color: white; color: #1d5e35; font-weight: bold">후기 확인</button>
                         </div>
                     </div>
                 </div>
