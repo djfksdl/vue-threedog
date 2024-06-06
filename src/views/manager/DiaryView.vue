@@ -172,6 +172,17 @@
                     </div>
                 </div>
             </div>
+            <div v-if="showModal2" class="modal-wrapper">
+                <div class="modal">
+                    <div class="modal-header">
+                        <h2>카카오톡 알림</h2>
+                        <button @click="closeModal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>알림이 발송되었습니다!</p>
+                    </div>
+                </div>
+            </div>
         </div>
         <ManagerFooter />
     </div>
@@ -210,6 +221,7 @@ export default {
             curruntWeight: "",//몸무게currentWeight
             note: "", // 전달 사항
             showModal: false, // 모달 표시 여부
+            showModal2: false,
             savedDate: "", // 저장된 이용일
             savedTime: "", // 저장된 이용 시간
             savedPetName: "", // 저장된 애견 이름
@@ -456,7 +468,7 @@ export default {
             // console.log(this.savedcurruntWeight);
 
             // FormData 생성
-             const formData = new FormData();
+            const formData = new FormData();
             formData.append('rsNo', this.rsNo);
             formData.append('groomingEtiquette', this.savedGroomingEtiquette);
             formData.append('condition', this.savedCondition);
@@ -642,9 +654,11 @@ export default {
                 icon: 'success',
                 confirmButtonText: '확인'
             });
-            this.showModal = false;
+            this.showModal2 = false;
+        }, openModal() {
+            this.showModal2 = true;
+            // 여기에서 알림을 발송하는 함수를 호출
         },
-
         // 날짜 포맷팅
         formatDate(date) {
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
