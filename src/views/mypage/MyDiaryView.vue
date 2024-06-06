@@ -7,7 +7,6 @@
                 <div class="title">
                     <h1>알림장</h1>
                 </div>
-                <div class="dateLook">2024년 05월 15일 목요일</div>
                 <div class="myDiary02">
                     <div v-for="(entry, index) in diaryEntries" :key="index" class="petProfile">
                         <div class="store">
@@ -16,43 +15,43 @@
                         </div>
                         <div class="date">
                             <p><strong>◆ 이용일</strong></p>
-                            <p>{{ entry.date }}</p>
+                            <p>{{ entry.rtDate }}</p>
                         </div>
                         <div class="petName">
                             <p><strong>◆ 애견명</strong></p>
-                            <p>{{ entry.petName }}</p>
+                            <p>{{ entry.dogName }}</p>
                         </div>
                         <div class="mypetImgSlider">
-                            <img :src="entry.petImage" alt="Pet Image">
+                            <img :src="entry.dogImg" alt="Pet Image">
                         </div>
                         <div class="context">
                             <div class="weight">
                                 <p>☉ 몸무게</p>
-                                <p>{{ entry.weight }}</p>
+                                <p>{{ entry.curruntWeight }}</p>
                             </div>
                             <div>
                                 <p>☉ 미용예절</p>
-                                <p>{{ entry.groomingEtiquette }}</p>
+                                <p>{{ entry.attitude }}</p>
                             </div>
                             <div>
                                 <p>☉ 컨디션</p>
-                                <p>{{ entry.condition }}</p>
+                                <p>{{ entry.rCondition }}</p>
                             </div>
                             <div>
                                 <p>☉ 엉킴(부위)</p>
-                                <p>{{ entry.mattedArea }}</p>
+                                <p>{{ entry.tangle }}</p>
                             </div>
                             <div>
                                 <p>☉ 싫어했던 부위</p>
-                                <p>{{ entry.dislikedArea }}</p>
+                                <p>{{ entry.disliked }}</p>
                             </div>
                             <div>
                                 <p>☉ 추가요금</p>
-                                <p>{{ entry.additionalFee }}</p>
+                                <p>{{ entry.surcharge }}</p>
                             </div>
                             <div>
                                 <p>☉ 전달사항</p>
-                                <p>{{ entry.note }}</p>
+                                <p>{{ entry.message }}</p>
                             </div>
                         </div>
                     </div>
@@ -63,6 +62,7 @@
         <AppFooter />
     </div>
 </template>
+
 
 <script>
 import AppHeader from "@/components/AppHeader.vue"

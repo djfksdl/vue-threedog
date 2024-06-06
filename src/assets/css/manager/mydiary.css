@@ -4,24 +4,23 @@
 /* 알림장 */
 /* Mydiary */
 #myDiary {
-    width: 1200px;
+    width: 100%; /* Full width */
     margin: 0 auto;
-    /* background-color: red; */
+    overflow-x: hidden; /* Prevents horizontal overflow */
 }
 
 #myDiary .title {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 #myDiary h1 {
     font-size: 30px;
-    /* width: 1400px; */
-    /* border-bottom: 1px solid black; */
     margin: 20px 20px 0 20px;
 }
 
 #myDiary .title .searchBox {
-    width: 1260px;
     text-align: right;
     padding-top: 20px;
 }
@@ -51,17 +50,21 @@
 
 #myDiary .myDiary02 {
     display: flex;
-    background-color: #236C3F;
+    overflow-x: auto; /* Enables horizontal scrolling */
     padding: 20px;
     border-radius: 20px;
     margin-top: 10px;
     margin-bottom: 100px;
+    background-color: #236C3F;
 }
 
 #myDiary .myDiary02 .petProfile {
     background-color: white;
     border-radius: 20px;
     font-size: 20px;
+    margin-right: 20px; /* Spacing between items */
+    flex: 0 0 auto; /* Prevents items from shrinking */
+    width: 600px; /* Fixed width */
 }
 
 #myDiary .myDiary02 .petProfile p:last-child {
@@ -69,29 +72,21 @@
     padding-left: 30px;
 }
 
-#myDiary .myDiary02 .petProfile .store {
-    padding-top: 25px;
-    padding-left: 25px;
-}
-
-#myDiary .myDiary02 .petProfile .date {
+#myDiary .myDiary02 .petProfile .store,
+#myDiary .myDiary02 .petProfile .date,
+#myDiary .myDiary02 .petProfile .petName {
     padding: 25px;
 }
 
-#myDiary .myDiary02 .petProfile .petName {
-    padding-left: 25px;
-}
-
 #myDiary .myDiary02 .petProfile img {
-    width: 600px;
-    height: 500px;
+    width: 100%;
+    height: auto;
     border-radius: 20px;
     margin: 20px;
 }
 
-
 #myDiary .myDiary02 .context {
-    width: 700px;
+    width: 100%;
     margin-left: 30px;
     border-radius: 20px;
     background-color: white;
@@ -118,4 +113,3 @@
     margin-bottom: 15px;
     padding-left: 30px;
 }
-
