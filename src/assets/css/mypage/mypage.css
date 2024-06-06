@@ -381,27 +381,54 @@ datalist {
 /* reservationForm */
 #reservationForm {
     width: 1400px;
-    margin: 0px auto;
 }
+#reservationForm .container div>h1{
+    width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 20px;
+}
+
+#reservationForm .buttonCon{
+    width: 1200px;
+    margin: 0 auto;
+
+}
+
+#reservationForm .buttonCon span{
+    margin-right: 20px;
+    color: #236C3F;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#reservationForm .buttonCon button
+{
+    /* width: 50px; */
+    /* border-radius: 50%; */
+    /* height: 50px; */
+    background-color:white;
+    border: 1px solid  #236C3F;
+    color: #236C3F;
+    font-size: 18px;
+    margin-right: 20px;
+    cursor: pointer;
+    padding: 5px;
+    }
+
 
 #reservationForm .managerInfor {
     padding: 15px;
     /* border: 1px solid #a7a4a4; */
-    border-radius: 10px;
-    width: 1400px;
-    margin: 0 0 30px 40px;
-    box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1);
+    /* border-radius: 10px; */
+    /* box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1); */
     
 }
 
-#reservationForm .managerInfor .managerInfor2 {
-    display: flex;
-}
 
 
 
 #reservationForm .managerInfor .managerInfor3 {
-    margin: 10px 0 0 60px;
+    margin: 10px 0 0 30px;
 }
 
 #reservationForm .managerInfor .managerInfor3 p {
@@ -416,10 +443,11 @@ datalist {
 
 #reservationForm form{
     width: 1400px;
-    margin: 0 0 30px 40px;
-    box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1);
+    margin: 0 0 30px 20px;
+    /* box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1); */
     /* background-color: red; */
     padding: 10px 0 0 50px;
+    /* background-color: #e9e8e8; */
 }
 
 

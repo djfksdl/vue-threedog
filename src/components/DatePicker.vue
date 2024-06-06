@@ -200,9 +200,11 @@ const isSelected = (time) => {
 }
 
 #reservationFormDatePicker .time {
-  width: 500px;
+  width: 800px;
+  /* background-color: red; */
+  margin: 100px 0 0 150px;
   height: 400px;
-  margin: 70px 150px 0 80px;
+  /* margin: 70px 150px 0 300px; */
 }
 
 #reservationFormDatePicker .time p {

@@ -8,7 +8,7 @@
                 <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${userVo.uProfile}`">
             </div>
             <!-- 프로필 내용 -->
-            <div class="profileId">
+            <div class="profileId" v-if="userVo">
                 <label>{{ userVo.uName }}</label> 님 <br>
                 <label>보유 마일리지: {{ userVo.uPoint.toLocaleString() }}</label> P
             </div>
@@ -26,7 +26,7 @@
             <!-- 반려견 프로필 박스 -->
             <div class="petProfileBox" v-bind:key="i" v-for="(dogVo, i) in dogList">
                 <!-- 반려견 1 -->
-                <div class="profilePet">
+                <div class="profilePet" v-if="dogVo">
 
                     <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${dogVo.dogImg}`">
                     <p>{{ dogVo.dogName }} <router-link :to="`/petupdateform/${dogVo.dogNo}`"> 

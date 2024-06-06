@@ -10,10 +10,10 @@
                     <!-- 예약내역 윗부분 -->
                     <div class="mprcTop">
                         <h2>예약내역</h2>
-                        <router-link :to="`/reserve/${reserveVo.uNo}`">더보기 +</router-link>
+                        <router-link :to="`/reserve/${uNo}`">더보기 +</router-link>
                     </div>
                     <!-- 예약내역 내용 -->
-                    <div class="mprcContents" v-if="reserveVo.uNo">
+                    <div class="mprcContents" v-if="reserveVo">
                         <router-link :to="`/reserve/${reserveVo.uNo}`">
                             <div>
                                 <p>매장명</p>
@@ -40,10 +40,10 @@
                     <!-- 후기 윗부분 -->
                     <div class="mprvcTop">
                         <h2>내가 쓴 후기</h2>
-                        <router-link :to="`/myreview/${this.reviewVo.uNo}`">더보기 +</router-link>
+                        <router-link :to="`/myreview/${uNo}`">더보기 +</router-link>
                     </div>
                     <!-- 후기 내용 -->
-                    <div class="mprvcContents" v-if="reviewVo.uNo">
+                    <div class="mprvcContents" v-if="reviewVo">
                         <!-- 후기내용 예약정보부분 -->
                         <div class="mprvcContentsInfo">
                             <!-- 사진 -->
@@ -92,7 +92,7 @@
                         <router-link to="/mydiary">더보기 +</router-link>
                     </div>
                     <!-- 알림장 내용 -->
-                    <div class="mpdcContents" v-if="reserveVo2.uNo">
+                    <div class="mpdcContents" v-if="reserveVo2">
                         <!-- 알림장 사진 -->
                         <div class="mpdcImg">
                             <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reserveVo2.saveName}`">
@@ -190,6 +190,7 @@ export default {
                 pushNo:0,
 
             },
+            uNo: this.$store.state.authUser.uNo,
 
         };
     },

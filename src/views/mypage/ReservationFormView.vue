@@ -2,12 +2,17 @@
     <div id="wrap">
         <AppHeader />
         <div id="reservationForm">
-            <SideBar />
-            <div class="container">
-                <div style=" width: 1300px; margin-bottom: 30px;">
+            <!-- <SideBar /> -->
+            <div class="container" style="display: flex;">
+                <div></div>
+
+
+                <div>
                     <!-- <div class="h2Box1">
                         <h2>가게정보</h2>
                     </div> -->
+
+
                     <div class="managerInfor">
                         <div class="managerInfor2">
                             <div>
@@ -45,320 +50,349 @@
                     </div>
 
                 </div>
-                <!-- <div class="h2Box1">
-                    <h2>예약하기</h2>
-                </div> -->
-                <!-- {{ this.dogVo.uNo }} -->
-                <form v-on:submit.prevent="reserveInsert">
 
-                    <div style=" margin: 30px 0 30px 30px;">
-                        <h2>📅 날짜와 시간을 선택해주세요</h2>
+                <div>
+                    <h1>예약하기</h1>
+                    <div class="buttonCon">
+                        <button
+                            :style="{ backgroundColor: currentStep == 1 ? '#236c3f' : '', color: currentStep === 1 ? 'white' : '' }"
+                            @click="setStep(1)"> 날짜 및 시간선택</button>
+                        <span>></span>
+                        <button
+                            :style="{ backgroundColor: currentStep == 2 ? '#236c3f' : '', color: currentStep === 2 ? 'white' : '' }"
+                            @click="setStep(2)">반려견 정보 </button>
+                        <span>></span>
+                        <button
+                            :style="{ backgroundColor: currentStep == 3 ? '#236c3f' : '', color: currentStep === 3 ? 'white' : '' }"
+                            @click="setStep(3)">미용 선택</button>
+                        <span>></span>
+                        <button
+                            :style="{ backgroundColor: currentStep == 4 ? '#236c3f' : '', color: currentStep === 4 ? 'white' : '' }"
+                            @click="setStep(4)">주의사항 및 동의사항</button>
                     </div>
-                    <div>
-                        <div class="choiceBox">
-                            <div class="calendar">
-                                <Datepicker @selectedDateTime="handleSelectedDateTime" />
-                            </div>
 
-                            <!-- v-bind:key="i" v-for="(reserveVo, i) in reserveList" -->
-                        </div>
-                        <div class="reservationBox">
-                            <h2>🐶 반려견선택</h2>
-                            <div class="petChoice">
-                                <!-- <div class="petChoice" style="font-size: 16px; font-weight: bold">반려견 선택</div> -->
-                                <span v-for="dogVo in dogList" :key="dogVo.dogNo">
-                                    <!-- {{ dogVo.dogNo }} -->
-                                    <label :for="'pet-' + dogVo.dogNo">{{ dogVo.dogName }}</label>
-                                    <input type="radio" name="pet" :id="'pet-' + dogVo.dogNo" :value="dogVo.dogNo"
-                                        @change="selectedDogClick" v-model="selectedDog">
-                                </span>
+
+                    <form v-on:submit.prevent="reserveInsert">
+                        <div>
+                            <div v-if="currentStep == 1">
+                                <div style=" margin: 30px 0 30px 30px;">
+                                    <h2>📅 날짜와 시간을 선택해주세요</h2>
+                                </div>
+                                <div class="choiceBox">
+                                    <div class="calendar">
+                                        <Datepicker @selectedDateTime="handleSelectedDateTime" />
+                                    </div>
+                                </div>
+                                
+                                
+                                <button  @click="moveToStep(2)">다음으로 이동</button>
 
                             </div>
+                            <div class="reservationBox">
+                                <div v-if="currentStep == 2">
+                                    <h2>🐶 반려견선택</h2>
 
-                            <div class="character">
-                                <h2>📝 특이사항</h2>
-                                <button type="button"
-                                    :style="{ backgroundColor: dogVo.skin ? '#236C3F' : 'white', color: dogVo.skin ? 'white' : 'black' }"
-                                    @click="toggleSkinStatus">피부병</button>
-                                <button type="button"
-                                    :style="{ backgroundColor: dogVo.heart ? '#236C3F' : 'white', color: dogVo.heart ? 'white' : 'black' }"
-                                    @click="toggleHeartStatus">심장질환</button>
-                                <button type="button"
-                                    :style="{ backgroundColor: dogVo.marking ? '#236C3F' : 'white', color: dogVo.marking ? 'white' : 'black' }"
-                                    @click="toggleMarkingStatus">마킹</button>
-                                <button type="button"
-                                    :style="{ backgroundColor: dogVo.mounting ? '#236C3F' : 'white', color: dogVo.mounting ? 'white' : 'black' }"
-                                    @click="toggleMountingStatus">마운팅</button>
+                                    <div class="petChoice">
+                                        <!-- <div class="petChoice" style="font-size: 16px; font-weight: bold">반려견 선택</div> -->
+                                        <span v-for="dogVo in dogList" :key="dogVo.dogNo">
+                                            <!-- {{ dogVo.dogNo }} -->
+                                            <label :for="'pet-' + dogVo.dogNo">{{ dogVo.dogName }}</label>
+                                            <input type="radio" name="pet" :id="'pet-' + dogVo.dogNo"
+                                                :value="dogVo.dogNo" @change="selectedDogClick" v-model="selectedDog">
+                                        </span>
+
+                                    </div>
+
+                                    <div class="character">
+                                        <h2>📝 특이사항</h2>
+                                        <button type="button"
+                                            :style="{ backgroundColor: dogVo.skin ? '#236C3F' : 'white', color: dogVo.skin ? 'white' : 'black' }"
+                                            @click="toggleSkinStatus">피부병</button>
+                                        <button type="button"
+                                            :style="{ backgroundColor: dogVo.heart ? '#236C3F' : 'white', color: dogVo.heart ? 'white' : 'black' }"
+                                            @click="toggleHeartStatus">심장질환</button>
+                                        <button type="button"
+                                            :style="{ backgroundColor: dogVo.marking ? '#236C3F' : 'white', color: dogVo.marking ? 'white' : 'black' }"
+                                            @click="toggleMarkingStatus">마킹</button>
+                                        <button type="button"
+                                            :style="{ backgroundColor: dogVo.mounting ? '#236C3F' : 'white', color: dogVo.mounting ? 'white' : 'black' }"
+                                            @click="toggleMountingStatus">마운팅</button>
 
 
-                                <div class="bite">
-                                    <div class="biteRange">
-                                        <label>입질정도</label>
-                                        <div class="biteRange2">
+                                        <div class="bite">
+                                            <div class="biteRange">
+                                                <label>입질정도</label>
+                                                <div class="biteRange2">
 
-                                            <input type="range" min="1" max="3" step="1" list="tickmarks"
-                                                v-model="dogVo.bite">
-                                            <datalist id="tickmarks">
-                                                <option value="1"></option>
-                                                <option value="2"></option>
-                                                <option value="3"></option>
-                                            </datalist>
+                                                    <input type="range" min="1" max="3" step="1" list="tickmarks"
+                                                        v-model="dogVo.bite">
+                                                    <datalist id="tickmarks">
+                                                        <option value="1"></option>
+                                                        <option value="2"></option>
+                                                        <option value="3"></option>
+                                                    </datalist>
+                                                </div>
+                                            </div>
+                                            <div class="pbox">
+                                                <p>하</p>
+                                                <p>중</p>
+                                                <p>상</p>
+                                            </div>
+
+
+
                                         </div>
+                                        <textarea placeholder="기타 특이사항을 적어주세요." v-model="dogVo.memo"></textarea>
                                     </div>
-                                    <div class="pbox">
-                                        <p>하</p>
-                                        <p>중</p>
-                                        <p>상</p>
-                                    </div>
-
-
+                                    <button  @click="moveToStep(3)">다음으로 이동</button>
 
                                 </div>
-                                <textarea placeholder="기타 특이사항을 적어주세요." v-model="dogVo.memo"></textarea>
-                            </div>
 
 
-
-
-                            <div class="price">
-
-                                <!-- {{ dogVo.size }} -->
-                                <!-- <span>크기선택</span>
-                            <label for="small">소형견</label><input id="small" type="radio" name="size" value="소형견"
-                                v-bind:checked="dogVo.size == '소형견'" v-model="dogVo.size">
-                            <label for="middle">중형견</label><input id="middle" type="radio" name="size" value="중형견"
-                                v-bind:checked="dogVo.size == '중형견'" v-model="dogVo.size">
-                            <label for="big">특수견</label><input id="big" type="radio" name="size" value="특수견"
-                                v-bind:checked="dogVo.size == '특수견'" v-model="dogVo.size"> -->
-                                {{ dogVo.size }}
-                                <div class="tableBox">
-                                    <!-- 소형견 -->
-                                    <table v-if="dogVo.size === '소형견'" style="width: 650px;">
-                                        <!-- <tr>
-                                     <th colspan="7" class="eNonBorder">소형견(말티즈, 요크셔, 시츄, 푸들 등...)</th>
-                                    </tr> -->
-                                        <!-- v-for="(priceVo, i) in priceList" v-bind:key="i" -->
-                                        <thead>
-                                            <tr>
-                                                <th>몸무게</th>
-                                                <th>목욕</th>
-                                                <th>부분</th>
-                                                <th>목욕+부분</th>
-                                                <th>얼굴+부분+목욕</th>
-                                                <th colspan="2">기본전체미용</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody v-for="(priceVo, i) in priceList" :key="i">
-                                            <tr v-if="i % 5 == 0">
-                                                <th>{{ priceVo.weightDiv }}</th>
-                                                <td :class="{ selected: selectedPriceIndex == i }"
-                                                    @click="addPrice(priceVo.onePrice, i)">{{
+                                <div v-if="currentStep == 3">
+                                    <div class="price">
+                                        <!-- {{ dogVo.size }} -->
+                                        <div class="tableBox">
+                                            <!-- 소형견 -->
+                                            <table v-if="dogVo.size === '소형견'" style="width: 650px;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>몸무게</th>
+                                                        <th>목욕</th>
+                                                        <th>부분</th>
+                                                        <th>목욕+부분</th>
+                                                        <th>얼굴+부분+목욕</th>
+                                                        <th colspan="2">기본전체미용</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody v-for="(priceVo, i) in priceList" :key="i">
+                                                    <tr v-if="i % 5 == 0">
+                                                        <th>{{ priceVo.weightDiv }}</th>
+                                                        <td :class="{ selected: selectedPriceIndex == i }"
+                                                            @click="addPrice(priceVo.onePrice, i)">{{
                                     priceVo.onePrice.toLocaleString() }}</td>
-                                                <td :class="{ selected: selectedPriceIndex == i + 1 }"
-                                                    @click="addPrice(priceList[i + 1]?.onePrice, i + 1)">{{ priceList[i
-                                    +
-                                    1]?.onePrice.toLocaleString() }}</td>
-                                                <td :class="{ selected: selectedPriceIndex == i + 2 }"
-                                                    @click="addPrice(priceList[i + 2]?.onePrice, i + 2)">{{ priceList[i
-                                    +
-                                    2]?.onePrice.toLocaleString() }}</td>
-                                                <td :class="{ selected: selectedPriceIndex == i + 3 }"
-                                                    @click="addPrice(priceList[i + 3]?.onePrice, i + 3)">{{ priceList[i
-                                    +
-                                    3]?.onePrice.toLocaleString() }}</td>
-                                                <td :class="{ selected: selectedPriceIndex == i + 4 }"
-                                                    @click="addPrice(priceList[i + 4]?.onePrice, i + 4)">{{ priceList[i
-                                    +
-                                    4]?.onePrice.toLocaleString() }}</td>
-                                            </tr>
-                                        </tbody>
+                                                        <td :class="{ selected: selectedPriceIndex == i + 1 }"
+                                                            @click="addPrice(priceList[i + 1]?.onePrice, i + 1)">{{
+                                    priceList[i
+                                        +
+                                        1]?.onePrice.toLocaleString() }}</td>
+                                                        <td :class="{ selected: selectedPriceIndex == i + 2 }"
+                                                            @click="addPrice(priceList[i + 2]?.onePrice, i + 2)">{{
+                                    priceList[i
+                                        +
+                                        2]?.onePrice.toLocaleString() }}</td>
+                                                        <td :class="{ selected: selectedPriceIndex == i + 3 }"
+                                                            @click="addPrice(priceList[i + 3]?.onePrice, i + 3)">{{
+                                    priceList[i
+                                        +
+                                        3]?.onePrice.toLocaleString() }}</td>
+                                                        <td :class="{ selected: selectedPriceIndex == i + 4 }"
+                                                            @click="addPrice(priceList[i + 4]?.onePrice, i + 4)">{{
+                                    priceList[i
+                                        +
+                                        4]?.onePrice.toLocaleString() }}</td>
+                                                    </tr>
+                                                </tbody>
 
 
-                                    </table>
+                                            </table>
 
-                                    <!-- 중형견 -->
-                                    <table v-if="dogVo.size === '중형견'" style="width: 650px;">
-                                        <thead>
-                                            <tr>
-                                                <th>몸무게</th>
-                                                <th>목욕</th>
-                                                <th>부분</th>
-                                                <th>목욕+부분</th>
-                                                <th>얼굴+부분+목욕</th>
-                                                <th colspan="2">기본전체미용</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody v-for="(priceVo, i) in priceList" :key="i">
-                                            <tr v-if="i % 5 == 0">
-                                                <th>{{ priceVo.weightDiv }}</th>
-                                                <td :class="{ selected: selectedPriceIndex == i }"
-                                                    @click="addPrice(priceVo.onePrice, i)">{{
+                                            <!-- 중형견 -->
+                                            <table v-if="dogVo.size === '중형견'" style="width: 650px;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>몸무게</th>
+                                                        <th>목욕</th>
+                                                        <th>부분</th>
+                                                        <th>목욕+부분</th>
+                                                        <th>얼굴+부분+목욕</th>
+                                                        <th colspan="2">기본전체미용</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody v-for="(priceVo, i) in priceList" :key="i">
+                                                    <tr v-if="i % 5 == 0">
+                                                        <th>{{ priceVo.weightDiv }}</th>
+                                                        <td :class="{ selected: selectedPriceIndex == i }"
+                                                            @click="addPrice(priceVo.onePrice, i)">{{
                                     priceVo.onePrice.toLocaleString() }}</td>
-                                                <td :class="{ selected: selectedPriceIndex == i + 1 }"
-                                                    @click="addPrice(priceList[i + 1]?.onePrice, i + 1)">{{ priceList[i
-                                    +
-                                    1]?.onePrice.toLocaleString() }}</td>
-                                                <td :class="{ selected: selectedPriceIndex == i + 2 }"
-                                                    @click="addPrice(priceList[i + 2]?.onePrice, i + 2)">{{ priceList[i
-                                    +
-                                    2]?.onePrice.toLocaleString() }}</td>
-                                                <td :class="{ selected: selectedPriceIndex == i + 3 }"
-                                                    @click="addPrice(priceList[i + 3]?.onePrice, i + 3)">{{ priceList[i
-                                    +
-                                    3]?.onePrice.toLocaleString() }}</td>
-                                                <td :class="{ selected: selectedPriceIndex == i + 4 }"
-                                                    @click="addPrice(priceList[i + 4]?.onePrice, i + 4)">{{ priceList[i
-                                    +
-                                    4]?.onePrice.toLocaleString() }}</td>
-                                            </tr>
+                                                        <td :class="{ selected: selectedPriceIndex == i + 1 }"
+                                                            @click="addPrice(priceList[i + 1]?.onePrice, i + 1)">{{
+                                    priceList[i
+                                        +
+                                        1]?.onePrice.toLocaleString() }}</td>
+                                                        <td :class="{ selected: selectedPriceIndex == i + 2 }"
+                                                            @click="addPrice(priceList[i + 2]?.onePrice, i + 2)">{{
+                                    priceList[i
+                                        +
+                                        2]?.onePrice.toLocaleString() }}</td>
+                                                        <td :class="{ selected: selectedPriceIndex == i + 3 }"
+                                                            @click="addPrice(priceList[i + 3]?.onePrice, i + 3)">{{
+                                    priceList[i
+                                        +
+                                        3]?.onePrice.toLocaleString() }}</td>
+                                                        <td :class="{ selected: selectedPriceIndex == i + 4 }"
+                                                            @click="addPrice(priceList[i + 4]?.onePrice, i + 4)">{{
+                                    priceList[i
+                                        +
+                                        4]?.onePrice.toLocaleString() }}</td>
+                                                    </tr>
 
-                                        </tbody>
+                                                </tbody>
 
 
-                                    </table>
+                                            </table>
 
-                                    <!-- 특수견 -->
-                                    <table v-if="dogVo.size == '특수견'">
-                                        <thead>
-                                            <tr>
-                                                <th>몸무게</th>
-                                                <th>목욕</th>
-                                                <th>부분</th>
-                                                <th>목욕+부분</th>
-                                                <th>얼굴+부분+목욕</th>
-                                                <th>스포팅</th>
-                                                <th>가위컷</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody v-for="(priceVo, i) in priceList" :key="i">
-                                            <tr v-if="i % 6 == 0">
-                                                <th>{{ priceVo.weightDiv }}</th>
-                                                <td :class="{ selected: selectedPriceIndex == i }"
-                                                    @click="addPrice(priceList[i]?.onePrice, i)">{{
+                                            <!-- 특수견 -->
+                                            <table v-if="dogVo.size == '특수견'">
+                                                <thead>
+                                                    <tr>
+                                                        <th>몸무게</th>
+                                                        <th>목욕</th>
+                                                        <th>부분</th>
+                                                        <th>목욕+부분</th>
+                                                        <th>얼굴+부분+목욕</th>
+                                                        <th>스포팅</th>
+                                                        <th>가위컷</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody v-for="(priceVo, i) in priceList" :key="i">
+                                                    <tr v-if="i % 6 == 0">
+                                                        <th>{{ priceVo.weightDiv }}</th>
+                                                        <td :class="{ selected: selectedPriceIndex == i }"
+                                                            @click="addPrice(priceList[i]?.onePrice, i)">{{
                                     priceVo.onePrice.toLocaleString()
                                 }}</td>
-                                                <td :class="{ selected: selectedPriceIndex == i + 1 }"
-                                                    @click="addPrice(priceList[i + 1]?.onePrice, i + 1)">{{ priceList[i
-                                    +
-                                    1]?.onePrice.toLocaleString() }}</td>
-                                                <td :class="{ selected: selectedPriceIndex == i + 2 }"
-                                                    @click="addPrice(priceList[i + 2]?.onePrice, i + 2)">{{ priceList[i
-                                    +
-                                    2]?.onePrice.toLocaleString() }}</td>
-                                                <td :class="{ selected: selectedPriceIndex == i + 3 }"
-                                                    @click="addPrice(priceList[i + 3]?.onePrice, i + 3)">{{ priceList[i
-                                    +
-                                    3]?.onePrice.toLocaleString() }}</td>
-                                                <td :class="{ selected: selectedPriceIndex == i + 4 }"
-                                                    @click="addPrice(priceList[i + 4]?.onePrice, i + 4)">{{ priceList[i
-                                    +
-                                                    4]?.onePrice.toLocaleString() }}</td>
-                                                <td :class="{ selected: selectedPriceIndex == i + 5 }"
-                                                    @click="addPrice(priceList[i + 5]?.onePrice, i + 5)">{{ priceList[i
-                                                    +
-                                                    5]?.onePrice.toLocaleString() }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                                        <td :class="{ selected: selectedPriceIndex == i + 1 }"
+                                                            @click="addPrice(priceList[i + 1]?.onePrice, i + 1)">{{
+                                    priceList[i
+                                        +
+                                        1]?.onePrice.toLocaleString() }}</td>
+                                                        <td :class="{ selected: selectedPriceIndex == i + 2 }"
+                                                            @click="addPrice(priceList[i + 2]?.onePrice, i + 2)">{{
+                                    priceList[i
+                                        +
+                                        2]?.onePrice.toLocaleString() }}</td>
+                                                        <td :class="{ selected: selectedPriceIndex == i + 3 }"
+                                                            @click="addPrice(priceList[i + 3]?.onePrice, i + 3)">{{
+                                    priceList[i
+                                        +
+                                        3]?.onePrice.toLocaleString() }}</td>
+                                                        <td :class="{ selected: selectedPriceIndex == i + 4 }"
+                                                            @click="addPrice(priceList[i + 4]?.onePrice, i + 4)">{{
+                                    priceList[i
+                                        +
+                                        4]?.onePrice.toLocaleString() }}</td>
+                                                        <td :class="{ selected: selectedPriceIndex == i + 5 }"
+                                                            @click="addPrice(priceList[i + 5]?.onePrice, i + 5)">{{
+                                    priceList[i
+                                        +
+                                        5]?.onePrice.toLocaleString() }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
 
 
-                                </div>
-                                <table style="width: 650px;">
-                                    <tbody>
-                                        <tr>
-                                            <th rowspan="7">추가요금</th>
-                                        </tr>
-                                        <tr v-for="(priceList2, i) in priceList2" :key="i">
-                                            <th>{{ priceList2.beauty }}</th>
-                                            <td :class="{ 'selected': priceList2.selected }"
-                                                @click="toggleSelected(priceList2)">{{
-                                                priceList2.onePrice.toLocaleString()
-                                                }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                        </div>
+                                        <table style="width: 650px;">
+                                            <tbody>
+                                                <tr>
+                                                    <th rowspan="7">추가요금</th>
+                                                </tr>
+                                                <tr v-for="(priceList2, i) in priceList2" :key="i">
+                                                    <th>{{ priceList2.beauty }}</th>
+                                                    <td :class="{ 'selected': priceList2.selected }"
+                                                        @click="toggleSelected(priceList2)">{{
+                                    priceList2.onePrice.toLocaleString()
+                                }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
 
-                            <div class="expectPrice">
-                                <p>예상가격 {{ (this.reserveVo.expectedPrice - this.usePoint).toLocaleString() }}원</p>
-                            </div>
-
-                            <div class="point">
-                                <label>포인트</label>
-                                <input type="number" step="10" v-model="usePoint">
-                                <button type="button" @click="useAllPoint">전액사용</button>
-                                <p>{{ (this.uPoint - this.usePoint).toLocaleString() }}P 사용가능</p>
-                            </div>
-
-                            <div class="notice">
-                                <label for="notice">안내사항 및 미용시 주의사항</label>
-                                <div id="notice">
-                                    <strong>안내사항</strong><br>
-                                    1. 미용 후 추가 요금이 발생할 수 있습니다. (예약금제외)<br>
-                                    2. 심장병/당뇨/고혈압 / 발작 등의 지병 기타 사나움 등의 요인으로 미용을 중단할 수 있습니다. 이에 해당하는 반려견 미용 중 또는 미용 후 문제시
-                                    책임을
-                                    지지 않습니다. (이로인해 지불한 미용비는 환불되지 않습니다.)<br>
-                                    3. 사나운 반려견의 경우 사전에 알려주시기 바라며, 미용사의 물림 사고가 발생시 보호자에게 치료비를 청구할 수 있습니다.<br>
-                                    4. 이는 만일의 상황에 대한 동의서이니 견주의 충분한 이해와 양해를 부탁드립니다.<br>
-                                    <br>
-                                    <strong>[미용 후 주의사항]</strong><br>
-                                    1. 짧은 기계미용과 많은 털 엉킴이 있을시 미용 후 자극이 와서 긁거나 핥을 수 있습니다.<br>
-                                    - 우리 아가들의 피부는 사람에 비해 약하기 때문에 미용 후 긁거나 핥으면 상처가 나거나 진물, 심하면 피가 날수있습니다.<br>
-                                    우리아가가 지속적으로 핥고 긁기 전에 먼저 지켜봐 주시기 바랍니다.<br>
-                                    2. 일시적으로 미용 스트레스가 올 수 있으나 대부분 2~5일 후 점차 사라지게 됩니다.<br>
-                                    - 밥을 먹지 않거나 구석에 숨어있는 다거나, 배변을 보지 않는 등 미용 전에는 없었던 행동을 보일 수 있답니다.<br>
-                                    미용을 반복하다 보면 점차 좋아지기도 합니다. 푹 쉬게 안정을 취해주시고, 좋아하는 간식을 챙겨주시기 바랍니다.<br>
-                                    3. 항문 주위의 털 정리와 항문낭 제거로 엉덩이를 끌고 다닐 수 있습니다.<br>
-                                    4. 이중모(포메라니안, 스피츠, 폼피츠, 페키, 웰시 등) 아이들은 클리퍼로 몸을 미용했을 시 알로페이사증후군이 올 수 있으며,
-                                    그로인해 털이 나지 않을 수 있습니다. 이를 숙지하시고 아이들의 미용스타일을 결정해주시기 바랍니다.<br>
-                                    - 가급적 가위컷 추천드립니다.<br>
-                                    5. 평소엔 털에 가려져 보이지 않았던 피부병이 미용 후에 발견될 수 있습니다.<br>
-                                    6. 귀 질환이나 피부 질환이 있는 경우는 반드시 병원 치료를 받길 바랍니다.<br>
-                                    7. 생식기 및 귀털 제거에서 자극을 최소화하기 위해 지저분해 보일 수 있는 점 양해 부탁드립니다.<br>
-                                </div>
-                                <div>
-                                    <input type="checkbox" id="agreeCheckbox"><label for="agreeCheckbox">안내사항 및 미용시
-                                        주의사항에 동의합니다.</label>
-                                </div>
-                            </div>
-
-
-
-
-                            <div class="signBox">
-                                <label>전자서명</label>
-                                <div class="sign">
-                                    <div>
-                                        <canvas ref="signatureCanvas" v-on:mousedown="onBegin" v-on:mouseup="onEnd"
-                                            width="620" height="250" style="border: 1px solid #000;">
-                                        </canvas>
+                                        <div class="expectPrice">
+                                            <p>예상가격 {{ (this.reserveVo.expectedPrice - this.usePoint).toLocaleString()
+                                                }}원</p>
+                                        </div>
                                     </div>
-                                    <div class="sign0">
-                                        <button @click.prevent="clearCanvas">지우기</button>
+                                    <div class="point">
+                                        <label>포인트</label>
+                                        <input type="number" step="10" v-model="usePoint">
+                                        <button type="button" @click="useAllPoint">전액사용</button>
+                                        <p>{{ (this.uPoint - this.usePoint).toLocaleString() }}P 사용가능</p>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="cal">
-                                <p>노쇼방지를 위해 예약금 20,000원을 받고 있습니다.</p>
-                                <button type="button" v-for="(payment, index) in paymentMethods" :key="index"
-                                    @click="togglePayment(index)" :class="{ 'selected': selectedPayment === index }">
-                                    {{ payment }}
-                                </button>
+                                <div  v-if="currentStep == 4">
+
+                                    <div class="notice">
+                                        <label for="notice">안내사항 및 미용시 주의사항</label>
+                                        <div id="notice">
+                                            <strong>안내사항</strong><br>
+                                            1. 미용 후 추가 요금이 발생할 수 있습니다. (예약금제외)<br>
+                                            2. 심장병/당뇨/고혈압 / 발작 등의 지병 기타 사나움 등의 요인으로 미용을 중단할 수 있습니다. 이에 해당하는 반려견 미용 중 또는
+                                            미용 후
+                                            문제시
+                                            책임을
+                                            지지 않습니다. (이로인해 지불한 미용비는 환불되지 않습니다.)<br>
+                                            3. 사나운 반려견의 경우 사전에 알려주시기 바라며, 미용사의 물림 사고가 발생시 보호자에게 치료비를 청구할 수 있습니다.<br>
+                                            4. 이는 만일의 상황에 대한 동의서이니 견주의 충분한 이해와 양해를 부탁드립니다.<br>
+                                            <br>
+                                            <strong>[미용 후 주의사항]</strong><br>
+                                            1. 짧은 기계미용과 많은 털 엉킴이 있을시 미용 후 자극이 와서 긁거나 핥을 수 있습니다.<br>
+                                            - 우리 아가들의 피부는 사람에 비해 약하기 때문에 미용 후 긁거나 핥으면 상처가 나거나 진물, 심하면 피가 날수있습니다.<br>
+                                            우리아가가 지속적으로 핥고 긁기 전에 먼저 지켜봐 주시기 바랍니다.<br>
+                                            2. 일시적으로 미용 스트레스가 올 수 있으나 대부분 2~5일 후 점차 사라지게 됩니다.<br>
+                                            - 밥을 먹지 않거나 구석에 숨어있는 다거나, 배변을 보지 않는 등 미용 전에는 없었던 행동을 보일 수 있답니다.<br>
+                                            미용을 반복하다 보면 점차 좋아지기도 합니다. 푹 쉬게 안정을 취해주시고, 좋아하는 간식을 챙겨주시기 바랍니다.<br>
+                                            3. 항문 주위의 털 정리와 항문낭 제거로 엉덩이를 끌고 다닐 수 있습니다.<br>
+                                            4. 이중모(포메라니안, 스피츠, 폼피츠, 페키, 웰시 등) 아이들은 클리퍼로 몸을 미용했을 시 알로페이사증후군이 올 수 있으며,
+                                            그로인해 털이 나지 않을 수 있습니다. 이를 숙지하시고 아이들의 미용스타일을 결정해주시기 바랍니다.<br>
+                                            - 가급적 가위컷 추천드립니다.<br>
+                                            5. 평소엔 털에 가려져 보이지 않았던 피부병이 미용 후에 발견될 수 있습니다.<br>
+                                            6. 귀 질환이나 피부 질환이 있는 경우는 반드시 병원 치료를 받길 바랍니다.<br>
+                                            7. 생식기 및 귀털 제거에서 자극을 최소화하기 위해 지저분해 보일 수 있는 점 양해 부탁드립니다.<br>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="agreeCheckbox"><label for="agreeCheckbox">안내사항 및
+                                                미용시
+                                                주의사항에 동의합니다.</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                    <div class="signBox">
+                                        <label>전자서명</label>
+                                        <div class="sign">
+                                            <div>
+                                                <canvas ref="signatureCanvas" v-on:mousedown="onBegin"
+                                                    v-on:mouseup="onEnd" width="620" height="250"
+                                                    style="border: 1px solid #000;">
+                                                </canvas>
+                                            </div>
+                                            <div class="sign0">
+                                                <button @click.prevent="clearCanvas">지우기</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                               
+
+                                
+                                <div class="cal">
+                                    <p>노쇼방지를 위해 예약금 20,000원을 받고 있습니다.</p>
+                                    <button type="button" v-for="(payment, index) in paymentMethods" :key="index"
+                                        @click="togglePayment(index)"
+                                        :class="{ 'selected': selectedPayment === index }">
+                                        {{ payment }}
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="subBtn">
-                        <button class="reserveInsert" type="submit">예약</button>
-                    </div>
-                </form>
-                <!-- 모달 창 -->
-                <div v-if="modalVisible" class="reservationModal">
-                    <div class="modal-content">
-                        <p>예약이 완료되었습니다.</p>
-                        <span class="close" @click="closeModal">&times;</span>
-                    </div>
+                        <div class="subBtn">
+                            <button class="reserveInsert" type="submit">예약</button>
+                        </div>
+                    </form>
                 </div>
+
             </div>
         </div>
 
@@ -376,8 +410,9 @@ import axios from "axios"
 import { mapActions } from 'vuex';
 import '@/assets/css/mypage/mypage.css'
 import Datepicker from '@/components/DatePicker.vue'
-import SideBar from '@/components/SideBar.vue'
+// import SideBar from '@/components/SideBar.vue'
 import TopButton from "@/components/TopButton.vue"
+
 
 
 
@@ -389,12 +424,13 @@ export default {
         AppHeader,
         AppFooter,
         Datepicker,
-        SideBar,
+        // SideBar,
         TopButton,
 
     },
     data() {
         return {
+            currentStep: 1,
             selectedPriceIndex: null,
             signaturePad: null,
             reserveList: [],
@@ -471,6 +507,13 @@ export default {
 
 
     methods: {
+
+        setStep(step) {
+            this.currentStep = step;
+        },
+        moveToStep(step) {
+        this.currentStep = step;
+    },
 
         //가게정보
         getBList() {
