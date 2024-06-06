@@ -41,7 +41,7 @@
                     </div>
 
                     <div class="diary-info-leftitem" v-if="selectedSchedule">
-                        <label class="diary-label">총 금액: {{ totalAmount }}</label>
+                        <label class="diary-label2">총 금액: {{ totalAmount }}</label>
                     </div>
 
 
