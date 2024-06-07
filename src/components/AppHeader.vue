@@ -33,7 +33,7 @@
                     </ul>
                 </div> -->
 
-                <div class="popRank">
+                <!-- <div class="popRank">
                     <ul id="best_search">
                         <li>
                             <dl class="time1" style="display:">
@@ -63,7 +63,7 @@
                             </dl>
                         </li>
                     </ul>
-                </div>
+                </div> -->
 
                 <!-- 오른쪽 메뉴 -->
                 <div class="user-options">
@@ -106,7 +106,7 @@
     </div>
 </template>
 
-<script setup>
+<!-- <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 // import $ from 'jquery';
 import $ from 'jquery';
@@ -155,7 +155,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
     stopCarousel();
 });
-</script>
+</script> -->
 
 <script>
 import "@/assets/css/headerFooter/aheader.css"
