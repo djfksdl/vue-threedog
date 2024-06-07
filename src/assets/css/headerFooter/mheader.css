@@ -33,16 +33,16 @@
     display: flex;
 }
 .mheader .mheaderWrap .mheaderLeft .mlogo{
-    width: 150px;
+    /* width: 150px; */
     height: 80px;
     /* background-color: plum; */
     display: flex;
     align-items: center;
-    margin-right: 30px;
+    /* margin-right: 30px; */
     overflow: hidden;
 }
 .mheader .mheaderWrap .mheaderLeft .mlogo a img{
-    width: 150px;
+    width: 80px;
     height: 80px;
     object-fit: contain;
 }

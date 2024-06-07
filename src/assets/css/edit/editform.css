@@ -11,15 +11,26 @@
     /* background-color: pink; */
     margin: 50px 0;
 }
-.container3 .eLogoTitle h1{
-    margin-bottom: 30px;
+
+.container3 .eLogoTitle .eLogoTitleExplain{
     border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.container3 .eLogoTitle .eLogoTitleExplain h1{
     padding-bottom: 10px ;
 }
+.container3 .eLogoTitle .eLogoTitleExplain p{
+    color: #999;
+    padding-left: 20px;
+    
+}
+
+/* 로고 */
 .container3 .eLogoTitle .eLogoTitleInfo{
     display: flex;
 }
-/* 로고 */
 .container3 .eLogoTitle .eLogoTitleInfo .eLogo{
     /* background-color: palegoldenrod; */
     width: 125px;
@@ -320,7 +331,7 @@
  .container3 .eMidContainer .ePositionContainer{
     /* background-color: skyblue; */
     /* width: 1700px; */
-    margin: 0 auto 30px;
+    margin: 0 auto 100px;
  }
  .container3 .eMidContainer .ePositionContainer h1{
     /* margin-left: 30px; */
@@ -458,4 +469,27 @@
 }
 .container3 .eMidContainer .ePositionContainer .ePositionBox .ePositionLRight >img{
 
+}
+
+/* 등록, 수정 버튼 */
+.container3 .eMidContainer .eInsertUpdateBtnBox{
+    margin-bottom: 30px;
+}
+
+.container3 .eMidContainer .eInsertUpdateBtnBox .eInsertUpdateBtn{
+    border: none;
+    width: 100%;
+    height: 100px;
+    font-size: 20px;
+    background-color: #153448;
+    color: #fff;
+    border: 2px solid #153448;
+    font-weight: bold;
+    border-radius: 10px;
+    margin: 0 auto;
+    display: block;
+    cursor: pointer;
+}
+.container3 .eMidContainer .eInsertUpdateBtnBox .eInsertUpdateBtn:hover{
+    background-color: #122c3d;
 }

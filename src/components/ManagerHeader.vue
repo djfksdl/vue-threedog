@@ -71,7 +71,7 @@ export default {
             this.$store.commit("setAuth",null);
             this.$store.commit("setToken",null);
 
-            this.$router.push(`/edit/${this.bNo}`);
+            this.$router.push(`/`);
         },
         // 마이페이지
         loginForMypage(){

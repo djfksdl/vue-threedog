@@ -6,7 +6,10 @@
 
                 <!-- 로고 + 타이틀 등록 -->
                 <div class="eLogoTitle">
-                    <h1>로고, 타이틀 등록</h1>
+                    <div class="eLogoTitleExplain">
+                        <h1>로고, 타이틀 등록</h1>
+                        <p>*로고 사이즈 80*80 권장</p>
+                    </div>
                     <!-- 로고 -->
                     <div class="eLogoTitleInfo">
                         <div class="eLogo">
@@ -312,7 +315,7 @@
                                             <p class="eReservTel">{{ shopInfo.bPhone}}</p>
                                         </div>
                                         <div class="eReservBtnBox">
-                                            <router-link to="/reservationform" class="eReservBtn">예약하러 가기</router-link>
+                                            <router-link to="" class="eReservBtn">예약하러 가기</router-link>
                                         </div>
                                     </div>
                                 </div>
@@ -329,8 +332,10 @@
                     </div>
 
                     <!-- 등록,수정 버튼 -->
-                    <button type="submit" v-if="this.shopInfo.logo != null" v-on:click="setAction('update')">가게정보 수정 버튼</button>
-                    <button type="submit" v-if="this.shopInfo.logo == null" v-on:click="setAction('add')">가게정보 등록 버튼</button>
+                    <div class="eInsertUpdateBtnBox">
+                        <button type="submit" class="eInsertUpdateBtn" v-if="this.shopInfo.logo != null" v-on:click="setAction('update')">가게정보 수정완료</button>
+                        <button type="submit" class="eInsertUpdateBtn" v-if="this.shopInfo.logo == null" v-on:click="setAction('add')">가게정보 등록</button>
+                    </div>
 
                 </div>
             </div>
@@ -457,6 +462,63 @@ import { reactive, onMounted } from 'vue';
             // ========== 가게정보 등록하기 ==========
             addShopInfo(){
                 console.log("가게정보 등록하기 버튼");
+
+                if (!this.shopInfo.logoFile) {
+                    alert("로고 파일을 업로드해주세요.");
+                    return;
+                }
+
+                if (!this.shopInfo.title) {
+                    alert("가게 제목을 입력해주세요.");
+                    return;
+                }
+
+                if (!this.shopInfo.subTitle) {
+                    alert("가게 부제목을 입력해주세요.");
+                    return;
+                }
+
+                // if (this.shopInfo.slideImgs.length === 0) {
+                //     alert("슬라이드 이미지를 최소 한 개 이상 추가해주세요.");
+                //     return;
+                // }
+
+                // if (this.shopInfo.cutImgs.length === 0) {
+                //     alert("컷 이미지를 최소 한 개 이상 추가해주세요.");
+                //     return;
+                // }
+
+                if (!this.shopInfo.dName) {
+                    alert("담당자 이름을 입력해주세요.");
+                    return;
+                }
+
+                if (!this.shopInfo.job) {
+                    alert("담당자 직업을 입력해주세요.");
+                    return;
+                }
+
+                if (!this.shopInfo.introduce) {
+                    alert("가게 소개를 입력해주세요.");
+                    return;
+                }
+
+                if (!this.shopInfo.dProfileFile) {
+                    alert("담당자 프로필 파일을 업로드해주세요.");
+                    return;
+                }
+
+                for (let i = 0; i < this.priceList.length; i++) {
+                    if (!this.priceList[i].onePrice) {
+                        alert(`가격 목록의 항목 ${i+1}에 가격을 입력해주세요.`);
+                        return;
+                    }
+                    if (!this.priceList[i].beautyNo) {
+                        alert(`가격 목록의 항목 ${i+1}에 미용 번호를 입력해주세요.`);
+                        return;
+                    }
+                }
+
                 let formData = new FormData();
 
                 formData.append("bNo", this.bNo);
@@ -515,9 +577,11 @@ import { reactive, onMounted } from 'vue';
                 }).then(response => {
                     console.log(response.data.apiData);
 
-                    // if (response.data.apiData == 1) {
+
+                    // if (response.data.result == "success") {
                     //     alert("홈페이지가 성공적으로 만들어졌습니다.");
                     //     this.$router.push(`/edit/${this.bNo}`);
+
                     // } else {
                     //     alert("정보를 다시 확인해주세요.");
                     // }
