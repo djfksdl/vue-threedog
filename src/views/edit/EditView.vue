@@ -317,8 +317,8 @@
                                         <p>{{ shopInfo.bAddress }} {{ shopInfo.bdAddress}} ({{ shopInfo.bZipCode }})</p>
                                     </div>
                                     <div class="eRoadRightBtnBox">
-                                        <button class="kakaoMapBtn">카카오 지도보기</button>
-                                        <button class="naverMapBtn">네이버 지도보기</button>
+                                        <button class="kakaoMapBtn" @click="openKakaoDirection">카카오 지도보기</button>
+                                        <button class="naverMapBtn" @click="openNaverDirection">네이버 지도보기</button>
                                     </div>
                                 </div>
                             </div>
@@ -360,11 +360,11 @@
   
 <script setup>
 import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
-import { defineComponent, ref , computed } from "vue";
+// 코드에서 setup을 사용하고 있으므로 setup 내에서 import와 reactive를 사용할 수 있습니다.
+import { defineComponent, ref , computed, reactive, onMounted } from "vue";
 import { Carousel, Pagination, Slide } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
-// 코드에서 setup을 사용하고 있으므로 setup 내에서 import와 reactive를 사용할 수 있습니다.
-import { reactive, onMounted } from 'vue';
+
 //Composition API에서는 setup 함수 내에서 직접적으로 this를 사용할 수 없기 때문에 $store에 접근하려면 useStore 훅을 사용하여 스토어를 가져와야 함
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
@@ -378,7 +378,7 @@ import { useRoute } from 'vue-router';
     //리액티브 변수 초기화
     const coordinate = reactive({
         lat: 0,
-        lng: 0
+        lng: 0,
     });
 
     //============= 슬라이드 =============
@@ -431,14 +431,41 @@ import { useRoute } from 'vue-router';
             slides.value = response.data.apiData.sList;
             slides2.value = response.data.apiData.cList ;
 
-            console.log("여기 확인하기");
-            console.log(slides2.value);
+            // console.log("여기 확인하기");
+            // console.log(slides2.value);
           
 
         }).catch(error => {
             console.log(error);
         });
 
+    };
+
+    // 카카오 길찾기
+    const openKakaoDirection = async () => {
+    try {
+        const res = await axios.get('https://dapi.kakao.com/v2/local/geo/coord2address.json', {
+        params: {
+            x: coordinate.lng,
+            y: coordinate.lat
+        },
+        headers: {
+            Authorization: 'KakaoAK YOUR_REST_API_KEY' // 여기에 카카오 REST API 키를 입력하세요
+        }
+        });
+
+        const address = res.data.documents[0].road_address.address_name || '도착지';
+        const url = `https://map.kakao.com/link/to/${encodeURIComponent(address)},${coordinate.lat},${coordinate.lng}`;
+        window.open(url, '_blank');
+    } catch (error) {
+        console.error(error);
+    }
+    };
+
+    // 네이버 길찾기
+    const openNaverDirection = () => {
+    const url = `https://map.naver.com/v5/directions/-/-/${coordinate.lng},${coordinate.lat}/transit`;
+    window.open(url, '_blank');
     };
 
     // 컴포넌트가 마운트된 후에 가게 정보 가져오기
