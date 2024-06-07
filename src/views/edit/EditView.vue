@@ -359,10 +359,10 @@
 
 </template>
   
-<!-- <script setup>
+<script setup>
 import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
 // 코드에서 setup을 사용하고 있으므로 setup 내에서 import와 reactive를 사용할 수 있습니다.
-import { defineComponent, ref , computed, reactive, onMounted } from "vue";
+import { ref , computed, reactive, onMounted } from "vue";
 import { Carousel, Pagination, Slide } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
 
@@ -475,8 +475,8 @@ import { useRoute } from 'vue-router';
     });
     
     
-</script>-->
-<script> 
+</script>
+<script>
 import axios from 'axios';
 import '@/assets/css/edit/edit.css'
 import ManagerFooter from "@/components/ManagerFooter.vue"
@@ -484,7 +484,7 @@ import ManagerHeader from "@/components/ManagerHeader.vue"
 import TopButton from "@/components/TopButton.vue"
 import ToReserve from "@/components/ToReserve.vue"
 
-export default defineComponent({
+export default{
     name: "EditView",
     components: {
         ManagerFooter,
@@ -552,7 +552,7 @@ export default defineComponent({
     created(){
         this.getShopInfo();
     }
-})
+}
 </script>
 <style>
 
