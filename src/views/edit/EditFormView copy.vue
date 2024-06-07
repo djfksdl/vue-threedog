@@ -347,22 +347,60 @@
 
 </template>
   
+<script setup>
+import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
+import { defineComponent} from "vue";
+import "vue3-carousel/dist/carousel.css";
+// 코드에서 setup을 사용하고 있으므로 setup 내에서 import와 reactive를 사용할 수 있습니다.
+import { reactive, onMounted } from 'vue';
+//Composition API에서는 setup 함수 내에서 직접적으로 this를 사용할 수 없기 때문에 $store에 접근하려면 useStore 훅을 사용하여 스토어를 가져와야 함
+import { useStore } from 'vuex';
+// import { useRoute } from 'vue-router';
+
+    //스토어 가져오기
+    const store = useStore();
+
+    //리액티브 변수 초기화
+    const coordinate = reactive({
+        lat: 0,
+        lng: 0
+    });
+
+    // 가게 정보에서 위도 경도 불러오기 
+    const getLatLng = () => {
+        axios({
+            method: 'get',
+            url: `${store.state.apiBaseUrl}/api/su/shopInfo`, //store변수 사용
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            params: { bNo: store.state.auth.bNo },
+            responseType: 'json'
+        }).then(response => {
+            // shopInfo 객체에서 위도와 경도 값을 받아와서 coordinate 객체에 할당합니다.
+            coordinate.lat = response.data.apiData.shopInfo.latitude;
+            coordinate.lng = response.data.apiData.shopInfo.longitude;
+        }).catch(error => {
+            console.log(error);
+        });
+
+    };
+    // 컴포넌트가 마운트된 후에 가게 정보 가져오기
+    onMounted(() => {
+        getLatLng();
+    });
+</script>
 <script>
    import '@/assets/css/edit/editform.css'
    import ManagerFooter from "@/components/ManagerFooter.vue"
    import ManagerHeader from "@/components/ManagerHeader.vue"
    import TopButton from "@/components/TopButton.vue"
    import axios from 'axios';
-   import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
    
-    export default {
+    export default defineComponent({
         name: "EditView",
         components: {
                 ManagerFooter,
                 ManagerHeader,
-                TopButton,
-                KakaoMap,          // 추가
-                KakaoMapMarker  
+                TopButton
         },
         data() {
             return{
@@ -392,32 +430,11 @@
                 delSlideHiNos:[], //슬라이드 이미지들 삭제 번호
                 delCutHiNos:[], //컷 이미지들 삭제 번호
 
-                action: '',
-                coordinate: {
-                    lat: 0,
-                    lng: 0,
-                },
+                action: ''
 
             }
         },
         methods: {
-            // 가게 정보에서 위도 경도 불러오기 
-            getLatLng(){
-                axios({
-                    method: 'get',
-                    url: `${this.$store.state.apiBaseUrl}/api/su/shopInfo`, //store변수 사용
-                    headers: { "Content-Type": "application/json; charset=utf-8" },
-                    params: { bNo: this.bNo },
-                    responseType: 'json'
-                }).then(response => {
-                    // shopInfo 객체에서 위도와 경도 값을 받아와서 coordinate 객체에 할당합니다.
-                    this.coordinate.lat = response.data.apiData.shopInfo.latitude;
-                    this.coordinate.lng = response.data.apiData.shopInfo.longitude;
-                }).catch(error => {
-                    console.log(error);
-                });
-
-            },
 
             //가격리스트 없을때! 가격리스트 초기화!
             initializePriceList() {
@@ -1308,7 +1325,6 @@
         },
         created(){
             this.getShopInfo();
-            this.getLatLng();
             
         },
         mounted() {
@@ -1329,7 +1345,7 @@
         },
         
             
-   }
+   })
 </script>
 <style>
 </style>

@@ -395,6 +395,7 @@ export default {
 
         },
       
+        // ***** 첫번째 시간과 '분' 동기화 *****
         syncEndTimeMinutes(day) {
             if (day.startTime && day.endTime) {
                 const [, startMinutes] = day.startTime.split(':');

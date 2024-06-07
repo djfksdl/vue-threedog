@@ -3,8 +3,8 @@ import createPersistedState from 'vuex-persistedstate';
 export default createStore({
     state() {
         return {
-            apiBaseUrl: "http://localhost:9010",
-            // apiBaseUrl: "http://43.200.182.62:9010",
+            // apiBaseUrl: "http://localhost:9010",
+            apiBaseUrl: "http://43.200.182.62:9010",
             authUser: null,
             token: null,
             kakaoToken : '',
@@ -43,7 +43,7 @@ export default createStore({
     },
     plugins: [
         createPersistedState({
-            paths: ['authUser', 'token','kakaoToken']
+            paths: ['authUser', 'token','kakaoToken', 'auth']
         })
     ],
     actions: {

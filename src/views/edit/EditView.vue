@@ -359,123 +359,7 @@
 
 </template>
   
-<script setup>
-import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
-// 코드에서 setup을 사용하고 있으므로 setup 내에서 import와 reactive를 사용할 수 있습니다.
-import { defineComponent, ref , computed, reactive, onMounted } from "vue";
-import { Carousel, Pagination, Slide } from "vue3-carousel";
-import "vue3-carousel/dist/carousel.css";
 
-//Composition API에서는 setup 함수 내에서 직접적으로 this를 사용할 수 없기 때문에 $store에 접근하려면 useStore 훅을 사용하여 스토어를 가져와야 함
-import { useStore } from 'vuex';
-import { useRoute } from 'vue-router';
-
-    //스토어 가져오기
-    const store = useStore();
-
-    //bNo가져오기
-    const { params } = useRoute();
-
-    //리액티브 변수 초기화
-    const coordinate = reactive({
-        lat: 0,
-        lng: 0,
-    });
-
-    //============= 슬라이드 =============
-    //메인슬라이드
-    const slides = ref([]);
-    const carouselRef = ref(null);
-
-    //컷이미지 슬라이드
-    const slides2 = ref([]);
-    const carouselRef2 = ref(null);
-
-    const nextSlide = () => {
-        if (carouselRef.value && carouselRef.value.next) {
-            carouselRef.value.next();
-        }
-    };
-
-    const prevSlide = () => {
-        if (carouselRef.value && carouselRef.value.prev) {
-            carouselRef.value.prev();
-        }
-    };
-
-    // 배열을 size만큼의 크기로 묶어서 반환하는 함수
-    function chunk(array, size) {
-        return array.reduce((acc, _, i) => {
-            if (i % size === 0) {
-                acc.push(array.slice(i, i + size));
-            }
-            return acc;
-        }, []);
-    }
-
-    // computed property로 chunkedSlides 설정
-    const chunkedSlides = computed(() => chunk(slides2.value, 18));
-
-    // 가게 정보에서 위도 경도 슬라이드 리스트,컷이미지 리스트 값 받아오기
-    const getLatLngSlide = () => {
-        axios({
-            method: 'get',
-            url: `${store.state.apiBaseUrl}/api/su/shopInfo`, //store변수 사용
-            headers: { "Content-Type": "application/json; charset=utf-8" },
-            params: { bNo: params.bNo },
-            responseType: 'json'
-        }).then(response => {
-            // shopInfo 객체에서 위도와 경도 값을 받아와서 coordinate 객체에 할당합니다.
-            coordinate.lat = response.data.apiData.shopInfo.latitude;
-            coordinate.lng = response.data.apiData.shopInfo.longitude;
-
-            slides.value = response.data.apiData.sList;
-            slides2.value = response.data.apiData.cList ;
-
-            // console.log("여기 확인하기");
-            // console.log(slides2.value);
-          
-
-        }).catch(error => {
-            console.log(error);
-        });
-
-    };
-
-    // 카카오 길찾기
-    const openKakaoDirection = async () => {
-    try {
-        const res = await axios.get('https://dapi.kakao.com/v2/local/geo/coord2address.json', {
-        params: {
-            x: coordinate.lng,
-            y: coordinate.lat
-        },
-        headers: {
-            Authorization: 'KakaoAK 71cf0304d0220da3bff50ab64c5dd1ea' // 여기에 카카오 REST API 키를 입력하세요
-        }
-        });
-
-        const address = res.data.documents[0].road_address.address_name || '도착지';
-        const url = `https://map.kakao.com/link/to/${encodeURIComponent(address)},${coordinate.lat},${coordinate.lng}`;
-        window.open(url, '_blank');
-    } catch (error) {
-        console.error(error);
-    }
-    };
-
-    // 네이버 길찾기
-    const openNaverDirection = () => {
-    const url = `https://map.naver.com/v5/directions/-/-/${coordinate.lng},${coordinate.lat}/transit`;
-    window.open(url, '_blank');
-    };
-
-    // 컴포넌트가 마운트된 후에 가게 정보 가져오기
-    onMounted(() => {
-        getLatLngSlide();
-    });
-    
-    
-</script>
 <script>
 import axios from 'axios';
 import '@/assets/css/edit/edit.css'
@@ -483,8 +367,13 @@ import ManagerFooter from "@/components/ManagerFooter.vue"
 import ManagerHeader from "@/components/ManagerHeader.vue"
 import TopButton from "@/components/TopButton.vue"
 import ToReserve from "@/components/ToReserve.vue"
+import { Carousel, Pagination, Slide } from "vue3-carousel";
+import "vue3-carousel/dist/carousel.css";
+import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
+// import { ref  } from "vue";
 
-export default defineComponent({
+
+export default {
     name: "EditView",
     components: {
         ManagerFooter,
@@ -494,7 +383,9 @@ export default defineComponent({
         Slide,
         Pagination,
         // Navigation,
-        ToReserve
+        ToReserve,
+        KakaoMap,          // 추가
+        KakaoMapMarker     // 추가
     },
     data() {
         return {
@@ -514,18 +405,72 @@ export default defineComponent({
             },
             priceList:[],
             slideList:[],
-            cutList:[]
+            cutList:[],
+            slides: [], // 메인 슬라이드
+            slides2: [], // 컷 이미지 슬라이드
+            carouselRef: null,
+            carouselRef2: null,
+            coordinate: {
+                lat: 0,
+                lng: 0,
+            },
         }
     },
     computed: {
+        chunkedSlides() {
+            return this.chunk(this.slides2, 18);
+        },
     },  
     setup() { //props, context를 통해 외부에서 전달받은 데이터를 받거나, reactive, ref 등을 사용하여 반응성을 갖는 데이터를 정의하고, 해당 데이터에 대한 로직을 구성할 수 있음
     },
     methods: {
+        chunk(array, size) {
+            return array.reduce((acc, _, i) => {
+                if (i % size === 0) {
+                acc.push(array.slice(i, i + size));
+                }
+                return acc;
+            }, []);
+        },
+
+        getLatLngSlide() {
+            axios({
+                method: 'get',
+                url: `${this.$store.state.apiBaseUrl}/api/su/shopInfo`,
+                headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                params: { bNo: this.bNo },
+                responseType: 'json',
+            })
+                .then((response) => {
+                const data = response.data.apiData;
+                this.coordinate.lat = data.shopInfo.latitude;
+                this.coordinate.lng = data.shopInfo.longitude;
+                this.slides = data.sList;
+                this.slides2 = data.cList;
+                })
+                .catch((error) => {
+                console.log(error);
+                });
+            },
+            nextSlide() {
+            if (this.carouselRef && this.carouselRef.next) {
+                this.carouselRef.next();
+            }
+            },
+            prevSlide() {
+            if (this.carouselRef && this.carouselRef.prev) {
+                this.carouselRef.prev();
+            }
+        },
 
         // 가게 정보 불러오기
         getShopInfo(){
             // console.log(this.bNo);
+            console.log("getShopInfo? ")
+            console.log(this.$store.state.auth.bNo);
+            console.log(this.$store.state.auth);
+            console.log(this.bNo);
+            console.log(this.$route.params.bNo);
             axios({
                 method: 'get', // put, post, delete 
                 url: `${this.$store.state.apiBaseUrl}/api/su/shopInfo`,
@@ -535,6 +480,7 @@ export default defineComponent({
                 responseType: 'json' //수신타입
             }).then(response => {
 
+                console.log(response);
                 this.shopInfo = response.data.apiData.shopInfo;
                 this.priceList = response.data.apiData.pList;
                 // this.slideList = response.data.apiData.sList;
@@ -548,11 +494,39 @@ export default defineComponent({
                 console.log(error);
             });
         },
+        
+        // 카카오 길찾기
+        async openKakaoDirection() {
+            try {
+                const res = await axios.get('https://dapi.kakao.com/v2/local/geo/coord2address.json', {
+                    params: {
+                        x: this.coordinate.lng,
+                        y: this.coordinate.lat
+                    },
+                    headers: {
+                        Authorization: 'KakaoAK 71cf0304d0220da3bff50ab64c5dd1ea' // 여기에 카카오 REST API 키를 입력하세요
+                    }
+                });
+
+                const address = res.data.documents[0].road_address.address_name || '도착지';
+                const url = `https://map.kakao.com/link/to/${encodeURIComponent(address)},${this.coordinate.lat},${this.coordinate.lng}`;
+                window.open(url, '_blank');
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
+        // 네이버 길찾기
+        openNaverDirection() {
+            const url = `https://map.naver.com/v5/directions/-/-/${this.coordinate.lng},${this.coordinate.lat}/transit`;
+            window.open(url, '_blank');
+        },
     },
     created(){
         this.getShopInfo();
+        this.getLatLngSlide();
     }
-})
+}
 </script>
 <style>
 
