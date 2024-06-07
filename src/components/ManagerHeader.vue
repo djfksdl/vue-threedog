@@ -22,7 +22,7 @@
             </div>
             <!-- 헤더 오른쪽 로그인- 로그인 했을때(회원) -->
             <div class="mheaderRight" v-if="this.$store.state.authUser != null">
-                <p><router-link to="/"><small>메인화면돌아가기</small></router-link></p>
+                <p><router-link to="/"><small>포탈사이트로 돌아가기</small></router-link></p>
                 <p><strong>{{this.$store.state.authUser.uName}}</strong>님</p>
                 <p><router-link to="" v-on:click="logout">로그아웃</router-link></p>
                 <router-link to="" v-on:click="loginForMypage"><img src="@/assets/images/icon_mypage.png"></router-link>
@@ -30,7 +30,7 @@
             </div>
             <!-- 헤더 오른쪽 로그인- 로그인 했을때(원장) -->
             <div class="mheaderRight" v-if="this.$store.state.auth != null">
-                <p><router-link to="/"><small>메인화면돌아가기</small></router-link></p>
+                <p><router-link to="/"><small>포탈사이트로 돌아가기</small></router-link></p>
                 <p><strong>관리자</strong>님</p>
                 <p><router-link to="" v-on:click="logout">로그아웃</router-link></p>
                 <!-- <router-link to="" v-on:click="loginForMypage"><img src="@/assets/images/icon_mypage.png"></router-link> -->
@@ -38,7 +38,7 @@
             </div>
             <!-- 헤더 오른쪽 로그인- 로그인 안했을때 -->
             <div class="mheaderRight" v-if="this.$store.state.authUser == null && this.$store.state.auth == null ">
-                <p><router-link to="/"><small>메인화면돌아가기</small></router-link></p>
+                <p><router-link to="/"><small>포탈사이트로 돌아가기</small></router-link></p>
                 <p><router-link to="/login" >로그인</router-link></p>
                 <router-link to="" v-on:click="loginForMypage"><img src="@/assets/images/icon_mypage.png"></router-link>
             </div>

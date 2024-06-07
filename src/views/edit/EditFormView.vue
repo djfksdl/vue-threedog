@@ -354,14 +354,11 @@ import "vue3-carousel/dist/carousel.css";
 // 코드에서 setup을 사용하고 있으므로 setup 내에서 import와 reactive를 사용할 수 있습니다.
 import { reactive, onMounted } from 'vue';
 //Composition API에서는 setup 함수 내에서 직접적으로 this를 사용할 수 없기 때문에 $store에 접근하려면 useStore 훅을 사용하여 스토어를 가져와야 함
-// import { useStore } from 'vuex';
+import { useStore } from 'vuex';
 // import { useRoute } from 'vue-router';
 
     //스토어 가져오기
-    // const store = useStore();
-
-    //bNo가져오기
-    // const { params } = useRoute();
+    const store = useStore();
 
     //리액티브 변수 초기화
     const coordinate = reactive({
@@ -369,26 +366,26 @@ import { reactive, onMounted } from 'vue';
         lng: 0
     });
 
-    // 가게 정보 불러오기 
-    // const getLatLng = () => {
-    //     axios({
-    //         method: 'get',
-    //         url: `${store.state.apiBaseUrl}/api/su/shopInfo`, //store변수 사용
-    //         headers: { "Content-Type": "application/json; charset=utf-8" },
-    //         params: { bNo: params.bNo },
-    //         responseType: 'json'
-    //     }).then(response => {
-    //         // shopInfo 객체에서 위도와 경도 값을 받아와서 coordinate 객체에 할당합니다.
-    //         coordinate.lat = response.data.apiData.shopInfo.latitude;
-    //         coordinate.lng = response.data.apiData.shopInfo.longitude;
-    //     }).catch(error => {
-    //         console.log(error);
-    //     });
+    // 가게 정보에서 위도 경도 불러오기 
+    const getLatLng = () => {
+        axios({
+            method: 'get',
+            url: `${store.state.apiBaseUrl}/api/su/shopInfo`, //store변수 사용
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            params: { bNo: store.state.auth.bNo },
+            responseType: 'json'
+        }).then(response => {
+            // shopInfo 객체에서 위도와 경도 값을 받아와서 coordinate 객체에 할당합니다.
+            coordinate.lat = response.data.apiData.shopInfo.latitude;
+            coordinate.lng = response.data.apiData.shopInfo.longitude;
+        }).catch(error => {
+            console.log(error);
+        });
 
-    // };
+    };
     // 컴포넌트가 마운트된 후에 가게 정보 가져오기
     onMounted(() => {
-        // getLatLng();
+        getLatLng();
     });
 </script>
 <script>
@@ -727,8 +724,8 @@ import { reactive, onMounted } from 'vue';
                 for (let i = 0; i < this.priceList.length; i++) {
                     formData.append(`priceList[${i}].onePrice`, this.priceList[i].onePrice);
                     formData.append(`priceList[${i}].beautyNo`, this.priceList[i].beautyNo);
-                    console.log("여기 확인하기")
-                    console.log(formData.get(`priceList[${i}].onePrice`) );
+                    // console.log("여기 확인하기")
+                    // console.log(formData.get(`priceList[${i}].onePrice`) );
                 }
 
                 console.log("=====수정으로 보내기전 정보 담은거 확인=====");
@@ -966,7 +963,7 @@ import { reactive, onMounted } from 'vue';
                     self.shopInfo.slideImgs = sel_files;
                 }
 
-                //div생성 함수
+                // div생성 함수
                 function makeDiv(img, file) {
                   
                     var div = document.createElement('div');
@@ -979,14 +976,20 @@ import { reactive, onMounted } from 'vue';
                     btn.setAttribute('hino', file.hiNo);
                     btn.setAttribute('style', chk_style);
 
+                    //삭제
                     btn.onclick = function (ev) {
                         var ele = ev.srcElement;
                         var delFile = ele.getAttribute('delFile');
                         var hiNo = ele.getAttribute('hino'); // hiNo 값 가져오기
 
                         // 삭제한 이미지 파일 hiNo를 배열에 추가합니다.
-                        self.delSlideHiNos.push(hiNo);
-                        console.log(self.delSlideHiNos);
+                        if(hiNo =='undefined'){//추가했다가 삭제하는건 안넣기
+                            console.log("hiNo == undefined");
+                            console.log(hiNo);
+                        }else{
+                            self.delSlideHiNos.push(hiNo);
+                            console.log(self.delSlideHiNos);
+                        }
 
                         //이미지 배열에서 삭제한 이미지를 제거
                         for (var i = 0; i < sel_files.length; i++) {
@@ -1025,8 +1028,9 @@ import { reactive, onMounted } from 'vue';
                         img.setAttribute('style', img_style);
                         img.src = `${this.$store.state.apiBaseUrl}/upload/${slide.saveName}`;
                         img.setAttribute('hiNo', slide.hiNo );
-                        // console.log(slide.hiNo );
-                        // console.log(slide );
+                        console.log("추가하고  삭제할때 잘보기");
+                        console.log(slide.hiNo );
+                        console.log(slide );
                         attZone.appendChild(makeDiv(img, slide));
                     });
                 }
@@ -1134,14 +1138,21 @@ import { reactive, onMounted } from 'vue';
                     // console.log(file.hiNo)
                     btn.setAttribute('style', chk_style);
 
+                    //삭제
                     btn.onclick = function (ev) {
                         var ele = ev.srcElement;
                         var delFile = ele.getAttribute('delFile');
                         var hiNo = ele.getAttribute('hino'); // hiNo 값 가져오기
 
                         // 삭제한 이미지 파일 hiNo를 배열에 추가합니다.
-                        self.delCutHiNos.push(hiNo);
-                        console.log(self.delCutHiNos);
+                        if(hiNo =='undefined'){//추가했다가 삭제하는건 안넣기
+                            console.log("hiNo == undefined");
+                            console.log(hiNo);
+                        }else{
+                            self.delCutHiNos.push(hiNo);
+                            console.log(self.delCutHiNos);
+                        }
+                        
 
                          //이미지 배열에서 삭제한 이미지를 제거
                         for (var i = 0; i < sel_files.length; i++) {
@@ -1172,7 +1183,7 @@ import { reactive, onMounted } from 'vue';
                 // 초기 이미지 설정
                 if (self.cutList && self.cutList.length > 0) {
 
-                    var initialFiles = [];
+                    // var initialFiles = [];
 
                     self.cutList.forEach(slide => {
                         let img = document.createElement('img');
@@ -1182,10 +1193,10 @@ import { reactive, onMounted } from 'vue';
                         // console.log(slide.hiNo );
                         // console.log(slide );
                         attZone.appendChild(makeDiv(img, slide));
-                        initialFiles.push(new File([], slide)); // Placeholder file for the initial files
+                        // initialFiles.push(new File([], slide)); // Placeholder file for the initial files
                     });
-                    sel_files = initialFiles;
-                    updateFileInput();
+                    // sel_files = initialFiles;
+                    // updateFileInput();
                 }
 
                 // 이미 alert가 띄워진 경우를 확인하는 플래그

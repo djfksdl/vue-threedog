@@ -41,7 +41,7 @@
                             ref="carouselRef2">
                             <Slide v-for="(group, index) in chunkedSlides" :key="index">
                                 <div class="img-slide eCutSlide">
-                                    <img v-for="slide in group" :key="slide" :src="`${$store.state.apiBaseUrl}/upload/${slide.saveName}`">
+                                    <img v-for="slide in group" :key="slide.saveName" :src="`${$store.state.apiBaseUrl}/upload/${slide.saveName}`">
                                 </div>
                             </Slide>
                         </Carousel>
@@ -415,7 +415,7 @@ import { useRoute } from 'vue-router';
     // computed property로 chunkedSlides 설정
     const chunkedSlides = computed(() => chunk(slides2.value, 18));
 
-    // 가게 정보 에서 위도 경도 슬라이드 리스트,컷이미지 리스트 값 받아오기
+    // 가게 정보에서 위도 경도 슬라이드 리스트,컷이미지 리스트 값 받아오기
     const getLatLngSlide = () => {
         axios({
             method: 'get',
@@ -430,6 +430,9 @@ import { useRoute } from 'vue-router';
 
             slides.value = response.data.apiData.sList;
             slides2.value = response.data.apiData.cList ;
+
+            console.log("여기 확인하기");
+            console.log(slides2.value);
           
 
         }).catch(error => {
