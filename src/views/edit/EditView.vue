@@ -450,7 +450,7 @@ import { useRoute } from 'vue-router';
             y: coordinate.lat
         },
         headers: {
-            Authorization: 'KakaoAK YOUR_REST_API_KEY' // 여기에 카카오 REST API 키를 입력하세요
+            Authorization: 'KakaoAK 71cf0304d0220da3bff50ab64c5dd1ea' // 여기에 카카오 REST API 키를 입력하세요
         }
         });
 
