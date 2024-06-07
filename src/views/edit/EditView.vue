@@ -1,7 +1,7 @@
 <template>
     <div id="wrap">
         <ManagerHeader />
-          <div class="container2">
+        <div class="container2">
             <!-- 타이틀 -->
             <div class="eTitle">
                 <h1>{{ shopInfo.title }}</h1>
@@ -351,14 +351,15 @@
                     </div>
                 </div>
             </div>
-          </div>
+        </div>
+        <ToReserve/>
         <TopButton />  
         <ManagerFooter />  
     </div><!-- wrap --> 
 
 </template>
   
-<script setup>
+<!-- <script setup>
 import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
 // 코드에서 setup을 사용하고 있으므로 setup 내에서 import와 reactive를 사용할 수 있습니다.
 import { defineComponent, ref , computed, reactive, onMounted } from "vue";
@@ -474,32 +475,28 @@ import { useRoute } from 'vue-router';
     });
     
     
-</script>
-<script>
+</script>-->
+<script> 
 import axios from 'axios';
-//    import { defineComponent,ref} from "vue";
-//    import { Carousel, Pagination, Slide } from "vue3-carousel";
-   import '@/assets/css/edit/edit.css'
-   import ManagerFooter from "@/components/ManagerFooter.vue"
-   import ManagerHeader from "@/components/ManagerHeader.vue"
-   import TopButton from "@/components/TopButton.vue"
+import '@/assets/css/edit/edit.css'
+import ManagerFooter from "@/components/ManagerFooter.vue"
+import ManagerHeader from "@/components/ManagerHeader.vue"
+import TopButton from "@/components/TopButton.vue"
+import ToReserve from "@/components/ToReserve.vue"
 
-//    import slide01 from "@/assets/images/main-slide.png";
-//    import slide02 from "@/assets/images/main-slide02.jpg";
-//    import "vue3-carousel/dist/carousel.css";
-  
-   export default defineComponent({
-       name: "EditView",
-       components: {
-            ManagerFooter,
-            ManagerHeader,
-            TopButton,
-            Carousel,
-            Slide,
-            Pagination,
-            // Navigation,
-       },
-       data() {
+export default defineComponent({
+    name: "EditView",
+    components: {
+        ManagerFooter,
+        ManagerHeader,
+        TopButton,
+        Carousel,
+        Slide,
+        Pagination,
+        // Navigation,
+        ToReserve
+    },
+    data() {
         return {
             bNo: this.$route.params.bNo,
             shopInfo: {
@@ -518,15 +515,13 @@ import axios from 'axios';
             priceList:[],
             slideList:[],
             cutList:[]
-
         }
-           
-       },
-       computed: {
-        },  
-       setup() { //props, context를 통해 외부에서 전달받은 데이터를 받거나, reactive, ref 등을 사용하여 반응성을 갖는 데이터를 정의하고, 해당 데이터에 대한 로직을 구성할 수 있음
-        },
-       methods: {
+    },
+    computed: {
+    },  
+    setup() { //props, context를 통해 외부에서 전달받은 데이터를 받거나, reactive, ref 등을 사용하여 반응성을 갖는 데이터를 정의하고, 해당 데이터에 대한 로직을 구성할 수 있음
+    },
+    methods: {
 
         // 가게 정보 불러오기
         getShopInfo(){
@@ -553,14 +548,11 @@ import axios from 'axios';
                 console.log(error);
             });
         },
-        
-        
-  
-       },
-       created(){
+    },
+    created(){
         this.getShopInfo();
-       }
-   })
+    }
+})
 </script>
 <style>
 

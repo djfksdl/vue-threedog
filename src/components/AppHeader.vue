@@ -108,6 +108,7 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
+// import $ from 'jquery';
 import $ from 'jquery';
 
 // 상태 관리

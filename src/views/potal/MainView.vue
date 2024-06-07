@@ -1,6 +1,6 @@
 <template>
   <div id="wrap">
-    <AppFooter />
+    <AppHeader />
     <div class="potal-main-slide">
       <SlideView />
     </div>
@@ -267,7 +267,7 @@ onMounted(() => {
 import SlideView from '@/components/SlideView.vue';
 import SlideViewBanner from '@/components/SlideViewBanner.vue';
 import AppFooter from "@/components/AppFooter.vue"
-// import AppHeader from "@/components/AppHeader.vue"
+import AppHeader from "@/components/AppHeader.vue"
 import TopButton from "@/components/TopButton.vue"
 import "@/assets/css/potal/main.css"
 import { Swiper, SwiperSlide } from 'swiper/vue';
@@ -278,7 +278,7 @@ export default {
   name: "MainView",
   components: {
     AppFooter,
-    // AppHeader,
+    AppHeader,
     SlideView,
     SlideViewBanner,
     TopButton,
