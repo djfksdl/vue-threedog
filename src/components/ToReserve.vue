@@ -44,6 +44,11 @@ export default {
             const reserveButton  = document.querySelector('.toReserveFrom');
             reserveButton .style.transition = 'opacity 0.3s ease';
             reserveButton .style.opacity = '0';
+        },
+        goReserve(){
+            console.log("예약 버튼을 눌렀을때");
+            this.$router.push(`/reservationform/${this.$route.params.bNo}`);
+            
         }
         
     },
