@@ -64,8 +64,8 @@ export default {
     methods: {
         // 로그아웃
         logout(){
-            console.log("여기확인");
-            console.log(this.bNo);
+
+            console.log("로그아웃할때");
 
             this.$store.commit("setAuthUser",null);
             this.$store.commit("setAuth",null);

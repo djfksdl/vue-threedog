@@ -103,7 +103,12 @@ export default {
                     this.$store.commit("setAuth", auth);
                     this.$store.commit("setToken", token);
 
-                    this.$router.push(`/edit/${response.data.apiData.bNo}`);
+                    // 가게 등록 안했을때
+                    if(auth.logo == null ){
+                        this.$router.push('/editform');
+                    }else{
+                        this.$router.push(`/edit/${response.data.apiData.bNo}`);
+                    }
                 } else {
                     console.log(response.data.message);
                     alert("아이디 패스워드를 확인하세요.");

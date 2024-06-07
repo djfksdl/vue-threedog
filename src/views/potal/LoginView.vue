@@ -173,11 +173,6 @@ export default {
                     this.$store.commit("setAuthUser", authUser);
                     this.$store.commit("setToken", token);
 
-                    // console.log(authUser);
-                    // console.log(token);
-                    // console.log("여기가 어스유저.유네임")
-                    // console.log(authUser.uName);
-
                     this.$router.push("/");
 
                 
