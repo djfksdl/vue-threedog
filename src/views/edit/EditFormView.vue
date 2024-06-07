@@ -686,7 +686,6 @@ import { useStore } from 'vuex';
                 
                 //삭제할 슬라이드이미지 배열 추가
                 if(this.shopInfo.slideImgs.length != 0){
-                    
                     this.shopInfo.slideImgs.forEach((img, index) => {
                         formData.append(`slideImgs[${index}]`, img);
                     });
@@ -895,6 +894,9 @@ import { useStore } from 'vuex';
 
                 //이미지를 업로드하고 미리보기 설정
                 btnAtt.onchange = function (e) {
+
+                    
+
                     console.log("온체인지5");
                     var files = e.target.files;
                     var fileArr = Array.prototype.slice.call(files);
@@ -928,44 +930,46 @@ import { useStore } from 'vuex';
                     e.stopPropagation();
                     var dt = e.dataTransfer;
                     var files = dt.files;
-                    if (sel_files.length < 5) {
-                        for (let f of files) {
-                            if (sel_files.length < 5) {
-                                imageLoader(f);
-                            } else if (!alerted) {
-                                alert("최대 5장까지만 첨부할 수 있습니다.");
-                                alerted = true;
-                                break;
-                            }
+                   
+                    for (let f of files) {
+
+                        console.log("길이체크")
+                        var checkLength = document.querySelectorAll('#att_zone>div img');
+                        console.log(checkLength);
+                        if (checkLength.length >= 5) {
+                            alert("최대 5장까지만 첨부할 수 있습니다.");
+                            return;
                         }
-                    } else if (!alerted) {
-                        alert("최대 5장까지만 첨부할 수 있습니다.");
-                        alerted = true;
+                        imageLoader(f);
                     }
+                    
                     updateFileInput();
+                    console.log("------------------------------");
+                    console.log(self.shopInfo.slideImgs);
                 }, false);
 
                 //이미지 로더 함수-첨부된 이미지들을 배열에 넣고 미리보기
                 function imageLoader(file) {
-                    if (sel_files.length >= 5) {
-                        return;
-                    }
-                    sel_files.push(file);
-                    var reader = new FileReader();
-                    reader.onload = function (ee) {
-                        let img = document.createElement('img');
-                        img.setAttribute('style', img_style);
-                        img.src = ee.target.result;
-                        attZone.appendChild(makeDiv(img, file));
-                    };
-                    reader.readAsDataURL(file);
 
-                    self.shopInfo.slideImgs = sel_files;
+
+                    
+                    sel_files.push(file);
+                        var reader = new FileReader();
+                        reader.onload = function (ee) {
+                            let img = document.createElement('img');
+                            img.setAttribute('style', img_style);
+                            img.src = ee.target.result;
+                            attZone.appendChild(makeDiv(img, file));
+                        };
+                        reader.readAsDataURL(file);
+    
+                        //진짜파일추가
+                        self.shopInfo.slideImgs = sel_files;
                 }
 
                 // div생성 함수
                 function makeDiv(img, file) {
-                  
+                   
                     var div = document.createElement('div');
                     div.setAttribute('style', div_style);
 
@@ -975,13 +979,20 @@ import { useStore } from 'vuex';
                     btn.setAttribute('delFile', file.saveName);
                     btn.setAttribute('hino', file.hiNo);
                     btn.setAttribute('style', chk_style);
+                    btn.setAttribute('orgName', file.name);
 
+                 
                     //삭제
                     btn.onclick = function (ev) {
+                       
+                        //
                         var ele = ev.srcElement;
+                      
                         var delFile = ele.getAttribute('delFile');
                         var hiNo = ele.getAttribute('hino'); // hiNo 값 가져오기
+                        var orgName = ele.getAttribute('orgName'); // hiNo 값 가져오기
 
+                     
                         // 삭제한 이미지 파일 hiNo를 배열에 추가합니다.
                         if(hiNo =='undefined'){//추가했다가 삭제하는건 안넣기
                             console.log("hiNo == undefined");
@@ -1003,6 +1014,18 @@ import { useStore } from 'vuex';
 
                         var p = ele.parentNode;
                         attZone.removeChild(p);
+
+
+                        
+                        console.log("************************");
+
+                        console.log(orgName);   
+                        console.log(self.shopInfo.slideImgs); 
+                        if(self.shopInfo.slideImgs != null){
+                            const index = self.shopInfo.slideImgs.findIndex(event=>event.name===orgName);             
+                            console.log(index);  
+                            self.shopInfo.slideImgs.splice(index, 1);
+                        }
                     };
 
                     div.appendChild(img);
