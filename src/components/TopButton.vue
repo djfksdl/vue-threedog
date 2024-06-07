@@ -1,8 +1,15 @@
 <template>
     <div>
+        <!-- 고탑버튼 -->
         <router-link to="#" class="toScrollButton" v-on:click="scrollToTop" :class="{ 'show': showButton }">
             <!-- :class(디렉티브) :showButton이 true일때 show를 추가하고 flase일때는 show클래스를 제거 -->
             <div class="arrowUp"></div>
+        </router-link>
+        ]
+        <!-- 예약버튼 -->
+        <router-link to="#" class="toReserveFrom" v-on:click="goReserve" :class="{ 'show': showButton }">
+            <!-- :class(디렉티브) :showButton이 true일때 show를 추가하고 flase일때는 show클래스를 제거 -->
+            <div class="goReForm">예약하기</div>
         </router-link>
     </div>
 </template>
@@ -35,14 +42,24 @@ export default {
             }
         },
         fadeIn() {
+            // 고탑
             const scrollButton = document.querySelector('.toScrollButton');
             scrollButton.style.transition = 'opacity 0.3s ease';
             scrollButton.style.opacity = '1';
+            // 예약하기
+            const reserveButton  = document.querySelector('.toReserveFrom');
+            reserveButton .style.transition = 'opacity 0.3s ease';
+            reserveButton .style.opacity = '1';
         },
         fadeOut() {
+            // 고탑
             const scrollButton = document.querySelector('.toScrollButton');
             scrollButton.style.transition = 'opacity 0.3s ease';
             scrollButton.style.opacity = '0';
+            // 예약하기
+            const reserveButton  = document.querySelector('.toReserveFrom');
+            reserveButton .style.transition = 'opacity 0.3s ease';
+            reserveButton .style.opacity = '0';
         }
         
     },
@@ -59,4 +76,5 @@ export default {
     }
 };
 </script>
-<style></style>
+<style>
+</style>

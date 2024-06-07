@@ -22,7 +22,8 @@ a{
     text-decoration: none;
 }
 
-/*=============== 스크롤 탑버튼 ===============*/
+/*=============== 스크롤 버튼 ===============*/
+/* 고탑 */
 a.toScrollButton{
     position: fixed;
     right: 30px;
@@ -41,6 +42,39 @@ a.toScrollButton{
     z-index: 999;
 }
 a.toScrollButton .arrowUp{
+    content: "";
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-top: 4px solid #fff;
+    border-right: 4px solid #fff;
+    -webkit-transform: rotate(315deg);
+    transform: rotate(315deg);
+    position: absolute;
+    right: 22px;
+    top: 34px;
+    margin-top: -7px;
+}
+
+/* 예약하기 */
+a.toReserveFrom{
+    position: fixed;
+    right: 30px;
+    bottom: 120px;
+    padding-top: 5px;
+    /* border-radius: 10px; */
+    border-radius: 50px;
+    color: #ffffff;
+    text-align: center;
+    width: 65px;
+    height: 65px;
+    font-size: 50px;
+    font-weight: bold;
+    background-color: rgba(0, 48, 36, 0.8);
+    filter: alpha(opacity = 50);
+    z-index: 999;
+}
+a.toReserveFrom .arrowUp{
     content: "";
     display: block;
     width: 20px;
