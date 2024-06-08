@@ -3,7 +3,7 @@
     <Datepicker class="a" locale="ko" v-model="date" format="yyyy-MM-dd" :inline="true" :selectable="isSelectableDate"
       :show-toolbar="false" :enable-time-picker="false" :show-selected-date="false" :show-previous-month="false"
       :min-date="minDate" @update:modelValue="handleDateUpdate">
-      <button class="dp__action_button" @click="handleButtonClick">조회</button>
+      <button class="dp__action_button" @click="handleButtonClick">예약가능한 가게 조회</button>
     </Datepicker>
   </div>
 </template>
@@ -60,11 +60,11 @@ const handleButtonClick = () => {
 }
 
 .cal02 .dp__action_button {
-  width: 100px;
+  width: 250px;
   height: 45px;
   font-size: 16px;
   display: block;
-  margin-right: 200px;
+  margin-right: 110px;
 }
 
 .cal02 .dp__action_button.dp__action_select {
@@ -73,7 +73,7 @@ const handleButtonClick = () => {
 }
 
 .cal02 .dp__action_button.dp__action_select::after {
-  content: "선택";
+  content: "예약가능한 가게 조회";
   font-size: 17px;
   color: white;
   padding: 5px;

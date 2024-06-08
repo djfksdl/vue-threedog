@@ -18,14 +18,8 @@
       </div>
 
       <h2 class="result-h2">
-        <template v-if="location && rsDate">
-          {{ rsDate }}에 예약 가능한 {{ location }} 근처 가게<span class="view-count">가까운 순</span>
-        </template>
-        <template v-else-if="location">
+        <template v-if="location">
           {{ location }} 근처 가게<span class="view-count">가까운 순</span>
-        </template>
-        <template v-else-if="rsDate">
-          {{ rsDate }}에 예약 가능한 가게<span class="view-count">가까운 순</span>
         </template>
         <template v-else>
           근처 가게 검색 결과 ▼・ᴥ・▼<span class="view-count">가까운 순</span>
