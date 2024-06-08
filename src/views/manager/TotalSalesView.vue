@@ -1,56 +1,61 @@
 <template>
   <ManagerHeader /> <!-- 매니저 헤더 컴포넌트 -->
   <div class="total-container">
+    <!-- 카테고리 네비게이션 -->
+    <div class="category-nav">
+      <button @click="changeCategory('전체')" :class="{ active: selectedCategory === '전체' }">전체</button>
+      <button @click="changeCategory('일일')" :class="{ active: selectedCategory === '일일' }">일일 매출</button>
+      <button @click="changeCategory('주별')" :class="{ active: selectedCategory === '주별' }">주별 매출</button>
+      <button @click="changeCategory('월별')" :class="{ active: selectedCategory === '월별' }">월별 매출</button>
+      <button @click="changeCategory('년도별')" :class="{ active: selectedCategory === '년도별' }">년도별 매출</button>
+    </div>
 
-    <!-- 일 매출통계 -->
-    <div class="chart-container">
-      <div style="display: flex;">
-        <!-- 엑셀 표 -->
-        <div class="sales-table">
-          <table style="text-align: center; margin-top: 20px;">
-            <thead>
-              <tr>
-                <th style="width: 100px;">요일</th>
-                <th style="width: 150px;">소형견</th>
-                <th style="width: 150px;">중형견</th>
-                <th style="width: 150px;">특수견</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(dayStats, index) in dayStatsBySize" :key="index">
-                <td>{{ getDayOfWeek(dayStats.dayOfWeek) }}요일</td>
-                <td>{{ getSalesBySize(dayStats, '소형견') }}</td>
-                <td>{{ getSalesBySize(dayStats, '중형견') }}</td>
-                <td>{{ getSalesBySize(dayStats, '특수견') }}</td>
-              </tr>
-            </tbody>
-          </table>
+    <!-- 전체 (4개) -->
+    <div class="charts-grid">
+      <div v-if="selectedCategory === '전체' || selectedCategory === '일일'" class="chart-container small-chart">
+        <div style="display: flex;">
+          <div class="sales-table">
+            <table style="text-align: center; margin-top: 20px;">
+              <thead>
+                <tr>
+                  <th style="width: 100px;">요일</th>
+                  <th style="width: 150px;">소형견</th>
+                  <th style="width: 150px;">중형견</th>
+                  <th style="width: 150px;">특수견</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(dayStats, index) in dayStatsBySize" :key="index">
+                  <td>{{ getDayOfWeek(dayStats.dayOfWeek) }}요일</td>
+                  <td>{{ getSalesBySize(dayStats, '소형견') }}</td>
+                  <td>{{ getSalesBySize(dayStats, '중형견') }}</td>
+                  <td>{{ getSalesBySize(dayStats, '특수견') }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+        <div class="total-sales">[이번 주 매출 현황]</div>
       </div>
-      <div class="total-sales">[이번 주 매출 현황]</div>
-    </div>
 
-    <!-- 주 매출통계 -->
-    <div class="chart-container">
-      <!-- 주별 매출 그래프 -->
-      <canvas class="week" width="300" height="200" ref="weeklyChartCanvas"></canvas>
-      <div class="total-sales">이번 달 매출 합계: {{ weeklyTotal }}</div>
-    </div>
+      <!-- 주 매출통계 -->
+      <div v-if="selectedCategory === '전체' || selectedCategory === '주별'" class="chart-container small-chart">
+        <canvas class="week" width="300" height="200" ref="weeklyChartCanvas"></canvas>
+        <div class="total-sales">이번 달 매출 합계: {{ weeklyTotal }}</div>
+      </div>
 
-    <!-- 월 매출통계 -->
-    <div class="chart-container">
-      <!-- 월별 매출 그래프 -->
-      <canvas class="month" width="300" height="200" ref="monthlyChartCanvas"></canvas>
-      <div class="total-sales">올해 월별 매출 합계: {{ monthlyTotal }}</div>
-    </div>
+      <!-- 월 매출통계 -->
+      <div v-if="selectedCategory === '전체' || selectedCategory === '월별'" class="chart-container small-chart">
+        <canvas class="month" width="300" height="200" ref="monthlyChartCanvas"></canvas>
+        <div class="total-sales">올해 월별 매출 합계: {{ monthlyTotal }}</div>
+      </div>
 
-    <!-- 년도별 매출통계 -->
-    <div class="chart-container">
-      <!-- 년도별 매출 그래프 -->
-      <canvas class="year" width="300" height="200" ref="yearlyChartCanvas"></canvas>
-      <div class="total-sales">년도별 매출 합계: {{ yearlyTotal }}</div>
+      <!-- 년도별 매출통계 -->
+      <div v-if="selectedCategory === '전체' || selectedCategory === '년도별'" class="chart-container small-chart">
+        <canvas class="year" width="300" height="200" ref="yearlyChartCanvas"></canvas>
+        <div class="total-sales">년도별 매출 합계: {{ yearlyTotal }}</div>
+      </div>
     </div>
-
   </div>
   <ManagerFooter /> <!-- 매니저 푸터 컴포넌트 -->
 </template>
@@ -75,6 +80,8 @@ export default {
       monthlySales: [], // 월별 매출 데이터 배열
       yearlySales: [], // 년도별 매출 데이터 배열
       dayStatsBySize: [],
+      selectedCategory: '전체', // 선택된 카테고리
+      charts: {} // 차트를 저장할 객체
     };
   },
   computed: {
@@ -91,7 +98,11 @@ export default {
   methods: {
     // 차트를 그리는 메서드
     drawChart(canvasRef, labels, data, backgroundColor, borderColor, label, type) {
-      new Chart(canvasRef, {
+      if (this.charts[canvasRef]) {
+        this.charts[canvasRef].destroy();
+      }
+      const ctx = this.$refs[canvasRef].getContext('2d');
+      this.charts[canvasRef] = new Chart(ctx, {
         type: type,
         data: {
           labels: labels,
@@ -140,7 +151,7 @@ export default {
 
         console.log('Weekly Sales:', this.weeklySales);
         this.drawChart(
-          this.$refs.weeklyChartCanvas,
+          'weeklyChartCanvas',
           labels,
           this.weeklySales,
           'rgba(54, 162, 235, 0.2)',
@@ -164,7 +175,7 @@ export default {
         const labels = response.data.apiData.map(sale => `${sale.month}월`);
         console.log('Monthly Sales:', this.monthlySales);
         this.drawChart(
-          this.$refs.monthlyChartCanvas,
+          'monthlyChartCanvas',
           labels,
           this.monthlySales,
           'rgba(255, 206, 86, 0.2)',
@@ -188,7 +199,7 @@ export default {
         const labels = response.data.apiData.map(sale => `${sale.year}`);
         console.log('Yearly Sales:', this.yearlySales);
         this.drawChart(
-          this.$refs.yearlyChartCanvas,
+          'yearlyChartCanvas',
           labels,
           this.yearlySales,
           'rgba(75, 192, 192, 0.2)',
@@ -260,6 +271,25 @@ export default {
         return days[dayNumber];
       } else {
         return ''; // 요일이 없는 경우, 빈 문자열 반환
+      }
+    },
+    changeCategory(category) {
+      this.selectedCategory = category;
+      this.updateCharts();
+    },
+    updateCharts() {
+      const bNo = 1; // 예를 들어 bNo가 1인 경우
+      if (this.selectedCategory === '전체' || this.selectedCategory === '주별') {
+        this.getWeekList(bNo);
+      }
+      if (this.selectedCategory === '전체' || this.selectedCategory === '월별') {
+        this.getMonthList(bNo);
+      }
+      if (this.selectedCategory === '전체' || this.selectedCategory === '년도별') {
+        this.getYearList(bNo);
+      }
+      if (this.selectedCategory === '전체' || this.selectedCategory === '일일') {
+        this.getDayList(bNo);
       }
     }
   },

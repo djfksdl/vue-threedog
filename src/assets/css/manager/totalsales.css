@@ -1,63 +1,132 @@
 /* total-container 스타일 */
 .total-container {
-    margin: 0 auto; /* 가운데 정렬 */
-    width: 1400px; /* 너비 설정 */
-    display: flex; /* Flexbox 레이아웃 적용 */
-    justify-content: space-around; /* 주변 여백을 공간으로 나누어 요소를 가운데 정렬 */
-    flex-wrap: wrap; /* 요소들이 넘치면 자동으로 줄바꿈 */
+    margin: 0 auto;
+    /* 가운데 정렬 */
+    width: 1200px;
+    /* 너비 설정 */
+    display: flex;
+    /* Flexbox 레이아웃 적용 */
+    flex-direction: column;
+    /* 세로 방향으로 요소 정렬 */
+}
+
+/* 카테고리 네비게이션 스타일 */
+.category-nav {
+    display: flex;
+    /* Flexbox 레이아웃 적용 */
+    justify-content: center;
+    /* 중앙 정렬 */
+    margin-bottom: 20px;
+    /* 아래쪽 여백 */
+}
+
+.category-nav button {
+    margin: 20px 10px 10px 10px;
+    padding: 10px 20px;
+    /* 내부 여백 */
+    border: 2px solid hsl(37, 91%, 67%);
+    /* 연한 노란색 테두리 */
+    border-radius: 10px;
+    /* 테두리 둥글게 */
+    background-color: white;
+    /* 배경색 */
+    cursor: pointer;
+    /* 커서 포인터 */
+}
+
+.category-nav button.active {
+    background-color: hsl(37, 91%, 67%);
+    /* 활성화된 버튼 배경색 */
+    color: white;
+    /* 활성화된 버튼 글자색 */
 }
 
 /* 그래프 컨테이너 스타일 */
 .chart-container {
-    object-fit: contain; /* 요소 내부에서 이미지나 비디오의 크기와 관련된 속성을 지정 */
-    margin-top: 20px; /* 위쪽 여백 */
-    margin-bottom: 20px; /* 아래쪽 여백 */
-    width: 48%; /* 너비 설정 */
-    padding: 40px; /* 내부 여백 */
-    border: 5px solid hsl(37, 91%, 67%); /* 연한 노란색으로 변경 */
-    /* border: 1px solid #ccc; 테두리 설정 */
-    border-radius: 20px; /* 테두리 둥글게 설정 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
-    display: flex; /* Flexbox 레이아웃 적용 */
-    flex-direction: column; /* 세로 방향으로 요소들을 정렬 */
-    justify-content: space-between; /* 요소들을 상하로 균등하게 배치 */
+    object-fit: contain;
+    /* 요소 내부에서 이미지나 비디오의 크기와 관련된 속성을 지정 */
+    margin: 10px 0;
+    /* 위쪽 및 아래쪽 여백 */
+    width: 48%;
+    /* 너비 설정 */
+    padding: 20px;
+    /* 내부 여백 */
+    border: 5px solid hsl(37, 91%, 67%);
+    /* 연한 노란색으로 변경 */
+    border-radius: 20px;
+    /* 테두리 둥글게 설정 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* 그림자 추가 */
+    display: flex;
+    /* Flexbox 레이아웃 적용 */
+    flex-direction: column;
+    /* 세로 방향으로 요소들을 정렬 */
+    justify-content: space-between;
+    /* 요소들을 상하로 균등하게 배치 */
 }
 
-.chart-content {
-    flex-grow: 1; /* 남은 공간을 차지하도록 설정 */
+/* 작은 차트 크기 조절 */
+.small-chart {
+    width: 48%;
 }
+
+/* 2x2 그리드 레이아웃 */
+.charts-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    /* 가운데 정렬 */
+}
+
+/* 부모 요소의 스타일 */
+.chart-container.small-chart {
+    min-height: 450px;
+    /* 최소 높이 설정 */
+}
+
 
 /* 엑셀 표 스타일 */
 .sales-table {
-    width: 100%; /* 너비 100%로 설정 */
+    width: 100%;
+    /* 너비 100%로 설정 */
     height: 200px;
-    border-collapse: collapse;  /*테두리가 서로 겹치도록 설정 */
+    border-collapse: collapse;
+    /*테두리가 서로 겹치도록 설정 */
 }
 
 .sales-table th,
 .sales-table td {
     height: 30px;
-    border: 1px solid #ddd; /* 테두리 설정 */
-    padding: 10px; /* 내부 여백 */
+    border: 1px solid #ddd;
+    /* 테두리 설정 */
+    padding: 10px;
+    /* 내부 여백 */
 }
 
 .sales-table td {
-    font-size: 14px; /* 글꼴 크기 설정 */
+    font-size: 14px;
+    /* 글꼴 크기 설정 */
 }
 
 .sales-table th {
-    background-color: #f2f2f2; /* 배경색 설정 */
-    font-weight: bold; /* 굵은 글꼴 설정 */
-    font-size: 13px; /* 글꼴 크기 설정 */
+    background-color: #f2f2f2;
+    /* 배경색 설정 */
+    font-weight: bold;
+    /* 굵은 글꼴 설정 */
+    font-size: 13px;
+    /* 글꼴 크기 설정 */
 }
 
 /* Total Sales 스타일 */
 .total-sales {
-    margin-top: 10px; /* 위쪽 여백 */
-    font-weight: bold; /* 굵은 글꼴 설정 */
-    text-align: center; /* 가운데 정렬 */
+    margin-top: 10px;
+    /* 위쪽 여백 */
+    font-weight: bold;
+    /* 굵은 글꼴 설정 */
+    text-align: center;
+    /* 가운데 정렬 */
 }
 
-.year{
+.year {
     margin-top: 80px;
 }
