@@ -55,20 +55,25 @@
                     <h1>예약하기</h1>
                     <div class="buttonCon">
                         <button
-                            :style="{ backgroundColor: currentStep == 1 ? '#236c3f' : '', color: currentStep === 1 ? 'white' : '' }"
-                            @click="setStep(1)"> 날짜 및 시간선택</button>
+                            :style="{ backgroundColor: currentStep >= 1 ? '#236c3f' : '', color: currentStep === 1 ? 'white' : '' }"
+                            @click="setStep(1)"> <span :style="{ color: currentStep >= 1 ? 'white' : '' }">날짜 및
+                                시간선택</span></button>
                         <span>></span>
                         <button
-                            :style="{ backgroundColor: currentStep == 2 ? '#236c3f' : '', color: currentStep === 2 ? 'white' : '' }"
-                            @click="setStep(2)">반려견 정보 </button>
+                            :style="{ backgroundColor: currentStep >= 2 ? '#236c3f' : '', color: currentStep === 2 ? 'white' : '' }"
+                            @click="setStep(2)"> <span :style="{ color: currentStep >= 2 ? 'white' : '' }">반려견 정보</span>
+                        </button>
                         <span>></span>
                         <button
-                            :style="{ backgroundColor: currentStep == 3 ? '#236c3f' : '', color: currentStep === 3 ? 'white' : '' }"
-                            @click="setStep(3)">미용 선택</button>
+                            :style="{ backgroundColor: currentStep >= 3 ? '#236c3f' : '', color: currentStep === 3 ? 'white' : '' }"
+                            @click="setStep(3)"> <span :style="{ color: currentStep >= 3 ? 'white' : '' }">미용 선택</span>
+                        </button>
                         <span>></span>
                         <button
-                            :style="{ backgroundColor: currentStep == 4 ? '#236c3f' : '', color: currentStep === 4 ? 'white' : '' }"
-                            @click="setStep(4)">주의사항 및 동의사항</button>
+                            :style="{ backgroundColor: currentStep >= 4 ? '#236c3f' : '', color: currentStep === 4 ? 'white' : '' }"
+                            @click="setStep(4)"> <span :style="{ color: currentStep >= 4 ? 'white' : '' }">주의사항 및
+                                동의사항</span> </button>
+
                     </div>
 
 
@@ -83,68 +88,76 @@
                                         <Datepicker @selectedDateTime="handleSelectedDateTime" />
                                     </div>
                                 </div>
-                                
-                                
-                                <button  @click="moveToStep(2)">다음으로 이동</button>
+
+                                <div class="setstepBtnCon1" v-if="reserveVo.rtNo">
+                                    <button @click="setStep(2)">선택</button>
+                                </div>
 
                             </div>
                             <div class="reservationBox">
                                 <div v-if="currentStep == 2">
-                                    <h2>🐶 반려견선택</h2>
+                                    <div style="display: flex">
+                                        <div class="petChoice">
+                                            <h2>🐶 반려견선택</h2>
 
-                                    <div class="petChoice">
-                                        <!-- <div class="petChoice" style="font-size: 16px; font-weight: bold">반려견 선택</div> -->
-                                        <span v-for="dogVo in dogList" :key="dogVo.dogNo">
-                                            <!-- {{ dogVo.dogNo }} -->
-                                            <label :for="'pet-' + dogVo.dogNo">{{ dogVo.dogName }}</label>
-                                            <input type="radio" name="pet" :id="'pet-' + dogVo.dogNo"
-                                                :value="dogVo.dogNo" @change="selectedDogClick" v-model="selectedDog">
-                                        </span>
-
-                                    </div>
-
-                                    <div class="character">
-                                        <h2>📝 특이사항</h2>
-                                        <button type="button"
-                                            :style="{ backgroundColor: dogVo.skin ? '#236C3F' : 'white', color: dogVo.skin ? 'white' : 'black' }"
-                                            @click="toggleSkinStatus">피부병</button>
-                                        <button type="button"
-                                            :style="{ backgroundColor: dogVo.heart ? '#236C3F' : 'white', color: dogVo.heart ? 'white' : 'black' }"
-                                            @click="toggleHeartStatus">심장질환</button>
-                                        <button type="button"
-                                            :style="{ backgroundColor: dogVo.marking ? '#236C3F' : 'white', color: dogVo.marking ? 'white' : 'black' }"
-                                            @click="toggleMarkingStatus">마킹</button>
-                                        <button type="button"
-                                            :style="{ backgroundColor: dogVo.mounting ? '#236C3F' : 'white', color: dogVo.mounting ? 'white' : 'black' }"
-                                            @click="toggleMountingStatus">마운팅</button>
-
-
-                                        <div class="bite">
-                                            <div class="biteRange">
-                                                <label>입질정도</label>
-                                                <div class="biteRange2">
-
-                                                    <input type="range" min="1" max="3" step="1" list="tickmarks"
-                                                        v-model="dogVo.bite">
-                                                    <datalist id="tickmarks">
-                                                        <option value="1"></option>
-                                                        <option value="2"></option>
-                                                        <option value="3"></option>
-                                                    </datalist>
-                                                </div>
-                                            </div>
-                                            <div class="pbox">
-                                                <p>하</p>
-                                                <p>중</p>
-                                                <p>상</p>
-                                            </div>
-
-
+                                            <!-- <div class="petChoice" style="font-size: 16px; font-weight: bold">반려견 선택</div> -->
+                                            <span v-for="dogVo in dogList" :key="dogVo.dogNo">
+                                                <!-- {{ dogVo.dogNo }} -->
+                                                <label :for="'pet-' + dogVo.dogNo">{{ dogVo.dogName }}</label>
+                                                <input type="radio" name="pet" :id="'pet-' + dogVo.dogNo"
+                                                    :value="dogVo.dogNo" @change="selectedDogClick"
+                                                    v-model="selectedDog">
+                                            </span>
 
                                         </div>
-                                        <textarea placeholder="기타 특이사항을 적어주세요." v-model="dogVo.memo"></textarea>
+
+                                        <div class="character" v-if="dogVo.dogNo">
+                                            <h2>📝 특이사항</h2>
+                                            <button type="button"
+                                                :style="{ backgroundColor: dogVo.skin ? '#236C3F' : 'white', color: dogVo.skin ? 'white' : 'black' }"
+                                                @click="toggleSkinStatus">피부병</button>
+                                            <button type="button"
+                                                :style="{ backgroundColor: dogVo.heart ? '#236C3F' : 'white', color: dogVo.heart ? 'white' : 'black' }"
+                                                @click="toggleHeartStatus">심장질환</button>
+                                            <button type="button"
+                                                :style="{ backgroundColor: dogVo.marking ? '#236C3F' : 'white', color: dogVo.marking ? 'white' : 'black' }"
+                                                @click="toggleMarkingStatus">마킹</button>
+                                            <button type="button"
+                                                :style="{ backgroundColor: dogVo.mounting ? '#236C3F' : 'white', color: dogVo.mounting ? 'white' : 'black' }"
+                                                @click="toggleMountingStatus">마운팅</button>
+
+
+                                            <div class="bite">
+                                                <div class="biteRange">
+                                                    <label>입질정도</label>
+                                                    <div class="biteRange2">
+
+                                                        <input type="range" min="1" max="3" step="1" list="tickmarks"
+                                                            v-model="dogVo.bite">
+                                                        <datalist id="tickmarks">
+                                                            <option value="1"></option>
+                                                            <option value="2"></option>
+                                                            <option value="3"></option>
+                                                        </datalist>
+                                                    </div>
+                                                </div>
+                                                <div class="pbox">
+                                                    <p>하</p>
+                                                    <p>중</p>
+                                                    <p>상</p>
+                                                </div>
+
+
+
+                                            </div>
+                                            <textarea placeholder="기타 특이사항을 적어주세요." v-model="dogVo.memo"></textarea>
+                                        </div>
                                     </div>
-                                    <button  @click="moveToStep(3)">다음으로 이동</button>
+
+                                    <div class="setstepBtnCon2" >
+                                        <button class="setstepBtn1" @click="setStep(1)">이전으로 이동</button>
+                                        <button v-if="dogVo.dogNo" @click="setStep(3)">선택</button>
+                                    </div>
 
                                 </div>
 
@@ -152,6 +165,7 @@
                                 <div v-if="currentStep == 3">
                                     <div class="price">
                                         <!-- {{ dogVo.size }} -->
+                                        <p>표 목록을 선택하세요.</p>
                                         <div class="tableBox">
                                             <!-- 소형견 -->
                                             <table v-if="dogVo.size === '소형견'" style="width: 650px;">
@@ -286,7 +300,7 @@
                                                             @click="addPrice(priceList[i + 5]?.onePrice, i + 5)">{{
                                     priceList[i
                                         +
-                                        5]?.onePrice.toLocaleString() }}</td>
+                                                            5]?.onePrice.toLocaleString() }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -302,70 +316,79 @@
                                                     <th>{{ priceList2.beauty }}</th>
                                                     <td :class="{ 'selected': priceList2.selected }"
                                                         @click="toggleSelected(priceList2)">{{
-                                    priceList2.onePrice.toLocaleString()
-                                }}</td>
+                                                        priceList2.onePrice.toLocaleString()
+                                                        }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
 
-                                        <div class="expectPrice">
-                                            <p>예상가격 {{ (this.reserveVo.expectedPrice - this.usePoint).toLocaleString()
-                                                }}원</p>
-                                        </div>
+
                                     </div>
-                                    <div class="point">
-                                        <label>포인트</label>
-                                        <input type="number" step="10" v-model="usePoint">
-                                        <button type="button" @click="useAllPoint">전액사용</button>
-                                        <p>{{ (this.uPoint - this.usePoint).toLocaleString() }}P 사용가능</p>
+
+
+                                    <div class="expectPrice">
+                                        <div> 예상가격</div>
+                                        <div style="font-weight: bold;">{{ (this.reserveVo.expectedPrice -
+                                            this.usePoint).toLocaleString()
+                                            }}<span style=" font-weight: lighter; "> 원</span></div>
                                     </div>
+
+                                    <div class="setstepBtnCon3">
+                                        <button class="setstepBtn1" @click="moveToStep(2)">이전으로 이동</button>
+                                        <button  v-if="this.reserveVo.expectedPrice!==0" @click="moveToStep(4)">다음으로 이동</button>
+                                    </div>
+
                                 </div>
 
-                                <div  v-if="currentStep == 4">
+                                <div v-if="currentStep == 4">
+
+
 
                                     <div class="notice">
-                                        <label for="notice">안내사항 및 미용시 주의사항</label>
+                                        <h2> ⚠️ 안내사항 및 미용시 주의사항</h2>
+                                        <!-- <label for="notice">안내사항 및 미용시 주의사항</label> -->
                                         <div id="notice">
                                             <strong>안내사항</strong><br>
-                                            1. 미용 후 추가 요금이 발생할 수 있습니다. (예약금제외)<br>
-                                            2. 심장병/당뇨/고혈압 / 발작 등의 지병 기타 사나움 등의 요인으로 미용을 중단할 수 있습니다. 이에 해당하는 반려견 미용 중 또는
-                                            미용 후
-                                            문제시
-                                            책임을
-                                            지지 않습니다. (이로인해 지불한 미용비는 환불되지 않습니다.)<br>
-                                            3. 사나운 반려견의 경우 사전에 알려주시기 바라며, 미용사의 물림 사고가 발생시 보호자에게 치료비를 청구할 수 있습니다.<br>
-                                            4. 이는 만일의 상황에 대한 동의서이니 견주의 충분한 이해와 양해를 부탁드립니다.<br>
+                                            <p>1. 미용 후 추가 요금이 발생할 수 있습니다. (예약금제외)</p>
+                                            <p>2. 심장병/당뇨/고혈압 / 발작 등의 지병 기타 사나움 등의 요인으로 미용을 중단할 수 있습니다. 이에 해당하는 반려견 미용 중
+                                                또는
+                                                미용 후
+                                                문제시
+                                                책임을
+                                                지지 않습니다. (이로인해 지불한 미용비는 환불되지 않습니다.)</p>
+                                            <p>3. 사나운 반려견의 경우 사전에 알려주시기 바라며, 미용사의 물림 사고가 발생시 보호자에게 치료비를 청구할 수 있습니다.</p>
+                                            <p>4. 이는 만일의 상황에 대한 동의서이니 견주의 충분한 이해와 양해를 부탁드립니다.</p>
                                             <br>
-                                            <strong>[미용 후 주의사항]</strong><br>
-                                            1. 짧은 기계미용과 많은 털 엉킴이 있을시 미용 후 자극이 와서 긁거나 핥을 수 있습니다.<br>
-                                            - 우리 아가들의 피부는 사람에 비해 약하기 때문에 미용 후 긁거나 핥으면 상처가 나거나 진물, 심하면 피가 날수있습니다.<br>
-                                            우리아가가 지속적으로 핥고 긁기 전에 먼저 지켜봐 주시기 바랍니다.<br>
-                                            2. 일시적으로 미용 스트레스가 올 수 있으나 대부분 2~5일 후 점차 사라지게 됩니다.<br>
-                                            - 밥을 먹지 않거나 구석에 숨어있는 다거나, 배변을 보지 않는 등 미용 전에는 없었던 행동을 보일 수 있답니다.<br>
-                                            미용을 반복하다 보면 점차 좋아지기도 합니다. 푹 쉬게 안정을 취해주시고, 좋아하는 간식을 챙겨주시기 바랍니다.<br>
-                                            3. 항문 주위의 털 정리와 항문낭 제거로 엉덩이를 끌고 다닐 수 있습니다.<br>
-                                            4. 이중모(포메라니안, 스피츠, 폼피츠, 페키, 웰시 등) 아이들은 클리퍼로 몸을 미용했을 시 알로페이사증후군이 올 수 있으며,
-                                            그로인해 털이 나지 않을 수 있습니다. 이를 숙지하시고 아이들의 미용스타일을 결정해주시기 바랍니다.<br>
-                                            - 가급적 가위컷 추천드립니다.<br>
-                                            5. 평소엔 털에 가려져 보이지 않았던 피부병이 미용 후에 발견될 수 있습니다.<br>
-                                            6. 귀 질환이나 피부 질환이 있는 경우는 반드시 병원 치료를 받길 바랍니다.<br>
-                                            7. 생식기 및 귀털 제거에서 자극을 최소화하기 위해 지저분해 보일 수 있는 점 양해 부탁드립니다.<br>
+
+                                            <strong>[미용 후 주의사항]</strong>
+                                            <p>1. 짧은 기계미용과 많은 털 엉킴이 있을시 미용 후 자극이 와서 긁거나 핥을 수 있습니다.</p>
+                                            <p> - 우리 아가들의 피부는 사람에 비해 약하기 때문에 미용 후 긁거나 핥으면 상처가 나거나 진물, 심하면 피가 날수있습니다.
+                                                우리아가가 지속적으로 핥고 긁기 전에 먼저 지켜봐 주시기 바랍니다.</p>
+                                            <p> 2. 일시적으로 미용 스트레스가 올 수 있으나 대부분 2~5일 후 점차 사라지게 됩니다.</p>
+                                            <p> - 밥을 먹지 않거나 구석에 숨어있는 다거나, 배변을 보지 않는 등 미용 전에는 없었던 행동을 보일 수 있답니다.</p>
+                                            <p> 미용을 반복하다 보면 점차 좋아지기도 합니다. 푹 쉬게 안정을 취해주시고, 좋아하는 간식을 챙겨주시기 바랍니다.</p>
+                                            <p> 3. 항문 주위의 털 정리와 항문낭 제거로 엉덩이를 끌고 다닐 수 있습니다.</p>
+                                            <p> 4. 이중모(포메라니안, 스피츠, 폼피츠, 페키, 웰시 등) 아이들은 클리퍼로 몸을 미용했을 시 알로페이사증후군이 올 수 있으며,
+                                            </p>
+                                            <p>그로인해 털이 나지 않을 수 있습니다. 이를 숙지하시고 아이들의 미용스타일을 결정해주시기 바랍니다.</p>
+                                            <p> - 가급적 가위컷 추천드립니다.</p>
+                                            <p>5. 평소엔 털에 가려져 보이지 않았던 피부병이 미용 후에 발견될 수 있습니다.</p>
+                                            <p> 6. 귀 질환이나 피부 질환이 있는 경우는 반드시 병원 치료를 받길 바랍니다.</p>
+                                            <p> 7. 생식기 및 귀털 제거에서 자극을 최소화하기 위해 지저분해 보일 수 있는 점 양해 부탁드립니다.</p>
                                         </div>
-                                        <div>
+                                        <div class="agreeCheckboxCon">
                                             <input type="checkbox" id="agreeCheckbox"><label for="agreeCheckbox">안내사항 및
                                                 미용시
                                                 주의사항에 동의합니다.</label>
                                         </div>
                                     </div>
 
-                                </div>
-
                                     <div class="signBox">
-                                        <label>전자서명</label>
+                                        <h2> 🖊️ 전자서명 </h2>
                                         <div class="sign">
                                             <div>
                                                 <canvas ref="signatureCanvas" v-on:mousedown="onBegin"
-                                                    v-on:mouseup="onEnd" width="620" height="250"
+                                                    v-on:mouseup="onEnd" width="875" height="250"
                                                     style="border: 1px solid #000;">
                                                 </canvas>
                                             </div>
@@ -374,21 +397,39 @@
                                             </div>
                                         </div>
                                     </div>
-                               
 
-                                
-                                <div class="cal">
-                                    <p>노쇼방지를 위해 예약금 20,000원을 받고 있습니다.</p>
-                                    <button type="button" v-for="(payment, index) in paymentMethods" :key="index"
-                                        @click="togglePayment(index)"
-                                        :class="{ 'selected': selectedPayment === index }">
-                                        {{ payment }}
-                                    </button>
+
+                                    <div class="cal">
+                                        <p>노쇼방지를 위해 예약금 20,000원을 받고 있습니다.</p>
+                                        <button type="button" v-for="(payment, index) in paymentMethods" :key="index"
+                                            @click="togglePayment(index)"
+                                            :class="{ 'selected': selectedPayment === index }">
+                                            {{ payment }}
+                                        </button>
+                                    </div>
+
+
+                                    <div class="point">
+                                        <label>포인트</label>
+                                        <input type="number" step="10" v-model="usePoint">
+                                        <button type="button" @click="useAllPoint">전액사용</button>
+                                        <p>{{ (this.uPoint - this.usePoint).toLocaleString() }}P 사용가능</p>
+                                    </div>
+
+
+                                    <div class="setstepBtnCon4">
+                                        <button class="setstepBtn1" @click="setStep(3)">이전으로 이동</button>
+                                    </div>
+                                    <div class="subBtn">
+                                        <button class="reserveInsert" type="submit">예약</button>
+                                    </div>
                                 </div>
+
+
+
+
+
                             </div>
-                        </div>
-                        <div class="subBtn">
-                            <button class="reserveInsert" type="submit">예약</button>
                         </div>
                     </form>
                 </div>
@@ -505,6 +546,13 @@ export default {
         };
     },
 
+    watch: {
+        currentStep(newVal) {
+            if (newVal === 4) {
+                this.initSignaturePad();
+            }
+        }
+    },
 
     methods: {
 
@@ -512,8 +560,8 @@ export default {
             this.currentStep = step;
         },
         moveToStep(step) {
-        this.currentStep = step;
-    },
+            this.currentStep = step;
+        },
 
         //가게정보
         getBList() {
@@ -816,32 +864,7 @@ export default {
             // 이미 선택된 결제 방법이라면 선택 취소하고, 아니라면 선택합니다.
             this.selectedPayment = this.selectedPayment === index ? null : index;
         },
-        clearCanvas() {
-            // 캔버스 요소와 컨텍스트 가져오기
-            const canvas = this.$refs.signatureCanvas;
-            const context = canvas.getContext('2d');
 
-            // 캔버스 영역을 비웁니다.
-            context.clearRect(0, 0, canvas.width, canvas.height);
-        },
-        onBegin() {
-            // 서명이 시작될 때 호출되는 메서드
-            this.signaturePad.onBegin();
-        },
-        onEnd() {
-            // 서명이 끝날 때 호출되는 메서드
-            this.signaturePad.onEnd();
-        },
-        getSignatureImage() {
-            // 서명이 입력되지 않았을 때 빈 문자열 반환
-            if (this.signaturePad.isEmpty()) {
-                return '';
-            }
-
-            // 서명을 이미지로 변환하여 반환
-            return this.signaturePad.toDataURL();
-        }
-        ,
         ...mapActions(['updateReservationData']),
 
         // 예약하기
@@ -976,26 +999,57 @@ export default {
                 ia[i] = byteString.charCodeAt(i);
             }
             return new Blob([ab], { type: mimeString });
+        },
+
+        clearCanvas() {
+            const canvas = this.$refs.signatureCanvas;
+            if (canvas) {
+                const context = canvas.getContext('2d');
+                context.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        },
+        onBegin() {
+            if (this.signaturePad) {
+                this.signaturePad.onBegin();
+            }
+        },
+        onEnd() {
+            if (this.signaturePad) {
+                this.signaturePad.onEnd();
+            }
+        },
+        getSignatureImage() {
+            // 서명이 입력되지 않았을 때 빈 문자열 반환
+            if (this.signaturePad.isEmpty()) {
+                return '';
+            }
+
+            // 서명을 이미지로 변환하여 반환
+            return this.signaturePad.toDataURL();
         }
+        ,
+
+        initSignaturePad() {
+            this.$nextTick(() => {
+                const canvas = this.$refs.signatureCanvas;
+                if (canvas) {
+                    this.signaturePad = new SignaturePad(canvas);
+                } else {
+                    console.error('Canvas element not found');
+                }
+            });
+        },
 
 
 
     },
 
     mounted() {
-        // const noticeElement = document.getElementById('notice');
-        // const checkbox = document.getElementById('agreeCheckbox');
-
-        // noticeElement.addEventListener('scroll', () => {
-        //     // 더 이상 스크롤할 수 없을 때
-        //     if (noticeElement.scrollTop + noticeElement.clientHeight >= noticeElement.scrollHeight) {
-        //         // 체크박스를 활성화
-        //         checkbox.disabled = false;
-        //     }
-        // });
-
-        const canvas = this.$refs.signatureCanvas;
-        this.signaturePad = new SignaturePad(canvas);
+        if (this.currentStep == 4) {
+            this.initSignaturePad();
+            const canvas = this.$refs.signatureCanvas;
+            this.signaturePad = new SignaturePad(canvas);
+        }
     },
 
     created() {
@@ -1014,13 +1068,13 @@ export default {
 
 canvas {
     border: 1px solid #a7a4a4;
-    width: 620px;
+    width: 875px;
     height: 250px;
     border-radius: 10px;
 }
 
 .sign0 {
-    width: 620px;
+    width: 875px;
     /* background-color: red; */
     text-align: end;
 }
@@ -1028,7 +1082,7 @@ canvas {
 .sign0 button {
     border: 1px solid gray;
     border-radius: 5px;
-    padding: 10px;
+    padding: 5px;
     cursor: pointer;
 }
 </style>

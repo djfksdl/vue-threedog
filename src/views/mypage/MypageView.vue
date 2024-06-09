@@ -47,12 +47,12 @@
                         <!-- 후기내용 예약정보부분 -->
                         <div class="mprvcContentsInfo">
                             <!-- 사진 -->
-                            <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`">
+                            <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`" style="border: 1px solid #ddd;">
                             <!-- {{ reviewVo.saveName }} -->
                             <div>
                                 <!-- 이용정보 -->
                                 <div class="mprvcContentsInfos">
-                                    <!-- 후기사진 -->
+                                    <!-- 후기정보 -->
                                     <p><span>매장명 </span> {{ reviewVo.title }}</p>
                                     <p><span>이용펫 </span> {{ reviewVo.dogName }}</p>
                                     <p><span>가격 </span> {{ totalPrice2.toLocaleString() }} 원</p>

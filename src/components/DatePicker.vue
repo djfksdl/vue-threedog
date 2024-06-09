@@ -27,6 +27,7 @@
         </div>
       </div>
     </div>
+    
   </div>
 </template>
 
@@ -181,7 +182,7 @@ const isSelected = (time) => {
   color: #236C3F;
   font-size: 0px;
   width: 420px;
-  height: 50px;
+  height: 40px;
   margin-right: 30px;
   margin-top: -13px;
   margin-bottom: 70px;
