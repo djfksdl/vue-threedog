@@ -285,22 +285,15 @@
                                     <h3>이용시간</h3>
                                 </div>
                                 <!-- 이용시간-오른쪽 -->
-                                <div class="eTimeRight">
-                                    <div class="eTimeRightContents">
+                                <div class="eTimeRight "> 
+                                    <div class="eTimeRightTitle">
                                         <p>평일</p>
-                                        <p>am 9:00~ pm18:00</p>
-                                    </div>
-                                    <div class="eTimeRightContents">
                                         <p>토요일</p>
-                                        <p>am 9:00~ pm15:00</p>
-                                    </div>
-                                    <div class="eTimeRightContents">
                                         <p>점심시간</p>
-                                        <p>pm 12:00~ pm13:00</p>
+                                        <p>공휴일/주말</p>
                                     </div>
                                     <div class="eTimeRightContents">
-                                        <p>공휴일/주말</p>
-                                        <p>영업종료</p>
+                                        <div v-html="shopInfo.bTime.replace(/\n/g, '<br>')"></div>
                                     </div>
                                 </div>
                             </div>
@@ -402,6 +395,7 @@ export default {
                 introduce:"",
                 dProfile:"",
                 job:"",
+                bTime:""
             },
             priceList:[],
             slideList:[],

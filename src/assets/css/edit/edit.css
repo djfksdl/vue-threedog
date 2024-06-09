@@ -160,7 +160,6 @@ font-size: 36px;
 .container2 .eMidContainer .eDesignerSlideContainer .eDesignerContentsBox .eDLeftBox .eCareerBox .eCareerBoxInfo{
     width: 300px;
     height: 200px;
-    line-height: 20px;
     padding: 10px;
     font-size: 16px;
 }
@@ -293,39 +292,41 @@ font-size: 36px;
     display: flex;
 }
  
- /* 위치 왼쪽 */
+/* 위치 왼쪽 */
 .container2 .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft{
     /* background-color: orangered; */
     width: 900px;
     /* padding: 0 50px; */
-}
+ }
  /* 위치 왼쪽 - 이용시간 */
-.container2 .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime{
+ .container2 .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime{
     display: flex;
     /* background-color: darkgrey; */
     margin-bottom: 30px;
-}
+ }
  /* 이용시간 왼쪽 */
  .container2 .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime .eTimeLeft{
     /* background-color: darkmagenta; */
     margin-right: 100px;
 }
  /* 이용시간 오른쪽 */
-.container2 .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime .eTimeRight{
+ .container2 .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime .eTimeRight{
     /* background-color: lawngreen; */
+    display: flex;
+}
+.container2 .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime .eTimeRight .eTimeRightTitle p{
+     font-weight: bold;
+     width: 120px;
+     margin-bottom: 5px;
 }
 .container2 .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime .eTimeRight .eTimeRightContents{
-    display: flex;
-    margin-bottom: 5px;
+    width: 200px;
+    height: 104px;
+    resize: none;
+    overflow: hidden;
+    line-height: 24.5px; 
 }
-.container2 .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime .eTimeRight .eTimeRightContents p:first-child{
-    font-weight: bold;
-    width: 120px;
-    /* margin-right: 20px; */
-}
-.container2 .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eTime .eTimeRight .eTimeRightContents p:nth-child(2){
-    color: #666;
-}
+
 /* 위치 왼쪽 - 오시는길 */
 .container2 .eMidContainer .ePositionContainer .ePositionBox .ePositionLeft .eRoad{
     display: flex;

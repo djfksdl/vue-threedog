@@ -60,9 +60,7 @@ export default {
         return {
             // bNo: this.$route.params.bNo,
             bNo: this.$route.params.bNo || this.$store.state.auth.bNo,
-            shopInfo:{
-                logo:""
-            },
+            shopInfo:{}
         };
     },
     methods: {
@@ -102,7 +100,7 @@ export default {
                 responseType: 'json' //수신타입
             }).then(response => {
 
-                this.shopInfo = response.data.apiData.shopInfo;
+                this.shopInfo = response.data.apiData.shopInfo || {};
                 console.log(this.shopInfo)
              
 

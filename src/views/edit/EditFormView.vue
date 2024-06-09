@@ -259,28 +259,21 @@
 
                                 <!-- 이용시간 -->
                                 <div class="eTime">
-
                                     <!-- 이용시간-왼쪽 -->
                                     <div class="eTimeLeft">
                                         <h3>이용시간</h3>
                                     </div>
                                     <!-- 이용시간-오른쪽 -->
                                     <div class="eTimeRight "> 
-                                        <div class="eTimeRightContents">
+                                        <div class="eTimeRightTitle">
                                             <p>평일</p>
-                                            <p>am 9:00~ pm18:00</p>
-                                        </div>
-                                        <div class="eTimeRightContents">
                                             <p>토요일</p>
-                                            <p>am 9:00~ pm15:00</p>
-                                        </div>
-                                        <div class="eTimeRightContents">
                                             <p>점심시간</p>
-                                            <p>pm 12:00~ pm13:00</p>
+                                            <p>공휴일/주말</p>
                                         </div>
                                         <div class="eTimeRightContents">
-                                            <p>공휴일/주말</p>
-                                            <p>영업종료</p>
+                                            <textarea v-model="shopInfo.bTime" placeholder="ex)am 9:00~ pm18:00&#10;   am 9:00~ pm15:00&#10;   pm 12:00~ pm13:00&#10;   영업종료">
+                                            </textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -384,7 +377,8 @@
                     job:"",
                     slideImgs:[],//슬라이드이미지들 파일담을것
                     cutImgs:[],//컷이미지들 파일담을것
-                    hiNo:""
+                    hiNo:"",
+                    bTime:""
                 },
                 priceList: this.initializePriceList(),
                 slideList:[],//슬라이드이미지들 saveName List + hiNo
@@ -506,6 +500,7 @@
                 formData.append("logoFile", this.shopInfo.logoFile);
                 formData.append("title", this.shopInfo.title);
                 formData.append("subTitle", this.shopInfo.subTitle);
+                formData.append("bTime", this.shopInfo.bTime);
                 
                 this.shopInfo.slideImgs.forEach((img, index) => {
                     formData.append(`slideImgs[${index}]`, img);
@@ -530,6 +525,7 @@
 
                 console.log(formData.get("logoFile"));
                 console.log(formData.get("subTitle"));
+                console.log(formData.get("bTime"));
 
                 // console.log(formData.get("slideImgs"));
                 // console.log(formData.get("cutImgs"));
@@ -625,6 +621,7 @@
 
                 formData.append("title", this.shopInfo.title);
                 formData.append("subTitle", this.shopInfo.subTitle);
+                formData.append("bTime", this.shopInfo.bTime);
                 
                 formData.append("dName", this.shopInfo.dName);
                 formData.append("job", this.shopInfo.job);
@@ -715,6 +712,7 @@
                 console.log(formData.get("logoFile"));
                 console.log(formData.get("title"));
                 console.log(formData.get("subTitle"));
+                console.log(formData.get("bTime"));
                 console.log(formData.get("dName"));
                 console.log(formData.get("job"));
                 console.log(formData.get("introduce"));

@@ -23,7 +23,7 @@
             
             <!-- 푸터 아래부분 -->
             <div class="mfooterBtm">
-                <p>Copyright 2020-2024 dog3 Corp. All Rights Reserved.</p>
+                <p>Copyright 2020-2024 {{ shopInfo.title || '' }}Corp. All Rights Reserved.</p>
             </div>
         </div>
     </div>
