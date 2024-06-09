@@ -23,7 +23,7 @@
                   <ul class="city-list">
                     <li v-for="city in cities" :key="city" @click="toggleCity(city)"
                       :class="{ 'selected': selectedCities.includes(city) }">{{ city }} <span
-                        v-if="selectedCities.includes(city)" @click.stop="cancelCity(city)">X</span></li>
+                        v-if="selectedCities.includes(city)" @click.stop="cancelCity(city)">x</span></li>
                   </ul>
                 </div>
               </td>
@@ -39,7 +39,7 @@
                   <ul class="city-list">
                     <li v-for="size in types" :key="size" @click="toggleType(size)"
                       :class="{ 'selected': selectedTypes.includes(size) }">{{ size }}<span
-                        v-if="selectedTypes.includes(size)" @click.stop="cancelType(size)">X</span></li>
+                        v-if="selectedTypes.includes(size)" @click.stop="cancelType(size)">x</span></li>
                   </ul>
                 </div>
               </td>
@@ -57,7 +57,7 @@
                       :class="{ 'selected': selectedWeights.includes(index) }"
                       :style="{ 'background-color': selectedItems.find(item => item.label === weight && item.isSelected) ? '#9bd89d' : 'white' }">
                       {{ weight }} <span v-if="selectedWeights.includes(index)"
-                        @click.stop="cancelWeight(index)">X</span>
+                        @click.stop="cancelWeight(index)">x</span>
                     </li>
                   </ul>
                 </div>
@@ -75,7 +75,7 @@
                     <li v-for="(price, index) in prices" :key="price" @click="togglePrice(price)"
                       :class="{ 'selected': selectedPrices.includes(index) }"
                       :style="{ 'background-color': selectedItems.find(item => item.label === price && item.isSelected) ? '#9bd89d' : 'white' }">
-                      {{ price }} <span v-if="selectedPrices.includes(index)" @click.stop="cancelPrice(index)">X</span>
+                      {{ price }} <span v-if="selectedPrices.includes(index)" @click.stop="cancelPrice(index)">x</span>
                     </li>
                   </ul>
                 </div>
@@ -88,7 +88,7 @@
       <div class="selected-items">
         <div v-for="(item, index) in selectedItems" :key="index" class="selected-item" @click="cancelSelected(item)">
           {{ item.label }}
-          <button @click="cancelSelected(item)" class="lcancel-btn">X</button>
+          <button @click="cancelSelected(item)" class="lcancel-btn">x</button>
         </div>
       </div>
       <div class="bottom">
@@ -98,9 +98,14 @@
         <hr>
         <div class="search-result">
           <div v-if="reviewList.length > 0" class="rank-search">
-            <div class="search-item" @click="reviewDetail(reviewVo.rNo)" v-bind:key="i"
-              v-for="(reviewVo, i) in reviewList">
-              <img class="list_img" src="../../assets/images/bori.jpg">
+            <div class="search-item" @mouseenter="hoverReview(i)" @mouseleave="leaveReview(i)"
+              @click="reviewDetail(reviewVo.rNo)" v-bind:key="i" v-for="(reviewVo, i) in reviewList">
+              <div class="review-img-container">
+                <img class="list_img" src="../../assets/images/bori.jpg">
+                <div class="hover-overlay" v-if="hoveredIndex === i">
+                  <button @click.stop="reviewDetail(reviewVo.rNo)">후기 보기</button>
+                </div>
+              </div>
               <div class="star-container">
                 <div class="star_list" v-for="index in 5" :key="index">
                   <span v-if="index <= reviewVo.star" class="yellowStar">
@@ -111,7 +116,10 @@
                   </span>
                 </div>
               </div>
-              <label>{{ reviewVo.title }}</label>
+              <label><strong>{{ reviewVo.title }}</strong></label>
+              <div class="context" style="margin-bottom: 10px;">
+                {{ truncateContent(reviewVo.rContent) }} <!-- 여기서 rContent를 바인딩 -->
+              </div>
             </div>
           </div>
           <div v-else class="no-results">
@@ -126,25 +134,27 @@
         <div class="reviewBoardDetailContainer-search">
           <!-- Display review details in the modal -->
           <div class="reviewDetailImg-search">
+            <div class="modal-btn-search-close">
+              <button class="close-x" @click="modalCheck = false">x</button>
+            </div>
             <Swiper :slides-per-view="1" style="width: 350px;">
               <SwiperSlide v-for="(reviewVo, i) in reviewList2" :key="i">
                 <div class="reviewDetailImg">
                   <img :src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`"
-                    style="width: 350px; height: 350px;">
+                    style="width: 350px; height: 450px;">
                 </div>
               </SwiperSlide>
             </Swiper>
-            <!-- <img src="../../assets/images/spy3.jpg" style="width: 300px; height: 350px; margin-top: 15px;"> -->
           </div>
           <div class="modal-content" style="padding-left: 50px;">
             <div class="userId"><strong>{{ reviewVo2.uId }}</strong>님</div>
             <div style="display: flex;">
-              <div class="cutInfor">{{ reviewVo2.dogName }} ({{ reviewVo2.weight }}kg) &nbsp; </div>
+              <div class="cutInfor"><strong>{{ reviewVo2.dogName }}</strong> ({{ reviewVo2.weight }}kg) &nbsp; </div>
               <div class="date">{{ formatDate(reviewVo2.rDate) }}</div>
             </div>
             <br>
             <div style="display: flex;">
-              <div class="price">{{ reviewVo2.expectedPrice.toLocaleString() }}원&nbsp;</div>
+              <div class="price"><strong>{{ reviewVo2.expectedPrice.toLocaleString() }}</strong>원&nbsp;</div>
               <div class="star" style="margin-top: 3px;">
                 <!-- Full stars -->
                 <span v-for="i in Math.floor(reviewVo2.star)" :key="i"><img src="@/assets/images/star_yellow.jpg"
@@ -162,7 +172,6 @@
           <router-link :to="`/edit/${reviewVo2.bNo}`">
             <button style="width: 200px; margin-right: 10px;">매장 홈페이지 가기</button>
           </router-link>
-          <button @click="modalCheck = false" style="width: 200px;">닫기</button>
         </div>
       </div>
     </div>
@@ -171,7 +180,6 @@
   <TopButton />
   <AppFooter id="AppFooter" />
 </template>
-
 
 <script>
 import AppFooter from "@/components/AppFooter.vue";
@@ -206,6 +214,7 @@ export default {
         title: '',
         saveName: '',
         bNo: '',
+        rContent: ''
       },
       cities: ['서울', '경기', '강원', '충북', '충남', '경북', '경남', '전북', '전남', '제주'],
       types: ['소형견', '중형견', '특수견'],
@@ -338,6 +347,7 @@ export default {
         .then((response) => {
           console.log(response.data.apiData);
           this.reviewList = response.data.apiData;
+          console.log("=================");
         })
         .catch((error) => {
           console.log(error);
@@ -459,6 +469,23 @@ export default {
       const day = String(date.getDate()).padStart(2, '0');
       return `${year}-${month}-${day}`;
     },
+    hoverReview(index) {
+      this.hoveredIndex = index;
+    },
+    leaveReview() {
+      this.hoveredIndex = null;
+    },
+    truncateContent(rContent) {
+      if (!rContent) {
+        return '';
+      }
+      if (rContent.length > 80) {
+        return rContent.substring(0, 80) + '...';
+      } else {
+        return rContent;
+      }
+    }
+
   },
   created() {
     this.getList(); // 이 부분에서 getList 메소드 호출
