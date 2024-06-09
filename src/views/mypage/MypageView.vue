@@ -5,6 +5,23 @@
         <SideBar />
         <div class="mypageContainer">
             <div class="container">
+
+                <!-- 마일리지 내역 -->
+                <div class="mpUsePointContainer">
+                    <!-- 마일리지내역 윗부분 -->
+                    <div class="mpupTop">
+                        <h2>포인트내역</h2>
+                        <router-link :to="`/point`">더보기 +</router-link>
+                    </div>
+                    <!-- 마일리지내역 내용 -->
+                    <div class="mpupContents">
+                        <div>
+                            <p>사용 가능한 마일리지:</p>
+                            <p> 5000p</p>
+                        </div>
+                    </div>
+                </div>
+                
                 <!-- 예약 내역 -->
                 <div class="mpReserveConfirmContainer">
                     <!-- 예약내역 윗부분 -->
