@@ -72,7 +72,8 @@
                             <router-link :to="`/reviewform/${reserveVo.rsNo}`">후기 작성</router-link>
                         </div>
                         <div class="rrfConfirm" v-else-if="reserveVo.rNo">
-                            <button @click="getReview(reserveVo.rsNo)" style="background-color: white; color: #1d5e35; font-weight: bold">후기 확인</button>
+                            <button @click="getReview(reserveVo.rsNo)"
+                                style="background-color: white; color: #1d5e35; font-weight: bold">후기 확인</button>
                         </div>
                     </div>
                 </div>
@@ -80,6 +81,7 @@
                 <div class="modal-wrap" v-show="modalCheck">
                     <div class="modal-container">
                         <div class="reviewBoardDetailContainer">
+
 
                             <Swiper :slides-per-view="1" navigation :prevButton="'.swiper-button-prev'"
                                 :nextButton="'.swiper-button-next'">
@@ -222,7 +224,11 @@ export default {
 
     computed: {
     },
+
+    mounted() {
+    },
     methods: {
+
         getReserveList() {
             console.log("예약내역 가져오기");
 

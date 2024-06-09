@@ -54,7 +54,7 @@
                     <div class="eDesignerContentsBox">
                         <!-- 디자이너소개 왼쪽 -->
                         <div class="eDLeftBox">
-                            <h2>이서현 원장</h2>
+                            <h2>{{ shopInfo.dName }} {{ shopInfo.job }} </h2>
                             <div class="eCareerBox">
                                 <h3>경력</h3>
                                 <div class="eCareerBoxInfo" v-html="shopInfo.introduce.replace(/\n/g, '<br>')"></div>
@@ -465,12 +465,7 @@ export default {
 
         // 가게 정보 불러오기
         getShopInfo(){
-            // console.log(this.bNo);
-            console.log("getShopInfo? ")
-            console.log(this.$store.state.auth.bNo);
-            console.log(this.$store.state.auth);
-            console.log(this.bNo);
-            console.log(this.$route.params.bNo);
+
             axios({
                 method: 'get', // put, post, delete 
                 url: `${this.$store.state.apiBaseUrl}/api/su/shopInfo`,

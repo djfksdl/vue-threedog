@@ -2,11 +2,15 @@
 
 /* =========================마이페이지 메인======================= */
 .mypageContainer{}
+.mypageContainer .container{
+    width: 1000px;
+    margin: 0 0 0 500px;
+}
 /* ========= 예약 내역 ========= */
 .mypageContainer .mpReserveConfirmContainer{
-    width: 1200px;
+    width: 1150px;
     /* background-color: palegreen; */
-    margin: 0 auto;
+    margin-left: 30px;
     padding: 30px;
     margin-bottom: 30px;
 }
@@ -45,9 +49,9 @@
 
 /* ========= 후기 ========= */
 .mypageContainer .mpReviewConfirmContainer{
-    width: 1200px;
+    width: 1150px;
     /* background-color: palegreen; */
-    margin: 0 auto;
+    margin-left: 30px;
     padding: 30px;
     margin-bottom: 30px;
 }
@@ -113,9 +117,9 @@
 
 /* ========= 알림장 ========= */
 .mypageContainer .mpDiaryConfirmContainer{
-    width: 1200px;
+    width: 1150px;
     /* background-color: palegreen; */
-    margin: 0 auto;
+    margin-left: 30px;
     padding: 30px;
     margin-bottom: 30px;
 }

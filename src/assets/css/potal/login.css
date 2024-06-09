@@ -87,6 +87,8 @@
 .login-box .signup-link {
     font-size: 14px;
     color: #666;
+    text-align: right;
+    margin-right: 20px;
 }
 
 .login-box .manager-signup {
@@ -107,35 +109,44 @@
     margin-bottom: 7px;
 }
 
+
+/* 간편 로그인 또는 기업 로그인 */
+
+.login-box .easy-login{
+    
+}
+
+.login-box .easy-login .orBorder{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 30px 0 20px;
+}
+.login-box .easy-login .orBorder .leftOrBorder{
+    width: 70px;
+    height: 1px;
+    background-color: #ccc;
+}
+.login-box .easy-login .orBorder p{
+    color: #aaa;
+}
+.login-box .easy-login .orBorder .rightOrBorder{
+    width: 70px;
+    height: 1px;
+    background-color: #ccc;
+}
+
+
+
 .login-box .sns01 {
-    display: flex;
-    justify-content: center;
-    margin-top: 30px;
-}
-
-.login-box .sns02 {
-    display: flex;
-    justify-content: center;
-    object-fit: contain;
-}
-
-.login-box .sns01 img, .sns02 img {
-    height: 40px;
-    width: 140px;
-    object-fit: cover;
-    border-radius: 5px;
+    /* display: flex;
+    justify-content: center; */
+    margin-bottom: 30px;
 }
 
 .kakao,
-.naver,
-.google {
+.naver {
     cursor: pointer;
-}
-
-.google{
-    border: 1px solid;
-    border-color: #999;
-    margin-right: 10px;
 }
 .kakao {
     margin-right: 10px;

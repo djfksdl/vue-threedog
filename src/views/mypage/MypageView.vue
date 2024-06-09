@@ -36,20 +36,26 @@
                 </div>
 
                 <!-- 후기 -->
-                <div class="mpReviewConfirmContainer" >
+                <div class="mpReviewConfirmContainer">
+                    
                     <!-- 후기 윗부분 -->
                     <div class="mprvcTop">
                         <h2>내가 쓴 후기</h2>
                         <router-link :to="`/myreview/${uNo}`">더보기 +</router-link>
                     </div>
+
                     <!-- 후기 내용 -->
                     <div class="mprvcContents" v-if="reviewVo">
+
                         <!-- 후기내용 예약정보부분 -->
                         <div class="mprvcContentsInfo">
+
                             <!-- 사진 -->
-                            <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`" style="border: 1px solid #ddd;">
+                            <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`"
+                                style="border: 1px solid #ddd;">
                             <!-- {{ reviewVo.saveName }} -->
                             <div>
+
                                 <!-- 이용정보 -->
                                 <div class="mprvcContentsInfos">
                                     <!-- 후기정보 -->
@@ -57,6 +63,7 @@
                                     <p><span>이용펫 </span> {{ reviewVo.dogName }}</p>
                                     <p><span>가격 </span> {{ totalPrice2.toLocaleString() }} 원</p>
                                 </div>
+
                                 <!-- 별점 -->
                                 <div class="star-rating">
                                     <div class="star">
@@ -86,32 +93,36 @@
 
                 <!-- 알림장 -->
                 <div class="mpDiaryConfirmContainer">
+
                     <!-- 알림장 윗부분 -->
                     <div class="mpdcTop">
                         <h2>알림장</h2>
                         <router-link to="/mydiary">더보기 +</router-link>
                     </div>
+
                     <!-- 알림장 내용 -->
-                    <div class="mpdcContents" v-if="reserveVo2.attitude">
+                    <div class="mpdcContents" v-if="reserveVo2?.attitude">
+
                         <!-- 알림장 사진 -->
                         <div class="mpdcImg">
                             <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reserveVo2.saveName}`">
                         </div>
+
                         <!-- 알림장 내용 -->
                         <div class="mpdcInfo1">
                             <p><span>이용일 :</span> {{ formattedRtDate2 }}</p>
-                            <p><span>이용펫 :</span> {{reserveVo2.dogName}}</p>
-                            <p><span>미용예절 :</span> {{reserveVo2.attitude}} </p>
-                            <p><span>컨디션 :</span> {{reserveVo2.rCondition}}</p>
-                            <p><span>엉킴(부위) :</span> {{reserveVo2.tangle }}</p>
+                            <p><span>이용펫 :</span> {{ reserveVo2.dogName }}</p>
+                            <p><span>미용예절 :</span> {{ reserveVo2.attitude }} </p>
+                            <p><span>컨디션 :</span> {{ reserveVo2.rCondition }}</p>
+                            <p><span>엉킴(부위) :</span> {{ reserveVo2.tangle }}</p>
                             <p><span>싫어했던 부위 :</span> {{ reserveVo2.disliked }}</p>
                             <p><span>목욕/드라이 :</span> {{ reserveVo2.bath }}</p>
                         </div>
                         <div class="mpdcInfo2">
-                            <p><span>추가요금 :</span> {{reserveVo2.surcharge.toLocaleString()}} 원</p>
+                            <p><span>추가요금 :</span> {{ reserveVo2.surcharge.toLocaleString() }} 원</p>
                             <p><span>전달사항 :</span>
-                               {{reserveVo2.message}}
-                               
+                                {{ reserveVo2.message }}
+
                             </p>
                         </div>
                     </div>
@@ -186,8 +197,8 @@ export default {
                 bath: "",
                 message: "",
                 saveName: "",
-                bNo:"",
-                pushNo:0,
+                bNo: "",
+                pushNo: 0,
 
             },
             uNo: this.$store.state.authUser.uNo,
