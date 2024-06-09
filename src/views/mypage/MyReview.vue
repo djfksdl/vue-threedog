@@ -13,7 +13,7 @@
                    <input type="search" id="reserveSearch">
                 </div> -->
 
-                <div class="reserveCheckForm" v-bind:key="i" v-for="(reserveVo, i) in reserveList" >
+                <div class="reserveCheckForm" v-bind:key="i" v-for="(reserveVo, i) in reserveList">
                     <!-- 예약정보 -->
                     <div class="rcfInfo" style="display: flex; ">
                         <div>
@@ -82,13 +82,14 @@
                     <div class="modal-container">
                         <div class="reviewBoardDetailContainer">
 
-                            <Swiper :slides-per-view="1" navigation :prevButton="'.swiper-button-prev'"
-                                :nextButton="'.swiper-button-next'">
+                            <Swiper>
                                 <SwiperSlide v-for="(reviewVo, i) in reviewList" :key="i">
                                     <div class="reviewDetailImg">
                                         <img :src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`"
-                                            style="width: 350px; height: 350px;">
+                                            style="width: 350px; height: 350px; border: 1px solid #ddd">
+
                                     </div>
+
                                 </SwiperSlide>
                             </Swiper>
 
@@ -119,7 +120,10 @@
                             </div>
                         </div>
                         <div style="display: flex; margin-top: 30px">
-                            <div class="modal-btn" style="margin-left: 400px;">
+                            <div>
+                                <p style="color: gray; font-size: 16px; display: block; width: 200px;">사진을 옆으로 밀어주세요.</p>
+                            </div>
+                            <div class="modal-btn" style="margin-left: 200px;">
                                 <router-link :to="`/edit/${reviewVo.bNo}`">
                                     <button style="width: 200px; margin-right: 10px;">매장 홈페이지 가기</button>
                                 </router-link>
