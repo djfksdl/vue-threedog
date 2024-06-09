@@ -8,7 +8,7 @@
                 <div class="eLogoTitle">
                     <div class="eLogoTitleExplain">
                         <h1>로고, 타이틀 등록</h1>
-                        <p>*로고 사이즈 70*70 권장</p>
+                        <p>*로고 사이즈 60*60 권장</p>
                     </div>
                     <!-- 로고 -->
                     <div class="eLogoTitleInfo">

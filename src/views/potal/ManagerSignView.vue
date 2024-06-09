@@ -38,6 +38,9 @@
                                 }}</small>
                         </div>
                         <div class="form-group-man">
+                            <input type="text" id="bMaster" name="bMaster" placeholder="사업자 이름" v-model="bMaster">
+                        </div>
+                        <div class="form-group-man">
                             <input type="tel" id="bPhone" name="bPhone" placeholder="사업장 전화번호" v-model="bPhone">
                         </div>
                         <div class="form-group-man" style="margin-bottom: 10px;">
@@ -100,6 +103,7 @@ let password = ref('');
 let confirmPassword = ref('');
 let businessNumber = ref('');
 let bPhone = ref('');
+let bMaster = ref('');
 let zonecode = ref('');
 let roadAddress = ref('');
 let detailAddress = ref('');
@@ -132,6 +136,7 @@ const handleSubmit = async () => {
             formData.append("bAddress", roadAddress.value);
             formData.append("bdAddress", detailAddress.value);
             formData.append("bPhone", bPhone.value);
+            formData.append("bMaster", bMaster.value);
             formData.append("latitude", latitude.value); // 위도 추가
             formData.append("longitude", longitude.value); // 경도 추가
 

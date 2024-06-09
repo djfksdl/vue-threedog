@@ -5,7 +5,10 @@
             <div class="mheaderLeft">
                 <!-- 로고 -->
                 <div class="mlogo">
-                    <router-link v-bind:to="`/edit/${this.bNo}`"><img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${shopInfo.logo }`"></router-link>
+                    <router-link v-bind:to="`/edit/${this.bNo}`">
+                        <img v-if="shopInfo && shopInfo.logo" v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${shopInfo.logo}`">
+                        <img v-else v-bind:src="require('@/assets/images/no-logo.png')">
+                    </router-link>
                 </div>
                 <!-- 메뉴(회원+원장) -->
                 <ul class="mMenu" v-if="this.$store.state.auth == null ">

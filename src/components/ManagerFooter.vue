@@ -1,15 +1,15 @@
 <template>
-    <div class="mfooter">
+    <div class="mfooter" v-show="shopInfo">
         <div class="mfooterWrap">
             <!-- 푸터 윗부분 -->
             <div class="mfooterTop">
                 <!-- 푸터 정보 -->
                 <div class="mfotterInfo">
-                    <p>06615 서울특별시 서초구 서초대로 73길 12, 9층(서초동, 세계빌딩)</p>
+                    <p>{{ shopInfo.bZipCode || '' }} {{ shopInfo.bAddress || '' }} {{ shopInfo.bdAddress || '' }}</p>
                     <div>
-                        <p>대표자 : 이연수</p>
-                        <p>사업자등록번호 : 502-86-10105</p>
-                        <p>전화번호 : {{shopInfo.bPhone}}</p>
+                        <p>대표자 : {{ shopInfo.bMaster || '가게 생성 후 표시됩니다.' }}</p>
+                        <p>사업자등록번호 : {{ shopInfo.bNum || '가게 생성 후 표시됩니다.' }}</p>
+                        <p>전화번호 : {{ shopInfo.bPhone || '가게 생성 후 표시됩니다.' }}</p>
                     </div>
                 </div>
                 <!-- 푸터 sns -->
@@ -39,11 +39,11 @@ export default {
         return {
             // bNo: this.$route.params.bNo,
             bNo: this.$route.params.bNo || this.$store.state.auth.bNo,
-            shopInfo:{}
+            shopInfo: {},
         };
     },
     methods: {
-        //헤더 불러오기
+        //푸터 불러오기
         getShopInfo(){
             console.log("푸터 정보 불러오기");
 
@@ -56,8 +56,8 @@ export default {
                 responseType: 'json' //수신타입
             }).then(response => {
 
-                this.shopInfo = response.data.apiData.shopInfo;
-
+                this.shopInfo = response.data.apiData.shopInfo || {};
+                console.log("this.shopInfo");
                 console.log(this.shopInfo);
              
 

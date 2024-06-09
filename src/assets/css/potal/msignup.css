@@ -38,8 +38,7 @@
     position: relative;
 }
 
-.form-group-man:nth-child(2),
-.form-group-man:nth-child(5) {
+.form-group-man:nth-child(2) {
     margin-bottom: 10px;
 }
 
