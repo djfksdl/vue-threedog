@@ -17,11 +17,11 @@
                     <div class="mpupContents">
                         <div>
                             <p>사용 가능한 마일리지:</p>
-                            <p> 5000p</p>
+                            <p> {{ this.pointVo.uPoint.toLocaleString() }} p</p>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- 예약 내역 -->
                 <div class="mpReserveConfirmContainer">
                     <!-- 예약내역 윗부분 -->
@@ -50,11 +50,17 @@
                             </div>
                         </router-link>
                     </div>
+
+                    <div class="mprcContents" v-else-if="reserveVo == null">
+                        <div>
+                            예약내역이 없습니다.
+                        </div>
+                    </div>
                 </div>
 
                 <!-- 후기 -->
                 <div class="mpReviewConfirmContainer">
-                    
+
                     <!-- 후기 윗부분 -->
                     <div class="mprvcTop">
                         <h2>내가 쓴 후기</h2>
@@ -106,6 +112,10 @@
                             </p>
                         </div>
                     </div>
+
+                    <div class="mprvcContents" v-else-if="reviewVo == null">
+                        후기내용이 없습니다.
+                    </div>
                 </div>
 
                 <!-- 알림장 -->
@@ -143,6 +153,10 @@
                             </p>
                         </div>
                     </div>
+
+                    <div class="mpdcContents" v-if="reserveVo2?.attitude == null">
+                        알림장이 없습니다.
+                    </div>
                 </div>
             </div>
         </div>
@@ -168,6 +182,11 @@ export default {
     },
     data() {
         return {
+            pointVo: {
+                uNo: this.$store.state.authUser.uNo,
+                uPoint: 0,
+            },
+
             reserveVo: {
                 rsNo: 0,
                 dogNo: 0,
@@ -198,6 +217,7 @@ export default {
                 star: 0,
                 dogName: "",
                 saveName: "",
+                uPoint: 0,
             },
             reserveVo2: {
                 uNo: this.$store.state.authUser.uNo,
@@ -219,6 +239,7 @@ export default {
 
             },
             uNo: this.$store.state.authUser.uNo,
+
 
         };
     },
@@ -247,6 +268,24 @@ export default {
         },
     },
     methods: {
+        getPoint() {
+            console.log("포인트불러오기");
+            console.log(this.reviewVo.uNo);
+            axios({
+                method: 'get',  //put,post,delete
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/getpoint`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { uNo: this.pointVo.uNo },
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log("포인트 불러오기 성공");
+                console.log(response.data.apiData); //수신데이타
+                this.pointVo = response.data.apiData;
+
+            }).catch(error => {
+                console.log(error);
+            });
+        },
         getReverve() {
             console.log("예약내역 불러오기");
 
@@ -304,6 +343,7 @@ export default {
         this.getReverve();
         this.getReview();
         this.getDiary();
+        this.getPoint();
     }
 };
 </script>
