@@ -15,6 +15,21 @@
                     <li><router-link to="/reservationform">예약</router-link></li>
                 </ul>
 
+                <div class="popRank" v-if="popList.length > 0">
+                    <ul id="best_search" @mouseenter="stopCarousel" @mouseleave="startCarousel">
+                        <li v-for="(popVo, i) in popList" :key="i">
+                            <dl :class="'time' + (i + 1)" v-show="i === viewcount">
+                                <dd>
+                                    <a class="t" :href="`/edit/${popVo.bNo}`">
+                                        <div class="num">{{ i + 1 }}</div>
+                                        {{ popVo.title }}
+                                    </a>
+                                </dd>
+                            </dl>
+                        </li>
+                    </ul>
+                </div>
+
                 <!-- <div class="hot">
                     <img src="../assets/images/hot.png">
                 </div> -->
@@ -156,6 +171,51 @@ onBeforeUnmount(() => {
     stopCarousel();
 });
 </script> -->
+
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+
+// 상태 관리
+const viewcount = ref(0);
+const popList = ref([
+  // 예시 데이터, 실제 데이터로 교체하세요
+  { bNo: 1, title: 'Title 1' },
+  { bNo: 2, title: 'Title 2' },
+  { bNo: 3, title: 'Title 3' },
+  { bNo: 4, title: 'Title 4' },
+  { bNo: 5, title: 'Title 5' },
+]);
+let rtcarousel = null;
+
+// 보기 전환
+function view(arg) {
+  viewcount.value = arg;
+}
+
+console.log(view);
+
+// Carousel 시작
+function startCarousel() {
+  rtcarousel = setInterval(() => {
+    viewcount.value = (viewcount.value + 1) % popList.value.length;
+  }, 2000); // 2000 밀리초로 전환 속도 조절
+}
+
+// Carousel 정지
+function stopCarousel() {
+  clearInterval(rtcarousel);
+}
+
+// 마운트 후 이벤트 설정
+onMounted(() => {
+  startCarousel();
+});
+
+// 컴포넌트가 파괴되기 전 정리
+onBeforeUnmount(() => {
+  stopCarousel();
+});
+</script>
 
 <script>
 import "@/assets/css/headerFooter/aheader.css"
