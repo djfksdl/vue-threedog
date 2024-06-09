@@ -127,59 +127,71 @@ export default {
             console.log("----------images-----------");
             console.log(this.images);
 
+            if (this.reviewVo.star == 0) {
+                alert("별점을 선택하세요.");
+                return;
+            } else if (this.reviewVo.rContent.trim() == "") {
+                alert("후기내용을 써주세요.");
+
+            } else if (this.images.length == 0) {
+                alert("사진을 최소 1장 이상 업로드해주세요");
+            }
+            else {
+
+                let formData = new FormData();
+                formData.append('star', this.reviewVo.star - 1);
+                formData.append('rContent', this.reviewVo.rContent);
+                formData.append('rNo', this.reviewVo.rNo);
+                formData.append('bNo', this.reviewVo.bNo);
+                formData.append('uNo', this.reviewVo.uNo);
+                formData.append('rDate', this.reviewVo.rDate);
+                formData.append('userPoint', this.userPoint);
+                formData.append('rsNo', this.reviewVo.rsNo);
 
 
+                if (this.images.length > 0) {
+                    for (let i = 0; i < this.images.length; i++) {
+                        formData.append('file', this.images[i]);
+                    }
+                    this.reviewVo.imgCount = this.images.length;
+                    formData.append('imgCount', this.reviewVo.imgCount);
 
-            let formData = new FormData();
-            formData.append('star', this.reviewVo.star - 1);
-            formData.append('rContent', this.reviewVo.rContent);
-            formData.append('rNo', this.reviewVo.rNo);
-            formData.append('bNo', this.reviewVo.bNo);
-            formData.append('uNo', this.reviewVo.uNo);
-            formData.append('rDate', this.reviewVo.rDate);
-            formData.append('userPoint', this.userPoint);
-            formData.append('rsNo', this.reviewVo.rsNo);
-
-
-            if (this.images.length > 0) {
-                for (let i = 0; i < this.images.length; i++) {
-                    formData.append('file', this.images[i]);
                 }
-                this.reviewVo.imgCount = this.images.length;
-                formData.append('imgCount', this.reviewVo.imgCount);
-                
+
+
+
+                // for (let i = 0; i < this.images.length; i++) {
+                //     formData.append('file', this.images[i]);
+                // }
+
+                // this.reviewVo.imgCount = this.images.length;
+                // console.log(this.reviewVo.imgCount);
+                // formData.append('imgCount', this.reviewVo.imgCount);
+
+                axios({
+                    method: 'post', // put, post, delete 
+                    url: `${this.$store.state.apiBaseUrl}/api/mypage/reviewinsert`,
+                    headers: { "Content-Type": "multipart/form-data" },
+                    data: formData, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+                    responseType: 'json' //수신타입
+
+                }).then(response => {
+                    console.log(response.data);
+
+                    if (response.data.result == "success") {
+                        this.$router.push(`/mypage/${this.reviewVo.uNo}`);
+
+                    } else {
+                        alert("알수없는 오류");
+                    }
+
+                }).catch(error => {
+                    console.log(error);
+                });
             }
 
 
 
-            // for (let i = 0; i < this.images.length; i++) {
-            //     formData.append('file', this.images[i]);
-            // }
-
-            // this.reviewVo.imgCount = this.images.length;
-            // console.log(this.reviewVo.imgCount);
-            // formData.append('imgCount', this.reviewVo.imgCount);
-
-            axios({
-                method: 'post', // put, post, delete 
-                url: `${this.$store.state.apiBaseUrl}/api/mypage/reviewinsert`,
-                headers: { "Content-Type": "multipart/form-data" },
-                data: formData, //put, post, delete 방식 자동으로 JSON으로 변환 전달
-                responseType: 'json' //수신타입
-
-            }).then(response => {
-                console.log(response.data);
-
-                if (response.data.result == "success") {
-                    this.$router.push(`/mypage/${this.reviewVo.uNo}`);
-
-                } else {
-                    alert("알수없는 오류");
-                }
-
-            }).catch(error => {
-                console.log(error);
-            });
         }
     },
     mounted() {

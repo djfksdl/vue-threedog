@@ -302,7 +302,7 @@ datalist {
 
 #reviewAddForm .reviewWrite textarea::placeholder {
     color: #a7a4a4;
-    
+
 }
 
 #reviewAddForm .reviewWrite .add_area {
@@ -386,38 +386,39 @@ datalist {
 #reservationForm {
     width: 1400px;
 }
-#reservationForm .container div>h1{
+
+#reservationForm .container div>h1 {
     width: 1200px;
     margin: 0 auto;
     padding-bottom: 20px;
 }
 
-#reservationForm .buttonCon{
+#reservationForm .buttonCon {
     width: 1200px;
     margin: 0 auto;
 
 }
 
-#reservationForm .buttonCon span{
+#reservationForm .buttonCon span {
     margin-right: 20px;
     color: #236C3F;
     font-size: 18px;
     font-weight: bold;
 }
 
-#reservationForm .buttonCon button
-{
+#reservationForm .buttonCon button {
     /* width: 50px; */
     /* border-radius: 50%; */
     /* height: 50px; */
-    background-color:white;
-    border: 1px solid  #236C3F;
+    background-color: white;
+    border: 1px solid #236C3F;
     color: #236C3F;
     font-size: 18px;
     margin-right: 20px;
-    cursor: pointer;
-    padding: 5px;
-    }
+    /* cursor: pointer; */
+    padding: 10px 5px 10px 30px;
+    pointer-events: none;
+}
 
 
 #reservationForm .managerInfor {
@@ -425,7 +426,7 @@ datalist {
     /* border: 1px solid #a7a4a4; */
     /* border-radius: 10px; */
     /* box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1); */
-    
+
 }
 
 
@@ -445,7 +446,7 @@ datalist {
 }
 
 
-#reservationForm form{
+#reservationForm form {
     width: 1400px;
     margin: 0 0 30px 20px;
     /* box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1); */
@@ -459,7 +460,7 @@ datalist {
 
 
 #reservationForm .reservationBox {
-    width: 1000px;
+    /* width: 1000px; */
     /* background-color: pink; */
     /* margin: 0 auto; */
     /* padding-left: 200px; */
@@ -470,6 +471,13 @@ datalist {
 #reservationForm .reservationBox .petChoice {
     padding: 30px 0 30px 0;
     font-size: 20px;
+    width: 360px;
+    height: 600px;
+}
+
+#reservationForm .reservationBox .petChoice h2 {
+    font-size: 24px;
+    margin-bottom: 40px;
 }
 
 #reservationForm .reservationBox .petChoice input {
@@ -479,15 +487,12 @@ datalist {
 
 
 
-#reservationForm .reservationBox .petKg {
-    display: flex;
-    padding: 30px 0 30px 0;
-}
 
 
 
 #reservationForm .reservationBox .character {
     padding: 30px 0 30px 0;
+    margin-left: 100px;
 }
 
 #reservationForm .reservationBox .character label {
@@ -578,19 +583,25 @@ datalist {
 
 
 #reservationForm .reservationBox .point {
-    padding: 30px 0 30px 0;
+    margin-left: 150px;
+    /* background-color: red; */
+    width: 825px;
 }
 
 #reservationForm .reservationBox .point label {
-    padding-right: 170px;
+    font-weight: bold;
+    font-size: 17px;
+    padding-right: 60px;
 }
 
 #reservationForm .reservationBox .point input {
     width: 300px;
+    height: 40px;
     padding: 10px;
     border: 1px solid #a7a4a4;
     border-radius: 10px;
     text-align: right;
+    
 }
 
 #reservationForm .reservationBox .point button {
@@ -602,7 +613,7 @@ datalist {
 }
 
 #reservationForm .reservationBox .point p {
-    width: 620px;
+    width: 500px;
     font-size: 16px;
     color: #a7a4a4;
     text-align: end;
@@ -611,6 +622,8 @@ datalist {
 
 #reservationForm .reservationBox .cal {
     margin-bottom: 50px;
+    margin-left: 100px;
+    
 }
 
 #reservationForm .reservationBox .cal p {
@@ -625,11 +638,17 @@ datalist {
 #reservationForm .reservationBox .cal button {
     width: 300px;
     padding: 10px;
-    border: 1px solid #a7a4a4;
+    border: 1px solid #236C3F;
+    background-color: white;
     border-radius: 10px;
-    margin-left: 5px;
+    margin-left: 20px;
     cursor: pointer;
+    font-size: 17px;
 
+}
+#reservationForm .reservationBox .cal button:hover{
+    background-color: #236C3F;
+    color: white;
 }
 
 
@@ -639,14 +658,34 @@ datalist {
 #reservationForm .price {
     width: 650px;
     height: 750px;
+    margin: 50px 0 0 120px;
+}
+
+#reservationForm .price p {
+    font-weight: bold;
+    font-size: 18px;
 }
 
 #reservationForm .expectPrice {
     width: 610px;
     text-align: center;
-    font-size: 18px;
-    /* border: 1px solid black; */
+    font-size: 24px;
+    display: flex;
+    width: 500px;
+    text-align: center;
+    /* background-color: red; */
+    margin-left: 260px;
 }
+
+#reservationForm .expectPrice div:first-child {
+    /* color: #a7a4a4; */
+    /* font-weight: bold; */
+    text-align: right;
+    padding-right: 150px;
+
+}
+
+
 
 #reservationForm .price span {
     padding-right: 120px;
@@ -664,14 +703,15 @@ datalist {
     height: 300px;
     /* padding: 20px; */
     margin-top: 30px;
-    border: 1px solid #a7a4a4;
+    margin-bottom: 30px;
+    /* border: 1px solid #e2e2e2; */
 }
 
 #reservationForm .price table {
     border: none;
     text-align: center;
-    border-spacing: 0px;
-    font-size: 16px;
+    /* border-spacing: 0px; */
+    /* font-size: 16px; */
 }
 
 #reservationForm .price table td:hover {
@@ -685,6 +725,7 @@ datalist {
     width: 102px;
     height: 50px;
     font-size: 16px;
+    background-color: #e2e2e2;
 }
 
 
@@ -695,12 +736,13 @@ datalist {
 
 #reservationForm .price table td,
 #reservationForm .price table th {
-    border: 1px solid black;
+    border: 1px solid #d8d2d2;
+    border-radius: 10px;
 
 }
 
 #reservationForm .reservationBox .notice #notice {
-    width: 620px;
+    width: 875px;
     height: 300px;
     overflow: scroll;
     border: 1px solid #a7a4a4;
@@ -709,6 +751,24 @@ datalist {
     margin: 10px 0 20px 0;
 }
 
+#reservationForm .reservationBox .notice #notice p {
+    padding: 5px;
+}
+
+#reservationForm .reservationBox .agreeCheckboxCon {
+    font-size: 18px;
+}
+
+#reservationForm .reservationBox .agreeCheckboxCon input {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+#reservationForm .signBox {
+    margin-top: 50px;
+}
 
 #reservationForm .signBox .sign {
     margin-top: 10px;
@@ -716,26 +776,118 @@ datalist {
 
 #reservationForm .subBtn {
     text-align: center;
-    margin: 180px 0 100px 0;
+    margin-top: -50px;
+    margin-left: 200px;
 }
 
 
 
 #reservationForm .subBtn button {
+    width: 200px;
     padding: 10px;
     background-color: #236C3F;
     color: white;
-    border-radius: 10px;
-    border: none;
-    width: 300px;
-    font-size: 20px;
+    font-size: 18px;
     cursor: pointer;
+    border-radius: 5px;
+    border: none;
 
 
 }
 
+#reservationForm .setstepBtnCon1 {
+    /* text-align: end; */
+    float: right;
+    margin-top: -120px;
+}
 
 
+
+#reservationForm .setstepBtnCon1 button {
+    width: 200px;
+    padding: 10px;
+    background-color: #236C3F;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+
+}
+
+#reservationForm .setstepBtnCon2 {
+    margin-top: 30px;
+}
+
+#reservationForm .setstepBtnCon2 .setstepBtn1 {
+    margin-right: 670px;
+    /* margin-right: 500px; */
+    background-color: white;
+    color: #236C3F;
+    border: 1px solid #236C3F;
+}
+
+
+
+
+#reservationForm .setstepBtnCon2 button {
+    width: 200px;
+    padding: 10px;
+    background-color: #236C3F;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+
+}
+
+#reservationForm .setstepBtnCon3 {
+    margin-top: 100px;
+}
+
+#reservationForm .setstepBtnCon3 button {
+    width: 200px;
+    padding: 10px;
+    background-color: #236C3F;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+
+}
+
+#reservationForm .setstepBtnCon3 .setstepBtn1 {
+    margin-right: 500px;
+    background-color: white;
+    color: #236C3F;
+    border: 1px solid #236C3F;
+}
+
+
+#reservationForm .setstepBtnCon4 {
+    margin-top: 100px;
+}
+
+#reservationForm .setstepBtnCon4 button {
+    width: 200px;
+    padding: 10px;
+    background-color: #236C3F;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+
+}
+
+#reservationForm .setstepBtnCon4 .setstepBtn1 {
+    margin-right: 500px;
+    background-color: white;
+    color: #236C3F;
+    border: 1px solid #236C3F;
+}
 
 
 
