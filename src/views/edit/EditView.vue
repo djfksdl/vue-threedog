@@ -466,11 +466,11 @@ export default {
         // 가게 정보 불러오기
         getShopInfo(){
             // console.log(this.bNo);
-            console.log("getShopInfo? ")
-            console.log(this.$store.state.auth.bNo);
-            console.log(this.$store.state.auth);
-            console.log(this.bNo);
-            console.log(this.$route.params.bNo);
+            // console.log("getShopInfo? ")
+            // console.log(this.$store.state.auth.bNo);
+            // console.log(this.$store.state.auth);
+            // console.log(this.bNo);
+            // console.log(this.$route.params.bNo);
             axios({
                 method: 'get', // put, post, delete 
                 url: `${this.$store.state.apiBaseUrl}/api/su/shopInfo`,
