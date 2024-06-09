@@ -142,7 +142,8 @@ const routes = [
     name: 'petupdateform',
     component: PetUpdateForm,
     props: true
-  }, {
+  },
+  {
     path: '/myreview/:uNo',
     name: 'myreview',
     component: MyReview,

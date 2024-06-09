@@ -157,6 +157,7 @@ import SideBar from "@/components/SideBar.vue";
 import "@/assets/css/mypage/mypage.css"
 
 import axios from 'axios';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: "PetUpdateForm",
@@ -192,10 +193,17 @@ export default {
                 dogImg:"",
             },
             now: new Date().toISOString().substr(0, 10),    // 오늘날짜
+            previewImage: "",
 
         };
     },
+
+    computed: {
+        ...mapState(['apiBaseUrl'])
+    },
     methods: {
+
+        ...mapActions(['updateDogImg']),
 
         handleFileUpload(event) {
             const file = event.target.files[0];
