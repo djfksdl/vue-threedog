@@ -26,7 +26,8 @@
                 <form v-on:submit.prevent="petUpdate" enctype="multipart/form-data">
                     <div class="petAddFormUnder">
                         <div class="filebox preview-image">
-                            <img id="preview-image"  v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${dogVo.dogImg}`">
+                            <img id="preview-image"
+                                v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${dogVo.dogImg}`">
                             <label for="input-file">업로드</label>
                             <input type="file" id="input-file" class="upload-hidden" @change="handleFileUpload">
                         </div>
@@ -190,7 +191,7 @@ export default {
                 mounting: false,
                 bite: 0,
                 uNo: this.$store.state.authUser.uNo,  //유저번호
-                dogImg:"",
+                dogImg: "",
             },
             now: new Date().toISOString().substr(0, 10),    // 오늘날짜
             previewImage: "",
@@ -224,8 +225,11 @@ export default {
 
             reader.readAsDataURL(file);
 
-            // FormData에 파일 추가
-            this.dogVo.file = file;
+            // 선택한 이미지가 있는 경우에만 업데이트
+            if (file) {
+                // FormData에 파일 추가
+                this.dogVo.file = file;
+            }
 
             console.log(this.dogVo.file);
         },
@@ -291,28 +295,46 @@ export default {
                 formData.append(key, this.dogVo[key]);
             }
 
+            // 선택한 이미지가 있는 경우에만 업데이트
+            if (this.dogVo.file) {
+                axios({
+                    method: 'put',
+                    url: `${this.$store.state.apiBaseUrl}/api/mypage/petupdate`,
+                    headers: { "Content-Type": "multipart/form-data" },
+                    data: formData,
+                    responseType: 'json'
+                }).then(response => {
+                    console.log(response.data);
 
-            axios({
-                method: 'put', // put, post, delete 
-                url: `${this.$store.state.apiBaseUrl}/api/mypage/petupdate`,
-                headers: { "Content-Type": "multipart/form-data" },
-                data: formData, //put, post, delete 방식 자동으로 JSON으로 변환 전달
-                responseType: 'json' //수신타입
+                    if (response.data.result == "success") {
+                        this.$router.push(`/mypage/${this.uNo}`);
+                    } else {
+                        alert("알수없는 오류");
+                    }
+                }).catch(error => {
+                    console.log(error);
+                });
+            } else {
+                // 선택한 이미지가 없는 경우에는 이미지를 업데이트하지 않음
+                // 이미지를 제외한 나머지 정보만 업데이트
+                axios({
+                    method: 'put',
+                    url: `${this.$store.state.apiBaseUrl}/api/mypage/petupdateWithoutImage`,
+                    headers: { "Content-Type": "application/json; charset=utf-8" },
+                    data: this.dogVo,
+                    responseType: 'json'
+                }).then(response => {
+                    console.log(response.data);
 
-            }).then(response => {
-                console.log(response.data);
-
-                if (response.data.result == "success") {
-                    this.$router.push(`/mypage/${this.uNo}`);
-
-                } else {
-                    alert("알수없는 오류");
-                }
-
-            }).catch(error => {
-                console.log(error);
-            });
-
+                    if (response.data.result == "success") {
+                        this.$router.push(`/mypage/${this.uNo}`);
+                    } else {
+                        alert("알수없는 오류");
+                    }
+                }).catch(error => {
+                    console.log(error);
+                });
+            }
         }
 
 
