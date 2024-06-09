@@ -16,13 +16,18 @@
     padding: 20px;
     border: 5px solid #153448;
     /* border: 5px solid hsl(37, 91%, 67%); */
-    /* 연한 노란색으로 변경 */
     border-radius: 20px;
     /* 더 둥근 모양으로 변경 */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     /* 약간의 그림자 추가 */
     background-color: #fff;
     /* 배경색을 흰색으로 변경 */
+}
+
+.schedule-title {
+    font-size: 30px;
+    margin-left: 150px; 
+    margin-top: 20px;
 }
 
 /* FullCalendar의 요일 헤더 스타일링 */
@@ -74,8 +79,8 @@
 
 /* FullCalendar의 버튼 스타일링 */
 .fc-button {
-    background-color: #ffd700;
-   
+    background-color: #81a9c4;
+
     /* 버튼 배경색을 노란색으로 변경 */
     color: #333;
     /* 버튼 텍스트 색상을 어두운 회색으로 변경 */
@@ -93,8 +98,8 @@
 
 /* FullCalendar의 오늘 버튼 스타일링 */
 .fc-today-button {
-    background-color: #ffd700;
-   
+    background-color: #81a9c4;
+
     /* 오늘 버튼 배경색을 노란색으로 변경 */
     color: #333;
     /* 텍스트 색상을 어두운 회색으로 변경 */
@@ -111,8 +116,10 @@
 }
 
 .schedule-modal-content h2 {
-    text-align: center; /* 텍스트를 가운데 정렬합니다. */
-    margin-bottom: 20px; /* 텍스트와 하단 간격을 추가합니다. */
+    text-align: center;
+    /* 텍스트를 가운데 정렬합니다. */
+    margin-bottom: 20px;
+    /* 텍스트와 하단 간격을 추가합니다. */
 }
 
 /* 모달 스타일 */
@@ -138,8 +145,10 @@
     max-height: 80%;
     overflow: auto;
     position: relative;
-    text-align: center; /* 텍스트를 가운데 정렬합니다. */
-    margin-bottom: 20px; /* 텍스트와 하단 간격을 추가합니다. */
+    text-align: center;
+    /* 텍스트를 가운데 정렬합니다. */
+    margin-bottom: 20px;
+    /* 텍스트와 하단 간격을 추가합니다. */
 }
 
 .schedule-edit,
@@ -147,18 +156,20 @@
 .schedule-close {
     cursor: pointer;
     font-size: 20px;
-    color: #dda41d;
-    transition: color 0.3s ease; /* 색상 전환 효과 추가 */
+    color: #153448;
+    transition: color 0.3s ease;
+    /* 색상 전환 효과 추가 */
     display: inline-block;
     margin-top: 10px;
     font-weight: bold;
-   
+
 }
 
 .schedule-edit:hover,
 .schedule-delete:hover,
 .schedule-close:hover {
-    color: #d54949; /* 호버 시 색상 변경 */
+    color: #d54949;
+    /* 호버 시 색상 변경 */
 }
 
 .schedule-edit {

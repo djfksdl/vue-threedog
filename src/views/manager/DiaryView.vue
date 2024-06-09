@@ -1,33 +1,42 @@
 <template>
     <div id="wrap">
         <ManagerHeader />
+        <h2 class="main-title">알림장</h2>
         <div id="portal-main-container" class="clearfix">
+
             <div class="diary-container">
                 <!-- 왼쪽 박스: 미용 정보 표시 -->
                 <div class="diary-left-box">
                     <h2>미용 정보</h2>
                     <br>
                     <div class="diary-info-leftitem" v-if="selectedSchedule">
-                        <label class="diary-label" for="date">이용일: {{ formatDate(selectedSchedule.start) }}</label>
+                        <label class="diary-label" for="date">◆ 이용일 = </label>
+                        <p>{{ formatDate(selectedSchedule.start) }}</p>
                     </div>
                     <div class="diary-info-leftitem" v-if="selectedSchedule">
-                        <label class="diary-label" for="time">미용 시간: {{ formatTime(selectedSchedule.start) }}</label>
+                        <label class="diary-label" for="time">◆ 미용 시간 = </label>
+                        <p>{{ formatTime(selectedSchedule.start) }}</p>
                     </div>
                     <div class="diary-info-leftitem" v-if="selectedSchedule">
-                        <label class="diary-label">애견명: {{ selectedSchedule.extendedProps.petName }}</label>
+                        <label class="diary-label">◆ 애견명 = </label>
+                        <p>{{ selectedSchedule.extendedProps.petName }}</p>
                     </div>
                     <div class="diary-info-leftitem" v-if="selectedSchedule">
-                        <label class="diary-label">품종: {{ selectedSchedule.extendedProps.breed }}</label>
+                        <label class="diary-label">◆ 품종 = </label>
+                        <p>{{ selectedSchedule.extendedProps.breed }}</p>
                     </div>
                     <div class="diary-info-leftitem" v-if="selectedSchedule">
-                        <label class="diary-label">미용컷: {{ selectedSchedule.extendedProps.groomingStyle }}</label>
+                        <label class="diary-label">◆ 미용컷 = </label>
+                        <p>{{ selectedSchedule.extendedProps.groomingStyle }}</p>
                     </div>
                     <div class="diary-info-leftitem" v-if="selectedSchedule">
-                        <label class="diary-label">금액: {{ selectedSchedule.extendedProps.price }}</label>
+                        <label class="diary-label">◆ 금액 = </label>
+                        <p>{{ selectedSchedule.extendedProps.price }}</p>
                     </div>
 
+
                     <div class="diary-info-leftitem2" v-if="selectedSchedule">
-                        <label class="diary-label">추가요금:</label>
+                        <label class="diary-label">◆ 추가요금</label>
                         <table style="width: 100%;">
                             <tbody>
                                 <tr v-for="(priceItem, index) in priceList2" :key="index">
@@ -41,7 +50,7 @@
                     </div>
 
                     <div class="diary-info-leftitem" v-if="selectedSchedule">
-                        <label class="diary-label2">총 금액: {{ totalAmount }}</label>
+                        <label class="diary-label">◆ 총 금액 = {{ totalAmount }}</label>
                     </div>
 
 

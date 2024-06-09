@@ -1,8 +1,10 @@
 <template>
     <div>
         <ManagerHeader /> <!-- 매니저 헤더 컴포넌트 -->
+        <h2 class="schedule-title">예약 스케줄</h2>
 
         <div class="calendar-container">
+            <!-- <h2 class="schedule-title">예약 스케줄</h2><br> -->
             <FullCalendar ref="calendar" :options="calendarOptions" id="calendar" />
         </div>
 
