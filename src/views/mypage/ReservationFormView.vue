@@ -2,8 +2,8 @@
     <div id="wrap">
         <AppHeader />
         <div id="reservationForm">
-            <!-- <SideBar /> -->
-            <div class="container" style="display: flex;">
+            <SideBar />
+            <div class="container">
                 <div></div>
 
 
@@ -14,9 +14,9 @@
 
 
                     <div class="managerInfor">
-                        <div class="managerInfor2">
+                        <div class="managerInfor2" style="display: flex">
                             <div>
-                                <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${businessVo.logo}`"
+                                <img  v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${businessVo.logo}`"
                                     style="margin: 20px 0 0 30px; width: 220px;height: 220px; border-radius: 5%; border: 1px solid #a7a4a4;">
                             </div>
 
@@ -56,23 +56,23 @@
                     <div class="buttonCon">
                         <button
                             :style="{ backgroundColor: currentStep >= 1 ? '#236c3f' : '', color: currentStep === 1 ? 'white' : '' }"
-                            @click="setStep(1)"> <span :style="{ color: currentStep >= 1 ? 'white' : '' }">날짜 및
+                            @click="setStep(1)"> <span :style="{ color: currentStep >= 1 ? 'white' : '' }">1. 날짜 및
                                 시간선택</span></button>
                         <span>></span>
                         <button
                             :style="{ backgroundColor: currentStep >= 2 ? '#236c3f' : '', color: currentStep === 2 ? 'white' : '' }"
-                            @click="setStep(2)"> <span :style="{ color: currentStep >= 2 ? 'white' : '' }">반려견 정보</span>
+                            @click="setStep(2)"> <span :style="{ color: currentStep >= 2 ? 'white' : '' }">2. 반려견 정보</span>
                         </button>
                         <span>></span>
                         <button
                             :style="{ backgroundColor: currentStep >= 3 ? '#236c3f' : '', color: currentStep === 3 ? 'white' : '' }"
-                            @click="setStep(3)"> <span :style="{ color: currentStep >= 3 ? 'white' : '' }">미용 선택</span>
+                            @click="setStep(3)"> <span :style="{ color: currentStep >= 3 ? 'white' : '' }">3. 미용선택 및 예상금액</span>
                         </button>
                         <span>></span>
                         <button
                             :style="{ backgroundColor: currentStep >= 4 ? '#236c3f' : '', color: currentStep === 4 ? 'white' : '' }"
-                            @click="setStep(4)"> <span :style="{ color: currentStep >= 4 ? 'white' : '' }">주의사항 및
-                                동의사항</span> </button>
+                            @click="setStep(4)"> <span :style="{ color: currentStep >= 4 ? 'white' : '' }">4. 주의사항 및
+                                동의서</span> </button>
 
                     </div>
 
@@ -451,7 +451,7 @@ import axios from "axios"
 import { mapActions } from 'vuex';
 import '@/assets/css/mypage/mypage.css'
 import Datepicker from '@/components/DatePicker.vue'
-// import SideBar from '@/components/SideBar.vue'
+import SideBar from '@/components/SideBar.vue'
 import TopButton from "@/components/TopButton.vue"
 
 
@@ -465,7 +465,7 @@ export default {
         AppHeader,
         AppFooter,
         Datepicker,
-        // SideBar,
+        SideBar,
         TopButton,
 
     },

@@ -23,6 +23,7 @@ import InsertTime from '@/views/manager/InsertTime.vue'
 import ReservationSuccessView from '@/views/mypage/ReservationSuccessView.vue'
 import PetUpdateForm from '@/views/mypage/PetUpdateForm'
 import MyReview from '@/views/mypage/MyReview.vue'
+import PointView from '@/views/mypage/PointView.vue'
 
 
 const routes = [
@@ -142,10 +143,16 @@ const routes = [
     name: 'petupdateform',
     component: PetUpdateForm,
     props: true
-  }, {
+  },
+  {
     path: '/myreview/:uNo',
     name: 'myreview',
     component: MyReview,
+  },
+  {
+    path: '/point',
+    name: 'pointview',
+    component: PointView,
   }
 ]
 

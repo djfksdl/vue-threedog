@@ -5,6 +5,8 @@
                 <router-link to="/">
                     <img class="con-logo" src="../../assets/images/logo.png" alt="Logo">
                 </router-link>
+
+                <!-- 로그인 폼 -->
                 <div class="login-form">
                     <form @submit.prevent="login">
                         <div class="form-group-login">
@@ -21,31 +23,38 @@
                             <button class="signinBtn">회원가입</button>
                         </router-link>
 
-                        <p class="signup-link">직원 간편 로그인은 <a href="/mlogin" class="manager-signup">여기</a>를 클릭!</p>
-                        
+                        <p class="signup-link">기업 로그인은 
+                            <a href="/mlogin" class="manager-signup">여기</a>를 클릭!
+                        </p>
+                    </form>
+
+                    <!-- 간편 로그인 또는 기업 로그인 -->
+                     <div class="easy-login">
+
+                        <div class="orBorder">
+                            <div class="leftOrBorder"></div>
+                            <p>카카오로 간편하게 시작하기</p>
+                            <div class="rightOrBorder"></div>
+                        </div>
+
+                        <!-- 카카오 로그인 -->
                         <div class="sns01">
                             <a id="" @click="kakaoLogin()">
                                 <img class="kakao" src="../../assets/images/kakao.png">
                             </a>
-                            <div id="naver_id_login">
+                            <div id="naver_id_login" style="display: none;">
                                 <a id="">
                                     <img class="naver" src="@/assets/images/naver.png">
                                 </a>
                             </div>
-
-
                         </div>
-                        <div class="sns02">
-                            <a id="">
-                                <img class="google" src="../../assets/images/google.png">
-                            </a>
-                            <a id="">
-                                <img class="facebook" src="../../assets/images/facebook.png">
-                            </a>
-                        </div>
-                    </form>
+
+                        
+                        
+                        
+                     </div>
                 </div>
-            </div><!-- login-box -->
+            </div><!-- /login-box -->
             <div class="login-image-container">
                 <img src="../../assets/images/banner02.png" alt="Image">
             </div>

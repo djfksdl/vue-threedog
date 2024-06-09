@@ -37,7 +37,8 @@ export default {
     components: {},
     data() {
         return {
-            bNo: this.$route.params.bNo,
+            // bNo: this.$route.params.bNo,
+            bNo: this.$route.params.bNo || this.$store.state.auth.bNo,
             shopInfo:{}
         };
     },
@@ -56,6 +57,8 @@ export default {
             }).then(response => {
 
                 this.shopInfo = response.data.apiData.shopInfo;
+
+                console.log(this.shopInfo);
              
 
             }).catch(error => {

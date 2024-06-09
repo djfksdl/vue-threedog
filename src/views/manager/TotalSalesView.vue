@@ -15,7 +15,7 @@
       <div v-if="selectedCategory === '전체' || selectedCategory === '일일'" class="chart-container small-chart">
         <div style="display: flex;">
           <div class="sales-table">
-            <table style="text-align: center; margin-top: 20px;">
+            <table style="text-align: center; margin-top: 5px;">
               <thead>
                 <tr>
                   <th style="width: 100px;">요일</th>
@@ -35,7 +35,7 @@
             </table>
           </div>
         </div>
-        <div class="total-sales">[이번 주 매출 현황]</div>
+        <div class="total-sales" style="margin-top: 5px;"><br>[이번 주 매출 현황]</div>
       </div>
 
       <!-- 주 매출통계 -->

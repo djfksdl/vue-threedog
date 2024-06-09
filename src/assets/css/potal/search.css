@@ -1,3 +1,55 @@
+.review-img-container {
+  position: relative;
+}
+
+.review-item-container {
+  position: relative;
+  display: inline-block;
+}
+
+.list_img {
+  width: 100%;
+  transition: filter 0.3s ease;
+}
+
+.hover-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: transparent; /* 배경 없애기 */
+  padding: 10px 20px;
+  border-radius: 5px;
+  display: none; /* 기본적으로 숨김 */
+  align-items: center;
+  justify-content: center;
+  z-index: 2; /* hover-overlay가 위에 오도록 설정 */
+}
+
+.hover-overlay button {
+  font-size: 16px; /* 글씨 크기 키우기 */
+  border: none; /* 버튼 테두리 제거 */
+  background-color: transparent; /* 배경 없애기 */
+  color: white; /* 텍스트 색상 설정 */
+  cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능한 상태 표시 */
+  transition: all 0.3s ease; /* 부드러운 전환 효과 */
+  font-weight: bold;
+}
+
+.hover-overlay button:hover {
+  color: black; /* 호버 상태일 때 텍스트 색상 변경 */
+}
+
+
+.search-item:hover .list_img {
+  filter: blur(5px);
+}
+
+.search-item:hover .hover-overlay {
+  display: flex; /* hover 상태일 때 표시 */
+}
+
+
 .no-results {
   text-align: center;
   margin-top: 50px;
@@ -19,7 +71,8 @@
 }
 
 .modal-container-search {
-  width: 900px;
+  width: 740px;
+  height: 750px;
   background: #fff;
   border-radius: 10px;
   padding: 20px;
@@ -68,7 +121,12 @@
 .modal-btn-search {
   margin-top: 20px;
   display: flex;
-  justify-content: center;
+  justify-content: right;
+}
+
+.modal-btn-search-close {
+  display: flex;
+  justify-content: flex-end; /* 오른쪽 정렬 */
 }
 
 .modal-btn-search button {
@@ -181,7 +239,7 @@
 }
 
 .city-list li {
-  margin-right: 10px;
+  margin-right: 15px;
   cursor: pointer;
   padding: 10px 25px;
   position: relative;
@@ -190,6 +248,7 @@
 .city-list li.selected {
   background-color: #9bd89d;
   border-radius: 20px;
+  width: 110px;
 }
 
 .city-list li span {
@@ -199,6 +258,8 @@
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
+  color: red;
+  bottom: -5px;
 }
 
 .location-box div {
@@ -211,6 +272,7 @@
   padding: 5px;
   background-color: #9bd89d;
   border: none;
+
 }
 
 .lcancel-btn {
@@ -218,6 +280,7 @@
   padding: 5px;
   background-color: #9bd89d;
   border: none;
+  color: red;
 }
 
 .selected-items {
@@ -238,6 +301,7 @@
 .selected-item span {
   margin-left: 5px;
   cursor: pointer;
+
 }
 
 .bottom {
@@ -255,12 +319,18 @@
 .search-item {
   margin-right: 20px;
   margin-bottom: 20px;
+  border-radius: 10px; /* 살짝 둥근 테두리 설정 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 그림자 설정 */
+  margin-bottom: 20px; /* 각 가게 리스트 아래 간격 설정 */
+  overflow: hidden; /* 테두리가 잘리지 않도록 설정 */
+  width: 260px;
 }
 
 .search-item .list_img {
-  width: 250px;
+  width: 240px;
   height: 250px;
-  margin-right: 10px;
+  margin: 10px 10px 0px 10px;
+  border-radius: 10px; /* 테두리를 살짝 둥글게 설정 */
   object-fit: cover;
 }
 
@@ -282,6 +352,7 @@
   border-collapse: collapse;
   padding-left: 20px;
   border: 1px solid #d6d6d6;
+  width: 1370px;
 }
 
 .search-table .search-location {
@@ -329,3 +400,19 @@
   color: #666;
   margin-right: 20px;
 }
+
+.modal-container-search {
+  position: relative;
+}
+
+.modal-container-search .close-x {
+  position: absolute;
+  top: 10px;
+  right: 13px;
+  cursor: pointer;
+  border: none;
+  background-color: white;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+

@@ -385,6 +385,7 @@ datalist {
 /* reservationForm */
 #reservationForm {
     width: 1400px;
+    margin: 0 auto;
 }
 
 #reservationForm .container div>h1 {

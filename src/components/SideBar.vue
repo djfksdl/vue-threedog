@@ -20,7 +20,8 @@
             <!-- 반려견 등록 윗부분 -->
             <div class="profileTitle">
                 <p style="width: 50px;">반려견</p>
-                <router-link to="/petaddform"><img src="@/assets/images/add_icon_143118.png" style="width: 24px;"></router-link>
+                <router-link to="/petaddform"><img src="@/assets/images/add_icon_143118.png"
+                        style="width: 24px;"></router-link>
             </div>
 
             <!-- 반려견 프로필 박스 -->
@@ -29,8 +30,14 @@
                 <div class="profilePet" v-if="dogVo">
 
                     <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${dogVo.dogImg}`">
-                    <p>{{ dogVo.dogName }} <router-link :to="`/petupdateform/${dogVo.dogNo}`"> 
-                        <label style="cursor: pointer;">✏️</label></router-link></p>
+                    <p>
+                        {{ dogVo.dogName }}
+                        <!-- dogNo를 동적 세그먼트로 추가 -->
+                        <router-link :to="`/petupdateform/${dogVo.dogNo}`">
+                            <label style="cursor: pointer;">✏️</label>
+                        </router-link>
+                    </p>
+
                 </div>
             </div>
         </div>
@@ -53,7 +60,7 @@ export default {
                 uNo: this.$store.state.authUser.uNo,
                 uId: "",
                 uPoint: 0,
-                uName:this.$store.state.authUser.uName
+                uName: this.$store.state.authUser.uName
             },
             dogVo: {
                 dogName: "",
@@ -80,6 +87,7 @@ export default {
     beforeUnmount() {
         window.removeEventListener('scroll', this.handleScroll); // 컴포넌트가 소멸되기 전에 리스너 제거
     },
+
     methods: {
         //스크롤 이벤트 핸들러
         handleScroll() {
@@ -97,15 +105,13 @@ export default {
             console.log(this.userVo.uNo);
 
             axios({
-                method: 'get', // put, post, delete                   
+                method: 'get',
                 url: `${this.$store.state.apiBaseUrl}/api/mypage/sidebar`,
-                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
-                params: { uNo: this.userVo.uNo }, //get방식 파라미터로 값이 전달
-                // data: guestbookVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
-
-                responseType: 'json' //수신타입
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                params: { uNo: this.$store.state.authUser.uNo },
+                responseType: 'json'
             }).then(response => {
-                console.log(response.data.apiData); //수신데이타
+                console.log(response.data.apiData);
                 this.userVo = response.data.apiData;
                 console.log(this.userVo);
 
@@ -114,6 +120,7 @@ export default {
             }).catch(error => {
                 console.log(error);
             });
+
 
         },
 
@@ -139,7 +146,8 @@ export default {
                 console.log(error);
             });
 
-        }
+        },
+
     },
     created() {
         this.getUserInfor();

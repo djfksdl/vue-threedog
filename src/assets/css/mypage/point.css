@@ -1,0 +1,127 @@
+/* 포인트 내역 페이지 */
+.pointContainer{
+    padding: 30px 0;
+}
+
+.pointContainer .container5{
+    width: 1100px;
+    margin: 0 0 0 550px;
+}
+
+/* 사용가능한 마일리지 */
+.pointContainer .container5 .useablePointContainer{
+    width: 100%;
+    margin: 30px 0 50px;
+    /* background-color: pink; */
+    
+}
+
+.pointContainer .container5 .useablePointContainer .upcTop{}
+.pointContainer .container5 .useablePointContainer .upcTop h2{
+    padding-bottom: 10px;
+}
+.pointContainer .container5 .useablePointContainer .upcTop > div{
+    border: 1px solid #237140;
+    border-radius: 10px;
+    width: 100%;
+    padding: 20px;
+   
+}
+.pointContainer .container5 .useablePointContainer .upcTop > div p{
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+}
+.pointContainer .container5 .useablePointContainer .upcTop > div p span{
+    color: #f27370;
+    font-weight: bold;
+    font-size: 30px;
+    padding-left: 10px;
+}
+
+/* 검색 구간 */
+.pointContainer .container5 .pointSearchContainer{
+    width: 100%;
+    margin-bottom: 30px;
+    display: flex;
+    border-radius: 10px;
+}
+/* 왼쪽 기간 */
+.pointContainer .container5 .pointSearchContainer .pscLeftContainer{
+    width: 90%;
+    padding: 30px;
+    background-color: #fafafa;
+    border-radius: 10px 0 0 10px;
+}
+/* 기간 선택 버튼 */
+.pointContainer .container5 .pointSearchContainer .pscLeftContainer .searchByTermBtns{
+    margin-bottom: 30px;
+}
+.pointContainer .container5 .pointSearchContainer .pscLeftContainer .searchByTermBtns button{
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    margin-right: 10px;
+    cursor: pointer;
+}
+/* 기간 입력창 */
+.pointContainer .container5 .pointSearchContainer .pscLeftContainer .searchByTermInputs{}
+.pointContainer .container5 .pointSearchContainer .pscLeftContainer .searchByTermInputs input{
+    padding: 5px ;
+}
+.pointContainer .container5 .pointSearchContainer .pscLeftContainer .searchByTermInputs input:first-child{
+    margin-right: 10px;
+}
+.pointContainer .container5 .pointSearchContainer .pscLeftContainer .searchByTermInputs input:last-child{
+    margin-left: 10px;
+}
+
+
+/* 오른쪽 조회버튼 */
+.pointContainer .container5 .pointSearchContainer .pscRightContainer{
+    width: 10%;
+    cursor: pointer;
+    border: none;
+    background-color: #237140;
+    color: #fff;
+    font-size: 20px;
+    border-radius: 0 10px 10px 0;
+}
+
+/* 검색 내용 */
+.pointContainer .container5 .pointContentsContainer {
+    width: 100%;
+    min-height: 500px;
+}
+
+.pointContainer .container5 .pointContentsContainer table{
+    border-collapse: collapse;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #ccc;
+}
+.pointContainer .container5 .pointContentsContainer table thead{
+    border-top: 2px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+.pointContainer .container5 .pointContentsContainer table thead th{
+    padding: 10px 0;
+    border: none;
+    background-color: #fafafa;
+}
+.pointContainer .container5 .pointContentsContainer table thead th:first-child{
+    width: 20%;
+}
+.pointContainer .container5 .pointContentsContainer table thead th:nth-child(2){}
+.pointContainer .container5 .pointContentsContainer table thead th:last-child{
+    width: 10%;
+}
+.pointContainer .container5 .pointContentsContainer table tbody{
+    border: none;
+}
+.pointContainer .container5 .pointContentsContainer table tbody td{
+    padding: 10px;
+    border-left: none;
+    border-right: none;
+}

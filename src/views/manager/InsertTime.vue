@@ -628,7 +628,18 @@ export default {
                 responseType: 'json'
             }).then(response => {
                 console.log(response.data.apiData);
-                this.$router.push(`/inserttime/${this.bNo}`);
+                Swal.fire({
+                    icon: 'info',
+                    html: '등록되었습니다.',
+                    confirmButtonText: '확인'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        //새로고침
+                        window.location.href = '/inserttime';
+                    }
+                });
+
+
             }).catch(error => {
                 console.log(error);
             });

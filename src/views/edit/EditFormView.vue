@@ -62,7 +62,7 @@
                                     <label>직책:</label>
                                     <input type="text" placeholder="ex)원장" v-model="shopInfo.job">
                                 </div>
-                                <!-- <h2>이서현 원장</h2> -->
+                               
                                 <div class="eCareerBox">
                                     <!-- <h3>경력</h3> -->
                                     <label>경력:</label>
