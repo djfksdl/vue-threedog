@@ -17,8 +17,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
+  background-color: transparent; /* 배경 없애기 */
   padding: 10px 20px;
   border-radius: 5px;
   display: none; /* 기본적으로 숨김 */
@@ -26,6 +25,21 @@
   justify-content: center;
   z-index: 2; /* hover-overlay가 위에 오도록 설정 */
 }
+
+.hover-overlay button {
+  font-size: 16px; /* 글씨 크기 키우기 */
+  border: none; /* 버튼 테두리 제거 */
+  background-color: transparent; /* 배경 없애기 */
+  color: white; /* 텍스트 색상 설정 */
+  cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능한 상태 표시 */
+  transition: all 0.3s ease; /* 부드러운 전환 효과 */
+  font-weight: bold;
+}
+
+.hover-overlay button:hover {
+  color: black; /* 호버 상태일 때 텍스트 색상 변경 */
+}
+
 
 .search-item:hover .list_img {
   filter: blur(5px);
