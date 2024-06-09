@@ -70,7 +70,7 @@
                 <!-- 가격 + 후기 -->
                 <div  v-if="priceList.length > 0" class="ePriceReviewContainer">
                     <!-- 가격 -->
-                    <div class="ePriceBox">
+                    <div :class="{'ePriceBox': true, 'eRight': shopInfo.isChange}">
                         <h1>가격</h1>
                         <table border="1">
                             <!-- 소형견 -->
@@ -250,7 +250,7 @@
                         </table>
                     </div>
                     <!-- 후기 -->
-                    <div class="eReviewBox">
+                    <div :class="{'eReviewBox': true, 'eRight': !shopInfo.isChange}">
                         <div class="eReviewBoxTitle">
                             <h1>후기</h1>
                             <router-link to="" >더보기 +</router-link>
@@ -395,7 +395,8 @@ export default {
                 introduce:"",
                 dProfile:"",
                 job:"",
-                bTime:""
+                bTime:"",
+                isChange:""
             },
             priceList:[],
             slideList:[],

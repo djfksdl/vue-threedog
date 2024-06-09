@@ -232,8 +232,10 @@
 /*============= 가격 + 후기 =============*/
 .container3 .eMidContainer .ePriceReviewContainer{
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     margin: 0 auto 70px;
+    position: relative;
 }
 /* 가격 */
 .container3 .eMidContainer .ePriceReviewContainer .ePriceBox{
@@ -284,6 +286,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
 }
 .container3 .eMidContainer .ePriceReviewContainer .eChangeBtn img{
     width: 40px;
@@ -307,7 +314,11 @@
 /* 후기 */
 .container3 .eMidContainer .ePriceReviewContainer .eReviewBox{
     /* background-color: navy; */
-    width: 650px;
+    width: 700px;
+    transition: order 0.5s;
+}
+.container3 .eMidContainer .ePriceReviewContainer .eRight {
+    order: 2;
 }
 .container3 .eMidContainer .ePriceReviewContainer .eReviewBox .eReviewBoxTitle{
     display: flex;
@@ -327,7 +338,7 @@
 }
 /* 후기 슬라이드 */
 .container3 .eMidContainer .ePriceReviewContainer .eReviewBox .eReviewSlide{
-    width: 650px;
+    width: 700px;
     /* background-color: darkorchid; */
 }
 
@@ -344,7 +355,7 @@
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 20px;
-    width: 650px;
+    width: 700px;
     height: 928px;
     color: #666;
     display: flex;

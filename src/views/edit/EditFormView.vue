@@ -81,7 +81,7 @@
                     <div class="ePriceReviewContainer">
                         <!-- 가격 -->
                         <!-- <div class="ePriceBox" v-if="priceList.length >= 65"> -->
-                        <div class="ePriceBox" v-if="priceList.length >= 65">
+                        <div :class="{'ePriceBox': true, 'eRight': shopInfo.isChange}" v-if="priceList.length >= 65">
                             <h1>가격</h1>
                             <table border="1">
                                 <!-- 소형견 -->
@@ -234,10 +234,14 @@
                                 </tr>
                             </table>
                         </div>
+
                         <!-- 가격<->후기 버튼 -->
-                        <div class="eChangeBtn" ><img src="@/assets/images/change.png"></div>
+                        <div class="eChangeBtn" @click="togglePosition" >
+                            <img src="@/assets/images/change.png">
+                        </div>
+
                         <!-- 후기 -->
-                        <div class="eReviewBox">
+                        <div :class="{'eReviewBox': true, 'eRight': !shopInfo.isChange}">
                             <div class="eReviewBoxTitle">
                                 <h1>후기</h1>
                                 <!-- <router-link to="" >더보기 +</router-link> -->
@@ -380,7 +384,8 @@
                     slideImgs:[],//슬라이드이미지들 파일담을것
                     cutImgs:[],//컷이미지들 파일담을것
                     hiNo:"",
-                    bTime:""
+                    bTime:"",
+                    isChange: false, //위치 교환
                 },
                 priceList: this.initializePriceList(),
                 slideList:[],//슬라이드이미지들 saveName List + hiNo
@@ -397,6 +402,10 @@
             }
         },
         methods: {
+            // 위치 변경
+            togglePosition() {
+                this.shopInfo.isChange = !this.shopInfo.isChange;
+            },
             // 가게 정보에서 위도 경도 불러오기 
             getLatLng(){
                 axios({
@@ -522,6 +531,9 @@
                     formData.append(`priceList[${i}].beautyNo`, this.priceList[i].beautyNo);
                     
                 }
+
+                // 위치 상태 추가
+                formData.append("isChange", this.shopInfo.isChange);
 
                 console.log("=====보내기전 정보 담은거 확인=====");
 
