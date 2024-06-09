@@ -50,12 +50,12 @@
                         <tbody>
                             <tr>
                                 <td>2024-06-09</td>
-                                <td>깔끔하개</td>
-                                <td>사용</td>
+                                <td>깔끔하개 리뷰 적립</td>
+                                <td>적랍</td>
                             </tr>
                             <tr>
                                 <td>2024-06-09</td>
-                                <td>깔끔하개</td>
+                                <td>깔끔하개 예약금</td>
                                 <td>사용</td>
                             </tr>
                         </tbody>
@@ -74,6 +74,8 @@ import AppFooter from "@/components/AppFooter.vue"
 import TopButton from "@/components/TopButton.vue"
 import SideBar from "@/components/SideBar.vue"
 import '@/assets/css/mypage/point.css'
+// import axios from "axios"
+
 export default {
     name: "PointView",
     components: {
@@ -85,8 +87,33 @@ export default {
     data() {
         return {};
     },
-    methods: {},
-    created(){}
+    methods: {
+        // 포인트내역 불러오기
+        getPoint(){
+            console.log("포인트 내역 가져오기");
+
+            // axios({
+            //     method: 'get',  //put,post,delete
+            //     url: `${this.$store.state.apiBaseUrl}/api/mypage/point`,
+            //     headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+            //     params: { uNo: this.reviewVo.uNo },
+            //     responseType: 'json' //수신타입
+            // }).then(response => {
+            //     console.log(response.data.apiData); //수신데이타
+            //     this.reviewVo = response.data.apiData;
+
+            // }).catch(error => {
+            //     console.log(error);
+            // });
+        }
+
+        // 조회 버튼 눌렀을때
+
+        
+    },
+    created(){
+        this.getPoint();
+    }
 };
 </script>
 <style></style>
