@@ -63,7 +63,7 @@
     left: 0;
     width: 0;
     height: 3px;
-    background-color: #237140;
+    background-color: #153448;
     transition: width 0.3s ease;
 }
 .mheader .mheaderWrap .mheaderLeft .mMenu li:hover::after {
@@ -74,7 +74,7 @@
     font-weight: bold;
 }
 .mheader .mheaderWrap .mheaderLeft .mMenu li:hover a {
-    color: #237140;
+    color: #153448;
 }
 
 /* 헤더 오른쪽 로그인 */

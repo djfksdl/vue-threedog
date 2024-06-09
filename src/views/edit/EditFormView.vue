@@ -234,6 +234,8 @@
                                 </tr>
                             </table>
                         </div>
+                        <!-- 가격<->후기 버튼 -->
+                        <div class="eChangeBtn" ><img src="@/assets/images/change.png"></div>
                         <!-- 후기 -->
                         <div class="eReviewBox">
                             <div class="eReviewBoxTitle">
