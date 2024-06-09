@@ -54,7 +54,7 @@
                     <div class="eDesignerContentsBox">
                         <!-- 디자이너소개 왼쪽 -->
                         <div class="eDLeftBox">
-                            <h2>이서현 원장</h2>
+                            <h2>{{ shopInfo.dName }} {{ shopInfo.job }} </h2>
                             <div class="eCareerBox">
                                 <h3>경력</h3>
                                 <div class="eCareerBoxInfo" v-html="shopInfo.introduce.replace(/\n/g, '<br>')"></div>
