@@ -2,8 +2,8 @@
     <div id="wrap">
         <AppHeader />
         <div id="reservationForm">
-            <!-- <SideBar /> -->
-            <div class="container" style="display: flex;">
+            <SideBar />
+            <div class="container">
                 <div></div>
 
 
@@ -14,9 +14,9 @@
 
 
                     <div class="managerInfor">
-                        <div class="managerInfor2">
+                        <div class="managerInfor2" style="display: flex">
                             <div>
-                                <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${businessVo.logo}`"
+                                <img  v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${businessVo.logo}`"
                                     style="margin: 20px 0 0 30px; width: 220px;height: 220px; border-radius: 5%; border: 1px solid #a7a4a4;">
                             </div>
 
@@ -451,7 +451,7 @@ import axios from "axios"
 import { mapActions } from 'vuex';
 import '@/assets/css/mypage/mypage.css'
 import Datepicker from '@/components/DatePicker.vue'
-// import SideBar from '@/components/SideBar.vue'
+import SideBar from '@/components/SideBar.vue'
 import TopButton from "@/components/TopButton.vue"
 
 
@@ -465,7 +465,7 @@ export default {
         AppHeader,
         AppFooter,
         Datepicker,
-        // SideBar,
+        SideBar,
         TopButton,
 
     },
