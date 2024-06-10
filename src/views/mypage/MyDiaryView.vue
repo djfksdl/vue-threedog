@@ -3,7 +3,7 @@
         <AppHeader />
         <div id="myDiary">
             <SideBar />
-            <div class="container">
+            <div class="myDiary-container">
                 <div class="title">
                     <h1>알림장</h1>
                 </div>
