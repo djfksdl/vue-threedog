@@ -905,26 +905,26 @@ export default {
                 formData.append('signFile', imageFile);
 
                 // 예약에 필요한 데이터 추가
-                formData.append('rtDate', this.reserveVo.rtDate); //
-                formData.append('rtTime', this.reserveVo.rtTime); //
-                formData.append('dogNo', this.dogVo.dogNo); // 
-                formData.append('skin', this.dogVo.skin); //
-                formData.append('heart', this.dogVo.heart); //
-                formData.append('marking', this.dogVo.marking); //
-                formData.append('mounting', this.dogVo.mounting);//
-                formData.append('bite', this.dogVo.bite); //
-                formData.append('memo', this.dogVo.memo);//
-                formData.append('beauty', this.priceVo.beauty); //
-                formData.append('onePrice', this.priceVo.onePrice); //
-                formData.append('weightDiv', this.priceVo.weightDiv); //
-                formData.append('expectedPrice', this.reserveVo.expectedPrice);//
-                formData.append('usePoint', this.usePoint);//
-                formData.append('bNo', this.reserveVo.bNo);//
-                formData.append('uNo', this.uNo);//
-                formData.append('rtNo', this.reserveVo.rtNo);//
-                formData.append('rtFinish', this.reserveVo.rtFinish);//
-                formData.append('priceNo', this.priceVo.priceNo); //
-                formData.append('rsNum', this.reserveVo.rsNo);
+                formData.append('rtDate', this.reserveVo.rtDate); 
+                formData.append('rtTime', this.reserveVo.rtTime); 
+                formData.append('dogNo', this.dogVo.dogNo); 
+                formData.append('skin', this.dogVo.skin); 
+                formData.append('heart', this.dogVo.heart); 
+                formData.append('marking', this.dogVo.marking); 
+                formData.append('mounting', this.dogVo.mounting);
+                formData.append('bite', this.dogVo.bite); 
+                formData.append('memo', this.dogVo.memo);
+                formData.append('beauty', this.priceVo.beauty); 
+                formData.append('onePrice', this.priceVo.onePrice); 
+                formData.append('weightDiv', this.priceVo.weightDiv); 
+                formData.append('expectedPrice', this.reserveVo.expectedPrice);
+                formData.append('usePoint', this.usePoint);
+                formData.append('bNo', this.reserveVo.bNo);
+                formData.append('uNo', this.uNo);
+                formData.append('rtNo', this.reserveVo.rtNo);
+                formData.append('rtFinish', this.reserveVo.rtFinish);
+                formData.append('priceNo', this.priceVo.priceNo); 
+                formData.append('rsNo', this.reserveVo.rsNo);
                 formData.append('bNo', this.bNo);
 
                 this.priceVo.priceNo2.forEach((item, index) => {
