@@ -33,9 +33,13 @@
       <h2 class="result-h2">동네 랭킹 Best 👍<a class="view-count" href="/searchmap">더보기</a></h2>
       <hr>
       <div class="rank">
-        <div class="rank-item" v-bind:key="i" v-for="(storeVo, i) in storeList">
+        <div class="rank-item" @mouseenter="hoverReview(i)" @mouseleave="leaveReview(i)" v-bind:key="i"
+          v-for="(storeVo, i) in storeList">
           <router-link :to="`/edit/${storeVo.bNo}`">
             <img src="../../assets/images/dog2.jpg">
+            <div class="hover-overlay-store" style="width: 200px;">
+              <button>홈페이지 가기</button>
+            </div>
             <label>{{ storeVo.title }}</label>
           </router-link>
         </div>
@@ -47,9 +51,13 @@
       <h2 class="result-h2">인기짱강아지 Best 👍<span class="view-count">조회수 높은 순</span></h2>
       <hr>
       <div class="rank">
-        <div class="rank-item" v-bind:key="i" v-for="(reviewVo, i) in reviewList">
+        <div class="rank-item" @mouseenter="hoverReview(i)" @mouseleave="leaveReview(i)" v-bind:key="i"
+          v-for="(reviewVo, i) in reviewList">
           <div @click="openModal(reviewVo.rNo)">
             <img src="../../assets/images/dog.jpg">
+            <div class="hover-overlay-store">
+              <button>후기 보기</button>
+            </div>
             <label>{{ reviewVo.title }}</label>
           </div>
         </div>
@@ -431,15 +439,13 @@ export default {
     },
     reviewDetail(rNo) {
       if (rNo) {
-        this.selectedReview = this.reviewList.find((review) => review.rNo === rNo);
-        if (this.selectedReview) {
-          this.updateViewCount(rNo);
-        }
+        // reviewList에서 해당 rNo에 맞는 reviewVo를 찾습니다.
+        this.reviewVo = this.reviewList.find((review) => review.rNo === rNo);
+        // 찾은 reviewVo를 활용하여 원하는 작업을 수행합니다.
+        console.log("선택한 후기:", this.reviewVo);
+        // 이후에 모달을 열거나 필요한 동작을 수행할 수 있습니다.
         this.modalCheck = true;
       }
-      console.log("선택한 리뷰번호", rNo);
-      this.getOneRList(rNo);
-      this.getSaveName(rNo);
     },
     // 조회수 업데이트
     updateViewCount(rNo) {
@@ -483,6 +489,12 @@ export default {
       const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
       const day = String(date.getDate()).padStart(2, '0');
       return `${year}-${month}-${day}`;
+    },
+    hoverReview(index) {
+      this.hoveredIndex = index;
+    },
+    leaveReview() {
+      this.hoveredIndex = null;
     },
   },
   created() {

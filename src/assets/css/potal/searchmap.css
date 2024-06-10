@@ -1,24 +1,71 @@
-#map-search {
-    display: flex;
-    margin-left: 20px;
-    height: 494px;
-  }
-  
-  .map-container {
-    flex: 0 0 60%;
-    height: 400px;
-  }
-  
-  .calendar_container {
-    flex: 0 0 40%;
-    height: 400px;
-    z-index: 999; /* DatePicker가 다른 요소 위에 나타나도록 z-index 설정 */
-  }
- 
-  #map-search{
-    width: 1150px;
-  }
+.rank-item {
+  position: relative;
+}
 
-  .map-cal{
-    display: flex;
-  }
+.rank-item:hover img {
+  filter: blur(5px);
+}
+
+.hover-overlay-store {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: none;
+  color: white;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.rank-item:hover .hover-overlay-store {
+  opacity: 1;
+  /* Show overlay on hover */
+}
+
+.hover-overlay-store button {
+  font-size: 16px;
+  border: none;
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  font-weight: bold;
+}
+
+.hover-overlay-store button:hover {
+  color: black;
+  /* Change text color on button hover */
+}
+
+
+#map-search {
+  display: flex;
+  margin-left: 20px;
+  height: 494px;
+}
+
+.map-container {
+  flex: 0 0 60%;
+  height: 400px;
+}
+
+.calendar_container {
+  flex: 0 0 40%;
+  height: 400px;
+  z-index: 999;
+  /* DatePicker가 다른 요소 위에 나타나도록 z-index 설정 */
+}
+
+#map-search {
+  width: 1150px;
+}
+
+.map-cal {
+  display: flex;
+}

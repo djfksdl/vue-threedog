@@ -29,12 +29,17 @@
       <hr>
       <div class="rank">
         <template v-if="storeList.length > 0">
-          <div class="rank-item" v-bind:key="i" v-for="(storeVo, i) in storeList">
+          <div class="rank-item" v-bind:key="i" v-for="(storeVo, i) in storeList" @mouseenter="hoverReview(i)"
+            @mouseleave="leaveReview(i)">
             <router-link :to="`/edit/${storeVo.bNo}`">
               <img src="../../assets/images/dog2.jpg">
+              <div class="hover-overlay-store" style="width: 200px;">
+                <button>홈페이지 가기</button>
+              </div>
               <label>{{ storeVo.title }}</label>
             </router-link>
           </div>
+
         </template>
         <template v-else>
           <div class="no-results">
@@ -264,11 +269,33 @@ const createMap = () => {
 
   });
 };
-
 // 컴포넌트가 마운트될 때 실행되는 함수
 onMounted(() => {
   getList();
   markList();
 });
+
+</script>
+
+<script>
+export default {
+  name: "SearchView",
+  components: {
+  },
+  data() {
+    return {
+    };
+  },
+  methods: {
+    hoverReview(index) {
+      this.hoveredIndex = index;
+    },
+    leaveReview() {
+      this.hoveredIndex = null;
+    },
+  },
+  created() {
+  },
+};
 
 </script>

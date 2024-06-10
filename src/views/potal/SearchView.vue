@@ -115,6 +115,7 @@
                     <img class="grayStar_list" src="@/assets/images/star_gray.jpg">
                   </span>
                 </div>
+                <span style="margin-left: 5px; margin-bottom: 5px;"> ({{ reviewVo.star }})</span>
               </div>
               <label><strong>{{ reviewVo.title }}</strong></label>
               <div class="context" style="margin-bottom: 10px;">
@@ -141,7 +142,7 @@
               <SwiperSlide v-for="(reviewVo, i) in reviewList2" :key="i">
                 <div class="reviewDetailImg">
                   <img :src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`"
-                    style="width: 350px; height: 450px;">
+                    style="width: 350px; height: 450px; margin-top: 30px;">
                 </div>
               </SwiperSlide>
             </Swiper>
