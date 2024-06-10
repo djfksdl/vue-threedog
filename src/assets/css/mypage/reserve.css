@@ -4,13 +4,12 @@
 .mypageContainer{}
 .mypageContainer .container{
     width: 880px;
-    margin: 0 0 0 615px;
+    margin: 0 0 0 645px;
 }
 
 /* ========= 마일리지 내역 ========= */
 .mypageContainer .mpUsePointContainer{
     width: 100%;
-    margin-left: 30px;
     padding: 30px 0px;
     margin-bottom: 30px;
 }
@@ -57,7 +56,6 @@
 .mypageContainer .mpReserveConfirmContainer{
     width: 100%;
     /* background-color: palegreen; */
-    margin-left: 30px;
     padding: 30px 0px;
     margin-bottom: 30px;
 }
@@ -96,7 +94,6 @@
 .mypageContainer .mpReviewConfirmContainer{
     width: 100%;
     /* background-color: palegreen; */
-    margin-left: 30px;
     padding: 30px 0px;
     margin-bottom: 30px;
 }
@@ -164,7 +161,6 @@
 .mypageContainer .mpDiaryConfirmContainer{
     width: 100%;
     /* background-color: palegreen; */
-    margin-left: 30px;
     padding: 30px 0px;
     margin-bottom: 30px;
 }
@@ -236,11 +232,22 @@
 
 /* =========================예약확인 페이지======================= */
 /* ========= 예약상세 내역 ========= */
+.container6{
+    width: 880px;
+    margin: 0 0 0 645px;
+    padding: 60px 0;
+}
+
+.container6 h1{
+    margin-bottom: 30px;
+    padding-bottom: 10px ;
+    border-bottom: 1px solid #666;
+}
 .reserveCheckForm{
-    width: 700px;
+    width: 100%;
     background-color: #fff;
     margin: 0 auto;
-    padding: 30px;
+    padding: 40px;
     border: 1px solid #237140;
     border-radius: 10px;
     margin-bottom: 30px;
@@ -257,13 +264,19 @@
 .reserveCheckForm .rcfInfo >div{
     /* display: flex; */
     margin: 10px 0;
-    width: 250px;
+}
+.reserveCheckForm .rcfInfo >div >div{
+    /* display: flex; */
+    /* align-items: center; */
 }
 .reserveCheckForm .rcfInfo >div p:first-child{
     color: #237140;
     width: 90px;
     font-weight: bold;
     padding: 5px 0 5px 0;
+}
+.reserveCheckForm .rcfInfo >div p:last-child{
+    padding-bottom: 10px;
 }
 
 /* 결제금액 */
@@ -348,7 +361,18 @@
 }
 
 
-
+/* =========================후기확인 페이지======================= */
+.reseerveContainer{}
+.reseerveContainer .container7{
+    width: 880px;
+    margin: 0 0 0 645px;
+    padding: 60px 0;
+}
+.reseerveContainer .container7 h1{
+    margin-bottom: 30px;
+    padding-bottom: 10px ;
+    border-bottom: 1px solid #666;
+}
 
 /* 모달창 */
 .reseerveContainer .modal-wrap {

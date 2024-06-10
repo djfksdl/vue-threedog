@@ -3,7 +3,8 @@
         <AppHeader />
         <div class="reseerveContainer">
             <SideBar />
-            <div class="container">
+            <div class="container6">
+                <h1 >예약 내역</h1>
                 <!-- 예약상세 내역 -->
                 <!-- <div style="margin: 30px;padding-left: 100px;">
                     <h2>예약내역</h2>
@@ -15,7 +16,7 @@
 
                 <div class="reserveCheckForm" v-bind:key="i" v-for="(reserveVo, i) in reserveList">
                     <!-- 예약정보 -->
-                    <div class="rcfInfo" style="display: flex; ">
+                    <div class="rcfInfo" style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
                             <div>
                                 <p>매장명</p>
@@ -37,7 +38,7 @@
                         </div>
                         <div>
                             <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reserveVo.logo}`"
-                                style="width: 200px; height: 200px; margin-left: 180px;">
+                                style="width: 200px; height: 200px;">
                         </div>
 
                     </div>
