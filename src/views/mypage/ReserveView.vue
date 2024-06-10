@@ -4,7 +4,7 @@
         <div class="reseerveContainer">
             <SideBar />
             <div class="container6">
-                <h1 >예약 내역</h1>
+                <h1>예약 내역</h1>
                 <!-- 예약상세 내역 -->
                 <!-- <div style="margin: 30px;padding-left: 100px;">
                     <h2>예약내역</h2>
@@ -70,7 +70,9 @@
                             </button>
                         </div>
                         <div class="rrfChange" v-else-if="reserveVo.pushNo && reserveVo.rNo == 0">
-                            <router-link :to="`/reviewform/${reserveVo.rsNo}`">후기 작성</router-link>
+                            <router-link
+                                :to="{ name: 'reviewform', params: { rsNo: reserveVo.rsNo, bNo: reserveVo.bNo } }">후기
+                                작성</router-link>
                         </div>
                         <div class="rrfConfirm" v-else-if="reserveVo.rNo">
                             <button @click="getReview(reserveVo.rsNo)"
