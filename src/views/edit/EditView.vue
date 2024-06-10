@@ -257,15 +257,25 @@
                         </div>
                         <!-- 후기 슬라이드 -->
                         <div class="eReviewSlide">
-                            <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${shopInfo.logo}`">
-                            <!-- 후기 슬라이드 내용 -->
-                            <div class="eReviewSlideContentBox">
-                                <div class="eReviewSlideContentBoxTop">
-                                    <h2>썬글라스컷</h2>
-                                    <p>보리집사님</p>
-                                </div>
-                                <p>1960년대에 앤 베이커(Ann Baker)는 조세핀(Josephine)이라는 이름을 가진 앙고라 계열이지만 여러 혈통이 섞인 하얀 장모종을 발견했다. 조세핀이라는 고양이는 자동차 사고를 당해 다쳐서 캘리포니아 대학에 있었는데, 베이커는 조세핀이 비밀 정부기관에서 유전자 실험으로 생겨났다고 믿고 있었고, 베이커는 이 고양이와 버만 고양이를 교배시켜 랙돌을 탄생시켰다. 역사가 짧은데다가 한동안 앤 베이커가 랙돌 브리딩계를 아주 꽉 잡고 있었기 때문에[2] 유전자풀이 굉장히 좁다. 현재 랙돌의 유전자 중 약 40% 정도가 앤 베이커의 랙돌 한 마리에게서 왔다고 한다. 그럼에도 불구하고 아직까지 알려진 종특 유전병은 없다. 물론 HCM은 조심해야 하지만, 제대로 된 캐터리라면 먼저 유전자 검사를 한 뒤에 브리딩을 하니 고양이 분양시에 제대로 확인을 하면 된다.</p>
-                            </div>
+
+                            <Carousel :autoplay="5000" :wrap-around="true" :show-arrows="false" ref="carouselRef">
+                                <Slide v-for="slide in slides" :key="slide">
+                                    <div class="img-slide">
+                                        <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${slide.saveName }`">
+                                        <!-- 후기 슬라이드 내용 -->
+                                        <div class="eReviewSlideContentBox">
+                                            <div class="eReviewSlideContentBoxTop">
+                                                <h2>썬글라스컷</h2>
+                                                <p>보리집사님</p>
+                                            </div>
+                                            <p>1960년대에 앤 베이커(Ann Baker)는 조세핀(Josephine)이라는 이름을 가진 앙고라 계열이지만 여러 혈통이 섞인 하얀 장모종을 발견했다. 조세핀이라는 고양이는 자동차 사고를 당해 다쳐서 캘리포니아 대학에 있었는데, 베이커는 조세핀이 비밀 정부기관에서 유전자 실험으로 생겨났다고 믿고 있었고, 베이커는 이 고양이와 버만 고양이를 교배시켜 랙돌을 탄생시켰다. 역사가 짧은데다가 한동안 앤 베이커가 랙돌 브리딩계를 아주 꽉 잡고 있었기 때문에[2] 유전자풀이 굉장히 좁다. 현재 랙돌의 유전자 중 약 40% 정도가 앤 베이커의 랙돌 한 마리에게서 왔다고 한다. 그럼에도 불구하고 아직까지 알려진 종특 유전병은 없다. 물론 HCM은 조심해야 하지만, 제대로 된 캐터리라면 먼저 유전자 검사를 한 뒤에 브리딩을 하니 고양이 분양시에 제대로 확인을 하면 된다.</p>
+                                        </div>
+                                    </div>
+                                </Slide>
+                                <template #addons>
+                                    <Pagination />
+                                </template>
+                            </Carousel>
                         </div>
                     </div>
                 </div>
@@ -409,7 +419,7 @@ export default {
                 lat: 0,
                 lng: 0,
             },
-            oneReview:{}
+            reviewList:[]
         }
     },
     computed: {
@@ -474,10 +484,10 @@ export default {
                 console.log(response);
                 this.shopInfo = response.data.apiData.shopInfo;
                 this.priceList = response.data.apiData.pList;
-                this.oneReview = response.data.apiData.oneReview;
+                // this.reviewList = response.data.apiData.rList;
 
                 console.log("여기 확인하라!!!!!!!!!!");
-                console.log(this.oneReview);
+                console.log(this.reviewList);
 
 
                 // this.slideList = response.data.apiData.sList;
