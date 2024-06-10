@@ -76,7 +76,7 @@ export default {
     },
     mounted() {
         this.$store.commit('setReservationData', this.reservations);
-        const bNo = this.$route.params.bNo || 2; // 라우트 파라미터에서 가게 번호를 받아옴, 없으면 기본값 1
+        const bNo = this.$route.params.bNo || 1; // 라우트 파라미터에서 가게 번호를 받아옴, 없으면 기본값 1
         this.fetchReserveList(bNo); // bNo를 이용하여 예약 리스트를 가져옴
     },
     methods: {
