@@ -36,7 +36,7 @@
         <div class="rank-item" @mouseenter="hoverReview(i)" @mouseleave="leaveReview(i)" v-bind:key="i"
           v-for="(storeVo, i) in storeList">
           <router-link :to="`/edit/${storeVo.bNo}`">
-            <img src="../../assets/images/dog2.jpg">
+            <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${storeVo.saveName}`">
             <div class="hover-overlay-store" style="width: 200px;">
               <button>홈페이지 가기</button>
             </div>
@@ -54,7 +54,7 @@
         <div class="rank-item" @mouseenter="hoverReview(i)" @mouseleave="leaveReview(i)" v-bind:key="i"
           v-for="(reviewVo, i) in reviewList">
           <div @click="openModal(reviewVo.rNo)">
-            <img src="../../assets/images/dog.jpg">
+            <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`">
             <div class="hover-overlay-store">
               <button>후기 보기</button>
             </div>
@@ -265,7 +265,7 @@ const createMap = () => {
           </div>
           <div class="body">
             <div class="img">
-              <img src="${store.logo}" width="73" height="70">
+              <img v-bind:src="${this.$store.state.apiBaseUrl}/upload/${store.logo}"  width="73" height="70">
             </div>
             <div class="desc">
               <div class="ellipsis">${store.bAddress}</div>

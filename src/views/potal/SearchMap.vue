@@ -32,7 +32,7 @@
           <div class="rank-item" v-bind:key="i" v-for="(storeVo, i) in storeList" @mouseenter="hoverReview(i)"
             @mouseleave="leaveReview(i)">
             <router-link :to="`/edit/${storeVo.bNo}`">
-              <img src="../../assets/images/dog2.jpg">
+              <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${storeVo.saveName}`">
               <div class="hover-overlay-store" style="width: 200px;">
                 <button>홈페이지 가기</button>
               </div>

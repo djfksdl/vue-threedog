@@ -101,7 +101,8 @@
             <div class="search-item" @mouseenter="hoverReview(i)" @mouseleave="leaveReview(i)"
               @click="reviewDetail(reviewVo.rNo)" v-bind:key="i" v-for="(reviewVo, i) in reviewList">
               <div class="review-img-container">
-                <img class="list_img" src="../../assets/images/bori.jpg">
+                <!-- <img class="list_img" src="../../assets/images/bori.jpg"> -->
+                <img class="list_img" v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`">
                 <div class="hover-overlay">
                   <button @click.stop="reviewDetail(reviewVo.rNo)">후기 보기</button>
                 </div>
