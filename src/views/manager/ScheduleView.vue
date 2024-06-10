@@ -75,14 +75,14 @@ export default {
     computed: {
         ...mapGetters(['reservationData']), // Vuex의 reservationData를 계산된 속성으로 가져옴
         storeBNo() {
-        return this.$store.state.auth.bNo; // Vuex 스토어에서 가게 번호를 가져옴
-    }
+            return this.$store.state.auth.bNo; // Vuex 스토어에서 가게 번호를 가져옴
+        }
     },
     mounted() {
         const bNo = this.storeBNo || 1; // Vuex 스토어에서 가게 번호를 가져와서 사용
-      // const bNo = this.$route.params.bNo; // 라우트 파라미터에서 가게 번호를 받아옴, 없으면 기본값 1
+        // const bNo = this.$route.params.bNo; // 라우트 파라미터에서 가게 번호를 받아옴, 없으면 기본값 1
         this.fetchReserveList(bNo); // bNo를 이용하여 예약 리스트를 가져옴
-         this.$store.commit('setReservationData', this.reservations);
+        this.$store.commit('setReservationData', this.reservations);
     },
     methods: {
         ...mapMutations(['setSelectedSchedule', 'setGroomingRecord']), // Vuex 변이 매핑
@@ -183,11 +183,15 @@ export default {
             console.log("updateEventOnServer");
             const start = event.start.toISOString().slice(0, 19).replace('T', ' '); // ISO 8601 형식을 MySQL 형식으로 변환
 
+            // 예약 완료 상태일 때 rtfinish를 1로 설정하고, 예약 가능 상태일 때는 0으로 설정
+            const rtfinish = event.isConfirmed ? 1 : 0;
+
+
             // 서버에 변경된 일정 정보를 업데이트하는 API 호출
             axios({
                 method: 'put',
                 url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/date`,
-                data: { rsNo: rsNo, rtDate: start }, // 데이터 전송
+                data: { rsNo: rsNo, rtDate: start,rtfinish: rtfinish  }, // 데이터 전송
                 headers: { "Content-Type": "application/json; charset=utf-8" },
                 responseType: 'json'
             }).then(response => {
@@ -245,10 +249,11 @@ export default {
 
             const startTime = convertToMySQLTime(start);
 
+            // 예약 상태에 따라 rtfinish 값을 설정
             axios({
                 method: 'put',
                 url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/time`,
-                data: { rsNo: rsNo, rtTime: startTime },
+                data: { rsNo: rsNo, rtTime: startTime},
                 headers: { "Content-Type": "application/json; charset=utf-8" },
                 responseType: 'json'
             }).then(() => {
