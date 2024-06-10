@@ -241,7 +241,7 @@ const createMap = () => {
           </div>
           <div class="body">
             <div class="img">
-              <img src="${store.logo}" width="73" height="70">
+               <img v-bind:src="${this.$store.state.apiBaseUrl}/upload/${store.logo}"  width="73" height="70">
             </div>
             <div class="desc">
               <div class="ellipsis">${store.bAddress}</div>
