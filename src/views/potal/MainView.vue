@@ -129,35 +129,65 @@ window.closeOverlay = () => {
 
 const getCurrentLocation = () => {
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((position) => {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
+    navigator.permissions.query({ name: 'geolocation' })
+      .then(permissionStatus => {
+        if (permissionStatus.state === 'granted') {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const lat = position.coords.latitude;
+              const lng = position.coords.longitude;
 
-      coordinate.value.lat = lat;
-      coordinate.value.lng = lng;
+              coordinate.value.lat = lat;
+              coordinate.value.lng = lng;
 
-      createMap(); // 현재 위치로 지도 이동
-    }, (error) => {
-      handleLocationError(error);
-    });
+              createMap(); // 현재 위치로 지도 이동
+            },
+            (error) => {
+              handleLocationError(error);
+            }
+          );
+        } else if (permissionStatus.state === 'prompt') {
+          // 위치 권한 요청이 아직 사용자에게 승인되지 않은 경우
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const lat = position.coords.latitude;
+              const lng = position.coords.longitude;
+
+              coordinate.value.lat = lat;
+              coordinate.value.lng = lng;
+
+              createMap(); // 현재 위치로 지도 이동
+            },
+            (error) => {
+              handleLocationError(error);
+            }
+          );
+        } else if (permissionStatus.state === 'denied') {
+          alert("위치 권한이 거부되었습니다. 사용자 위치를 확인할 수 없습니다.");
+        }
+      })
+      .catch(error => {
+        console.error('Error getting geolocation permission:', error);
+      });
   } else {
     alert('Geolocation is not supported by this browser.');
   }
 };
 
+
 const handleLocationError = (error) => {
   switch (error.code) {
     case error.PERMISSION_DENIED:
-      alert("User denied the request for Geolocation.");
+      alert("사용자가 Geolocation 요청을 거부했습니다.");
       break;
     case error.POSITION_UNAVAILABLE:
-      alert("Location information is unavailable.");
+      alert("위치 정보를 사용할 수 없습니다.");
       break;
     case error.TIMEOUT:
-      alert("The request to get user location timed out.");
+      alert("위치 정보를 가져오는 요청이 시간 초과되었습니다.");
       break;
     case error.UNKNOWN_ERROR:
-      alert("An unknown error occurred.");
+      alert("알 수 없는 오류가 발생했습니다.");
       break;
   }
 };
@@ -244,16 +274,13 @@ const createMap = () => {
       position: marker.getPosition()
     });
 
-    overlays.value.push({ id: store.id, overlay });
+    overlays.value.push({ id: store.bNo, overlay: overlay });
 
-    window.kakao.maps.event.addListener(marker, 'click', () => {
-      overlays.value.forEach(o => o.overlay.setMap(null)); // 모든 오버레이를 지도에서 숨깁니다.
-      overlay.setMap(map.value); // 클릭한 마커에 해당하는 오버레이를 지도에 표시합니다.
+    window.kakao.maps.event.addListener(marker, 'click', function () {
+      overlays.value.forEach(o => o.overlay.setMap(null));
+      overlay.setMap(map.value);
     });
   });
-
-  // 오버레이 순회 및 숨기는 부분 추가
-  overlays.value.forEach(o => o.overlay.setMap(null));
 };
 
 

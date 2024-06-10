@@ -83,7 +83,7 @@ const getKakaoToken = async (code) => {
         const data = {
             grant_type: "authorization_code",
             client_id: "0e2f4296c5ab39f843a685fe91dd9b8a", // REST API 키
-            redirect_uri: "http://localhost:8080/login",
+            redirect_uri: "http://43.200.182.62:9010/login",
             code: code,
         };
 
@@ -204,7 +204,8 @@ export default {
 
             // 1. 인가 코드 얻기
             window.Kakao.Auth.authorize({
-                redirectUri : 'http://localhost:8080/login',
+                // redirectUri : http://localhost:9010/login",
+                redirectUri : 'http://43.200.182.62:9010/login',
                 prompt : 'login' //강제로 로그인 화면 표시
             })
         },
@@ -283,7 +284,7 @@ export default {
     mounted() {
         this.naverLogin = new window.naver_id_login(
             clientId,
-            "http://localhost:8080/login"  // 개발자센터에서 등록한 Callback URL
+            "http://localhost:9010/login"  // 개발자센터에서 등록한 Callback URL
         );
         var state = this.naverLogin.getUniqState();
         this.naverLogin.setButton("green", 2, 40); // 버튼설정

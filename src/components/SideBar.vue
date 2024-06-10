@@ -5,7 +5,8 @@
             <!-- 프로필 사진 -->
             <!-- {{ userVo.uProfile }} -->
             <div class="profileImg">
-                <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${userVo.uProfile}`">
+                <img v-if="this.$store.state.authUser && this.$store.state.authUser.uId && this.$store.state.authUser.uId.startsWith('kakao ')" :src="userVo.uProfile">
+                <img v-else :src="`${this.$store.state.apiBaseUrl}/upload/${userVo.uProfile}`">
             </div>
             <!-- 프로필 내용 -->
             <div class="profileId" v-if="userVo">
@@ -76,7 +77,7 @@ export default {
         sidebarStyle() {
             return {
                 position: this.isFixed ? 'fixed' : 'fixed',
-                top: this.isFixed ? '0' : '138px',
+                top: this.isFixed ? '10px' : '150px',
                 transition: 'top 0.3s ease',
             };
         },
