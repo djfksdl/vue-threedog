@@ -542,6 +542,9 @@ export default {
             usePoint: 0,
             paymentMethods: ['휴대폰', '무통장입금'], // 사용 가능한 결제 방법
             selectedPayment: null, // 선택된 결제 방법 인덱스
+            bNo:this.$route.params.bNo,
+
+            
 
         };
     },
@@ -870,6 +873,7 @@ export default {
         // 예약하기
         reserveInsert() {
             console.log(this.uNo);
+            console.log(this.bNo);
             const formData = new FormData();
 
             // 서명이 비어 있는지 확인
@@ -921,6 +925,7 @@ export default {
                 formData.append('rtFinish', this.reserveVo.rtFinish);//
                 formData.append('priceNo', this.priceVo.priceNo); //
                 formData.append('rsNum', this.reserveVo.rsNo);
+                formData.append('bNo', this.bNo);
 
                 this.priceVo.priceNo2.forEach((item, index) => {
                     formData.append(`priceNoPlus[${index}]`, item);

@@ -48,16 +48,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>2024-06-09</td>
-                                <td>깔끔하개 리뷰 적립</td>
-                                <td>적랍</td>
+                            <tr v-bind:key="i" v-for="(userVo, i) in userList">
+                                <td>{{userVo.pDate}}</td>
+                                <td v-if="userVo.pDiv==true">{{userVo.title}} {{ userVo.usePoint }} P 리뷰 사용</td>
+                                <td v-if="userVo.pDiv==false">{{userVo.title}} {{ userVo.usePoint }} p 리뷰 적립</td>
+                                <td v-if="userVo.pDiv==true">사용</td>
+                                <td v-if="userVo.pDiv==false">적립</td>
                             </tr>
-                            <tr>
+                            <!-- <tr>
                                 <td>2024-06-09</td>
                                 <td>깔끔하개 예약금</td>
                                 <td>사용</td>
-                            </tr>
+                            </tr> -->
                         </tbody>
                     </table>
                 </div>
@@ -89,11 +91,13 @@ export default {
             userVo: {
                 uNo: this.$store.state.authUser.uNo,
                 rsNo: 0,
-                rDate: "",
+                pDate: "",
                 uPoint: 0,
                 bNo: 0,
                 rtFinish: false,
+                usePoint:0,
             },
+            userList:[],
         };
     },
     methods: {
@@ -115,6 +119,25 @@ export default {
             }).catch(error => {
                 console.log(error);
             });
+        },
+
+        // 전체내역
+        getPointList(){
+            console.log("포인트리스트 가져오기");
+            axios({
+                method: 'get',  //put,post,delete
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/getpointlist`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { uNo: this.userVo.uNo },
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log("포인트 불러오기 성공");
+                console.log(response.data.apiData); //수신데이타
+                this.userList = response.data.apiData;
+
+            }).catch(error => {
+                console.log(error);
+            });
         }
 
         // 조회 버튼 눌렀을때
@@ -123,6 +146,7 @@ export default {
     },
     created() {
         this.getPoint();
+        this.getPointList();
     }
 };
 </script>

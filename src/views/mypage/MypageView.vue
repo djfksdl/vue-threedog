@@ -17,7 +17,7 @@
                     <div class="mpupContents">
                         <div>
                             <p>사용 가능한 마일리지:</p>
-                            <p> {{ this.pointVo.uPoint.toLocaleString() }} p</p>
+                            <p>{{ formattedUsePoint }} p</p>
                         </div>
                     </div>
                 </div>
@@ -89,18 +89,14 @@
 
                                 <!-- 별점 -->
                                 <div class="star-rating">
-                                    <div class="star">
-                                        <div class="star" style="margin-top: 2px;">
-                                            <!-- Full stars -->
-                                            <span v-for="i in Math.floor(reviewVo.star)" :key="i"
-                                                style="padding: none;"><img src="@/assets/images/star_yellow.jpg"
-                                                    style="width: 15px;"></span>
-                                            <!-- Half star -->
-                                            <!-- Empty stars -->
-                                            <span v-for="i in 5 - Math.ceil(reviewVo.star)" :key="'empty_' + i"><img
-                                                    src="@/assets/images/star_gray.jpg" style="width: 15px;"></span>
-                                            <!-- {{ reviewVo.star }}.0 -->
-                                        </div>
+                                    <div class="star" style="margin-top: 2px;">
+                                        <!-- Full stars -->
+                                        <span v-for="i in Math.floor(reviewVo.star)" :key="i"
+                                            style="padding: none;"><img src="@/assets/images/star_yellow.jpg"
+                                                style="width: 15px;"></span>
+                                        <!-- Empty stars -->
+                                        <span v-for="i in 5 - Math.ceil(reviewVo.star)" :key="'empty_' + i"><img
+                                                src="@/assets/images/star_gray.jpg" style="width: 15px;"></span>
                                     </div>
                                 </div>
                             </div>
@@ -184,7 +180,7 @@ export default {
         return {
             pointVo: {
                 uNo: this.$store.state.authUser.uNo,
-                uPoint: 0,
+                usePoint: 0,
             },
 
             reserveVo: {
@@ -266,6 +262,9 @@ export default {
             const [hours, minutes] = time.split(':');
             return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
         },
+        formattedUsePoint() {
+        return (this.pointVo?.usePoint || 0).toLocaleString();
+    }
     },
     methods: {
         getPoint() {
