@@ -49,6 +49,7 @@ export default {
     },
     data() {
         return {
+            bNo: this.$store.state.auth.bNo,
             showModal: false, // 모달 표시 여부
             selectedEvent: null, // 선택된 이벤트 정보
             calendarOptions: {
@@ -72,12 +73,16 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['reservationData']) // Vuex의 reservationData를 계산된 속성으로 가져옴
+        ...mapGetters(['reservationData']), // Vuex의 reservationData를 계산된 속성으로 가져옴
+        storeBNo() {
+        return this.$store.state.auth.bNo; // Vuex 스토어에서 가게 번호를 가져옴
+    }
     },
     mounted() {
-        this.$store.commit('setReservationData', this.reservations);
-        const bNo = this.$route.params.bNo || 1; // 라우트 파라미터에서 가게 번호를 받아옴, 없으면 기본값 1
+        const bNo = this.storeBNo || 1; // Vuex 스토어에서 가게 번호를 가져와서 사용
+      // const bNo = this.$route.params.bNo; // 라우트 파라미터에서 가게 번호를 받아옴, 없으면 기본값 1
         this.fetchReserveList(bNo); // bNo를 이용하여 예약 리스트를 가져옴
+         this.$store.commit('setReservationData', this.reservations);
     },
     methods: {
         ...mapMutations(['setSelectedSchedule', 'setGroomingRecord']), // Vuex 변이 매핑
@@ -92,7 +97,7 @@ export default {
                 responseType: 'json'
             }).then(response => {
                 // 요청이 성공적으로 완료된 경우의 처리
-                console.log('불러와진다 우히히:', response.data.apiData); // 응답데이터 확인
+                console.log('가게 번호로 불러온 예약 리스트:', response.data.apiData); // 응답데이터 확인
                 this.reservations = Array.isArray(response.data.apiData) ? response.data.apiData : [];
                 this.$store.commit('setReservationData', this.reservations); // 스토어에 데이터 업데이트
                 this.updateCalendarEvents(bNo); // 예약 데이터로 캘린더 이벤트 업데이트
