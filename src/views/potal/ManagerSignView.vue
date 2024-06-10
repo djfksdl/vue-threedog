@@ -69,9 +69,9 @@
                             </div>
                         </div>
 
-                        <div id="google_recaptha">
+                        <!-- <div id="google_recaptha">
                             <div class="g-recaptcha" data-sitekey="6LfZqNspAAAAAAze3c3G_KHi67Z2gKiF0WM58CG4"></div>
-                        </div>
+                        </div> -->
 
                         <button type="submit" class="msignupBtn">회원가입</button>
                     </form>
@@ -260,10 +260,10 @@ export default {
     methods: {
     },
     mounted() {
-        const script = document.createElement('script');
-        script.src = 'https://www.google.com/recaptcha/api.js';
-        script.async = true;
-        document.getElementById('google_recaptha').appendChild(script);
+        // const script = document.createElement('script');
+        // script.src = 'https://www.google.com/recaptcha/api.js';
+        // script.async = true;
+        // document.getElementById('google_recaptha').appendChild(script);
     }
 };
 </script>
