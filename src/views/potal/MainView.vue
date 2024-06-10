@@ -22,12 +22,7 @@
       </div>
 
       <div id="map-main">
-        <!-- <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true"
-          style="width: 1370px; height: 400px; margin-left: 20px;">
-          <KakaoMapMarker :lat="coordinate.lat" :lng="coordinate.lng"></KakaoMapMarker>
-          <KakaoMapMarker v-for="(store, index) in addList" :key="index" :lat="store.latitude" :lng="store.longitude">
-          </KakaoMapMarker>
-        </KakaoMap> -->
+
       </div>
 
       <h2 class="result-h2">동네 랭킹 Best 👍<a class="view-count" href="/searchmap">더보기</a></h2>
@@ -120,7 +115,6 @@ import { useStore } from 'vuex';
 import axios from 'axios';
 
 const store = useStore();
-const apiBaseUrl = ref(store.state.apiBaseUrl); 
 
 const coordinate = ref({
   lat: 37.5535,
@@ -266,7 +260,7 @@ const createMap = () => {
           </div>
           <div class="body">
             <div class="img">
-              <img v-bind:src="${apiBaseUrl.value}/upload/${store.logo}" width="73" height="70">
+              <img v-bind:src="" width="73" height="70">
             </div>
             <div class="desc">
               <div class="ellipsis">${store.bAddress}</div>

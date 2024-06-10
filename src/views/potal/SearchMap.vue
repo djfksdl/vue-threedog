@@ -68,7 +68,6 @@ import "@/assets/css/potal/searchmap.css";
 const route = useRoute();
 
 const store = useStore();
-const apiBaseUrl = ref(store.state.apiBaseUrl);
 
 const storeList = ref([]);
 const coordinate = ref({
@@ -244,7 +243,7 @@ const createMap = () => {
           </div>
           <div class="body">
             <div class="img">
-              <img v-bind:src="${apiBaseUrl.value}/upload/${store.logo}" width="73" height="70">
+              <img v-bind:src="" width="73" height="70">
             </div>
             <div class="desc">
               <div class="ellipsis">${store.bAddress}</div>
