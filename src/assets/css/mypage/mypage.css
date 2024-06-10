@@ -2,16 +2,17 @@
 /* ********************************************************* */
 /* petAddForm */
 #petAddForm {
-    width: 880px;
+    width: 1400px;
     height: 1900px;
     margin: 0 auto;
 }
 
-#petAddForm h2 {
-    margin: 30px 0px 0 130px;
-    width: 880px;
+#petAddForm h1 {
+    margin: 20px 20px 0 110px;
+    width: 1300px;
     /* border-bottom: 1px solid #a7a4a4; */
-    padding-bottom: 10px;
+    padding-bottom: 20px;
+    font-size: 30px;
 }
 
 
@@ -20,7 +21,7 @@
 }
 
 #petAddForm .container form {
-    width: 880px;
+    width: 1300px;
     border-top: 1px solid #a7a4a4;
     /* display: flex; */
     margin-left: 100px;
@@ -55,7 +56,7 @@
 }
 
 #petAddForm .filebox label {
-    margin-left: 230px;
+    margin-left: 430px;
     display: inline-block;
     padding: 10px;
     color: white;
@@ -85,8 +86,8 @@
 }
 
 #petAddForm #preview-image {
-    width: 300px;
-    height: 350px;
+    width: 500px;
+    height: 600px;
 }
 
 #petAddForm .petAddFormUnder img {
@@ -95,7 +96,7 @@
 }
 
 #petAddForm .container .detailBox {
-    margin: -20px 0 0 100px;
+    margin: -20px 0 0 180px;
 }
 
 #petAddForm .container .detail {
@@ -383,26 +384,24 @@ datalist {
 /* 예약폼 */
 /* reservationForm */
 #reservationForm {
-    width: 1100px;
-    margin: 0 0 0 550px;
+    width: 880px;
+    margin: 0 0 0 645px;
+    padding: 60px 0;
 }
 
-#reservationForm .container div>h1 {
-    width: 1200px;
+#reservationForm .container8 h1 {
     margin: 0 auto;
     padding-bottom: 20px;
 }
-
-#reservationForm .buttonCon {
-    width: 1200px;
-    margin: 0 auto;
-
+#reservationForm .buttonCon{
+    margin: 50px 0;
+    display: flex;
+    justify-content: space-between;
 }
-
 #reservationForm .buttonCon span {
-    margin-right: 20px;
+    /* margin-right: 20px; */
     color: #236C3F;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: bold;
 }
 
@@ -414,26 +413,29 @@ datalist {
     border: 1px solid #236C3F;
     color: #236C3F;
     font-size: 18px;
-    margin-right: 20px;
+    margin: 0 20px;
     /* cursor: pointer; */
-    padding: 10px 5px 10px 30px;
+    padding: 10px;
     pointer-events: none;
+}
+#reservationForm .buttonCon button:first-child{
+    margin-left: 0;
+}
+#reservationForm .buttonCon button:last-child{
+    margin-right: 0;
 }
 
 
 #reservationForm .managerInfor {
-    padding: 15px;
+    /* padding: 15px; */
     /* border: 1px solid #a7a4a4; */
     /* border-radius: 10px; */
     /* box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1); */
 
 }
 
-
-
-
 #reservationForm .managerInfor .managerInfor3 {
-    margin: 10px 0 0 30px;
+    margin-left:  30px;
 }
 
 #reservationForm .managerInfor .managerInfor3 p {
@@ -446,32 +448,19 @@ datalist {
 }
 
 
-#reservationForm form {
-    width: 1400px;
-    margin: 0 0 30px 20px;
-    /* box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1); */
-    /* background-color: red; */
-    padding: 10px 0 0 50px;
-    /* background-color: #e9e8e8; */
-}
-
-
-
-
-
 #reservationForm .reservationBox {
-    /* width: 1000px; */
+    width: 100%;
     /* background-color: pink; */
     /* margin: 0 auto; */
     /* padding-left: 200px; */
-    margin: 30px 0 30px 30px;
+    /* margin: 30px 0 30px 30px; */
 }
 
 
 #reservationForm .reservationBox .petChoice {
     padding: 30px 0 30px 0;
     font-size: 20px;
-    width: 360px;
+    width: 47%;
     height: 600px;
 }
 
@@ -480,8 +469,12 @@ datalist {
     margin-bottom: 40px;
 }
 
+#reservationForm .reservationBox .petChoice label{
+    margin: 20px 10px;
+}
 #reservationForm .reservationBox .petChoice input {
-    margin: 0 50px 0 10px;
+    margin-right: 10px;
+    margin-bottom: 20px;
 }
 
 
@@ -492,7 +485,7 @@ datalist {
 
 #reservationForm .reservationBox .character {
     padding: 30px 0 30px 0;
-    margin-left: 100px;
+    width: 53%;
 }
 
 #reservationForm .reservationBox .character label {
@@ -530,12 +523,12 @@ datalist {
 
 #reservationForm .reservationBox .character .bite label:first-child {
     margin-top: 20px;
-    margin-left: 40px;
+    /* margin-left: 40px; */
 }
 
 #reservationForm .reservationBox .character .bite input,
 datalist {
-    width: 200px;
+    width: 300px;
     accent-color: #236C3F;
 }
 
@@ -550,26 +543,25 @@ datalist {
 }
 
 #reservationForm .reservationBox .character .bite p:first-child {
-    margin-left: 108px;
+    margin-left: 71px;
 }
 
 #reservationForm .reservationBox .character .bite p:nth-child(2) {
-    margin-left: 52px;
+    margin-left: 100px;
 }
 
 #reservationForm .reservationBox .character .bite p:nth-child(3) {
-    margin-left: 52px;
+    margin-left: 100px;
 }
 
 #reservationForm .reservationBox .character button {
-    width: 150px;
+    width: 111px;
     margin-right: 5px;
 }
 
 
 #reservationForm .reservationBox .character textarea {
     margin: 20px 0 30px 0;
-    width: 610px;
     height: 250px;
     padding: 5px;
     border: 1px solid #a7a4a4;
@@ -577,6 +569,7 @@ datalist {
     text-align: start;
     resize: none;
     outline: #236C3F;
+    width: 100%;
 }
 
 
@@ -652,13 +645,10 @@ datalist {
 }
 
 
-
-
-
 #reservationForm .price {
     width: 650px;
     height: 750px;
-    margin: 50px 0 0 120px;
+    margin: 50px 0 0 100px;
 }
 
 #reservationForm .price p {
@@ -774,12 +764,6 @@ datalist {
     margin-top: 10px;
 }
 
-#reservationForm .subBtn {
-    text-align: center;
-    margin-top: -50px;
-    margin-left: 200px;
-}
-
 
 
 #reservationForm .subBtn button {
@@ -798,7 +782,7 @@ datalist {
 #reservationForm .setstepBtnCon1 {
     /* text-align: end; */
     float: right;
-    margin-top: -120px;
+    margin-top: -50px;
 }
 
 
@@ -815,19 +799,20 @@ datalist {
 
 }
 
-#reservationForm .setstepBtnCon2 {
-    margin-top: 30px;
-}
+#reservationForm .setstepBtnCon2 {}
 
 #reservationForm .setstepBtnCon2 .setstepBtn1 {
-    margin-right: 670px;
     /* margin-right: 500px; */
     background-color: white;
     color: #236C3F;
     border: 1px solid #236C3F;
 }
 
-
+#reservationForm .setstepBtnCon2 {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 30px;
+}
 
 
 #reservationForm .setstepBtnCon2 button {
@@ -843,7 +828,10 @@ datalist {
 }
 
 #reservationForm .setstepBtnCon3 {
-    margin-top: 100px;
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-between;
+    width: 95%;
 }
 
 #reservationForm .setstepBtnCon3 button {
@@ -859,7 +847,7 @@ datalist {
 }
 
 #reservationForm .setstepBtnCon3 .setstepBtn1 {
-    margin-right: 500px;
+    /* margin-right: 500px; */
     background-color: white;
     color: #236C3F;
     border: 1px solid #236C3F;
@@ -868,6 +856,8 @@ datalist {
 
 #reservationForm .setstepBtnCon4 {
     margin-top: 100px;
+    display: flex;
+    justify-content: space-between;
 }
 
 #reservationForm .setstepBtnCon4 button {
@@ -883,7 +873,6 @@ datalist {
 }
 
 #reservationForm .setstepBtnCon4 .setstepBtn1 {
-    margin-right: 500px;
     background-color: white;
     color: #236C3F;
     border: 1px solid #236C3F;
@@ -902,7 +891,7 @@ datalist {
 .reservationSuccess {
     width: 700px;
     /* background-color: red; */
-    margin: 0 auto;
+    margin: 0 0 0 514px;
     /* border: 1px solid black; */
 }
 
