@@ -111,7 +111,6 @@
 
 
 <script>
-import { useStore } from 'vuex';
 import axios from 'axios';
 import SlideView from '@/components/SlideView.vue';
 import SlideViewBanner from '@/components/SlideViewBanner.vue';
@@ -175,9 +174,6 @@ export default {
     };
   },
   computed: {
-    store() {
-      return useStore();
-    }
   },
   methods: {
     getCurrentLocation() {
