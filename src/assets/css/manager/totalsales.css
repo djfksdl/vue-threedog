@@ -8,6 +8,7 @@
     /* Flexbox 레이아웃 적용 */
     flex-direction: column;
     /* 세로 방향으로 요소 정렬 */
+    height: 1200px;
 }
 
 /* 카테고리 네비게이션 스타일 */
