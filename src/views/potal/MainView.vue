@@ -176,51 +176,51 @@ export default {
   computed: {
   },
   methods: {
-    getCurrentLocation() {
-      if (navigator.geolocation) {
-        navigator.permissions.query({ name: 'geolocation' })
-          .then(permissionStatus => {
-            if (permissionStatus.state === 'granted') {
-              navigator.geolocation.getCurrentPosition(
-                (position) => {
-                  const lat = position.coords.latitude;
-                  const lng = position.coords.longitude;
+    // getCurrentLocation() {
+    //   if (navigator.geolocation) {
+    //     navigator.permissions.query({ name: 'geolocation' })
+    //       .then(permissionStatus => {
+    //         if (permissionStatus.state === 'granted') {
+    //           navigator.geolocation.getCurrentPosition(
+    //             (position) => {
+    //               const lat = position.coords.latitude;
+    //               const lng = position.coords.longitude;
 
-                  this.coordinate.lat = lat;
-                  this.coordinate.lng = lng;
+    //               this.coordinate.lat = lat;
+    //               this.coordinate.lng = lng;
 
-                  this.createMap(); // 현재 위치로 지도 이동
-                },
-                (error) => {
-                  this.handleLocationError(error);
-                }
-              );
-            } else if (permissionStatus.state === 'prompt') {
-              navigator.geolocation.getCurrentPosition(
-                (position) => {
-                  const lat = position.coords.latitude;
-                  const lng = position.coords.longitude;
+    //               this.createMap(); // 현재 위치로 지도 이동
+    //             },
+    //             (error) => {
+    //               this.handleLocationError(error);
+    //             }
+    //           );
+    //         } else if (permissionStatus.state === 'prompt') {
+    //           navigator.geolocation.getCurrentPosition(
+    //             (position) => {
+    //               const lat = position.coords.latitude;
+    //               const lng = position.coords.longitude;
 
-                  this.coordinate.lat = lat;
-                  this.coordinate.lng = lng;
+    //               this.coordinate.lat = lat;
+    //               this.coordinate.lng = lng;
 
-                  this.createMap(); // 현재 위치로 지도 이동
-                },
-                (error) => {
-                  this.handleLocationError(error);
-                }
-              );
-            } else if (permissionStatus.state === 'denied') {
-              alert("위치 권한이 거부되었습니다. 사용자 위치를 확인할 수 없습니다.");
-            }
-          })
-          .catch(error => {
-            console.error('Error getting geolocation permission:', error);
-          });
-      } else {
-        alert('Geolocation is not supported by this browser.');
-      }
-    },
+    //               this.createMap(); // 현재 위치로 지도 이동
+    //             },
+    //             (error) => {
+    //               this.handleLocationError(error);
+    //             }
+    //           );
+    //         } else if (permissionStatus.state === 'denied') {
+    //           alert("위치 권한이 거부되었습니다. 사용자 위치를 확인할 수 없습니다.");
+    //         }
+    //       })
+    //       .catch(error => {
+    //         console.error('Error getting geolocation permission:', error);
+    //       });
+    //   } else {
+    //     alert('Geolocation is not supported by this browser.');
+    //   }
+    // },
     handleLocationError(error) {
       switch (error.code) {
         case error.PERMISSION_DENIED:
@@ -245,7 +245,7 @@ export default {
 
       axios({
         method: 'get',
-        url: `${this.store.state.apiBaseUrl}/api/mainlist`,
+        url: `${this.$store.state.apiBaseUrl}/api/mainlist`,
         headers: { "Content-Type": "application/json; charset=utf-8" },
         params: params,
         responseType: 'json'
@@ -258,7 +258,7 @@ export default {
     markList() {
       axios({
         method: 'get',
-        url: `${this.store.state.apiBaseUrl}/api/marker`,
+        url: `${this.$store.state.apiBaseUrl}/api/marker`,
         headers: { "Content-Type": "application/json; charset=utf-8" },
         responseType: 'json'
       }).then(response => {
@@ -336,7 +336,7 @@ export default {
       console.log("데이터 가져오기");
       axios({
         method: 'get',
-        url: `${this.store.state.apiBaseUrl}/api/searchlist`,
+        url: `${this.$store.state.apiBaseUrl}/api/searchlist`,
         headers: { "Content-Type": "application/json; charset=utf-8" },
         responseType: 'json'
       }).then(response => {
@@ -384,7 +384,7 @@ export default {
       console.log("리뷰", rNo, "선택함");
       axios({
         method: 'get',
-        url: `${this.store.state.apiBaseUrl}/api/mypage/getonerlist`,
+        url: `${this.$store.state.apiBaseUrl}/api/mypage/getonerlist`,
         headers: { "Content-Type": "application/json; charset=utf-8" },
         params: { rNo: rNo },
         responseType: 'json'
@@ -407,7 +407,7 @@ export default {
       console.log(rNo);
       axios({
         method: 'post',
-        url: `${this.store.state.apiBaseUrl}/api/mypage/updateview`,
+        url: `${this.$store.state.apiBaseUrl}/api/mypage/updateview`,
         headers: { "Content-Type": "application/json; charset=utf-8" },
         params: { rNo: rNo },
         responseType: 'json'
@@ -424,7 +424,7 @@ export default {
       console.log(rNo);
       axios({
         method: 'get',
-        url: `${this.store.state.apiBaseUrl}/api/mypage/getsavename`,
+        url: `${this.$store.state.apiBaseUrl}/api/mypage/getsavename`,
         headers: { "Content-Type": "application/json; charset=utf-8" },
         params: { rNo: rNo },
         responseType: 'json'
@@ -458,6 +458,8 @@ export default {
     document.removeEventListener('click', this.handleClickOutside);
   },
   created() {
+    console.log("ddddddddddddd");
+    console.log(`${this.$store.state.apiBaseUrl}`);
     this.getList();
   }
 };
