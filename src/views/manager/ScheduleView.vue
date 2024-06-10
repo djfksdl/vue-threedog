@@ -184,7 +184,8 @@ export default {
             const start = event.start.toISOString().slice(0, 19).replace('T', ' '); // ISO 8601 형식을 MySQL 형식으로 변환
 
             // 예약 완료 상태일 때 rtfinish를 1로 설정하고, 예약 가능 상태일 때는 0으로 설정
-            const rtfinish = event.isConfirmed ? 1 : 0;
+            const rtfinish = event.rtfinish || 0; // 예약 완료 상태 확인
+            //const rtfinish = event.isConfirmed ? 1 : 0;
 
 
             // 서버에 변경된 일정 정보를 업데이트하는 API 호출
@@ -354,6 +355,13 @@ export default {
                 title: "일정",
                 html: "스케줄: " + eventTitle + "<br/>일시: " + eventStart,
             });
+            // const eventStart = event.start ? new Date(event.start) : '';
+
+            // Swal.fire({
+            //     title: "일정",
+            //     html: "스케줄: " + eventTitle + "<br/>일시: " + eventStart,
+            // });
+
 
             this.$store.commit("setSelectedSchedule", event);
 

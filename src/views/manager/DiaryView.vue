@@ -683,38 +683,6 @@ export default {
                 }
             }
         },
-        // // 카카오톡 알림 전송
-        // kakaosendNotification() {
-        //     // 알림장을 공유할 수 있는 URL 생성
-        //     const diaryUrl = `http://localhost:8080/mydiary/${this.rsNo}`;
-
-        //     // URL을 클립보드에 복사
-        //     this.copyToClipboard(diaryUrl);
-
-        //     // 카카오톡 앱으로 메시지 보내기 안내
-        //     Swal.fire({
-        //         title: '카카오톡으로 알림장을 공유했습니다!',
-        //         text: '카카오톡 앱을 열어서 메시지를 보낼 수 있습니다.\nURL이 복사되었습니다.',
-        //         icon: 'success',
-        //         confirmButtonText: '확인'
-        //     });
-
-        //     // 모달을 닫습니다.
-        //     this.showModal2 = false;
-        // },
-
-        // // 클립보드에 복사하는 함수
-        // copyToClipboard(text) {
-        //     const textarea = document.createElement('textarea');
-        //     textarea.value = text;
-        //     textarea.setAttribute('readonly', '');
-        //     textarea.style.position = 'absolute';
-        //     textarea.style.left = '-9999px';
-        //     document.body.appendChild(textarea);
-        //     textarea.select();
-        //     document.execCommand('copy');
-        //     document.body.removeChild(textarea);
-        // },
         openModal() {
             this.showModal2 = true;
             // 여기에서 알림을 발송하는 함수를 호출
