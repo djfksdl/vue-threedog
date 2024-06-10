@@ -13,7 +13,7 @@
                     <li><router-link to="/search">후기</router-link></li>
                     <li><router-link to="/announcements">공지사항</router-link></li>
                 </ul>
-
+<!-- 
                 <div class="popRank" v-if="popList.length > 0">
                     <ul id="best_search" @mouseenter="stopCarousel" @mouseleave="startCarousel">
                         <li v-for="(popVo, i) in popList" :key="i">
@@ -27,7 +27,7 @@
                             </dl>
                         </li>
                     </ul>
-                </div>
+                </div> -->
 
                 <!-- 오른쪽 메뉴 -->
                 <div class="user-options">
@@ -70,7 +70,7 @@
     </div>
 </template>
 
-<script setup>
+<!-- <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 // 상태 관리
@@ -113,7 +113,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   stopCarousel();
 });
-</script>
+</script> -->
 
 <script>
 import "@/assets/css/headerFooter/aheader.css"
