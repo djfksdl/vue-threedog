@@ -432,7 +432,7 @@ export default {
                 return;
             }
             // saveNotification 메서드 호출 시 formData를 전달합니다.
-            this.saveNotification(formData);
+            //this.saveNotification(formData);
         },
         // 사진 삭제 기능
         removePhoto(index) {
@@ -494,8 +494,6 @@ export default {
             this.attachedPhotos.forEach(photo => {
                 formData.append('file', photo);
             });
-
-
 
             // 폼데이터 화면에 찍는 방법
             function logFormData(formData) {

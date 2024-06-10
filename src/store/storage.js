@@ -14,6 +14,7 @@ export default createStore({
             auth: null,
             groomingRecord: null, // groomingRecord 속성 추가
             dogImg: '' // 반려견 이미지 URL 저장
+            
 
         };
     },
