@@ -257,7 +257,7 @@
                         </div>
                         <!-- 후기 슬라이드 -->
                         <div class="eReviewSlide">
-                            <img src="@/assets/images/spy.jpg">
+                            <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${shopInfo.logo}`">
                             <!-- 후기 슬라이드 내용 -->
                             <div class="eReviewSlideContentBox">
                                 <div class="eReviewSlideContentBoxTop">
@@ -409,6 +409,7 @@ export default {
                 lat: 0,
                 lng: 0,
             },
+            oneReview:{}
         }
     },
     computed: {
@@ -473,6 +474,12 @@ export default {
                 console.log(response);
                 this.shopInfo = response.data.apiData.shopInfo;
                 this.priceList = response.data.apiData.pList;
+                this.oneReview = response.data.apiData.oneReview;
+
+                console.log("여기 확인하라!!!!!!!!!!");
+                console.log(this.oneReview);
+
+
                 // this.slideList = response.data.apiData.sList;
 
                 // console.log(this.shopInfo.logo);
