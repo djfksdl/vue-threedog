@@ -122,7 +122,7 @@ export default {
                 );
 
                 // 발송이 완료된 경우 해당 이벤트의 색상을 변경
-                const backgroundColor = '#FFFFFF';// 발송이 완료된 경우 회색 배경 색상
+                const backgroundColor = reservation.sent ? '#CCCCCC' : '#FFFFFF'; // 발송이 완료된 경우 회색 배경 색상
 
                 return {
                     title: `${reservation.dogName}, ${reservation.beauty}, ${reservation.kind}, ${reservation.expectedPrice}원`,
@@ -191,7 +191,7 @@ export default {
             axios({
                 method: 'put',
                 url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/date`,
-                data: { rsNo: rsNo, rtDate: start,rtfinish: rtfinish  }, // 데이터 전송
+                data: { rsNo: rsNo, rtDate: start, rtfinish: rtfinish }, // 데이터 전송
                 headers: { "Content-Type": "application/json; charset=utf-8" },
                 responseType: 'json'
             }).then(response => {
@@ -253,7 +253,7 @@ export default {
             axios({
                 method: 'put',
                 url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/time`,
-                data: { rsNo: rsNo, rtTime: startTime},
+                data: { rsNo: rsNo, rtTime: startTime },
                 headers: { "Content-Type": "application/json; charset=utf-8" },
                 responseType: 'json'
             }).then(() => {
