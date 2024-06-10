@@ -540,6 +540,8 @@
                 console.log(formData.get("logoFile"));
                 console.log(formData.get("subTitle"));
                 console.log(formData.get("bTime"));
+                console.log("isChange");
+                console.log(formData.get("isChange"));
 
                 // console.log(formData.get("slideImgs"));
                 // console.log(formData.get("cutImgs"));
@@ -640,6 +642,8 @@
                 formData.append("dName", this.shopInfo.dName);
                 formData.append("job", this.shopInfo.job);
                 formData.append("introduce", this.shopInfo.introduce);
+                // 위치 상태 추가
+                formData.append("isChange", this.shopInfo.isChange);
 
                 // ********** 단일 이미지 파일 **********
                 //파일은 불러와도 허구의 정보이다. 실제 파일이 들어가는게 아니기떄문에 파일을 수정안하고 넣으려면 안들어갈경우를 따로 따져준다. 
@@ -731,6 +735,8 @@
                 console.log(formData.get("job"));
                 console.log(formData.get("introduce"));
                 console.log(formData.get("dProfileFile"));
+                console.log("isChange");
+                console.log(formData.get("isChange"));
             
 
                 axios({
