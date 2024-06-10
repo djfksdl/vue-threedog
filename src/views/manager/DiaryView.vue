@@ -277,6 +277,8 @@ export default {
         } else {
             console.log("rsNo 값이나 bNo 값이 null입니다.");
         }
+        // 페이지 로드 시 스케줄 알림 상태 확인
+        this.checkScheduleStatus();
 
     },
 
@@ -610,7 +612,14 @@ export default {
             //this.updateGroomingRecord(this.rsNo, this.formData);
 
             // 푸시 알림 보내기
-            this.sendPushNotification(this.rsNo);
+            if (this.rsNo) {
+                this.sendPushNotification(this.rsNo);
+            } else {
+                console.error('rsNo가 없습니다.');
+            }
+
+            // 푸시 알림 보내기
+            // this.sendPushNotification(this.rsNo);
 
             // 모든 데이터가 저장되었음을 알림
             Swal.fire({
@@ -622,6 +631,8 @@ export default {
                 // 예약 스케줄 화면으로 이동하고 알림 표시 색상 변경
                 this.$router.push({ name: 'schedule' });
                 this.scheduleNotificationStatus = 'completed';
+                // 푸시 알림 전송이 완료되면 색상을 변경합니다.
+                this.changeNotificationStatus();
             });
         },
 
@@ -652,12 +663,33 @@ export default {
                 console.log(error);
             });
         },
+        // 푸쉬가 완료된 예약 스케줄인지 확인하고, 스케줄의 색상을 변경하는 메서드
+        checkScheduleStatus() {
+            if (this.scheduleNotificationStatus === 'completed') {
+                // 예약 스케줄이 완료된 경우 색상을 변경합니다.
+                // 예약 스케줄의 HTML 요소에 접근하여 스타일을 변경하는 코드를 여기에 추가합니다.
+            }
+        },
+        // 푸시 알림이 완료되면 색상을 변경하는 함수
+        changeNotificationStatus() {
+            // 푸시 알림이 완료된 경우
+            if (this.selectedSchedule && this.selectedSchedule.extendedProps.pushCompleted) {
+                // 예약 정보를 수정하지 못하도록 입력 상태를 비활성화합니다.
+                this.isReadOnly = true;
+                // 완료된 푸시 알림의 색상을 변경합니다.
+                const eventElement = document.querySelector(`[data-event-id="${this.selectedSchedule.id}"]`);
+                if (eventElement) {
+                    eventElement.style.backgroundColor = '#e6e6e6';
+                }
+            }
+        },
+
 
         // 카카오톡 알림 전송
         kakaosendNotification() {
             Swal.fire({
                 title: '카카오톡 공유하기',
-                text: 'Notification sent via KakaoTalk!',
+                text: 'http://localhost:8080/mydiary!',
                 icon: 'success',
                 confirmButtonText: '확인'
             });
@@ -666,6 +698,7 @@ export default {
             this.showModal2 = true;
             // 여기에서 알림을 발송하는 함수를 호출
         },
+        
         // 날짜 포맷팅
         formatDate(date) {
             const options = { year: 'numeric', month: 'long', day: 'numeric' };

@@ -26,6 +26,7 @@ import MyReview from '@/views/mypage/MyReview.vue'
 import PointView from '@/views/mypage/PointView.vue'
 
 
+
 const routes = [
   {
     path: '/',

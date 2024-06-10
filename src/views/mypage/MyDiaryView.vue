@@ -30,7 +30,7 @@
                                 </div>
                                 <div class="mypetImgSlider">
                                     <p><strong> ◆ 미용 후 이미지</strong></p>
-                                    <img :src="entry.afterImg" alt="After Grooming Image">
+                                    <img :src="entry.afterImgUrl" alt="After Grooming Image">
                                 </div>
                             </div>
                             <div class="context">
@@ -111,6 +111,14 @@ export default {
                 console.log("============================================");
                 console.log('다이어리 불러오기 성공:', response.data.apiData);
                 this.diaryEntries = response.data.apiData; // 응답 데이터를 diaryEntries에 저장
+                this.diaryEntries = response.data.apiData.map(entry => {
+                return {
+                    ...entry,
+                    afterImgUrl: `${this.$store.state.apiBaseUrl}/upload/${entry.saveName}`
+                };
+            });
+            console.log("diaryEntries:", this.diaryEntries);
+
             }).catch(error => {
                 console.error('다이어리 불러오기 에러:', error);
             });
@@ -125,8 +133,8 @@ export default {
                 this.currentIndex--;
             }
         },
-       // 이용일자만 표시하는 메서드
-       getUsageDate(rtDate) {
+        // 이용일자만 표시하는 메서드
+        getUsageDate(rtDate) {
             // 예시: rtDate가 'YYYY년 MM월 DD일 HH:mm:ss' 형식일 경우
             const parts = rtDate.split(' '); // 공백을 기준으로 분할
             return parts[0]; // YYYY년 MM월 DD일 부분만 반환
