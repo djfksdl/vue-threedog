@@ -3,8 +3,8 @@
 /* =========================마이페이지 메인======================= */
 .mypageContainer{}
 .mypageContainer .container{
-    width: 948px;
-    margin: 0 0 0 550px;
+    width: 880px;
+    margin: 0 0 0 615px;
 }
 
 /* ========= 마일리지 내역 ========= */
