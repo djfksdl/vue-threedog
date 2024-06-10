@@ -25,7 +25,7 @@
     margin: 20px 10px 10px 10px;
     padding: 10px 20px;
     /* 내부 여백 */
-    border: 2px solid hsl(37, 91%, 67%);
+    border: 2px solid #153448;
     /* 연한 노란색 테두리 */
     border-radius: 10px;
     /* 테두리 둥글게 */
@@ -36,7 +36,7 @@
 }
 
 .category-nav button.active {
-    background-color: hsl(37, 91%, 67%);
+    background-color: #153448;
     /* 활성화된 버튼 배경색 */
     color: white;
     /* 활성화된 버튼 글자색 */
@@ -52,7 +52,7 @@
     /* 너비 설정 */
     padding: 20px;
     /* 내부 여백 */
-    border: 5px solid hsl(37, 91%, 67%);
+    border: 5px solid #153448;
     /* 연한 노란색으로 변경 */
     border-radius: 20px;
     /* 테두리 둥글게 설정 */
