@@ -397,8 +397,9 @@
 
 .view-count {
   font-size: 0.6em;
-  color: #666;
+  color: black;
   margin-right: 20px;
+  font-weight: bold;
 }
 
 .modal-container-search {
