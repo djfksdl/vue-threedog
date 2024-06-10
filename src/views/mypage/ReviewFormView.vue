@@ -88,7 +88,7 @@ export default {
                 star: 0, // 별점
                 rContent: "", // 후기내용
                 rNo: 0,
-                bNo: 1, // 사업자번호
+                bNo: this.$route.params.bNo, // 사업자번호
                 uNo: this.$store.state.authUser.uNo,
                 rDate: "",
                 file: [],

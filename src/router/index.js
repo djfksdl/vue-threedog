@@ -69,7 +69,7 @@ const routes = [
     component: ManagerSignView
   },
   {
-    path: '/reviewform/:rsNo',
+    path: '/reviewform/:rsNo/:bNo',
     name: 'reviewform',
     component: ReviewFormView
   },
