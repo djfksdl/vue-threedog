@@ -79,9 +79,9 @@
                         </div>
 
                         <!-- 서버 연결한 뒤에 다시 해 보기 로봇 -->
-                        <div id="google_recaptha">
+                        <!-- <div id="google_recaptha">
                             <div class="g-recaptcha" data-sitekey="6LfZqNspAAAAAAze3c3G_KHi67Z2gKiF0WM58CG4"></div>
-                        </div>
+                        </div> -->
                         <!-- 서버 연결한 뒤에 다시 해 보기 로봇 -->
 
                         <button type="submit" class="signupBtn">회원가입</button>
@@ -262,10 +262,10 @@ export default {
         
     },
     mounted(){
-        const script = document.createElement('script');
-        script.src = 'https://www.google.com/recaptcha/api.js';
-        script.async = true;
-        document.getElementById('google_recaptha').appendChild(script);
+        // const script = document.createElement('script');
+        // script.src = 'https://www.google.com/recaptcha/api.js';
+        // script.async = true;
+        // document.getElementById('google_recaptha').appendChild(script);
     }
 };
 </script>
