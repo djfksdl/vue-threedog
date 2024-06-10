@@ -36,7 +36,7 @@
         <div class="rank-item" @mouseenter="hoverReview(i)" @mouseleave="leaveReview(i)" v-bind:key="i"
           v-for="(storeVo, i) in storeList">
           <router-link :to="`/edit/${storeVo.bNo}`">
-            <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${storeVo.saveName}`">
+            <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${storeVo.logo}`">
             <div class="hover-overlay-store" style="width: 200px;">
               <button>홈페이지 가기</button>
             </div>
@@ -120,6 +120,7 @@ import { useStore } from 'vuex';
 import axios from 'axios';
 
 const store = useStore();
+const apiBaseUrl = ref(store.state.apiBaseUrl); 
 
 const coordinate = ref({
   lat: 37.5535,
@@ -265,7 +266,7 @@ const createMap = () => {
           </div>
           <div class="body">
             <div class="img">
-              <img v-bind:src="" width="73" height="70">
+              <img v-bind:src="${apiBaseUrl.value}/upload/${store.logo}" width="73" height="70">
             </div>
             <div class="desc">
               <div class="ellipsis">${store.bAddress}</div>
