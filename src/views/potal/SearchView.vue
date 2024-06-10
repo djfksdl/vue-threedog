@@ -479,8 +479,8 @@ export default {
       if (!rContent) {
         return '';
       }
-      if (rContent.length > 80) {
-        return rContent.substring(0, 80) + '...';
+      if (rContent.length > 50) {
+        return rContent.substring(0, 50) + '...';
       } else {
         return rContent;
       }

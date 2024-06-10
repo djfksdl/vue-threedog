@@ -59,11 +59,14 @@
           <div class="reviewBoardDetailContainer-search">
             <!-- Display review details in the modal -->
             <div class="reviewDetailImg-search">
+              <div class="modal-btn-search-close">
+                <button class="close-x" @click="modalCheck = false">x</button>
+              </div>
               <Swiper :slides-per-view="1" style="width: 350px;">
                 <SwiperSlide v-for="(reviewVo, i) in reviewList2" :key="i">
                   <div class="reviewDetailImg">
                     <img :src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`"
-                      style="width: 350px; height: 350px;">
+                      style="width: 350px; height: 450px;">
                   </div>
                 </SwiperSlide>
               </Swiper>
@@ -71,12 +74,12 @@
             <div class="modal-content" style="padding-left: 50px;">
               <div class="userId"><strong>{{ reviewVo2.uId }}</strong>님</div>
               <div style="display: flex;">
-                <div class="cutInfor">{{ reviewVo2.dogName }} ({{ reviewVo2.weight }}kg) &nbsp; </div>
+                <div class="cutInfor"><strong>{{ reviewVo2.dogName }}</strong> ({{ reviewVo2.weight }}kg) &nbsp; </div>
                 <div class="date">{{ formatDate(reviewVo2.rDate) }}</div>
               </div>
               <br>
               <div style="display: flex;">
-                <div class="price">{{ reviewVo2.expectedPrice.toLocaleString() }}원&nbsp;</div>
+                <div class="price"><strong>{{ reviewVo2.expectedPrice.toLocaleString() }}</strong>원&nbsp;</div>
                 <div class="star" style="margin-top: 3px;">
                   <!-- Full stars -->
                   <span v-for="i in Math.floor(reviewVo2.star)" :key="i"><img src="@/assets/images/star_yellow.jpg"
@@ -94,7 +97,6 @@
             <router-link :to="`/edit/${reviewVo2.bNo}`">
               <button style="width: 200px; margin-right: 10px;">매장 홈페이지 가기</button>
             </router-link>
-            <button @click="modalCheck = false" style="width: 200px;">닫기</button>
           </div>
         </div>
       </div>
