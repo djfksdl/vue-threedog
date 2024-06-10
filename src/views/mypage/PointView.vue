@@ -19,24 +19,21 @@
                     <!-- 왼쪽 기간 -->
                     <div class="pscLeftContainer">
                         <!-- 기간 선택 버튼 -->
-                        <div class="searchByTermBtns">
-                            <button :class="{ active: activeButtonIndex === 0 }"
-                                @click="setActiveButton(0)">1개월</button>
-                            <button :class="{ active: activeButtonIndex === 1 }"
-                                @click="setActiveButton(1)">3개월</button>
-                            <button :class="{ active: activeButtonIndex === 2 }"
-                                @click="setActiveButton(2)">6개월</button>
-                            <button :class="{ active: activeButtonIndex === 3 }"
-                                @click="setActiveButton(3)">12개월</button>
+                        <div>
+                            <button v-for="(button, index) in buttons" :key="button" @click="selectButton(index)"
+                                :class="{ 'selected': selectedButton === index }">
+                                {{ button }}
+                            </button>
                         </div>
-
                         <!-- 기간 입력창 -->
                         <div class="searchByTermInputs">
-                            <input type="date">~<input type="date">
+                            <input type="date" v-model="startDate" value="startDate">~<input type="date"
+                                v-model="endDate" value="endDate">
+                            <!-- {{ startDate }} ~ {{ endDate }} -->
                         </div>
                     </div>
                     <!-- 오른쪽 조회버튼 -->
-                    <button class="pscRightContainer">
+                    <button class="pscRightContainer" @click="getDataByDateRange">
                         조회
                     </button>
                 </div>
@@ -97,7 +94,11 @@ export default {
                 usePoint: 0,
             },
             userList: [],
-            activeButtonIndex: null, // 활성화된 버튼의 인덱스를 저장
+            selectedButton: null, // 활성화된 버튼의 인덱스를 저장
+            endDate: "",
+            startDate: "",
+            buttons: ['1개월', '3개월', '6개월', '12개월'],
+
         };
     },
 
@@ -114,12 +115,40 @@ export default {
         },
     },
     methods: {
-        setActiveButton(index) {
-            if (this.activeButtonIndex === index) {
-                this.activeButtonIndex = null; // 이미 선택된 버튼을 다시 누르면 해제
-            } else {
-                this.activeButtonIndex = index;
+        // 개월버튼
+        selectButton(index) {
+            // Set endDate to today's date
+            this.endDate = new Date().toISOString().slice(0, 10);
+
+            // Calculate startDate based on the selected button
+            const today = new Date();
+            let startDate = new Date();
+
+            switch (index) {
+                case 0: // 1개월
+                    startDate.setMonth(today.getMonth() - 1);
+                    break;
+                case 1: // 3개월
+                    startDate.setMonth(today.getMonth() - 3);
+                    break;
+                case 2: // 6개월
+                    startDate.setMonth(today.getMonth() - 6);
+                    break;
+                case 3: // 12개월
+                    startDate.setMonth(today.getMonth() - 12);
+                    break;
+                default:
+                    break;
             }
+
+            // Set startDate
+            this.startDate = startDate.toISOString().slice(0, 10);
+
+            // Update selectedButton
+            this.selectedButton = index;
+
+            console.log(this.endDate);
+            console.log(this.startDate);
         },
 
         // 포인트내역 불러오기
@@ -157,7 +186,31 @@ export default {
             }).catch(error => {
                 console.log(error);
             });
-        }
+        },
+        //조회
+        getDataByDateRange() {
+            // 선택된 시작일(startDate)과 종료일(endDate)을 이용하여 데이터를 가져오는 로직을 작성합니다.
+            // const startDate = this.startDate;
+            // const endDate = this.endDate;
+            const uNo = this.$store.state.authUser.uNo;
+            console.log("Selected Date Range:", this.startDate, "~", this.endDate);
+            console.log(uNo);
+
+            axios({
+                method: 'get',  //put,post,delete
+                url: `${this.$store.state.apiBaseUrl}/api/mypage/getdatabydaterange`,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                params: { uNo: uNo, startDate: this.startDate, endDate: this.endDate },
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log("포인트 불러오기 성공");
+                console.log(response.data.apiData); //수신데이타
+                this.userList = response.data.apiData;
+            }).catch(error => {
+                console.log(error);
+            });
+        },
+
     },
     created() {
         this.getPoint();
@@ -166,20 +219,25 @@ export default {
 };
 </script>
 
-<style scoped>
-.pointContainer .searchByTermBtns button {
-    background-color: #e0e0e0;
-    /* 기본 색상 */
-    border: none;
-    padding: 10px 20px;
-    margin: 5px;
+<style>
+.pointContainer .container5 .pointSearchContainer .pscLeftContainer button {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    margin-right: 10px;
     cursor: pointer;
-    color: black;
+    margin-bottom: 30px
 }
 
-.pointContainer .searchByTermBtns button.active {
-    background-color: green;
-    /* 활성 상태 색상 */
+.pointContainer .container5 .pointSearchContainer .pscLeftContainer .selected {
+    background-color: #236C3F;
+    /* 선택한 색으로 변경할 수 있습니다. */
     color: white;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    /* margin-right: 10px; */
+    cursor: pointer;
 }
 </style>

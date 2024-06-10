@@ -57,14 +57,14 @@
 .pointContainer .container5 .pointSearchContainer .pscLeftContainer .searchByTermBtns{
     margin-bottom: 30px;
 }
-.pointContainer .container5 .pointSearchContainer .pscLeftContainer .searchByTermBtns button{
+/* .pointContainer .container5 .pointSearchContainer .pscLeftContainer .searchByTermBtns button{
     padding: 5px 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #fff;
     margin-right: 10px;
     cursor: pointer;
-}
+} */
 /* 기간 입력창 */
 .pointContainer .container5 .pointSearchContainer .pscLeftContainer .searchByTermInputs{}
 .pointContainer .container5 .pointSearchContainer .pscLeftContainer .searchByTermInputs input{

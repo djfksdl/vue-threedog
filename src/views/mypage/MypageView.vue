@@ -17,7 +17,7 @@
                     <div class="mpupContents">
                         <div>
                             <p>사용 가능한 마일리지:</p>
-                            <p>{{ pointVo.uPoint }} p</p>
+                            <p>{{ pointVo.uPoint.toLocaleString() }} p</p>
                         </div>
                     </div>
                 </div>
@@ -150,7 +150,7 @@
                         </div>
                     </div>
 
-                    <div class="mpdcContents" v-if="reserveVo2?.attitude">
+                    <div class="mpdcContents" v-else>
                         알림장이 없습니다.
                     </div>
                 </div>
