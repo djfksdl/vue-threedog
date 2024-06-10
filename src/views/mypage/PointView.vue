@@ -4,7 +4,6 @@
         <SideBar />
         <div class="pointContainer">
             <div class="container5">
-
                 <!-- 사용가능한 마일리지 -->
                 <div class="useablePointContainer">
                     <div class="upcTop">
@@ -21,11 +20,16 @@
                     <div class="pscLeftContainer">
                         <!-- 기간 선택 버튼 -->
                         <div class="searchByTermBtns">
-                            <button>1개월</button>
-                            <button>3개월</button>
-                            <button>6개월</button>
-                            <button>12개월</button>
+                            <button :class="{ active: activeButtonIndex === 0 }"
+                                @click="setActiveButton(0)">1개월</button>
+                            <button :class="{ active: activeButtonIndex === 1 }"
+                                @click="setActiveButton(1)">3개월</button>
+                            <button :class="{ active: activeButtonIndex === 2 }"
+                                @click="setActiveButton(2)">6개월</button>
+                            <button :class="{ active: activeButtonIndex === 3 }"
+                                @click="setActiveButton(3)">12개월</button>
                         </div>
+
                         <!-- 기간 입력창 -->
                         <div class="searchByTermInputs">
                             <input type="date">~<input type="date">
@@ -49,27 +53,22 @@
                         </thead>
                         <tbody>
                             <tr v-bind:key="i" v-for="(userVo, i) in userList">
-                                <td>{{userVo.pDate}}</td>
-                                <td v-if="userVo.pDiv==true">{{userVo.title}} {{ userVo.usePoint }} P 리뷰 사용</td>
-                                <td v-if="userVo.pDiv==false">{{userVo.title}} {{ userVo.usePoint }} p 리뷰 적립</td>
-                                <td v-if="userVo.pDiv==true">사용</td>
-                                <td v-if="userVo.pDiv==false">적립</td>
+                                <td>{{ formatDate(userVo.pDate) }}</td>
+                                <td v-if="userVo.pDiv"> {{ userVo.usePoint }} P 리뷰 사용</td>
+                                <td v-else> {{ userVo.usePoint }} P 리뷰 적립</td>
+                                <td v-if="userVo.pDiv">사용</td>
+                                <td v-else>적립</td>
                             </tr>
-                            <!-- <tr>
-                                <td>2024-06-09</td>
-                                <td>깔끔하개 예약금</td>
-                                <td>사용</td>
-                            </tr> -->
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
         <TopButton />
         <AppFooter />
     </div>
 </template>
+
 <script>
 import AppHeader from "@/components/AppHeader.vue"
 import AppFooter from "@/components/AppFooter.vue"
@@ -95,12 +94,34 @@ export default {
                 uPoint: 0,
                 bNo: 0,
                 rtFinish: false,
-                usePoint:0,
+                usePoint: 0,
             },
-            userList:[],
+            userList: [],
+            activeButtonIndex: null, // 활성화된 버튼의 인덱스를 저장
         };
     },
+
+    computed: {
+        // 날짜 포맷팅 함수
+        formatDate() {
+            return (dateString) => {
+                const date = new Date(dateString);
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            };
+        },
+    },
     methods: {
+        setActiveButton(index) {
+            if (this.activeButtonIndex === index) {
+                this.activeButtonIndex = null; // 이미 선택된 버튼을 다시 누르면 해제
+            } else {
+                this.activeButtonIndex = index;
+            }
+        },
+
         // 포인트내역 불러오기
         getPoint() {
             console.log("포인트 내역 가져오기");
@@ -115,14 +136,13 @@ export default {
                 console.log("포인트 불러오기 성공");
                 console.log(response.data.apiData); //수신데이타
                 this.userVo = response.data.apiData;
-
             }).catch(error => {
                 console.log(error);
             });
         },
 
         // 전체내역
-        getPointList(){
+        getPointList() {
             console.log("포인트리스트 가져오기");
             axios({
                 method: 'get',  //put,post,delete
@@ -134,15 +154,10 @@ export default {
                 console.log("포인트 불러오기 성공");
                 console.log(response.data.apiData); //수신데이타
                 this.userList = response.data.apiData;
-
             }).catch(error => {
                 console.log(error);
             });
         }
-
-        // 조회 버튼 눌렀을때
-
-
     },
     created() {
         this.getPoint();
@@ -150,4 +165,21 @@ export default {
     }
 };
 </script>
-<style></style>
+
+<style scoped>
+.pointContainer .searchByTermBtns button {
+    background-color: #e0e0e0;
+    /* 기본 색상 */
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    color: black;
+}
+
+.pointContainer .searchByTermBtns button.active {
+    background-color: green;
+    /* 활성 상태 색상 */
+    color: white;
+}
+</style>

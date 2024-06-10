@@ -17,7 +17,7 @@
                     <div class="mpupContents">
                         <div>
                             <p>사용 가능한 마일리지:</p>
-                            <p>{{ formattedUsePoint }} p</p>
+                            <p>{{ pointVo.uPoint }} p</p>
                         </div>
                     </div>
                 </div>
@@ -150,7 +150,7 @@
                         </div>
                     </div>
 
-                    <div class="mpdcContents" v-if="reserveVo2?.attitude == null">
+                    <div class="mpdcContents" v-if="reserveVo2?.attitude">
                         알림장이 없습니다.
                     </div>
                 </div>
@@ -180,7 +180,7 @@ export default {
         return {
             pointVo: {
                 uNo: this.$store.state.authUser.uNo,
-                usePoint: 0,
+                uPoint: 0,
             },
 
             reserveVo: {
@@ -263,8 +263,8 @@ export default {
             return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
         },
         formattedUsePoint() {
-        return (this.pointVo?.usePoint || 0).toLocaleString();
-    }
+            return (this.pointVo?.uPoint || 0).toLocaleString();
+        }
     },
     methods: {
         getPoint() {
@@ -280,6 +280,7 @@ export default {
                 console.log("포인트 불러오기 성공");
                 console.log(response.data.apiData); //수신데이타
                 this.pointVo = response.data.apiData;
+                console.log(this.pointVo);
 
             }).catch(error => {
                 console.log(error);
