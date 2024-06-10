@@ -4,8 +4,8 @@
 }
 
 .pointContainer .container5{
-    width: 1100px;
-    margin: 0 0 0 550px;
+    width: 880px;
+    margin: 0 0 0 645px;
 }
 
 /* 사용가능한 마일리지 */
@@ -17,8 +17,10 @@
 }
 
 .pointContainer .container5 .useablePointContainer .upcTop{}
-.pointContainer .container5 .useablePointContainer .upcTop h2{
+.pointContainer .container5 .useablePointContainer .upcTop h1{
     padding-bottom: 10px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #666;
 }
 .pointContainer .container5 .useablePointContainer .upcTop > div{
     border: 1px solid #237140;
@@ -48,7 +50,7 @@
 }
 /* 왼쪽 기간 */
 .pointContainer .container5 .pointSearchContainer .pscLeftContainer{
-    width: 90%;
+    width: 87%;
     padding: 30px;
     background-color: #fafafa;
     border-radius: 10px 0 0 10px;
@@ -80,7 +82,7 @@
 
 /* 오른쪽 조회버튼 */
 .pointContainer .container5 .pointSearchContainer .pscRightContainer{
-    width: 10%;
+    width: 13%;
     cursor: pointer;
     border: none;
     background-color: #237140;

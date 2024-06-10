@@ -3,7 +3,7 @@
         <!-- 예약버튼 -->
         <router-link to="#" class="toReserveFrom" v-on:click="goReserve" :class="{ 'show': showButton }">
             <!-- :class(디렉티브) :showButton이 true일때 show를 추가하고 flase일때는 show클래스를 제거 -->
-            <div class="goReForm">예약<br>하기</div>
+            <div class="goReForm"><img src="@/assets/images/calendar.png"></div>
         </router-link>
     </div>
 </template>
@@ -66,4 +66,8 @@ export default {
 };
 </script>
 <style>
+.toReserveFrom .goReForm >img{
+    width: 40px;
+    margin-top: 6px;
+}
 </style>

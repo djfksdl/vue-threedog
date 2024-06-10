@@ -7,7 +7,7 @@
                 <!-- 사용가능한 마일리지 -->
                 <div class="useablePointContainer">
                     <div class="upcTop">
-                        <h2>사용가능한 마일리지</h2>
+                        <h1>포인트 내역</h1>
                         <div>
                             <p>사용 가능한 마일리지 : <span>{{ userVo.uPoint.toLocaleString() }}P</span></p>
                         </div>
