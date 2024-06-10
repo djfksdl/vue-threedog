@@ -114,17 +114,202 @@
   </div>
 </template>
 
+<script setup>
+import { ref, onMounted } from 'vue';
+import { useStore } from 'vuex';
+import axios from 'axios';
+
+const store = useStore();
+
+const coordinate = ref({
+  lat: 37.5535,
+  lng: 126.9715
+});
+
+const storeList = ref([]);
+const addList = ref([]);
+const map = ref(null);
+const overlays = ref([]);
+
+window.closeOverlay = () => {
+  overlays.value.forEach(o => o.overlay.setMap(null));
+};
+
+const getCurrentLocation = () => {
+  if (navigator.geolocation) {
+    navigator.permissions.query({ name: 'geolocation' })
+      .then(permissionStatus => {
+        if (permissionStatus.state === 'granted') {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const lat = position.coords.latitude;
+              const lng = position.coords.longitude;
+
+              coordinate.value.lat = lat;
+              coordinate.value.lng = lng;
+
+              createMap(); // 현재 위치로 지도 이동
+            },
+            (error) => {
+              handleLocationError(error);
+            }
+          );
+        } else if (permissionStatus.state === 'prompt') {
+          // 위치 권한 요청이 아직 사용자에게 승인되지 않은 경우
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const lat = position.coords.latitude;
+              const lng = position.coords.longitude;
+
+              coordinate.value.lat = lat;
+              coordinate.value.lng = lng;
+
+              createMap(); // 현재 위치로 지도 이동
+            },
+            (error) => {
+              handleLocationError(error);
+            }
+          );
+        } else if (permissionStatus.state === 'denied') {
+          alert("위치 권한이 거부되었습니다. 사용자 위치를 확인할 수 없습니다.");
+        }
+      })
+      .catch(error => {
+        console.error('Error getting geolocation permission:', error);
+      });
+  } else {
+    alert('Geolocation is not supported by this browser.');
+  }
+};
+
+
+const handleLocationError = (error) => {
+  switch (error.code) {
+    case error.PERMISSION_DENIED:
+      alert("사용자가 Geolocation 요청을 거부했습니다.");
+      break;
+    case error.POSITION_UNAVAILABLE:
+      alert("위치 정보를 사용할 수 없습니다.");
+      break;
+    case error.TIMEOUT:
+      alert("위치 정보를 가져오는 요청이 시간 초과되었습니다.");
+      break;
+    case error.UNKNOWN_ERROR:
+      alert("알 수 없는 오류가 발생했습니다.");
+      break;
+  }
+};
+
+const mainList = () => {
+  const params = {
+    lat: coordinate.value.lat,
+    lng: coordinate.value.lng,
+  };
+
+  axios({
+    method: 'get',
+    url: `${store.state.apiBaseUrl}/api/mainlist`,
+    headers: { "Content-Type": "application/json; charset=utf-8" },
+    params: params,
+    responseType: 'json'
+  }).then(response => {
+    storeList.value = response.data.apiData;
+  }).catch(error => {
+    console.log(error);
+  });
+};
+
+const markList = () => {
+  axios({
+    method: 'get',
+    url: `${store.state.apiBaseUrl}/api/marker`,
+    headers: { "Content-Type": "application/json; charset=utf-8" },
+    responseType: 'json'
+  }).then(response => {
+    addList.value = response.data.apiData;
+    createMap();
+  }).catch(error => {
+    console.log(error);
+  });
+};
+
+const createMap = () => {
+  if (!window.kakao) {
+    console.error("Kakao map library not loaded.");
+    return;
+  }
+
+  if (!map.value) {
+    map.value = new window.kakao.maps.Map(document.querySelector("#map-main"), {
+      center: new window.kakao.maps.LatLng(coordinate.value.lat, coordinate.value.lng),
+      level: 3
+    });
+  } else {
+    const newCenter = new window.kakao.maps.LatLng(coordinate.value.lat, coordinate.value.lng);
+    map.value.setCenter(newCenter);
+  }
+
+  addList.value.forEach(store => {
+    const markerPosition = new window.kakao.maps.LatLng(store.latitude, store.longitude);
+    const marker = new window.kakao.maps.Marker({
+      position: markerPosition
+    });
+
+    marker.setMap(map.value);
+
+    const content = `
+      <div class="map-wrap">
+        <div class="info">
+          <div class="title">${store.title}
+            <div class="close" onclick="closeOverlay()" title="닫기"></div>
+          </div>
+          <div class="body">
+            <div class="img">
+              <img v-bind:src="" width="73" height="70">
+            </div>
+            <div class="desc">
+              <div class="ellipsis">${store.bAddress}</div>
+              <div class="jibun ellipsis">${store.bdAddress}</div>
+              <div><a href="" target="_blank" class="link">홈페이지</a></div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+
+    const overlay = new window.kakao.maps.CustomOverlay({
+      content: content,
+      map: null,
+      position: marker.getPosition()
+    });
+
+    overlays.value.push({ id: store.bNo, overlay: overlay });
+
+    window.kakao.maps.event.addListener(marker, 'click', function () {
+      overlays.value.forEach(o => o.overlay.setMap(null));
+      overlay.setMap(map.value);
+    });
+  });
+};
+
+
+onMounted(() => {
+  mainList();
+  markList();
+});
+
+</script>
+
+
 <script>
 import SlideView from '@/components/SlideView.vue';
 import SlideViewBanner from '@/components/SlideViewBanner.vue';
 import AppFooter from "@/components/AppFooter.vue"
 import AppHeader from "@/components/AppHeader.vue"
 import TopButton from "@/components/TopButton.vue"
-import { ref, onMounted } from 'vue';
-import { useStore } from 'vuex';
-import axios from 'axios';
+import "@/assets/css/potal/main.css"
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/swiper-bundle.css';
+// import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
 
 export default {
   name: "MainView",
@@ -137,189 +322,11 @@ export default {
     Swiper,
     SwiperSlide,
   },
-  setup() {
-    const store = useStore();
-
-    const coordinate = ref({
-      lat: 37.5535,
-      lng: 126.9715
-    });
-
-    const storeList = ref([]);
-    const addList = ref([]);
-    const map = ref(null);
-    const overlays = ref([]);
-
-    const getCurrentLocation = () => {
-      if (navigator.geolocation) {
-        navigator.permissions.query({ name: 'geolocation' })
-          .then(permissionStatus => {
-            if (permissionStatus.state === 'granted') {
-              navigator.geolocation.getCurrentPosition(
-                (position) => {
-                  const lat = position.coords.latitude;
-                  const lng = position.coords.longitude;
-
-                  coordinate.value.lat = lat;
-                  coordinate.value.lng = lng;
-
-                  createMap(); // 현재 위치로 지도 이동
-                },
-                (error) => {
-                  handleLocationError(error);
-                }
-              );
-            } else if (permissionStatus.state === 'prompt') {
-              // 위치 권한 요청이 아직 사용자에게 승인되지 않은 경우
-              navigator.geolocation.getCurrentPosition(
-                (position) => {
-                  const lat = position.coords.latitude;
-                  const lng = position.coords.longitude;
-
-                  coordinate.value.lat = lat;
-                  coordinate.value.lng = lng;
-
-                  createMap(); // 현재 위치로 지도 이동
-                },
-                (error) => {
-                  handleLocationError(error);
-                }
-              );
-            } else if (permissionStatus.state === 'denied') {
-              alert("위치 권한이 거부되었습니다. 사용자 위치를 확인할 수 없습니다.");
-            }
-          })
-          .catch(error => {
-            console.error('Error getting geolocation permission:', error);
-          });
-      } else {
-        alert('Geolocation is not supported by this browser.');
-      }
-    };
-
-    const handleLocationError = (error) => {
-      switch (error.code) {
-        case error.PERMISSION_DENIED:
-          alert("사용자가 Geolocation 요청을 거부했습니다.");
-          break;
-        case error.POSITION_UNAVAILABLE:
-          alert("위치 정보를 사용할 수 없습니다.");
-          break;
-        case error.TIMEOUT:
-          alert("위치 정보를 가져오는 요청이 시간 초과되었습니다.");
-          break;
-        case error.UNKNOWN_ERROR:
-          alert("알 수 없는 오류가 발생했습니다.");
-          break;
-      }
-    };
-
-    const mainList = () => {
-      const params = {
-        lat: coordinate.value.lat,
-        lng: coordinate.value.lng,
-      };
-
-      axios({
-        method: 'get',
-        url: `${store.state.apiBaseUrl}/api/mainlist`,
-        headers: { "Content-Type": "application/json; charset=utf-8" },
-        params: params,
-        responseType: 'json'
-      }).then(response => {
-        storeList.value = response.data.apiData;
-      }).catch(error => {
-        console.log(error);
-      });
-    };
-
-    const markList = () => {
-      axios({
-        method: 'get',
-        url: `${store.state.apiBaseUrl}/api/marker`,
-        headers: { "Content-Type": "application/json; charset=utf-8" },
-        responseType: 'json'
-      }).then(response => {
-        addList.value = response.data.apiData;
-        createMap();
-      }).catch(error => {
-        console.log(error);
-      });
-    };
-
-    const createMap = () => {
-      if (!window.kakao) {
-        console.error("Kakao map library not loaded.");
-        return;
-      }
-
-      if (!map.value) {
-        map.value = new window.kakao.maps.Map(document.querySelector("#map-main"), {
-          center: new window.kakao.maps.LatLng(coordinate.value.lat, coordinate.value.lng),
-          level: 3
-        });
-      } else {
-        const newCenter = new window.kakao.maps.LatLng(coordinate.value.lat, coordinate.value.lng);
-        map.value.setCenter(newCenter);
-      }
-
-      addList.value.forEach(store => {
-        const markerPosition = new window.kakao.maps.LatLng(store.latitude, store.longitude);
-        const marker = new window.kakao.maps.Marker({
-          position: markerPosition
-        });
-
-        marker.setMap(map.value);
-
-        const content = `
-      <div class="map-wrap">
-        <div class="info">
-          <div class="title">${store.title}
-            <div class="close" onclick="closeOverlay()" title="닫기"></div>
-          </div>
-          <div class="body">
-            <div class="img">
-              <img v-bind:src="${this.$store.state.apiBaseUrl}/upload/${store.logo}"  width="73" height="70">
-            </div>
-            <div class="desc">
-              <div class="ellipsis">${store.bAddress}</div>
-              <div class="jibun ellipsis">${store.bdAddress}</div>
-              <div><a href="" target="_blank" class="link">홈페이지</a></div>
-            </div>
-          </div>
-        </div>
-      </div>`;
-
-        const overlay = new window.kakao.maps.CustomOverlay({
-          content: content,
-          map: null,
-          position: marker.getPosition()
-        });
-
-        overlays.value.push({ id: store.bNo, overlay: overlay });
-
-        window.kakao.maps.event.addListener(marker, 'click', function () {
-          overlays.value.forEach(o => o.overlay.setMap(null));
-          overlay.setMap(map.value);
-        });
-      });
-    };
-
-    onMounted(() => {
-      mainList();
-      markList();
-    });
-
-    return {
-      coordinate,
-      storeList,
-      addList,
-      map,
-      overlays,
-      getCurrentLocation,
-      handleLocationError,
-      createMap
-    };
+  mounted() {
+    document.addEventListener('click', this.handleClickOutside);
+  },
+  beforeUnmount() {
+    document.removeEventListener('click', this.handleClickOutside);
   },
   data() {
     return {
@@ -333,6 +340,7 @@ export default {
         bNo: ''
       },
       suggestions: [],
+      storeList: [],
       storeVo: {
         bNo: '',
         title: '',
@@ -489,16 +497,7 @@ export default {
       this.hoveredIndex = null;
     },
   },
-  mounted() {
-    // 마운트 후 실행되는 로직
-    document.addEventListener('click', this.handleClickOutside);
-  },
-  beforeUnmount() {
-    // 언마운트 전 실행되는 로직
-    document.removeEventListener('click', this.handleClickOutside);
-  },
   created() {
-    // 생성 시 실행되는 로직
     this.getList();
   }
 };
