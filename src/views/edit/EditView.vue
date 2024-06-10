@@ -87,35 +87,35 @@
                             </tr>
                             <tr>
                                 <th>2kg이하</th>
-                                <td>{{ priceList[0].onePrice }}</td>
-                                <td>{{ priceList[1].onePrice }}</td>
-                                <td>{{ priceList[2].onePrice }}</td>
-                                <td>{{ priceList[3].onePrice }}</td>
-                                <td colspan="2">{{ priceList[4].onePrice }}</td>
+                                <td>{{ priceList[0].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[1].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[2].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[3].onePrice.toLocaleString() }}</td>
+                                <td colspan="2">{{ priceList[4].onePrice.toLocaleString() }}</td>
                             </tr>
                             <tr>
                                 <th>2kg~5kg</th>
-                                <td>{{ priceList[5].onePrice }}</td>
-                                <td>{{ priceList[6].onePrice }}</td>
-                                <td>{{ priceList[7].onePrice }}</td>
-                                <td>{{ priceList[8].onePrice }}</td>
-                                <td colspan="2">{{ priceList[9].onePrice }}</td>
+                                <td>{{ priceList[5].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[6].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[7].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[8].onePrice.toLocaleString() }}</td>
+                                <td colspan="2">{{ priceList[9].onePrice.toLocaleString() }}</td>
                             </tr>
                             <tr>
                                 <th>5kg~8kg</th>
-                                <td>{{ priceList[10].onePrice }}</td>
-                                <td>{{ priceList[11].onePrice }}</td>
-                                <td>{{ priceList[12].onePrice }}</td>
-                                <td>{{ priceList[13].onePrice }}</td>
-                                <td colspan="2">{{ priceList[14].onePrice }}</td>
+                                <td>{{ priceList[10].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[11].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[12].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[13].onePrice.toLocaleString() }}</td>
+                                <td colspan="2">{{ priceList[14].onePrice.toLocaleString() }}</td>
                             </tr>
                             <tr>
                                 <th>8kg~10kg</th>
-                                <td>{{ priceList[15].onePrice }}</td>
-                                <td>{{ priceList[16].onePrice }}</td>
-                                <td>{{ priceList[17].onePrice }}</td>
-                                <td>{{ priceList[18].onePrice }}</td>
-                                <td colspan="2">{{ priceList[19].onePrice }}</td>
+                                <td>{{ priceList[15].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[16].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[17].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[18].onePrice.toLocaleString() }}</td>
+                                <td colspan="2">{{ priceList[19].onePrice.toLocaleString() }}</td>
                             </tr>
                             <!-- <tr v-for="(price, index) in smallDogPrices" :key="index">
                                 <th>{{ price.weightDiv }}</th>
@@ -132,39 +132,39 @@
                             </tr>
                             <tr>
                                 <th>5kg이하</th>
-                                <td>{{ priceList[20].onePrice }}</td>
-                                <td>{{ priceList[21].onePrice }}</td>
-                                <td>{{ priceList[22].onePrice }}</td>
-                                <td>{{ priceList[23].onePrice }}</td>
-                                <td colspan="2">{{ priceList[24].onePrice }}</td>
+                                <td>{{ priceList[20].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[21].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[22].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[23].onePrice.toLocaleString() }}</td>
+                                <td colspan="2">{{ priceList[24].onePrice.toLocaleString() }}</td>
                             </tr>
                             <tr>
                                 <th>5kg~8kg</th>
-                                <td>{{ priceList[25].onePrice }}</td>
-                                <td>{{ priceList[26].onePrice }}</td>
-                                <td>{{ priceList[27].onePrice }}</td>
-                                <td>{{ priceList[28].onePrice }}</td>
-                                <td colspan="2">{{ priceList[29].onePrice }}</td>
+                                <td>{{ priceList[25].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[26].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[27].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[28].onePrice.toLocaleString() }}</td>
+                                <td colspan="2">{{ priceList[29].onePrice.toLocaleString() }}</td>
                             </tr>
                             <tr>
                                 <th>8kg~10kg</th>
-                                <td>{{ priceList[30].onePrice }}</td>
-                                <td>{{ priceList[31].onePrice }}</td>
-                                <td>{{ priceList[32].onePrice }}</td>
-                                <td>{{ priceList[33].onePrice }}</td>
-                                <td colspan="2">{{ priceList[34].onePrice }}</td>
+                                <td>{{ priceList[30].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[31].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[32].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[33].onePrice.toLocaleString() }}</td>
+                                <td colspan="2">{{ priceList[34].onePrice.toLocaleString() }}</td>
                             </tr>
                             <tr>
                                 <th>10kg~12kg</th>
-                                <td>{{ priceList[35].onePrice }}</td>
-                                <td>{{ priceList[36].onePrice }}</td>
-                                <td>{{ priceList[37].onePrice }}</td>
-                                <td>{{ priceList[38].onePrice }}</td>
-                                <td colspan="2">{{ priceList[39].onePrice }}</td>
+                                <td>{{ priceList[35].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[36].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[37].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[38].onePrice.toLocaleString() }}</td>
+                                <td colspan="2">{{ priceList[39].onePrice.toLocaleString() }}</td>
                             </tr>
                             <tr>
                                 <th>12kg이상</th>
-                                <td colspan="6">초과 lkg당 {{ priceList[40].onePrice }}원 추가</td>
+                                <td colspan="6">초과 lkg당 {{ priceList[40].onePrice.toLocaleString() }}원 추가</td>
                             </tr>
                             <!-- <tr v-for="(price, index) in mediumDogPrices" :key="index">
                                 <th>{{ price.weightDiv }}</th> 
@@ -190,30 +190,30 @@
                             </tr>
                             <tr>
                                 <th>5kg이하</th>
-                                <td>{{ priceList[41].onePrice }}</td>
-                                <td>{{ priceList[42].onePrice }}</td>
-                                <td>{{ priceList[43].onePrice }}</td>
-                                <td>{{ priceList[44].onePrice }}</td>
-                                <td>{{ priceList[45].onePrice }}</td>
-                                <td>{{ priceList[46].onePrice }}</td>
+                                <td>{{ priceList[41].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[42].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[43].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[44].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[45].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[46].onePrice.toLocaleString() }}</td>
                             </tr>
                             <tr>
                                 <th>5kg~8kg</th>
-                                <td>{{ priceList[47].onePrice }}</td>
-                                <td>{{ priceList[48].onePrice }}</td>
-                                <td>{{ priceList[49].onePrice }}</td>
-                                <td>{{ priceList[50].onePrice }}</td>
-                                <td>{{ priceList[51].onePrice }}</td>
-                                <td>{{ priceList[52].onePrice }}</td>
+                                <td>{{ priceList[47].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[48].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[49].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[50].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[51].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[52].onePrice.toLocaleString() }}</td>
                             </tr>
                             <tr>
                                 <th>8kg이상</th>
-                                <td>{{ priceList[53].onePrice }}</td>
-                                <td>{{ priceList[54].onePrice }}</td>
-                                <td>{{ priceList[55].onePrice }}</td>
-                                <td>{{ priceList[56].onePrice }}</td>
-                                <td>{{ priceList[57].onePrice }}</td>
-                                <td>{{ priceList[58].onePrice }}</td>
+                                <td>{{ priceList[53].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[54].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[55].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[56].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[57].onePrice.toLocaleString() }}</td>
+                                <td>{{ priceList[58].onePrice.toLocaleString() }}</td>
                             </tr>
                             <!-- <tr v-for="(price, index) in specialDogPrices" :key="index">
                                 <th>{{ price.weightDiv }}</th>
@@ -231,21 +231,21 @@
                             <tr>
                                 <th rowspan="4" class="eNonBorder2">추가요금</th>
                                 <th>가위컷</th>
-                                <td>{{priceList[59].onePrice}}</td>
+                                <td>{{priceList[59].onePrice.toLocaleString()}}</td>
                                 <th>특수얼굴컷</th>
-                                <td colspan="3">{{priceList[62].onePrice}}</td>
+                                <td colspan="3">{{priceList[62].onePrice.toLocaleString()}}</td>
                             </tr>
                             <tr>
                                 <th>엉킴</th>
-                                <td>{{priceList[60].onePrice}}</td>
+                                <td>{{priceList[60].onePrice.toLocaleString()}}</td>
                                 <th>투톤염색</th>
-                                <td colspan="3">{{priceList[63].onePrice}}</td>
+                                <td colspan="3">{{priceList[63].onePrice.toLocaleString()}}</td>
                             </tr>
                             <tr>
                                 <th>기장</th>
-                                <td>{{priceList[61].onePrice}}</td>
+                                <td>{{priceList[61].onePrice.toLocaleString()}}</td>
                                 <th>염색</th>
-                                <td colspan="3">{{priceList[64].onePrice}}</td>
+                                <td colspan="3">{{priceList[64].onePrice.toLocaleString()}}</td>
                             </tr>
                         </table>
                     </div>
@@ -259,16 +259,16 @@
                         <div class="eReviewSlide">
 
                             <Carousel :autoplay="5000" :wrap-around="true" :show-arrows="false" ref="carouselRef">
-                                <Slide v-for="slide in slides" :key="slide">
+                                <Slide v-for="review in reviewList" :key="review.bNo">
                                     <div class="img-slide">
-                                        <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${slide.saveName }`">
+                                        <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${review.saveName }`">
                                         <!-- 후기 슬라이드 내용 -->
                                         <div class="eReviewSlideContentBox">
                                             <div class="eReviewSlideContentBoxTop">
-                                                <h2>썬글라스컷</h2>
-                                                <p>보리집사님</p>
+                                                <h2>{{ review.beauty }}</h2>
+                                                <p>{{ review.uId }}</p>
                                             </div>
-                                            <p>1960년대에 앤 베이커(Ann Baker)는 조세핀(Josephine)이라는 이름을 가진 앙고라 계열이지만 여러 혈통이 섞인 하얀 장모종을 발견했다. 조세핀이라는 고양이는 자동차 사고를 당해 다쳐서 캘리포니아 대학에 있었는데, 베이커는 조세핀이 비밀 정부기관에서 유전자 실험으로 생겨났다고 믿고 있었고, 베이커는 이 고양이와 버만 고양이를 교배시켜 랙돌을 탄생시켰다. 역사가 짧은데다가 한동안 앤 베이커가 랙돌 브리딩계를 아주 꽉 잡고 있었기 때문에[2] 유전자풀이 굉장히 좁다. 현재 랙돌의 유전자 중 약 40% 정도가 앤 베이커의 랙돌 한 마리에게서 왔다고 한다. 그럼에도 불구하고 아직까지 알려진 종특 유전병은 없다. 물론 HCM은 조심해야 하지만, 제대로 된 캐터리라면 먼저 유전자 검사를 한 뒤에 브리딩을 하니 고양이 분양시에 제대로 확인을 하면 된다.</p>
+                                            <p>{{ review.rContent }}</p>
                                         </div>
                                     </div>
                                 </Slide>
@@ -484,7 +484,7 @@ export default {
                 console.log(response);
                 this.shopInfo = response.data.apiData.shopInfo;
                 this.priceList = response.data.apiData.pList;
-                // this.reviewList = response.data.apiData.rList;
+                this.reviewList = response.data.apiData.rList;
 
                 console.log("여기 확인하라!!!!!!!!!!");
                 console.log(this.reviewList);
