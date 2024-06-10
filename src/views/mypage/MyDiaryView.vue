@@ -143,7 +143,7 @@ export default {
     watch: {
         currentIndex(newIndex) {
             const slider = this.$el.querySelector('.slider');
-            slider.style.transform = `translateX(-${newIndex * 1259}px)`;
+            slider.style.transform = `translateX(-${newIndex * 990}px)`;
         }
     }
 };
