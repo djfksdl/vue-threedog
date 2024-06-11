@@ -28,7 +28,8 @@
       <hr>
       <div class="rank">
         <template v-if="storeList.length > 0">
-          <div class="rank-item" v-bind:key="i" v-for="(storeVo, i) in storeList" @mouseenter="hoverReview(i)" @mouseleave="leaveReview(i)">
+          <div class="rank-item" v-bind:key="i" v-for="(storeVo, i) in storeList" @mouseenter="hoverReview(i)"
+            @mouseleave="leaveReview(i)">
             <router-link :to="`/edit/${storeVo.bNo}`">
               <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${storeVo.logo}`">
               <div class="hover-overlay-store" style="width: 200px;">
@@ -104,21 +105,47 @@ export default {
           alert('위치를 찾는 중 오류가 발생했습니다.');
         });
     },
-    getList() {
+    mainList() {
+      const params = {
+        lat: this.coordinate.lat,
+        lng: this.coordinate.lng,
+      };
+
+      axios({
+        method: 'get',
+        url: `${this.apiBaseUrl}/api/mainlist`,
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        params: params,
+        responseType: 'json'
+      }).then(response => {
+        this.storeList = response.data.apiData;
+      }).catch(error => {
+        console.log(error);
+      });
+    },
+    getList(){
+      console.log("검색 리스트");
+
       const params = {
         lat: this.coordinate.lat,
         lng: this.coordinate.lng,
         rsDate: this.rsDate ?? ''
       };
 
-      axios.get(`${this.apiBaseUrl}/api/searchmap`, { params })
-        .then(response => {
-          this.storeList = response.data.apiData;
-          this.createMap();
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      axios({
+        method: 'get',
+        url: `${this.apiBaseUrl}/api/searchmap`,
+        headers: { "Content-Type": "application/json" },
+        params: params,
+        responseType: 'json'
+      }).then(response => {
+        console.log("-----------------------");
+        console.log(response.data.apiData);
+        this.storeList= response.data.apiData;
+        this.createMap();
+      }).catch(error => {
+        console.log(error);
+      });
     },
     getCurrentLocation() {
       if (navigator.geolocation) {
@@ -157,14 +184,17 @@ export default {
       this.getList();
     },
     markList() {
-      axios.get(`${this.apiBaseUrl}/api/marker`)
-        .then(response => {
-          this.addList = response.data.apiData;
-          this.createMap();
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      axios({
+        method: 'get',
+        url: `${this.apiBaseUrl}/api/marker`,
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        responseType: 'json'
+      }).then(response => {
+        this.addList = response.data.apiData;
+        this.createMap();
+      }).catch(error => {
+        console.log(error);
+      });
     },
     createMap() {
       if (!window.kakao) {
@@ -238,7 +268,7 @@ export default {
     document.removeEventListener('click', this.handleClickOutside);
   },
   created() {
-    this.getList();
+    this.mainList();
   }
 };
 </script>
