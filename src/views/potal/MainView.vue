@@ -112,6 +112,7 @@
 
 <script>
 import axios from 'axios';
+import { mapState } from 'vuex';
 import SlideView from '@/components/SlideView.vue';
 import SlideViewBanner from '@/components/SlideViewBanner.vue';
 import AppFooter from "@/components/AppFooter.vue"
@@ -174,6 +175,7 @@ export default {
     };
   },
   computed: {
+    ...mapState(['apiBaseUrl'])
   },
   methods: {
     // getCurrentLocation() {
@@ -300,7 +302,7 @@ export default {
               </div>
               <div class="body">
                 <div class="img">
-                  <img v-bind:src="${this.$store.state.apiBaseUrl}/upload/${store.logo}" width="73" height="70">
+                  <img src="${this.apiBaseUrl}/upload/${store.logo}" width="73" height="70">
                 </div>
                 <div class="desc">
                   <div class="ellipsis">${store.bAddress}</div>
