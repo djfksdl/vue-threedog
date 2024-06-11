@@ -5,16 +5,17 @@ export default createStore({
         return {
 
         //  apiBaseUrl: "http://localhost:9010",
-           apiBaseUrl: "http://43.200.182.62:9010",
+        apiBaseUrl: "http://43.200.182.62:9010",
+
 
             authUser: null,
             token: null,
-            kakaoToken : '',
+            kakaoToken: '',
             selectedSchedule: null,
             auth: null,
             groomingRecord: null, // groomingRecord 속성 추가
             dogImg: '' // 반려견 이미지 URL 저장
-            
+
 
         };
     },
@@ -28,7 +29,7 @@ export default createStore({
         setToken(state, payload) {
             state.token = payload;
         },
-        setKakaoToken(state,payload){
+        setKakaoToken(state, payload) {
             state.kakaoToken = payload;
         },
         setSelectedSchedule(state, schedule) {
@@ -50,7 +51,7 @@ export default createStore({
     },
     plugins: [
         createPersistedState({
-            paths: ['authUser', 'token','kakaoToken', 'auth']
+            paths: ['authUser', 'token', 'kakaoToken', 'auth']
         })
     ],
     actions: {
