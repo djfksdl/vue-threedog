@@ -24,8 +24,10 @@ import ReservationSuccessView from '@/views/mypage/ReservationSuccessView.vue'
 import PetUpdateForm from '@/views/mypage/PetUpdateForm'
 import MyReview from '@/views/mypage/MyReview.vue'
 import PointView from '@/views/mypage/PointView.vue'
-
-
+import NoticeListView from '@/views/notice/NoticeListView.vue'
+import NoticeModifyView from '@/views/notice/NoticeModifyView.vue'
+import NoticeReadView from '@/views/notice/NoticeReadView.vue'
+import NoticeWriteView from '@/views/notice/NoticeWriteView.vue'
 
 const routes = [
   {
@@ -154,7 +156,27 @@ const routes = [
     path: '/point',
     name: 'pointview',
     component: PointView,
-  }
+  },
+  {
+    path: '/announcements',
+    name: 'noticeList',
+    component: NoticeListView
+  },
+  {
+    path: '/noticeModify/:no',
+    name: 'noticeModify',
+    component: NoticeModifyView
+  },
+  {
+    path: '/noticeRead/:no',
+    name: 'noticeRead',
+    component: NoticeReadView
+  },
+  {
+    path: '/noticeWrite',
+    name: 'noticeWrite',
+    component: NoticeWriteView
+  },
 ]
 
 const router = createRouter({

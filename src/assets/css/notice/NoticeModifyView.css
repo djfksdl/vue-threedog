@@ -1,0 +1,89 @@
+/* 전체 */
+#modifyFormContentAll{
+    margin: 30px auto;
+    width: 1000px;
+}
+
+/* 각각 폼 */
+#formGroup{
+    padding: 10px 30px;
+    border-top: 1px solid #ddd;
+}
+
+/* 제목 묶음 */
+#titleGroup{
+    margin-right: 5px;
+    color: #333;
+    vertical-align: top;
+}
+
+/* 수정 안하는 정보 묶음 */
+#noModifyInfo{
+    color: #777;
+}
+
+/* 실제 제목 */
+#formGroup input{
+    width: 500px;
+    height: 23px;
+}
+
+/* 작성자~작성일 */
+#notModifyPart{
+    width: 100%;
+    height: 100%;
+    padding: 0px 30px 10px 30px;
+    display: flex;
+}
+/* 작성자 그룹 */
+.writerGroup{
+    width: 50%;
+    height: 100%;
+    float: left;
+    text-align: left;
+    cursor: default;
+}
+/* 작성자 */
+/* 실제 작성자 */
+
+/* 작성일 그룹 */
+.dateGroup{
+    width: 50%;
+    height: 100%;
+    float: right;
+    text-align: right;
+    cursor: default;
+}
+/* 작성일 */
+/* 실제 작성일 */
+
+/* 내용 그룹 */
+.contentAll{
+    border-bottom: 1px solid #ddd;
+}
+/* 내용 */
+/* 실제 내용 */
+#formGroup #noticeModifyContent{
+    width: 100%;
+    height: 300px;
+    resize: none;
+}
+
+/* 버튼 그룹 */
+#btnGroup{
+    margin-bottom: 10px;
+    text-align: center;
+}
+/* 취소 버튼 */
+#cancelBtn{
+    margin-right: 30px;
+    padding: 7px 15px;
+    cursor: pointer;
+    text-align: center;
+}
+/* 수정 버튼 */
+#modifyBtn{
+    padding: 7px 15px;
+    cursor: pointer;
+    text-align: center;
+}
