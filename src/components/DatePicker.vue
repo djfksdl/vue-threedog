@@ -2,9 +2,9 @@
   <div id="reservationFormDatePicker">
     <div class="dateBox">
       <Datepicker locale="ko" v-model="date" format="yyyy-MM-dd" :enable-time-picker="false" :inline="true"
-        :min-date="minDate" @update:model-value="onDateChange" />
+        @update:model-value="onDateChange" />
     </div>
-
+<!--  :min-date="minDate" -->
     
     <div class="time">
       <!-- <div>선택한 날짜 {{ reserveTime.rtDate }}</div> -->
@@ -44,7 +44,7 @@ import { useRoute } from 'vue-router';
 
 const store = useStore();
 const date = ref(new Date());
-const minDate = ref(new Date());
+// const minDate = ref(new Date());
 
 const reserveTime = ref({
   rtNo: 0,
