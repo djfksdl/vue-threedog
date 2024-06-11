@@ -289,7 +289,7 @@
                                     <!-- 오시는길-오른쪽 -->
                                     <div class="eRoadRight">
                                         <div class="eRoadRightContents">
-                                            <p>{{ shopInfo.bAddress }} {{ shopInfo.bdAddress}} ({{ shopInfo.bZipCode }})</p>
+                                            <p>{{ shopInfo.bAddress }} {{ shopInfo.bdAddress}} ({{ shopInfo.bZipCode || '가게 생성 후 표시됩니다.' }}) </p>
                                         </div>
                                         <div class="eRoadRightBtnBox">
                                             <button class="kakaoMapBtn">카카오 지도보기</button>
@@ -433,6 +433,9 @@
                 this.action = actionType;
             },
             handleSubmit() {
+                //isChange의 기본값 설정
+                this.shopInfo.isChange = this.shopInfo.isChange || false;
+
                 if (this.action === 'add') {
                     this.addShopInfo();
                 } else if (this.action === 'update') {
@@ -529,7 +532,7 @@
                 }
 
                 // 위치 상태 추가
-                formData.append("isChange", this.shopInfo.isChange);
+                formData.append("isChange", this.shopInfo.isChange || false); //기본값 설정
 
                 console.log("=====보내기전 정보 담은거 확인=====");
 
