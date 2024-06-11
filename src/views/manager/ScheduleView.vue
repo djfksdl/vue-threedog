@@ -20,6 +20,7 @@
                 <p>품종: {{ selectedEvent.extendedProps.breed }}</p>
                 <p>미용컷: {{ selectedEvent.extendedProps.groomingStyle }}</p>
                 <p>금액: {{ selectedEvent.extendedProps.price }}</p>
+
                 <span class="schedule-edit" @click="editEvent">시간수정</span>
                 <span class="schedule-delete" @click="deleteEvent">삭제</span>
                 <span class="schedule-close" @click="closeModal">확인</span>
@@ -122,7 +123,7 @@ export default {
                 );
 
                 // 발송이 완료된 경우 해당 이벤트의 색상을 변경
-                const backgroundColor = reservation.sent ? '#CCCCCC' : '#FFFFFF'; // 발송이 완료된 경우 회색 배경 색상
+                const backgroundColor = reservation.pushTime ? '#ff6666' : '#FFFFFF'; // pushTime이 있는 경우 빨간색 배경 색상
 
                 return {
                     title: `${reservation.dogName}, ${reservation.beauty}, ${reservation.kind}, ${reservation.expectedPrice}원`,
@@ -134,7 +135,8 @@ export default {
                         groomingStyle: reservation.beauty,
                         price: reservation.expectedPrice,
                         rsNo: reservation.rsNo,
-                        bNo: bNo // bNo 값을 설정
+                        bNo: bNo, // bNo 값을 설정
+                        pushTime: reservation.pushTime // pushTime 값을 설정
                     }
                 };
             });
@@ -341,33 +343,47 @@ export default {
         handleEventClick(info) {
             if (!info || !info.event) {
                 console.error('클릭된 예약 정보가 없습니다.');
+                return;
+            }
+            const event = info.event;
+            console.log('클릭된 이벤트:', event);
 
+            if (!event.extendedProps) {
+                console.error('확장 속성이 없는 이벤트입니다.');
                 return;
             }
 
-            const event = info.event;
-            if (!event.extendedProps || event.extendedProps.sent) {
-                return; // 발송 완료된 이벤트는 클릭 불가
+            console.log('확장 속성:', event.extendedProps);
+
+            const pushTime = event.extendedProps.pushTime;
+            console.log('pushTime 속성 값:', pushTime);
+
+            if (pushTime) {
+                console.log('이벤트는 pushTime이 있으므로 클릭 불가');
+                this.showCompletedReservationModal(event);
+                return;
             }
-            console.log('Event 정보:', event);
 
             const eventTitle = event.title || '';
             const eventStart = event.start ? new Date(event.start).toLocaleString().substring(0, 20).replace("/g", "") : '';
 
+            // SweetAlert를 사용하여 일정 정보를 표시
             Swal.fire({
                 title: "일정",
                 html: "스케줄: " + eventTitle + "<br/>일시: " + eventStart,
             });
 
-
+            // Vuex 스토어에 선택된 일정 정보를 설정
             this.$store.commit("setSelectedSchedule", event);
 
+            // 'diary' 라우트로 이동하고, 이동 후 콜백 함수 실행
             this.$router.push({ name: 'diary' }).then(() => {
                 if (!event.extendedProps) {
                     console.error('event.extendedProps가 없습니다.');
                     return;
                 }
 
+                // 클릭된 이벤트의 예약 번호와 가게 번호 가져오기
                 const rsNo = event.extendedProps.rsNo;
                 const bNo = event.extendedProps.bNo;
 
@@ -385,11 +401,28 @@ export default {
                 this.$root.$emit('selectGroomingRecord', { rsNo, bNo });
             });
         },
-        // 예약 목록에서 발송이 완료된 일정을 식별하여 sent 속성을 true로 설정하는 메서드 추가
+        // 작성이 완료된 예약 내역에 대한 모달 표시
+        showCompletedReservationModal(event) {
+            const eventTitle = event.title || '';
+            const eventStart = event.start ? new Date(event.start).toLocaleString().substring(0, 20).replace("/g", "") : '';
+
+            // SweetAlert를 사용하여 일정 정보를 표시
+            Swal.fire({
+                title: "작성이 완료된 예약 내역입니다.",
+                html: "스케줄: " + eventTitle + "<br/>일시: " + eventStart,
+            });
+
+            // Vuex 스토어에 선택된 일정 정보를 설정
+            this.$store.commit("setSelectedSchedule", event);
+        },
+
+
+
+        // 예약 목록에서 발송이 완료된 일정을 식별하여 pushTime  속성을 true로 설정하는 메서드 추가
         updateReservationSentStatus(rsNo) {
             const reservation = this.reservations.find(res => res.rsNo === rsNo);
             if (reservation) {
-                reservation.sent = true;
+                reservation.pushTime = true;
             }
         },
 
