@@ -95,11 +95,12 @@
                             <p v-if="registeredTimes.length === 0">등록된 예약 시간이 없습니다.</p>
                         </div>
                     </div>
+
                     <!-- 예약시간 추가 -->
                     <div class="plusRtimeContainer">
                         <label>추가할 시간 <small>(한시간 단위로 추가 됩니다.)</small></label>
                         <div class="plusRtimeRow">
-                            <input type="time" v-model="startTime" @input="updateEndTime" >~
+                            <input type="time" v-model="startTime" @input="updateEndTime" @blur="adjustStartTimeMinutes" >~
                             <input type="time" v-model="endTime" readonly>
                             <button type="button" v-on:click="plusRtime" >추가</button>
                         </div>
@@ -441,6 +442,16 @@ export default {
 
             this.updateCheckAllDayState();
             
+        },
+
+        // ***** 예약시간 추가 - 분을 00과 30분만 선택 가능하도록 조정
+        adjustStartTimeMinutes(){
+            if (this.startTime) {
+                let [hours, minutes] = this.startTime.split(':');
+                minutes = minutes >= 30 ? '30' : '00';
+                this.startTime = `${hours}:${minutes}`;
+                this.updateEndTime(); // 시작 시간이 변경되었으므로 종료 시간도 업데이트
+            }
         },
 
         // ***** 유효한 시간이 있는지 확인 *****
@@ -974,6 +985,11 @@ export default {
                             '예약 시간이 추가되었습니다.',
                             'success'
                         );
+
+                        // 입력 필드 초기화
+                        this.startTime = '';
+                        this.endTime = '';
+                        
                     }).catch(error => {
                         console.log(error);
                         Swal.fire(
