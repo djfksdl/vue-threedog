@@ -22,23 +22,25 @@
                     
                 </div>
 
-                <table id="noticeTable">
-                    <thead>
-                        <tr>
-                            <th id="firstTable">번호</th>
-                            <th id="secondTable">제목</th>
-                            <th id="thirdTable">작성자</th>
-                        </tr>
-                    </thead>
+                <div id="tableMinHeight">
+                    <table id="noticeTable">
+                        <thead>
+                            <tr>
+                                <th id="firstTable">번호</th>
+                                <th id="secondTable">제목</th>
+                                <th id="thirdTable">작성자</th>
+                            </tr>
+                        </thead>
 
-                    <tbody v-bind:key="i" v-for="noticeVo, i in nList">
-                        <tr id="tr">
-                            <td id="firstTable" @click="goToReadPage(noticeVo.no)">{{ noticeVo.no }}</td>
-                            <td id="secondTable" @click="goToReadPage(noticeVo.no)">{{ noticeVo.title }}</td>
-                            <td id="thirdTable" @click="goToReadPage(noticeVo.no)">{{ noticeVo.uname }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                        <tbody v-bind:key="i" v-for="noticeVo, i in nList">
+                            <tr id="tr">
+                                <td id="firstTable" @click="goToReadPage(noticeVo.no)">{{ noticeVo.no }}</td>
+                                <td id="secondTable" @click="goToReadPage(noticeVo.no)">{{ noticeVo.title }}</td>
+                                <td id="thirdTable" @click="goToReadPage(noticeVo.no)">{{ noticeVo.uname }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <div id="pagingAll">
                     <span id="noticePaging" v-if="prev != false" v-on:click="prevPage">&lt;</span>

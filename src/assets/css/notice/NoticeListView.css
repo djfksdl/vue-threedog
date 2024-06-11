@@ -1,8 +1,9 @@
 #listContentAll{
-    width: 1050px;
-    height: 100%;
     margin-left: auto;
     margin-right: auto;
+    width: 1050px;
+    height: 100%;
+    min-height: 500px;
 }
 
 /* 페이지 안내 제목
@@ -57,6 +58,9 @@
 }
 
 /* 테이블 전체 */
+#tableMinHeight{
+    min-height: 300px;
+}
 #noticeTable, #noticeTable th, #noticeTable td{
     margin-top: 10px;
     margin-left: auto;
