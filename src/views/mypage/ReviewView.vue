@@ -422,6 +422,7 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 900px;
+    height: 560px;
     background: #fff;
     border-radius: 10px;
     padding: 20px;
@@ -430,6 +431,7 @@ export default {
 
 #reviewBoard .modal-btn {
     text-align: right;
+    margin-top: 104px;
 }
 
 #reviewBoard .modal-btn button {

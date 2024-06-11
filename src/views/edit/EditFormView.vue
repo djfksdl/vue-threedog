@@ -81,7 +81,7 @@
                     <div class="ePriceReviewContainer">
                         <!-- 가격 -->
                         <!-- <div class="ePriceBox" v-if="priceList.length >= 65"> -->
-                        <div :class="{'ePriceBox': true, 'eRight': shopInfo.isChange}" v-if="priceList.length >= 65">
+                        <div :class="{'ePriceBox': true, 'eRight': shopInfo.isChange}" v-if="priceList.length >= 64">
                             <h1>가격</h1>
                             <table border="1">
                                 <!-- 소형견 -->
@@ -165,10 +165,6 @@
                                     <td><input type="text" v-model="priceList[38].onePrice"></td>
                                     <td colspan="2"><input type="text" v-model="priceList[39].onePrice"></td>
                                 </tr>
-                                <tr >
-                                    <th>12kg이상</th>
-                                    <td colspan="6">초과 lkg당 <input type="text" v-model="priceList[40].onePrice">원 추가</td>
-                                </tr>
                                 <!-- 특수견 -->
                                 <tr>
                                     <th colspan="7" class="eNonBorder">특수견(비숑. 베들링턴 등...)</th>
@@ -184,30 +180,30 @@
                                 </tr>
                                 <tr>
                                     <th>5kg이하</th>
-                                    <td><input type="text" v-model="priceList[41].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[40].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[41].onePrice"></td>
                                     <td><input type="text" v-model="priceList[42].onePrice"></td>
                                     <td><input type="text" v-model="priceList[43].onePrice"></td>
                                     <td><input type="text" v-model="priceList[44].onePrice"></td>
                                     <td><input type="text" v-model="priceList[45].onePrice"></td>
-                                    <td><input type="text" v-model="priceList[46].onePrice"></td>
                                 </tr>
                                 <tr >
                                     <th>5kg~8kg</th>
-                                    <td><input type="text" v-model="priceList[47].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[46].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[47].onePrice"></td>
                                     <td><input type="text" v-model="priceList[48].onePrice"></td>
                                     <td><input type="text" v-model="priceList[49].onePrice"></td>
                                     <td><input type="text" v-model="priceList[50].onePrice"></td>
                                     <td><input type="text" v-model="priceList[51].onePrice"></td>
-                                    <td><input type="text" v-model="priceList[52].onePrice"></td>
                                 </tr>
                                 <tr >
                                     <th>8kg이상</th>
-                                    <td><input type="text" v-model="priceList[53].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[52].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[53].onePrice"></td>
                                     <td><input type="text" v-model="priceList[54].onePrice"></td>
                                     <td><input type="text" v-model="priceList[55].onePrice"></td>
                                     <td><input type="text" v-model="priceList[56].onePrice"></td>
                                     <td><input type="text" v-model="priceList[57].onePrice"></td>
-                                    <td><input type="text" v-model="priceList[58].onePrice"></td>
                                 </tr>
                                 <!-- 추가요금 -->
                                 <tr>
@@ -216,21 +212,21 @@
                                 <tr>
                                     <th rowspan="4" colspan="2" class="eNonBorder2">추가요금</th>
                                     <th>가위컷</th>
-                                    <td><input type="text" v-model="priceList[59].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[58].onePrice"></td>
                                     <th>특수얼굴컷</th>
-                                    <td colspan="2"><input type="text" v-model="priceList[62].onePrice"></td>
+                                    <td colspan="2"><input type="text" v-model="priceList[61].onePrice"></td>
                                 </tr>
                                 <tr>
                                     <th>엉킴</th>
-                                    <td><input type="text" v-model="priceList[60].onePrice"></td>
-                                    <th>투톤염색</th>
-                                    <td colspan="2"><input type="text" v-model="priceList[63].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[59].onePrice"></td>
+                                    <th>염색</th>
+                                    <td colspan="2"><input type="text" v-model="priceList[62].onePrice"></td>
                                 </tr>
                                 <tr>
                                     <th>기장</th>
-                                    <td><input type="text" v-model="priceList[61].onePrice"></td>
-                                    <th>염색</th>
-                                    <td colspan="2"><input type="text" v-model="priceList[64].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[60].onePrice"></td>
+                                    <th>초과무게당</th>
+                                    <td colspan="2"><input type="text" v-model="priceList[63].onePrice">원 추가</td>
                                 </tr>
                             </table>
                         </div>
@@ -427,7 +423,7 @@
             //가격리스트 없을때! 가격리스트 초기화!
             initializePriceList() {
                 let priceList = [];
-                for (let i = 1; i < 66; i++) { // beautyNo가 1번 부터 시작이라 1번부터 값을 할당해야함
+                for (let i = 1; i < 65; i++) { // beautyNo가 1번 부터 시작이라 1번부터 값을 할당해야함
                     priceList.push({ beautyNo: i ,onePrice: '' });
                 }
                 return priceList;
