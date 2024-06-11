@@ -118,6 +118,7 @@ export default {
         params: params,
         responseType: 'json'
       }).then(response => {
+        console.log("=========mainList================");
         this.storeList = response.data.apiData;
       }).catch(error => {
         console.log(error);
@@ -139,7 +140,7 @@ export default {
         params: params,
         responseType: 'json'
       }).then(response => {
-        console.log("-----------------------");
+        console.log("------------getList-----------");
         console.log(response.data.apiData);
         this.storeList= response.data.apiData;
         this.createMap();
@@ -190,6 +191,7 @@ export default {
         headers: { "Content-Type": "application/json; charset=utf-8" },
         responseType: 'json'
       }).then(response => {
+        console("--------------마크리스트------------------")
         this.addList = response.data.apiData;
         this.createMap();
       }).catch(error => {
