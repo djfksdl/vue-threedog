@@ -431,6 +431,7 @@ export default {
 
 #reviewBoard .modal-btn {
     text-align: right;
+    margin-top: 104px;
 }
 
 #reviewBoard .modal-btn button {
