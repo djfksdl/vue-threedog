@@ -4,7 +4,7 @@
         <div id="reviewAddForm">
             <SideBar />
             <div class="container">
-                <h1>후기등록</h1>
+                <h1>후기 등록</h1>
                 <form v-on:submit.prevent="reviewInsert" enctype="multipart/form-data">
                     <div>
                         <h2>평점을 선택해주세요</h2>
@@ -30,9 +30,7 @@
                         <textarea v-model="reviewVo.rContent" placeholder="남겨신 후기는 다른 고객들에게 큰 도움이 됩니다."
                             @input="checkByte"></textarea>
                         <div class="add_area">
-                            <p class="txt_count">
-                                <span id="chk_byte">{{ byteCount }}</span>/<span class="maximum">500자</span>
-                            </p>
+                                <strong>{{ byteCount }} </strong> / 500자
                         </div>
                     </div>
 
@@ -311,7 +309,7 @@ export default {
 
 <style>
 #att_zone {
-    width: 900px;
+    width: 880px;
     min-height: 242px;
     padding: 15px;
     border: 1px dotted #999;

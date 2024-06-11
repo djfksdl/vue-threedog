@@ -21,7 +21,7 @@
         <div id="petAddForm">
             <SideBar />
             <div class="container">
-                <h2>반려견수정</h2>
+                <h1>반려견수정</h1>
                 <!-- {{ this.$store.state.authUser.uNo }} -->
                 <form v-on:submit.prevent="petUpdate" enctype="multipart/form-data">
                     <div class="petAddFormUnder">
@@ -137,7 +137,7 @@
                     </div>
                     <!-- 등록버튼 -->
                     <div>
-                        <button class="insertBtn" type="submit">등록</button>
+                        <button class="insertBtn" type="submit">수정</button>
                     </div>
                 </form>
 
