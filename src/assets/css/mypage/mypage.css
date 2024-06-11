@@ -405,6 +405,8 @@ datalist {
     color: #236C3F;
     font-size: 17px;
     font-weight: bold;
+    display: flex;
+    align-items: center;
 }
 
 #reservationForm .buttonCon button {
