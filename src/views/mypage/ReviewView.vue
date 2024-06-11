@@ -422,6 +422,7 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 900px;
+    height: 560px;
     background: #fff;
     border-radius: 10px;
     padding: 20px;
