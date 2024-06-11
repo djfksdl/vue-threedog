@@ -124,7 +124,7 @@ export default {
         console.log(error);
       });
     },
-    getList(){
+    getList() {
       console.log("검색 리스트");
 
       const params = {
@@ -142,7 +142,7 @@ export default {
       }).then(response => {
         console.log("------------getList-----------");
         console.log(response.data.apiData);
-        this.storeList= response.data.apiData;
+        this.storeList = response.data.apiData;
         this.createMap();
       }).catch(error => {
         console.log(error);
@@ -191,7 +191,8 @@ export default {
         headers: { "Content-Type": "application/json; charset=utf-8" },
         responseType: 'json'
       }).then(response => {
-        console("--------------마크리스트------------------")
+        console.log("--------------마크리스트------------------");
+        console.log(response.data.apiData);
         this.addList = response.data.apiData;
         this.createMap();
       }).catch(error => {
