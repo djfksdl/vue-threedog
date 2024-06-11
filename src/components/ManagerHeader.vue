@@ -17,7 +17,6 @@
                 <!-- 메뉴(원장) -->
                 <ul class="mMenu" v-if="this.$store.state.auth != null">
                     <li><router-link :to="`/review/${bNo}`">후기게시판</router-link></li>
-                    <li><router-link to="/diary">알림창</router-link></li>
                     <li><router-link to="/schedule">예약스케쥴</router-link></li>
                     <li><router-link to="/totalsales">매출/통계</router-link></li>
                     <li><router-link v-bind:to="`/inserttime`">운영시간등록</router-link></li>
