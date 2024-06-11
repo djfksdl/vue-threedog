@@ -239,7 +239,7 @@ export default {
                 <div class="desc">
                   <div class="ellipsis">${store.bAddress}</div>
                   <div class="jibun ellipsis">${store.bdAddress}</div>
-                  <div><a href="" target="_blank" class="link">홈페이지</a></div>
+                  <div><a href="${this.apiBaseUrl}/edit/${store.bNo}" target="_blank" class="link">홈페이지</a></div>
                 </div>
               </div>
             </div>
