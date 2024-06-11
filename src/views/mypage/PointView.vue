@@ -51,8 +51,8 @@
                         <tbody>
                             <tr v-bind:key="i" v-for="(userVo, i) in userList">
                                 <td>{{ formatDate(userVo.pDate) }}</td>
-                                <td v-if="userVo.pDiv"> {{ userVo.usePoint }} P 리뷰 사용</td>
-                                <td v-else> {{ userVo.usePoint }} P 리뷰 적립</td>
+                                <td v-if="userVo.pDiv"> {{ userVo.title }} {{ userVo.usePoint }} P 리뷰 사용</td>
+                                <td v-else> {{ userVo.title }} {{ userVo.usePoint }} P 리뷰 적립</td>
                                 <td v-if="userVo.pDiv">사용</td>
                                 <td v-else>적립</td>
                             </tr>
@@ -92,6 +92,7 @@ export default {
                 bNo: 0,
                 rtFinish: false,
                 usePoint: 0,
+                title:"",
             },
             userList: [],
             selectedButton: null, // 활성화된 버튼의 인덱스를 저장
