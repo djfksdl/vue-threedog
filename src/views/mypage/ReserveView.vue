@@ -2,7 +2,7 @@
     <div id="wrap">
         <AppHeader />
         <div class="reseerveContainer">
-            <SideBar />
+            <SideBar :class="{ blurred: modalCheck }" />
             <div class="container6">
                 <h1>예약 내역</h1>
                 <!-- 예약상세 내역 -->
@@ -86,8 +86,7 @@
                         <div class="reviewBoardDetailContainer">
 
 
-                            <Swiper :slides-per-view="1" navigation :prevButton="'.swiper-button-prev'"
-                                :nextButton="'.swiper-button-next'">
+                            <Swiper :slides-per-view="1">
                                 <SwiperSlide v-for="(reviewVo, i) in reviewList" :key="i">
                                     <div class="reviewDetailImg">
                                         <img :src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`"
@@ -96,6 +95,7 @@
                                 </SwiperSlide>
                             </Swiper>
 
+                            <!-- <p class="pBox1">* 사진은 최대 3장까지 첨부할수있습니다.</p> -->
                             <!-- <div class="reviewDetailImg" v-bind:key="i" v-for="(reviewVo, i) in reviewList">
                                 <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reviewVo.saveName}`"
                                     style="width: 300px; height: 350px;">
@@ -123,7 +123,11 @@
                             </div>
                         </div>
                         <div style="display: flex; margin-top: 30px">
-                            <div class="modal-btn" style="margin-left: 400px;">
+                            <div>
+                                <p style="color: gray; font-size: 16px; display: block; width: 200px;">사진을 옆으로 밀어주세요.
+                                </p>
+                            </div>
+                            <div class="modal-btn" style="margin-left: 200px;">
                                 <router-link :to="`/edit/${reviewVo.bNo}`">
                                     <button style="width: 200px; margin-right: 10px;">매장 홈페이지 가기</button>
                                 </router-link>
@@ -315,4 +319,15 @@ export default {
     }
 };
 </script>
-<style></style>
+<style>
+.reseerveContainer .blurred {
+    filter: blur(10px);
+    /* Adjust the blur amount as needed */
+    opacity: 0.5;
+    /* Make the sidebar semi-transparent */
+    background-color: rgba(0, 0, 0, 0.1);
+    /* Add a dark overlay */
+    transition: filter 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
+    /* Smooth transition */
+}
+</style>

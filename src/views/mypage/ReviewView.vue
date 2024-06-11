@@ -437,7 +437,7 @@ export default {
     border: none;
     font-size: 18px;
     border-radius: 20px;
-    background-color: rgb(29, 29, 175);
+    background-color:#236C3F;
     color: white;
 }
 

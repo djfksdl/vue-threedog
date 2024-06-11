@@ -2,7 +2,7 @@
     <div id="wrap">
         <AppHeader />
         <div class="reseerveContainer">
-            <SideBar />
+            <SideBar :class="{ blurred: modalCheck }" />
             <div class="container7">
                 <!-- 예약상세 내역 -->
                 <!-- <div style="margin: 30px;padding-left: 100px;">
@@ -316,4 +316,16 @@ export default {
     }
 };
 </script>
-<style></style>
+<style>
+.reseerveContainer .blurred {
+    filter: blur(10px);
+    /* Adjust the blur amount as needed */
+    opacity: 0.5;
+    /* Make the sidebar semi-transparent */
+    background-color: rgba(0, 0, 0, 0.1);
+    /* Add a dark overlay */
+    transition: filter 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
+    /* Smooth transition */
+}
+
+</style>
