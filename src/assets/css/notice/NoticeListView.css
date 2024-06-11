@@ -1,0 +1,112 @@
+#listContentAll{
+    width: 1050px;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* 페이지 안내 제목
+공지사항 */
+#noticeTitle{
+    padding-top: 30px;
+    margin-top: 10px;
+    margin-left: 30px;
+}
+
+/* 페이지 제목 제외 모든 콘텐츠
+전체~테이블 */
+#allNoticeListContent{
+    padding-top: 30px;
+}
+
+/* 리스트 상단
+총합~등록 버튼 */
+#topContentGroup{
+    width: 100%;
+    height: 30px;
+}
+/* 총 개수 */
+#totalNotice{
+    margin-left: 35px;
+    float: left;
+    font-size: 14px;
+}
+
+/* 등록 버튼 */
+#btnAdd{
+    padding: 5px 13px;
+    margin-right: 35px;
+    float: right;
+}
+
+/* 검색 키워드 입력창 */
+#searchBox{
+    margin-right: 50px;
+    width: 170px;
+    height: 25px;
+    float: right;
+    text-align: left;
+}
+/* 돋보기 사진 */
+#searchImg{
+    margin-top: 2px;
+    margin-right: 3px;
+    width: 20px;
+    float: right;
+    cursor: pointer;
+}
+
+/* 테이블 전체 */
+#noticeTable, #noticeTable th, #noticeTable td{
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+/*테이블 헤드 전체 */
+#noticeTable th{
+    padding: 12px 0px;
+}
+
+/* 테이블 바디 전체 */
+#noticeTable td{
+    padding: 14px 10px;
+}
+
+/* 테이블 첫 번째 열 - 번호 */
+#firstTable{
+    width: 80px;
+    text-align: center;
+}
+
+/* 테이블 두 번째 열 - 제목 */
+#secondTable{
+    width: 830px;
+}
+
+/* 테이블 마지막 열 - 작성자 */
+#thirdTable{
+    width: 100px;
+    text-align: center;
+}
+
+/*테이블 각 바디 행*/
+#noticeTable tbody tr:hover{
+    cursor: pointer;
+    background-color: rgb(245, 245, 245);
+}
+
+/* 페이징 */
+#pagingAll{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+#noticePaging{
+    margin-right: 15px;
+    cursor: pointer;
+}
