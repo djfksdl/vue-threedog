@@ -38,6 +38,7 @@
                             :autoplay="false" 
                             :wrap-around="true" 
                             :show-arrows="false" 
+                            :items-to-show="6"
                             ref="carouselRef2">
                             <Slide v-for="(group, index) in chunkedSlides" :key="index">
                                 <div class="img-slide eCutSlide">
@@ -426,7 +427,7 @@ export default {
     },
     computed: {
         chunkedSlides() {
-            return this.chunk(this.slides2, 18);
+            return this.chunk(this.slides2, 1);
         },
     },  
     setup() { //props, context를 통해 외부에서 전달받은 데이터를 받거나, reactive, ref 등을 사용하여 반응성을 갖는 데이터를 정의하고, 해당 데이터에 대한 로직을 구성할 수 있음
@@ -538,6 +539,8 @@ export default {
 }
 </script>
 <style>
-
+.eCutImgContainer .carousel__slide{
+    margin-right: 20px;
+}
 </style>
   
