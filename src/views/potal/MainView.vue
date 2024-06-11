@@ -112,7 +112,6 @@
 
 <script>
 import axios from 'axios';
-import { mapState } from 'vuex';
 import SlideView from '@/components/SlideView.vue';
 import SlideViewBanner from '@/components/SlideViewBanner.vue';
 import AppFooter from "@/components/AppFooter.vue"
@@ -173,9 +172,6 @@ export default {
       reviewList2: [],
       hoveredIndex: null,
     };
-  },
-  computed: {
-    ...mapState(['apiBaseUrl'])
   },
   methods: {
     // getCurrentLocation() {
@@ -305,12 +301,12 @@ export default {
               </div>
               <div class="body">
                 <div class="img">
-                  <img src="${this.apiBaseUrl}/upload/${store.logo}" width="73" height="70">
+                  <img src="${this.$store.state.apiBaseUrl}/upload/${store.logo}" width="73" height="70">
                 </div>
                 <div class="desc">
                   <div class="ellipsis">${store.bAddress}</div>
                   <div class="jibun ellipsis">${store.bdAddress}</div>
-                  <div><a href="${this.apiBaseUrl}/edit/${store.bNo}" target="_blank" class="link">홈페이지</a></div>
+                  <div><a href="${this.$store.state.apiBaseUrl}/edit/${store.bNo}" target="_blank" class="link">홈페이지</a></div>
                 </div>
               </div>
             </div>
