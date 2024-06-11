@@ -112,6 +112,7 @@
 
 <script>
 import axios from 'axios';
+import { mapState } from 'vuex';
 import SlideView from '@/components/SlideView.vue';
 import SlideViewBanner from '@/components/SlideViewBanner.vue';
 import AppFooter from "@/components/AppFooter.vue"
@@ -174,6 +175,7 @@ export default {
     };
   },
   computed: {
+    ...mapState(['apiBaseUrl'])
   },
   methods: {
     // getCurrentLocation() {
@@ -268,6 +270,9 @@ export default {
         console.log(error);
       });
     },
+    closeOverlay() {
+      this.overlays.forEach(o => o.overlay.setMap(null)); // 모든 오버레이 닫기
+    },
     createMap() {
       if (!window.kakao) {
         console.error("Kakao map library not loaded.");
@@ -296,16 +301,16 @@ export default {
           <div class="map-wrap">
             <div class="info">
               <div class="title">${store.title}
-                <div class="close" onclick="window.closeOverlay()" title="닫기"></div>
+                <div class="close" @click="closeOverlay()" title="닫기"></div>
               </div>
               <div class="body">
                 <div class="img">
-                  <img v-bind:src="${this.$store.state.apiBaseUrl}/upload/${store.logo}" width="73" height="70">
+                  <img src="${this.apiBaseUrl}/upload/${store.logo}" width="73" height="70">
                 </div>
                 <div class="desc">
                   <div class="ellipsis">${store.bAddress}</div>
                   <div class="jibun ellipsis">${store.bdAddress}</div>
-                  <div><a href="" target="_blank" class="link">홈페이지</a></div>
+                  <div><a href="${this.apiBaseUrl}/edit/${store.bNo}" target="_blank" class="link">홈페이지</a></div>
                 </div>
               </div>
             </div>
