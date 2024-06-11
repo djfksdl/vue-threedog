@@ -1,0 +1,125 @@
+/* 전체 */
+#noticeReadContentAll{
+    padding: 50px 30px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 1000px;
+}
+
+
+
+/* 제목 */
+#noticeReadTitle{
+    padding: 10px 13px 0px 13px;
+    margin-bottom: 1px;
+    border-top: 1px solid #ddd;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 25px;
+    word-break: break-all;
+}
+
+/* 해당 글 정보 칸 밑에 줄 - 작성자~조회수 */
+#noticeReadTopBottom{
+    padding: 0px 13px 30px 13px;
+    margin-top: 1px;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    line-height: 23px;
+    word-break: keep-all;  /*단어 기준으로 줄 바꿈*/
+}
+
+/* 작성자~실제 작성자 묶음 */
+#leftInformation{
+    float: left;
+}
+/* 작성자 */
+#noticeWriter{
+    margin-right: 7px;
+    color: #333;
+    font-weight: 500;
+    vertical-align: middle;
+}
+/* 해당 글 작성자 */
+#noticeReadWriter{
+    color: #777;
+    font-weight: normal;
+    vertical-align: middle;
+}
+
+/* 작성일~조회수 묶음 */
+#rightInformation{
+    float: right;
+}
+/* 작성일 */
+#noticeRegDate{
+    float: left;
+    margin-right: 7px;
+    color: #333;
+    font-weight: 500;
+    vertical-align: middle;
+}
+/* 해당 글 작성일 */
+#noticeReadRegDate{
+    float: left;
+    /* margin-right: 15px; 조회수 등 하면 적용 */
+    color: #777;
+    font-weight: normal;
+    vertical-align: middle;
+}
+/* 조회 */
+#noticeHit{
+    float: left;
+    margin-right: 7px;
+    color: #333;
+    font-weight: 500;
+    vertical-align: middle;
+}
+/* 해당 글 조회수 */
+#noticeReadHit{
+    float: left;
+    color: #777;
+    font-weight: normal;
+    vertical-align: middle;
+}
+
+
+
+/* 해당 글 내용 */
+#noticeReadContent{
+    padding: 10px 13px 10px 13px;
+    height: 300px;
+    border-bottom: 1px solid #ddd;
+    font-size: 15px;
+    font-weight: normal;
+    vertical-align: middle;
+    overflow-y: auto;
+}
+
+#btnGroup{
+    margin-top: 20px;
+    vertical-align: middle;
+}
+
+/* 목록 버튼 - 리스트로 이동 */
+#btnGoToList{
+    padding: 7px 15px;
+    cursor: pointer;
+    text-align: center;
+    float: left;
+}
+
+/* 삭제 버튼 */
+#btnDelete{
+    padding: 7px 15px;
+    margin-right: 20px;
+    cursor: pointer;
+    text-align: center;
+}
+
+/* 수정 버튼 - 수정폼으로 이동 */
+#btnModify{
+    padding: 7px 15px;
+    cursor: pointer;
+    text-align: center;
+}

@@ -1,0 +1,77 @@
+/* 전체 */
+#noticeWriteContentAll{
+    padding: 20px 30px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 1000px;
+}
+
+/* 테이블 전체 */
+#noticeWriteContentAll table{
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+/* 테이블 헤드 */
+#noticeWriteContentAll thead{
+    float: left;
+}
+#noticeWriteContentAll th{
+    padding: 10px 25px;
+    display: block;
+    background-color: rgb(208, 208, 208);
+    border-collapse: collapse;
+    font-weight: normal;
+    text-align: center;
+}
+#noticeWriteContentAll th:last-child{
+    border-top: 1px solid #777;
+}
+#noticeWriteContentAll #noticeWriteTitle{
+    height: 40px;
+}
+#noticeWriteContentAll #noticeWriteContent{
+    padding-top: 165px;
+    height: 400px;
+}
+
+/* 테이블 바디 */
+#noticeWriteContentAll tbody{
+    display: block;
+    overflow-x: hidden;
+}
+#noticeWriteContentAll td{
+    display: block;
+}
+#noticeWriteContentAll #writeTitle{
+    width: 840px;
+    height: 40px;
+    resize: none;
+}
+#noticeWriteContentAll #writeContent{
+    width: 840px;
+    height: 400px;
+    resize: none;
+}
+
+/* 버튼 묶음 */
+#noticeWriteContentAll #btnGroup{
+    display: flex;
+    text-align: center;
+    vertical-align: middle;
+}
+/* 삭제 버튼 */
+#btnRemove{
+    padding: 7px 15px;
+    margin-left: 370px;
+    margin-right: 50px;
+    float: left;
+    cursor: pointer;
+}
+/* 등록 버튼 */
+#btnWrite{
+    padding: 7px 15px;
+    float: right;
+    cursor: pointer;
+}

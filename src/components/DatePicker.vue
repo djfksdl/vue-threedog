@@ -144,9 +144,8 @@ const isSelected = (time) => {
 <style>
 #reservationFormDatePicker {
   display: flex;
-  margin-top: 30px;
-  /* width: 1300px; */
-  /* margin: 0 auto; */
+  width: 1300px;
+  margin: 0 auto;
 }
 
 #reservationFormDatePicker .disabled {
@@ -162,16 +161,17 @@ const isSelected = (time) => {
 }
 
 #reservationFormDatePicker .dp__instance_calendar {
-  width: 400px;
+  width: 500px;
   font-size: 20px;
-  /* padding: 10px; */
+  padding: 10px;
   border-bottom: none;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  margin-left: 11px;
 }
 
 #reservationFormDatePicker .dp__calendar_item {
-  /* padding: 10px; */
+  padding: 10px;
 }
 
 #reservationFormDatePicker .dp__calendar_header_item {
@@ -180,15 +180,19 @@ const isSelected = (time) => {
 
 #reservationFormDatePicker .dp__action_button.dp__action_select {
   color: #236C3F;
-  width: 400px;
+  font-size: 0px;
+  width: 420px;
   height: 40px;
+  margin-right: 30px;
+  margin-top: -13px;
+  margin-bottom: 70px;
 }
 
 #reservationFormDatePicker .dp__action_button.dp__action_select::after {
   content: "날짜 선택";
   color: white;
   font-size: 18px;
-  padding-left: 120px;
+  padding-left: 170px;
 }
 
 #reservationFormDatePicker .dp__selection_preview {
@@ -197,16 +201,15 @@ const isSelected = (time) => {
 }
 
 #reservationFormDatePicker .time {
+  width: 800px;
   /* background-color: red; */
-  margin-left:60px;
+  margin: 100px 0 0 150px;
   height: 400px;
   /* margin: 70px 150px 0 300px; */
 }
 
 #reservationFormDatePicker .time p {
-  margin: 20px 0 0 10px ;
-  font-weight: bold;
-  font-size: 20px;
+  margin: 23px;
 }
 
 #reservationFormDatePicker .time button {
