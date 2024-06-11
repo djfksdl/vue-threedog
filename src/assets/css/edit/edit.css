@@ -87,8 +87,9 @@ font-size: 36px;
     /* height: 100%; */
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
     animation-name: slide;
-    animation-duration: 10s; /* 슬라이드가 한 바퀴 도는 데 걸리는 시간 */
+    animation-duration: 40s; /* 슬라이드가 한 바퀴 도는 데 걸리는 시간 */
     animation-timing-function: linear; /* 애니메이션 효과를 일정하게 유지 */
     animation-iteration-count: infinite; /* 무한 반복 */
 }
