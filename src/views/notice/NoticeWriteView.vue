@@ -72,7 +72,7 @@ export default {
 
             axios({
                 method: 'post', // put, post, delete                   
-                url: 'http://localhost:9010/api/notice/write',
+                url: `${this.$store.state.apiBaseUrl}/api/notice/write`,
                 headers: { "Content-Type": "application/json; charset=utf-8" 
                 , "Authorization": "Bearer " + this.$store.state.token
                 }, //전송타입

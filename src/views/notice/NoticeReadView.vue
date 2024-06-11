@@ -68,7 +68,7 @@ export default {
 
             axios({
                 method: 'get', // put, post, delete                   
-                url: 'http://localhost:9010/api/notice/read/'+this.noticeVo.no,
+                url: `${this.$store.state.apiBaseUrl}/api/notice/read/`+this.noticeVo.no,
                 headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
                 //params: {uName:this.noticeVo.uName}, //get방식 파라미터로 값이 전달
                 //data: guestbookVo, //put, post, delete 방식 자동으로 JSON으로 변환 전달
@@ -88,7 +88,7 @@ export default {
 
             axios({
                 method: 'delete', // put, post, delete                   
-                url: 'http://localhost:9010/api/notice/delete/'+no,
+                url: `${this.$store.state.apiBaseUrl}/api/notice/delete/`+no,
                 headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
                 //params: guestbookVo, //get방식 파라미터로 값이 전달
                 data: {no}, //put, post, delete 방식 자동으로 JSON으로 변환 전달
