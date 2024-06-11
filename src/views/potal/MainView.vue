@@ -270,6 +270,9 @@ export default {
         console.log(error);
       });
     },
+    closeOverlay() {
+      this.overlays.forEach(o => o.overlay.setMap(null)); // 모든 오버레이 닫기
+    },
     createMap() {
       if (!window.kakao) {
         console.error("Kakao map library not loaded.");
@@ -298,7 +301,7 @@ export default {
           <div class="map-wrap">
             <div class="info">
               <div class="title">${store.title}
-                <div class="close" onclick="window.closeOverlay()" title="닫기"></div>
+                <div class="close" @click="closeOverlay()" title="닫기"></div>
               </div>
               <div class="body">
                 <div class="img">
