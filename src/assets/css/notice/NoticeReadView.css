@@ -47,7 +47,7 @@
     vertical-align: middle;
 }
 
-/* 작성일~조회수 묶음 */
+/* 작성일~실제 작성일 묶음 */
 #rightInformation{
     float: right;
 }
@@ -63,21 +63,6 @@
 #noticeReadRegDate{
     float: left;
     /* margin-right: 15px; 조회수 등 하면 적용 */
-    color: #777;
-    font-weight: normal;
-    vertical-align: middle;
-}
-/* 조회 */
-#noticeHit{
-    float: left;
-    margin-right: 7px;
-    color: #333;
-    font-weight: 500;
-    vertical-align: middle;
-}
-/* 해당 글 조회수 */
-#noticeReadHit{
-    float: left;
     color: #777;
     font-weight: normal;
     vertical-align: middle;

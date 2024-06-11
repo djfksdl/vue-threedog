@@ -18,14 +18,8 @@
                 <div id="rightInformation">
                     <span id="noticeRegDate">작성일</span>
                     <span id="noticeReadRegDate">{{ noticeVo.regDate }}</span>
-
-                    <!-- <span id="noticeHit">조회</span> -->
-                    <!-- <span id="noticeReadHit">506회</span> -->
                 </div>
             </div>
-
-            <!-- <span>댓글</span> -->
-            <!-- <span>32건</span> -->
 
             <p id="noticeReadContent">{{ noticeVo.content }}</p>
 
@@ -50,7 +44,6 @@ import AppFooter from '@/components/AppFooter.vue';
 import AppHeader from '@/components/AppHeader.vue';
 import '@/assets/css/notice/NoticeReadView.css';
 import axios from 'axios';
-import { mapState } from 'vuex';
 
 export default {
     name: "NoticeReadView",
@@ -68,12 +61,6 @@ export default {
                 content:""
             }
         };
-    },
-    computed: {
-        ...mapState(['authUser'])
-    },
-    mounted(){
-        console.log("yayaya "+this.authUser)
     },
     methods: {
         readOneNotice(){

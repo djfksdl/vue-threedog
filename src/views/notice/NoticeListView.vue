@@ -16,9 +16,7 @@
                     <span id="totalNotice">전체 {{ totalCnt }}건</span>
 
                     <button id="btnAdd" v-if="true" @click="goToWritePage()">등록</button>
-                    <!-- 
-                    <span>정렬</span>
-                    -->
+                    
                     <input id="searchBox" type="search" placeholder="검색" v-model="noticeVo.keyword" v-on:keyup.enter="search">
                     <img id="searchImg" src="https://cdn-icons-png.flaticon.com/512/71/71403.png" v-on:click="search">
                     
@@ -30,10 +28,6 @@
                             <th id="firstTable">번호</th>
                             <th id="secondTable">제목</th>
                             <th id="thirdTable">작성자</th>
-                            <!--
-                        <th>작성일</th>
-                        <th>조회수</th>
-                        -->
                         </tr>
                     </thead>
 
@@ -55,7 +49,6 @@
                 </div>
 
             </div>
-            <!-- <p>authUser: {{ authUser }}</p> -->
 
         </div>
 
@@ -95,23 +88,6 @@ export default {
         };
     },
     methods: {
-        isAuthName() {
-            let authUserData=localStorage.getItem('authUser');
-            console.log(authUserData)
-            if(authUserData) {
-                const authUserObj=JSON.parse(authUserData);
-
-                let uNo=authUserObj.authUser.uNo;
-
-                if(uNo==1) {
-                    console.log("oh yeah success~~~~~~~~~~~~~~");
-                }else{
-                    console.log("shit")
-                }
-            }else{
-                console.log("fuck")
-            }
-        },
         getList(list) {
             console.log("리스트 불러오기");
 
@@ -183,7 +159,6 @@ export default {
     },
     created() {
         this.getList();
-        this.isAuthName();
     }
 };
 </script>
