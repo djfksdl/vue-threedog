@@ -22,7 +22,6 @@
   
 .container2 .eImgSlide.wrapper-slide  .img-slide {
     width: 100%;
-    min-height: 700px;
     overflow: hidden;
 }
 .container2 .eImgSlide.wrapper-slide  .img-slide img{
@@ -249,7 +248,9 @@ font-size: 36px;
     margin: 0 auto;
     padding: 0 50px;
 }
-
+.container2 .eMidContainer .ePriceReviewContainer .eReviewBox .eReviewSlide .img-slide{
+    min-height: 650px;
+}
 
 /* 후기 슬라이드 이미지 */
 .container2 .eMidContainer .ePriceReviewContainer .eReviewBox .eReviewSlide img{
