@@ -272,7 +272,7 @@
                                     <Pagination />
                                 </template>
                             </Carousel>
-                            
+
                             <!-- 후기 없을때 -->
                             <div v-else class="noReviewContainer" >
                                 아직 등록되어있는 후기가 없습니다.
@@ -339,7 +339,7 @@
                                         <p class="eReservTel">{{ shopInfo.bPhone }}</p>
                                     </div>
                                     <div class="eReservBtnBox">
-                                        <router-link to="/reservationform" class="eReservBtn">예약하러 가기</router-link>
+                                        <router-link :to="`/reservationform/${bNo}`" class="eReservBtn">예약하러 가기</router-link>
                                     </div>
                                 </div>
                             </div>
