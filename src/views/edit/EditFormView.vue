@@ -226,7 +226,7 @@
                                     <th>기장</th>
                                     <td><input type="text" v-model="priceList[60].onePrice"></td>
                                     <th>초과무게당</th>
-                                    <td colspan="2"><input type="text" v-model="priceList[63].onePrice"></td>
+                                    <td colspan="2"><input type="text" v-model="priceList[63].onePrice">원 추가</td>
                                 </tr>
                             </table>
                         </div>

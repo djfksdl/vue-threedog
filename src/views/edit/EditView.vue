@@ -253,8 +253,8 @@
                         </div>
                         <!-- 후기 슬라이드 -->
                         <div class="eReviewSlide">
-
-                            <Carousel :autoplay="5000" :wrap-around="true" :show-arrows="false" ref="carouselRef3">
+                            <!-- 후기 있을떄 -->
+                            <Carousel v-if="reviewList.length" :autoplay="5000" :wrap-around="true" :show-arrows="false" ref="carouselRef3">
                                 <Slide v-for="review in reviewList" :key="review.bNo">
                                     <div class="img-slide">
                                         <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${review.saveName }`">
@@ -272,6 +272,11 @@
                                     <Pagination />
                                 </template>
                             </Carousel>
+                            
+                            <!-- 후기 없을때 -->
+                            <div v-else class="noReviewContainer" >
+                                아직 등록되어있는 후기가 없습니다.
+                            </div>
                         </div>
                     </div>
                 </div>
