@@ -116,7 +116,7 @@ export default {
 
       axios({
         method: 'get',
-        url: `${this.apiBaseUrl}/api/mainlist`,
+        url: `${this.apiBaseUrl}/api/mainlist02`,
         headers: { "Content-Type": "application/json; charset=utf-8" },
         params: params,
         responseType: 'json'
