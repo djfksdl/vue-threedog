@@ -272,7 +272,7 @@
                                     <Pagination />
                                 </template>
                             </Carousel>
-                            
+
                             <!-- 후기 없을때 -->
                             <div v-else class="noReviewContainer" >
                                 아직 등록되어있는 후기가 없습니다.
@@ -339,7 +339,7 @@
                                         <p class="eReservTel">{{ shopInfo.bPhone }}</p>
                                     </div>
                                     <div class="eReservBtnBox">
-                                        <router-link to="/reservationform" class="eReservBtn">예약하러 가기</router-link>
+                                        <router-link to="" class="eReservBtn" v-on:click="goReserve">예약하러 가기</router-link>
                                     </div>
                                 </div>
                             </div>
@@ -502,6 +502,23 @@ export default {
             }).catch(error => {
                 console.log(error);
             });
+        },
+
+        // 예약하기 버튼
+        goReserve(){
+            // console.log("예약 버튼을 눌렀을때");
+            const uNo = this.$store.state.authUser;
+            const bNo2 = this.$store.state.auth;
+
+            if(!uNo && !bNo2){
+                alert("로그인이 필요한 서비스입니다.");
+                this.$router.push('/login');
+            }else if(!uNo && bNo2){
+                alert("회원 전용 서비스입니다.");
+            }else{
+                this.$router.push(`/reservationform/${this.bNo}`);
+            }
+            
         },
         
         // 카카오 길찾기

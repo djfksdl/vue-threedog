@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- 고탑버튼 -->
-        <router-link to="#" class="toScrollButton" v-on:click="scrollToTop" :class="{ 'show': showButton }">
+        <router-link to="" class="toScrollButton" v-on:click="scrollToTop" :class="{ 'show': showButton }">
             <!-- :class(디렉티브) :showButton이 true일때 show를 추가하고 flase일때는 show클래스를 제거 -->
             <div class="arrowUp"></div>
         </router-link>

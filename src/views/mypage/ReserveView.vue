@@ -38,7 +38,7 @@
                         </div>
                         <div>
                             <img v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${reserveVo.logo}`"
-                                style="width: 200px; height: 200px;">
+                                style="width: 200px; height: 200px; border:1px solid #ddd;">
                         </div>
 
                     </div>
