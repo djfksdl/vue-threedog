@@ -159,3 +159,16 @@
     display: flex;
     transition: transform 0.5s ease; /* 이동을 부드럽게 하기 위한 전환 효과 */
 }
+
+
+
+
+#myDiary .review a{
+    display: block;
+    width: 100%;
+    color: white;
+    background-color:  #236C3F;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+}

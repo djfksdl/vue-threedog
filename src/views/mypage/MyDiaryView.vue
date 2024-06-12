@@ -62,6 +62,11 @@
                                     <p>☉ 전달사항</p>
                                     <p>{{ entry.message }}</p>
                                 </div>
+                                <div class="review" v-if="entry.rNo==null">
+                                    <router-link
+                                        :to="{ name: 'reviewform', params: { rsNo: entry.rsNo, bNo: entry.bNo } }">
+                                        후기작성</router-link>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -112,12 +117,12 @@ export default {
                 console.log('다이어리 불러오기 성공:', response.data.apiData);
                 this.diaryEntries = response.data.apiData; // 응답 데이터를 diaryEntries에 저장
                 this.diaryEntries = response.data.apiData.map(entry => {
-                return {
-                    ...entry,
-                    afterImgUrl: `${this.$store.state.apiBaseUrl}/upload/${entry.saveName}`
-                };
-            });
-            console.log("diaryEntries:", this.diaryEntries);
+                    return {
+                        ...entry,
+                        afterImgUrl: `${this.$store.state.apiBaseUrl}/upload/${entry.saveName}`
+                    };
+                });
+                console.log("diaryEntries:", this.diaryEntries);
 
             }).catch(error => {
                 console.error('다이어리 불러오기 에러:', error);
