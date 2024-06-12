@@ -20,7 +20,6 @@
                 <p>품종: {{ selectedEvent.extendedProps.breed }}</p>
                 <p>미용컷: {{ selectedEvent.extendedProps.groomingStyle }}</p>
                 <p>금액: {{ selectedEvent.extendedProps.price }}</p>
-
                 <span class="schedule-edit" @click="editEvent">시간수정</span>
                 <span class="schedule-delete" @click="deleteEvent">삭제</span>
                 <span class="schedule-close" @click="closeModal">확인</span>
@@ -107,9 +106,15 @@ export default {
                 console.error('Error fetching reservations:', error);
             });
         },
-
         updateCalendarEvents(bNo) {
+
             const events = this.reservationData.map(reservation => {
+                // reservation 객체와 rtDate, rtTime이 null 또는 undefined인지 확인
+                if (!reservation || !reservation.rtDate || !reservation.rtTime) {
+                    console.error('reservation 또는 reservation.rtDate, reservation.rtTime이 null이거나 정의되지 않았습니다.', reservation);
+                    return null; // 잘못된 데이터를 건너뛰도록 null을 반환
+                }
+
                 const dateParts = reservation.rtDate.split('-'); // rtDate를 연, 월, 일로 분리
                 const timeParts = reservation.rtTime.split(':'); // rtTime을 시간과 분으로 분리
 
@@ -136,14 +141,15 @@ export default {
                         price: reservation.expectedPrice,
                         rsNo: reservation.rsNo,
                         bNo: bNo, // bNo 값을 설정
-                        pushTime: reservation.pushTime // pushTime 값을 설정
+                        //pushTime: reservation.pushTime // pushTime 값을 설정
                     }
                 };
-            });
+            }).filter(event => event !== null); // null 값을 필터링하여 잘못된 데이터를 제거
 
             this.calendarOptions.events = events;
             this.$refs.calendar.getApi().refetchEvents();
         },
+
 
         handleEventDrop(info) {
             console.log("handleEventDrop");
@@ -164,31 +170,6 @@ export default {
 
             // 예약 가능한 시간대를 유지하도록 예약화면에 해당 시간대 추가
             this.addAvailableTime(info.event.start, info.event.end);
-
-            // 예약 상태를 업데이트합니다.
-            this.updateReservationStatus(rsNo, info.event.start, info.event.end);
-        },
-
-
-        updateReservationStatus(rsNo, startTime, endTime) {
-            const rtfinish = 1; // 드롭한 일정의 예약 상태를 완료로 설정합니다.
-
-            axios({
-                method: 'put',
-                url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/status`,
-                data: { rsNo: rsNo, startTime: startTime, endTime: endTime, rtfinish: rtfinish }, // 데이터 전송
-                headers: { "Content-Type": "application/json; charset=utf-8" },
-                responseType: 'json'
-            }).then(response => {
-                console.log(response.data.apiData); //수신데이타
-                // 성공적으로 예약 상태를 업데이트한 경우
-                console.log('예약 상태가 성공적으로 업데이트되었습니다.');
-                Swal.fire('예약 상태 업데이트', '예약 상태가 성공적으로 업데이트되었습니다.', 'success');
-            }).catch(error => {
-                // 오류 처리
-                console.error('Error updating reservation status:', error);
-                Swal.fire('예약 상태 업데이트 실패', '예약 상태를 업데이트하는 도중 오류가 발생했습니다.', 'error');
-            });
         },
 
         addAvailableTime(startTime, endTime) {
@@ -201,12 +182,6 @@ export default {
                     newAvailableTimes.push(time);
                 }
             });
-
-            // 새로운 시간대를 추가합니다.
-            newAvailableTimes.push({
-                start: startTime,
-                end: endTime
-            });
             this.availableTimes = newAvailableTimes;
         },
 
@@ -214,17 +189,18 @@ export default {
         //-------------------- 일자 수정 ----------------------------
         updateEventOnServer(rsNo, event) {
             console.log("updateEventOnServer");
-
             const start = event.start.toISOString().slice(0, 19).replace('T', ' '); // ISO 8601 형식을 MySQL 형식으로 변환
-            const rtfinish = 1; // 일정을 드래그할 때는 항상 예약 완료 상태로 설정
 
-           
+            // 예약 완료 상태일 때 rtfinish를 1로 설정하고, 예약 가능 상태일 때는 0으로 설정
+            const rtfinish = event.rtfinish || 0; // 예약 완료 상태 확인
+            //const rtfinish = event.isConfirmed ? 1 : 0;
+
 
             // 서버에 변경된 일정 정보를 업데이트하는 API 호출
             axios({
                 method: 'put',
                 url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/date`,
-                data: { rsNo: rsNo, rtDate: start.split(' ')[0], rtTime: start.split(' ')[1], rtfinish: rtfinish }, // 데이터 전송
+                data: { rsNo: rsNo, rtDate: start, rtfinish: rtfinish }, // 데이터 전송
                 headers: { "Content-Type": "application/json; charset=utf-8" },
                 responseType: 'json'
             }).then(response => {
@@ -258,9 +234,9 @@ export default {
                     return { title, start };
                 }
             }).then(result => {
-                if (result.value) {
+                if (result.isConfirmed) {
                     const { start, title } = result.value;
-                    this.selectedEvent.setStart(new Date(start));
+                    //  this.selectedEvent.setStart(new Date(start));
                     this.selectedEvent.setProp('title', title);
 
                     // 서버에 변경된 예약 정보를 업데이트하는 API 호출
@@ -286,7 +262,7 @@ export default {
             axios({
                 method: 'put',
                 url: `${this.$store.state.apiBaseUrl}/api/jw/${rsNo}/time`,
-                data: { rsNo: rsNo, rtTime: startTime, newRtFinish: 1 },
+                data: { rsNo: rsNo, rtTime: startTime },
                 headers: { "Content-Type": "application/json; charset=utf-8" },
                 responseType: 'json'
             }).then(() => {
@@ -323,7 +299,7 @@ export default {
                 confirmButtonText: '삭제',
                 cancelButtonText: '취소'
             }).then(result => {
-                if (result.rtfinish) {
+                if (result.isConfirmed) {
                     const rsNo = this.selectedEvent.extendedProps.rsNo;
 
                     if (!rsNo) {
@@ -365,6 +341,7 @@ export default {
             });
         },
 
+        // ------------------알림장 보내보내----------------------------
         // ------------------알림장 보내보내----------------------------
 
         handleEventClick(info) {
