@@ -106,14 +106,18 @@ export default {
                 console.error('Error fetching reservations:', error);
             });
         },
+        
         updateCalendarEvents(bNo) {
 
             const events = this.reservationData.map(reservation => {
+                console.log(reservation); // Check the reservation object
                 // reservation 객체와 rtDate, rtTime이 null 또는 undefined인지 확인
                 if (!reservation || !reservation.rtDate || !reservation.rtTime) {
                     console.error('reservation 또는 reservation.rtDate, reservation.rtTime이 null이거나 정의되지 않았습니다.', reservation);
                     return null; // 잘못된 데이터를 건너뛰도록 null을 반환
                 }
+
+
 
                 const dateParts = reservation.rtDate.split('-'); // rtDate를 연, 월, 일로 분리
                 const timeParts = reservation.rtTime.split(':'); // rtTime을 시간과 분으로 분리
@@ -141,7 +145,7 @@ export default {
                         price: reservation.expectedPrice,
                         rsNo: reservation.rsNo,
                         bNo: bNo, // bNo 값을 설정
-                        //pushTime: reservation.pushTime // pushTime 값을 설정
+                        pushTime: reservation.pushTime // pushTime 값을 설정
                     }
                 };
             }).filter(event => event !== null); // null 값을 필터링하여 잘못된 데이터를 제거
@@ -149,6 +153,62 @@ export default {
             this.calendarOptions.events = events;
             this.$refs.calendar.getApi().refetchEvents();
         },
+
+        // updateCalendarEvents(bNo) {
+        //     const events = this.reservationData.map(reservation => {
+        //         // reservation 객체와 rtDate가 null 또는 undefined인지 확인
+        //         if (!reservation || !reservation.rtDate) {
+        //             console.error('reservation 또는 reservation.rtDate가 null이거나 정의되지 않았습니다.', reservation);
+        //             return null; // 잘못된 데이터를 건너뛰도록 null을 반환
+        //         }
+
+        //         // rtDate에서 날짜와 시간을 분리
+        //         const [datePart, timePart] = reservation.rtDate.split(' '); // 공백을 기준으로 날짜와 시간 분리
+                
+
+        //         if (!timePart) {
+        //             console.error('reservation.rtDate에 시간이 포함되어 있지 않습니다.', reservation);
+        //             return null; // 시간이 없으면 잘못된 데이터를 건너뛰도록 null을 반환
+        //         }
+
+        //         const dateParts = datePart.split('-'); // 날짜 부분을 연, 월, 일로 분리
+        //         const timeParts = timePart.split(':'); // 시간 부분을 시간과 분으로 분리
+
+        //         // 연, 월, 일, 시간, 분을 각각 추출하여 Date 객체 생성
+        //         const startTime = new Date(
+        //             parseInt(dateParts[0]),  // 연
+        //             parseInt(dateParts[1]) - 1, // 월 (0부터 시작하므로 1을 빼줌)
+        //             parseInt(dateParts[2]), // 일
+        //             parseInt(timeParts[0]), // 시간
+        //             parseInt(timeParts[1]) // 분
+        //         );
+
+        //         // 발송이 완료된 경우 해당 이벤트의 색상을 변경
+        //         const backgroundColor = reservation.pushTime ? '#ff6666' : '#FFFFFF'; // pushTime이 있는 경우 빨간색 배경 색상
+
+        //         return {
+        //             title: `${reservation.dogName}, ${reservation.beauty}, ${reservation.kind}, ${reservation.expectedPrice}원`,
+        //             start: startTime,
+        //             backgroundColor,
+        //             extendedProps: {
+        //                 petName: reservation.dogName,
+        //                 breed: reservation.kind,
+        //                 groomingStyle: reservation.beauty,
+        //                 price: reservation.expectedPrice,
+        //                 rsNo: reservation.rsNo,
+        //                 bNo: bNo, // bNo 값을 설정
+        //                 pushTime: reservation.pushTime // pushTime 값을 설정
+        //             }
+        //         };
+        //     }).filter(event => event !== null); // null 값을 필터링하여 잘못된 데이터를 제거
+
+        //     this.calendarOptions.events = events;
+        //     this.$refs.calendar.getApi().refetchEvents();
+        // },
+
+        
+
+        
 
 
         handleEventDrop(info) {
@@ -341,10 +401,10 @@ export default {
             });
         },
 
-        // ------------------알림장 보내보내----------------------------
-        // ------------------알림장 보내보내----------------------------
 
-        handleEventClick(info) {
+         // ------------------알림장 보내보내----------------------------
+
+         handleEventClick(info) {
             if (!info || !info.event) {
                 console.error('클릭된 예약 정보가 없습니다.');
                 return;
@@ -419,7 +479,6 @@ export default {
             // Vuex 스토어에 선택된 일정 정보를 설정
             this.$store.commit("setSelectedSchedule", event);
         },
-
 
 
         // 예약 목록에서 발송이 완료된 일정을 식별하여 pushTime  속성을 true로 설정하는 메서드 추가
