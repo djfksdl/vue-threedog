@@ -124,8 +124,8 @@
 
             </div>
         </div>
-
-
+        <ToReserve/>
+        <TopButton />  
         <ManagerFooter />
     </div><!-- wrap -->
 </template>
@@ -135,6 +135,8 @@
 <script>
 import ManagerFooter from "@/components/ManagerFooter.vue"
 import ManagerHeader from "@/components/ManagerHeader.vue"
+import TopButton from "@/components/TopButton.vue"
+import ToReserve from "@/components/ToReserve.vue"
 import axios from "axios";
 import '@/assets/css/mypage/review.css'
 
@@ -148,6 +150,8 @@ export default {
         ManagerHeader,
         Swiper,
         SwiperSlide,
+        TopButton,
+        ToReserve,
     },
     data() {
         return {

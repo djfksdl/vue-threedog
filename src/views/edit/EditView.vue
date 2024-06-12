@@ -249,7 +249,7 @@
                     <div :class="{'eReviewBox': true, 'eRight': !shopInfo.isChange}">
                         <div class="eReviewBoxTitle">
                             <h1>후기</h1>
-                            <router-link to="" >더보기 +</router-link>
+                            <router-link :to="`/review/${bNo}`" >더보기 +</router-link>
                         </div>
                         <!-- 후기 슬라이드 -->
                         <div class="eReviewSlide">
