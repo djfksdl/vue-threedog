@@ -8,7 +8,6 @@
                 <div class="eLogoTitle">
                     <div class="eLogoTitleExplain">
                         <h1>로고, 타이틀 등록</h1>
-                        <p>*로고 사이즈 60*60 권장</p>
                     </div>
                     <!-- 로고 -->
                     <div class="eLogoTitleInfo">
@@ -43,7 +42,7 @@
                         <h1>미용사진 등록</h1>
                         <div class="eCutSlideImgInfo">
                             <input id="btnAtt2" type="file" multiple='multiple' class="eCutFileAddBtn" >
-                            <p>*사진은 최대 18장까지 첨부할 수 있습니다.(최소 6개이상 넣는걸 추천합니다.)</p>
+                            <p>*사진은 최대 5장까지 첨부할 수 있습니다.(5개 넣는걸 추천합니다.)</p>
                         </div>
                         <div id='att_zone2' class="addcImgBox" data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
                     </div>
@@ -1081,10 +1080,10 @@
                     var files = e.target.files;
                     var fileArr = Array.prototype.slice.call(files);
                     fileArr.forEach(file => {
-                        if (sel_files.length < 18) {
+                        if (sel_files.length < 5) {
                             imageLoader(file);
                         } else if (!alerted) {
-                            alert("최대 18장까지만 첨부할 수 있습니다.");
+                            alert("최대 5장까지만 첨부할 수 있습니다.");
                             alerted = true;
                         }
                     });
@@ -1112,16 +1111,16 @@
                     var files = dt.files;
                     if (sel_files.length < 18) {
                         for (let f of files) {
-                            if (sel_files.length < 18) {
+                            if (sel_files.length < 5) {
                                 imageLoader(f);
                             } else if (!alerted) {
-                                alert("최대 18장까지만 첨부할 수 있습니다.");
+                                alert("최대 5장까지만 첨부할 수 있습니다.");
                                 alerted = true;
                                 break;
                             }
                         }
                     } else if (!alerted) {
-                        alert("최대 18장까지만 첨부할 수 있습니다.");
+                        alert("최대 5장까지만 첨부할 수 있습니다.");
                         alerted = true;
                     }
                     updateFileInput();
@@ -1129,7 +1128,7 @@
 
                 // 이미지 로더 함수-첨부된 이미지들을 배열에 넣고 미리보기
                 function imageLoader(file) {
-                    if (sel_files.length >= 18) { // 이미 18개 이상인 경우 추가하지 않음
+                    if (sel_files.length >= 5) { // 이미 18개 이상인 경우 추가하지 않음
                         return;
                     }
                     sel_files.push(file);
