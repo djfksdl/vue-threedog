@@ -175,13 +175,42 @@ export default {
         this.monthlySales = response.data.apiData.map(sale => sale.totalPrice);
 
         const labels = response.data.apiData.map(sale => `${sale.month}월`);
+        const backgroundColors = [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(199, 199, 199, 0.2)',
+          'rgba(83, 102, 255, 0.2)',
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)'
+        ];
+        const borderColors = [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(199, 199, 199, 1)',
+          'rgba(83, 102, 255, 1)',
+          'rgba(255, 99, 132, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)'
+        ];
+
         console.log('Monthly Sales:', this.monthlySales);
         this.drawChart(
           'monthlyChartCanvas',
           labels,
           this.monthlySales,
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(255, 206, 86, 1)',
+          backgroundColors,
+          borderColors,
           '월별 매출',
           'doughnut'
         );
@@ -191,7 +220,7 @@ export default {
     },
     getYearList(bNo) {
       console.log("==========================");
-      console.log(bNo); 
+      console.log(bNo);
       console.log("==========================");
 
       axios({
