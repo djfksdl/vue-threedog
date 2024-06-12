@@ -21,7 +21,7 @@
                 </div>
             </div>
 
-            <p id="noticeReadContent">{{ noticeVo.content }}</p>
+            <p id="noticeReadContent" v-html="formatText"></p>
 
             <div id="btnGroup">
                 <button id="btnGoToList" onclick="location.href='/announcements'">목록</button>
@@ -61,6 +61,11 @@ export default {
                 content:""
             }
         };
+    },
+    computed: {
+        formatText() {
+            return this.noticeVo.content.replace(/\n/g, '<br>');
+        }
     },
     methods: {
         readOneNotice(){
