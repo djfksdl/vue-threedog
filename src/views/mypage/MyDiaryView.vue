@@ -62,7 +62,7 @@
                                     <p>☉ 전달사항</p>
                                     <p>{{ entry.message }}</p>
                                 </div>
-                                <div class="review" v-if="entry.rNo==null">
+                                <div class="review" v-if="entry.rNo==0">
                                     <router-link
                                         :to="{ name: 'reviewform', params: { rsNo: entry.rsNo, bNo: entry.bNo } }">
                                         후기작성</router-link>
