@@ -92,6 +92,7 @@ export default {
     methods: {
         getList(list) {
             console.log("리스트 불러오기");
+            console.log(this.$store.state.authUser.userName)
 
             if (this.noticeVo.crtPage <= 1) {
                 this.noticeVo.crtPage = 1;
