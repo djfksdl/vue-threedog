@@ -2,9 +2,9 @@
   <div id="reservationFormDatePicker">
     <div class="dateBox">
       <Datepicker locale="ko" v-model="date" format="yyyy-MM-dd" :enable-time-picker="false" :inline="true"
-        @update:model-value="onDateChange" />
+      :min-date="minDate" @update:model-value="onDateChange" />
     </div>
-<!--  :min-date="minDate" -->
+<!--   -->
     
     <div class="time">
       <!-- <div>선택한 날짜 {{ reserveTime.rtDate }}</div> -->

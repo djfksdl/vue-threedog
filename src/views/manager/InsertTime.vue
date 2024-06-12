@@ -30,7 +30,7 @@
                     <!-- 날짜 선택 -->
                     <div class="selectWorkDate">
                         <div>
-                            <input type="date" v-model="selectedStartDate"  ref="startDateInput" @input="handleDateChange('start')"> ~
+                            <input type="date" v-model="selectedStartDate" :min="today" ref="startDateInput" @input="handleDateChange('start')"> ~
                             <input type="date" v-model="selectedEndDate" :min="selectedStartDate" ref="endDateInput" @focus="checkStartDate" @input="handleDateChange('end')">
                         </div>
                         <div class="weekAllDayCheck">
