@@ -1,8 +1,9 @@
 #listContentAll{
-    width: 1050px;
-    height: 100%;
     margin-left: auto;
     margin-right: auto;
+    width: 1050px;
+    height: 100%;
+    min-height: 500px;
 }
 
 /* 페이지 안내 제목
@@ -37,6 +38,11 @@
     padding: 5px 13px;
     margin-right: 35px;
     float: right;
+    background-color: #236C3F;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
 }
 
 /* 검색 키워드 입력창 */
@@ -57,6 +63,9 @@
 }
 
 /* 테이블 전체 */
+#tableMinHeight{
+    min-height: 300px;
+}
 #noticeTable, #noticeTable th, #noticeTable td{
     margin-top: 10px;
     margin-left: auto;
@@ -90,7 +99,7 @@
 
 /* 테이블 마지막 열 - 작성자 */
 #thirdTable{
-    width: 100px;
+    width: 120px;
     text-align: center;
 }
 

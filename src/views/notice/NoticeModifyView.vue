@@ -1,53 +1,46 @@
 <template>
     <div>
 
-        <AppHeader/>
+        <AppHeader />
 
 
 
-        <div>
+        <div id="noticeReadContentAll">
 
-            <div id="modifyFormContentAll">
+            <form action="" method="" v-on:submit.prevent="modifyNotice">
 
-                <form action="" method="" v-on:submit.prevent="modifyNotice">
+                <div id="noticeModifyTitlePart">
+                    <input id="noticeModifyTitle" type="text" placeholder="수정할 제목을 입력해 주세요" v-model="noticeVo.title">
+                </div>
 
-                    <div id="formGroup">
-                        <label id="titleGroup" for="noticeModifyTitle">제목</label>
-                        <input id="noticeModifyTitle" type="text" name="title" placeholder="제목을 입력해 주세요" v-model="noticeVo.title">
+                <div id="noticeModifyTopBottom">
+                    <div id="modifyLeftInformation">
+                        <span id="modifyNoticeWriter">작성자</span>
+                        <span id="modifyNoticeRealWriter">{{ noticeVo.uname }}</span>
                     </div>
 
-                    <div id="notModifyPart">
-                        <div class="writerGroup">
-                            <span id="titleGroup">작성자</span>
-                            <span id="noModifyInfo">{{ noticeVo.uname }}</span>
-                        </div>
-
-                        <div class="dateGroup">
-                            <span id="titleGroup">작성일</span>
-                            <span id="noModifyInfo">{{ noticeVo.regDate }}</span>
-                        </div>
+                    <div id="modifyRightInformation">
+                        <span id="modifyNoticeRegDate">작성일</span>
+                        <span id="modifyNoticeRealRegDate">{{ noticeVo.regDate }}</span>
                     </div>
+                </div>
 
-                    <div id="formGroup" class="contentAll">
-                        <label id="titleGroup" for="noticeModifyContent">내용</label>
-                        <textarea id="noticeModifyContent" name="content" placeholder="내용을 입력해 주세요" v-model="noticeVo.content"></textarea>
-                    </div>
+                <div id="noticeModifyContentPart">
+                    <textarea id="noticeModifyContent" name="content" placeholder="수정할 내용을 입력해 주세요" v-model="noticeVo.content"></textarea>
+                </div>
 
-                    <div id="btnGroup">
-                        <button id="cancelBtn" type="button" @click="goToRead">취소</button>
+                <div id="modifyBtnGroup">
+                    <button id="cancelBtn" type="button" @click="goToRead">취소</button>
+                    <button id="modifyBtn" type="submit">수정</button>
+                </div>
 
-                        <button id="modifyBtn" type="submit">수정</button>
-                  </div>
-
-                </form>
-
-            </div>
+            </form>
 
         </div>
 
 
-        
-        <AppFooter/>
+
+        <AppFooter />
 
     </div>
 </template>

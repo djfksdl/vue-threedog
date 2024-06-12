@@ -84,11 +84,16 @@
 #btnGroup{
     margin-top: 20px;
     vertical-align: middle;
+    text-align: center;
 }
 
 /* 목록 버튼 - 리스트로 이동 */
 #btnGoToList{
     padding: 7px 15px;
+    background-color: #236C3F;
+    border: none;
+    border-radius: 4px;
+    color: white;
     cursor: pointer;
     text-align: center;
     float: left;
@@ -98,6 +103,10 @@
 #btnDelete{
     padding: 7px 15px;
     margin-right: 20px;
+    background-color: #236C3F;
+    border: none;
+    border-radius: 4px;
+    color: white;
     cursor: pointer;
     text-align: center;
 }
@@ -105,6 +114,10 @@
 /* 수정 버튼 - 수정폼으로 이동 */
 #btnModify{
     padding: 7px 15px;
+    background-color: #236C3F;
+    border: none;
+    border-radius: 4px;
+    color: white;
     cursor: pointer;
     text-align: center;
 }

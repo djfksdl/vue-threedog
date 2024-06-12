@@ -1,89 +1,121 @@
 /* 전체 */
-#modifyFormContentAll{
-    margin: 30px auto;
+#noticeReadContentAll{
+    padding: 40px 0px;
+    margin-left: auto;
+    margin-right: auto;
     width: 1000px;
 }
 
-/* 각각 폼 */
-#formGroup{
-    padding: 10px 30px;
+
+
+/* 제목 */
+#noticeModifyTitlePart{
     border-top: 1px solid #ddd;
 }
-
-/* 제목 묶음 */
-#titleGroup{
-    margin-right: 5px;
-    color: #333;
-    vertical-align: top;
-}
-
-/* 수정 안하는 정보 묶음 */
-#noModifyInfo{
-    color: #777;
-}
-
-/* 실제 제목 */
-#formGroup input{
-    width: 500px;
-    height: 23px;
-}
-
-/* 작성자~작성일 */
-#notModifyPart{
+#noticeModifyTitle{
+    padding: 2px;
+    margin-top: 10px;
+    margin-bottom: 1px;
     width: 100%;
-    height: 100%;
-    padding: 0px 30px 10px 30px;
-    display: flex;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 25px;
+    word-break: break-all;
 }
-/* 작성자 그룹 */
-.writerGroup{
-    width: 50%;
-    height: 100%;
+
+/* 해당 글 정보 칸 밑에 줄 - 작성자~조회수 */
+#noticeModifyTopBottom{
+    padding: 5px 13px 30px 13px;
+    margin-top: 1px;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    line-height: 23px;
+    word-break: keep-all;  /*단어 기준으로 줄 바꿈*/
+}
+
+/* 작성자~실제 작성자 묶음 */
+#modifyLeftInformation{
     float: left;
-    text-align: left;
-    cursor: default;
 }
 /* 작성자 */
-/* 실제 작성자 */
+#modifyNoticeWriter{
+    margin-right: 7px;
+    color: #333;
+    font-weight: 500;
+    vertical-align: middle;
+}
+/* 해당 글 작성자 */
+#modifyNoticeRealWriter{
+    color: #777;
+    font-weight: normal;
+    vertical-align: middle;
+}
 
-/* 작성일 그룹 */
-.dateGroup{
-    width: 50%;
-    height: 100%;
+/* 작성일~실제 작성일 묶음 */
+#modifyRightInformation{
     float: right;
-    text-align: right;
-    cursor: default;
 }
 /* 작성일 */
-/* 실제 작성일 */
+#modifyNoticeRegDate{
+    float: left;
+    margin-right: 7px;
+    color: #333;
+    font-weight: 500;
+    vertical-align: middle;
+}
+/* 해당 글 작성일 */
+#modifyNoticeRealRegDate{
+    float: left;
+    color: #777;
+    font-weight: normal;
+    vertical-align: middle;
+}
 
-/* 내용 그룹 */
-.contentAll{
+
+
+/* 해당 글 내용 */
+#noticeModifyContentPart{
     border-bottom: 1px solid #ddd;
 }
-/* 내용 */
-/* 실제 내용 */
-#formGroup #noticeModifyContent{
+#noticeModifyContent{
+    padding: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     width: 100%;
-    height: 300px;
+    height: 400px;
+    min-height: 350px;
+    font-size: 15px;
+    font-weight: normal;
+    vertical-align: middle;
+    overflow-y: auto;
     resize: none;
 }
 
-/* 버튼 그룹 */
-#btnGroup{
-    margin-bottom: 10px;
+#modifyBtnGroup{
+    margin-top: 20px;
     text-align: center;
+    vertical-align: middle;
 }
 /* 취소 버튼 */
 #cancelBtn{
-    margin-right: 30px;
     padding: 7px 15px;
+    margin-right: 20px;
+    background-color: #236C3F;
+    border: none;
+    border-radius: 4px;
+    color: white;
     cursor: pointer;
     text-align: center;
 }
+
 /* 수정 버튼 */
 #modifyBtn{
     padding: 7px 15px;
+    background-color: #236C3F;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
     cursor: pointer;
     text-align: center;
 }

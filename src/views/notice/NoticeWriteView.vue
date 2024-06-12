@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <AppHeader/>
+        <AppHeader />
 
 
 
@@ -9,28 +9,16 @@
 
             <form action="" method="" v-on:submit.prevent="writeNotice">
 
-                <table>
+                <div id="noticeWriteTitlePart">
+                    <input id="writeTitle" type="text" placeholder="제목을 입력해 주세요" v-model="noticeVo.title">
+                </div>
 
-                    <thead>
-                        <tr>
-                            <th id="noticeWriteTitle">제목</th>
-                            <th id="noticeWriteContent">내용</th>
-                        </tr>
-                    </thead>
+                <div id="noticeWriteContentPart">
+                    <textarea id="writeContent" name="content" placeholder="내용을 입력해 주세요" v-model="noticeVo.content"></textarea>
+                </div>
 
-                    <tbody>
-                        <tr>
-                            <td><input id="writeTitle" type="text" placeholder="제목을 입력해 주세요" v-model="noticeVo.title"></td>
-                            <td><textarea id="writeContent" placeholder="내용을 입력해 주세요" v-model="noticeVo.content"></textarea></td>
-                        </tr>
-                    </tbody>
-
-                </table>
-
-                <input type="hidden" v-model="this.$store.state.authUser.userName">
-
-                <div id="btnGroup">
-                    <button id="btnRemove" type="button" @click="goToList">취소</button>
+                <div id="writeBtnGroup">
+                    <button id="btnCancel" type="button" @click="goToList">취소</button>
                     <button id="btnWrite" type="submit">등록</button>
                 </div>
 
@@ -39,8 +27,8 @@
         </div>
 
 
-        
-        <AppFooter/>
+
+        <AppFooter />
 
     </div>
 </template>
@@ -82,6 +70,7 @@ export default {
                 responseType: 'json' //수신타입
             }).then(response => {
                 console.log(response); //수신데이타
+                console.log(this.$store.state.token)
 
                 if(response.data.result=="success"){
                     this.$router.push("/announcements");
