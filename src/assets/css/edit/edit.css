@@ -249,12 +249,14 @@ font-size: 36px;
     padding: 0 50px;
 }
 .container2 .eMidContainer .ePriceReviewContainer .eReviewBox .eReviewSlide .img-slide{
-    min-height: 650px;
+    min-height: 800px;
 }
 
 /* 후기 슬라이드 이미지 */
 .container2 .eMidContainer .ePriceReviewContainer .eReviewBox .eReviewSlide img{
     width: 600px;
+    height: 600px;
+    object-fit: cover;
     margin-bottom: 30px;
     /* margin-left: 50px; */
 }

@@ -21,13 +21,13 @@
                         <div>
                             <ul>
                                 <li> <label>예약자성함</label>{{ this.$store.state.authUser.uName }}</li>
-                                <li><label>반려견이름</label> {{ reservationData.dogName }}</li>
+                                <li><label>반려견이름</label>{{ reservationData.dogName }}</li>
                                 <li><label>날짜 </label>{{ reservationData.rtDate }}</li>
                                 <li><label>시간</label>{{ reservationData.rtTime }}</li>
-                                <li><label>사용한 포인트</label> {{ reservationData.usePoint.toLocaleString() }} 원</li>
-                                <li><label>목록</label> {{ reservationData.beauty }}</li>
+                                <li><label>사용한 포인트</label>{{ reservationData.usePoint.toLocaleString() }} 원</li>
+                                <li><label>목록</label>{{ reservationData.beauty }}</li>
                                 <li> <label>추가요금목록</label>{{ reservationData.beauty2 }}</li>
-                                <li><label>예상가격</label> {{ reservationData.expectedPrice.toLocaleString() }} 원</li>
+                                <li><label>예상가격</label>{{ reservationData.expectedPrice.toLocaleString() }} 원</li>
                             </ul>
                         </div>
                     </div>
