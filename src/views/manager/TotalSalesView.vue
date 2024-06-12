@@ -81,7 +81,8 @@ export default {
       yearlySales: [], // 년도별 매출 데이터 배열
       dayStatsBySize: [],
       selectedCategory: '전체', // 선택된 카테고리
-      charts: {} // 차트를 저장할 객체
+      charts: {}, // 차트를 저장할 객체
+      bNo: this.$store.state.auth.bNo,
     };
   },
   computed: {
@@ -172,6 +173,7 @@ export default {
         responseType: 'json'
       }).then(response => {
         this.monthlySales = response.data.apiData.map(sale => sale.totalPrice);
+
         const labels = response.data.apiData.map(sale => `${sale.month}월`);
         console.log('Monthly Sales:', this.monthlySales);
         this.drawChart(
@@ -188,6 +190,10 @@ export default {
       });
     },
     getYearList(bNo) {
+      console.log("==========================");
+      console.log(bNo); 
+      console.log("==========================");
+
       axios({
         method: 'get',
         url: `${this.$store.state.apiBaseUrl}/api/yearstats`,
@@ -278,7 +284,7 @@ export default {
       this.updateCharts();
     },
     updateCharts() {
-      const bNo = 1; // 예를 들어 bNo가 1인 경우
+      const bNo = this.$store.state.auth.bNo; // 예를 들어 bNo가 1인 경우
       if (this.selectedCategory === '전체' || this.selectedCategory === '주별') {
         this.getWeekList(bNo);
       }
@@ -294,7 +300,7 @@ export default {
     }
   },
   mounted() {
-    const bNo = 1; // 예를 들어 bNo가 1인 경우
+    const bNo = this.$store.state.auth.bNo; // 예를 들어 bNo가 1인 경우
     this.getWeekList(bNo);
     this.getMonthList(bNo);
     this.getYearList(bNo);
