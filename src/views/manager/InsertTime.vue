@@ -30,7 +30,7 @@
                     <!-- 날짜 선택 -->
                     <div class="selectWorkDate">
                         <div>
-                            <input type="date" v-model="selectedStartDate" :min="today" ref="startDateInput" @input="handleDateChange('start')"> ~
+                            <input type="date" v-model="selectedStartDate"  ref="startDateInput" @input="handleDateChange('start')"> ~
                             <input type="date" v-model="selectedEndDate" :min="selectedStartDate" ref="endDateInput" @focus="checkStartDate" @input="handleDateChange('end')">
                         </div>
                         <div class="weekAllDayCheck">
@@ -95,11 +95,12 @@
                             <p v-if="registeredTimes.length === 0">등록된 예약 시간이 없습니다.</p>
                         </div>
                     </div>
+
                     <!-- 예약시간 추가 -->
                     <div class="plusRtimeContainer">
                         <label>추가할 시간 <small>(한시간 단위로 추가 됩니다.)</small></label>
                         <div class="plusRtimeRow">
-                            <input type="time" v-model="startTime" @input="updateEndTime" >~
+                            <input type="time" v-model="startTime" @input="updateEndTime" @blur="adjustStartTimeMinutes" >~
                             <input type="time" v-model="endTime" readonly>
                             <button type="button" v-on:click="plusRtime" >추가</button>
                         </div>
@@ -441,6 +442,16 @@ export default {
 
             this.updateCheckAllDayState();
             
+        },
+
+        // ***** 예약시간 추가 - 분을 00과 30분만 선택 가능하도록 조정
+        adjustStartTimeMinutes(){
+            if (this.startTime) {
+                let [hours, minutes] = this.startTime.split(':');
+                minutes = minutes >= 30 ? '30' : '00';
+                this.startTime = `${hours}:${minutes}`;
+                this.updateEndTime(); // 시작 시간이 변경되었으므로 종료 시간도 업데이트
+            }
         },
 
         // ***** 유효한 시간이 있는지 확인 *****
@@ -845,7 +856,7 @@ export default {
         },
 
         // ***** 등록되어있는 시간 가져오기 *****
-        selectRtimes(date) {
+        async selectRtimes(date) {
             // console.log("예약시간 가져오기");
 
             return axios({
@@ -869,8 +880,8 @@ export default {
         },
 
         // ***** 시간 삭제하기 *****
-        deleteRtime(rtTime) {
-            Swal.fire({
+        async deleteRtime(rtTime) {
+            const result = await Swal.fire({
                 title: '정말 삭제하시겠습니까?',
                 text: "이 작업은 되돌릴 수 없습니다!",
                 icon: 'warning',
@@ -879,9 +890,11 @@ export default {
                 cancelButtonColor: '#d33',
                 confirmButtonText: '삭제',
                 cancelButtonText: '취소'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    axios({
+            });
+
+            if (result.isConfirmed) {
+                try {
+                    await axios({
                         method: 'delete',
                         url: `${this.$store.state.apiBaseUrl}/api/su/deleteRtime`,
                         headers: { "Content-Type": "application/json; charset=utf-8" },
@@ -889,25 +902,30 @@ export default {
                             bNo: this.rtVo.bNo,
                             rtDate: this.selectedDate,
                             rtTime: rtTime
-                        }, 
-                    }).then(response => {
-                        console.log(response.data.apiData);
-                        this.selectRtimes(this.selectedDate); // 변경된 예약 시간 목록 다시 받아오기
-                        Swal.fire(
-                            '삭제되었습니다!',
-                            '예약 시간이 삭제되었습니다.',
-                            'success'
-                        );
-                    }).catch(error => {
-                        console.log(error);
-                        Swal.fire(
-                            '삭제 실패!',
-                            '예약 시간 삭제에 실패했습니다.',
-                            'error'
-                        );
+                        }
                     });
+
+                    await this.selectRtimes(this.selectedDate); // 변경된 예약 시간 목록 다시 받아오기
+
+                    Swal.fire(
+                        '삭제되었습니다!',
+                        '예약 시간이 삭제되었습니다.',
+                        'success'
+                    );
+
+                    // 예약된 시간이 모두 삭제된 경우 페이지 새로고침
+                    if (this.registeredTimes.length === 0) {
+                        window.location.href = '/inserttime';
+                    }
+                } catch (error) {
+                    console.log(error);
+                    Swal.fire(
+                        '삭제 실패!',
+                        '예약 시간 삭제에 실패했습니다.',
+                        'error'
+                    );
                 }
-            });
+            }
         },
 
         // ***** 추가 시간 시작시간+1 *****
@@ -967,6 +985,11 @@ export default {
                             '예약 시간이 추가되었습니다.',
                             'success'
                         );
+
+                        // 입력 필드 초기화
+                        this.startTime = '';
+                        this.endTime = '';
+                        
                     }).catch(error => {
                         console.log(error);
                         Swal.fire(

@@ -7,7 +7,7 @@
                 <div class="mfotterInfo">
                     <p>{{ shopInfo.bZipCode || '' }} {{ shopInfo.bAddress || '' }} {{ shopInfo.bdAddress || '' }}</p>
                     <div>
-                        <p>대표자 : {{ shopInfo.bMaster || '가게 생성 후 표시됩니다.' }}</p>
+                        <p>가게이름 : {{ shopInfo.title || '가게 생성 후 표시됩니다.' }}</p>
                         <p>사업자등록번호 : {{ shopInfo.bNum || '가게 생성 후 표시됩니다.' }}</p>
                         <p>전화번호 : {{ shopInfo.bPhone || '가게 생성 후 표시됩니다.' }}</p>
                     </div>

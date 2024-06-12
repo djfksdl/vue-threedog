@@ -20,7 +20,6 @@
                 <p>품종: {{ selectedEvent.extendedProps.breed }}</p>
                 <p>미용컷: {{ selectedEvent.extendedProps.groomingStyle }}</p>
                 <p>금액: {{ selectedEvent.extendedProps.price }}</p>
-
                 <span class="schedule-edit" @click="editEvent">시간수정</span>
                 <span class="schedule-delete" @click="deleteEvent">삭제</span>
                 <span class="schedule-close" @click="closeModal">확인</span>
@@ -107,9 +106,15 @@ export default {
                 console.error('Error fetching reservations:', error);
             });
         },
-
         updateCalendarEvents(bNo) {
+
             const events = this.reservationData.map(reservation => {
+                // reservation 객체와 rtDate, rtTime이 null 또는 undefined인지 확인
+                if (!reservation || !reservation.rtDate || !reservation.rtTime) {
+                    console.error('reservation 또는 reservation.rtDate, reservation.rtTime이 null이거나 정의되지 않았습니다.', reservation);
+                    return null; // 잘못된 데이터를 건너뛰도록 null을 반환
+                }
+
                 const dateParts = reservation.rtDate.split('-'); // rtDate를 연, 월, 일로 분리
                 const timeParts = reservation.rtTime.split(':'); // rtTime을 시간과 분으로 분리
 
@@ -136,14 +141,15 @@ export default {
                         price: reservation.expectedPrice,
                         rsNo: reservation.rsNo,
                         bNo: bNo, // bNo 값을 설정
-                        pushTime: reservation.pushTime // pushTime 값을 설정
+                        //pushTime: reservation.pushTime // pushTime 값을 설정
                     }
                 };
-            });
+            }).filter(event => event !== null); // null 값을 필터링하여 잘못된 데이터를 제거
 
             this.calendarOptions.events = events;
             this.$refs.calendar.getApi().refetchEvents();
         },
+
 
         handleEventDrop(info) {
             console.log("handleEventDrop");
@@ -186,11 +192,8 @@ export default {
             const start = event.start.toISOString().slice(0, 19).replace('T', ' '); // ISO 8601 형식을 MySQL 형식으로 변환
 
             // 예약 완료 상태일 때 rtfinish를 1로 설정하고, 예약 가능 상태일 때는 0으로 설정
-            // const rtfinish = event.rtfinish || 0; // 예약 완료 상태 확인
-            const rtfinish = event.isConfirmed ? 1 : 0;
-
-            // 예약 완료 상태일 때 rtfinish를 1로 설정하고, 예약 가능 상태일 때는 0으로 설정
-            //const rtfinish = event.extendedProps && event.extendedProps.rtfinish !== undefined ? event.extendedProps.rtfinish : 0;
+            const rtfinish = event.rtfinish || 0; // 예약 완료 상태 확인
+            //const rtfinish = event.isConfirmed ? 1 : 0;
 
 
             // 서버에 변경된 일정 정보를 업데이트하는 API 호출
@@ -233,7 +236,7 @@ export default {
             }).then(result => {
                 if (result.isConfirmed) {
                     const { start, title } = result.value;
-                    this.selectedEvent.setStart(new Date(start));
+                    //  this.selectedEvent.setStart(new Date(start));
                     this.selectedEvent.setProp('title', title);
 
                     // 서버에 변경된 예약 정보를 업데이트하는 API 호출
@@ -338,6 +341,7 @@ export default {
             });
         },
 
+        // ------------------알림장 보내보내----------------------------
         // ------------------알림장 보내보내----------------------------
 
         handleEventClick(info) {

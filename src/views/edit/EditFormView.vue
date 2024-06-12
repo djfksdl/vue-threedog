@@ -8,7 +8,6 @@
                 <div class="eLogoTitle">
                     <div class="eLogoTitleExplain">
                         <h1>로고, 타이틀 등록</h1>
-                        <p>*로고 사이즈 60*60 권장</p>
                     </div>
                     <!-- 로고 -->
                     <div class="eLogoTitleInfo">
@@ -43,7 +42,7 @@
                         <h1>미용사진 등록</h1>
                         <div class="eCutSlideImgInfo">
                             <input id="btnAtt2" type="file" multiple='multiple' class="eCutFileAddBtn" >
-                            <p>*사진은 최대 18장까지 첨부할 수 있습니다.(최소 6개이상 넣는걸 추천합니다.)</p>
+                            <p>*사진은 최대 5장까지 첨부할 수 있습니다.(5개 넣는걸 추천합니다.)</p>
                         </div>
                         <div id='att_zone2' class="addcImgBox" data-placeholder="파일을 첨부하려면 파일 선택 버튼을 클릭하거나 파일을 드래그하세요."></div>
                     </div>
@@ -81,7 +80,7 @@
                     <div class="ePriceReviewContainer">
                         <!-- 가격 -->
                         <!-- <div class="ePriceBox" v-if="priceList.length >= 65"> -->
-                        <div :class="{'ePriceBox': true, 'eRight': shopInfo.isChange}" v-if="priceList.length >= 65">
+                        <div :class="{'ePriceBox': true, 'eRight': shopInfo.isChange}" v-if="priceList.length >= 64">
                             <h1>가격</h1>
                             <table border="1">
                                 <!-- 소형견 -->
@@ -165,10 +164,6 @@
                                     <td><input type="text" v-model="priceList[38].onePrice"></td>
                                     <td colspan="2"><input type="text" v-model="priceList[39].onePrice"></td>
                                 </tr>
-                                <tr >
-                                    <th>12kg이상</th>
-                                    <td colspan="6">초과 lkg당 <input type="text" v-model="priceList[40].onePrice">원 추가</td>
-                                </tr>
                                 <!-- 특수견 -->
                                 <tr>
                                     <th colspan="7" class="eNonBorder">특수견(비숑. 베들링턴 등...)</th>
@@ -184,30 +179,30 @@
                                 </tr>
                                 <tr>
                                     <th>5kg이하</th>
-                                    <td><input type="text" v-model="priceList[41].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[40].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[41].onePrice"></td>
                                     <td><input type="text" v-model="priceList[42].onePrice"></td>
                                     <td><input type="text" v-model="priceList[43].onePrice"></td>
                                     <td><input type="text" v-model="priceList[44].onePrice"></td>
                                     <td><input type="text" v-model="priceList[45].onePrice"></td>
-                                    <td><input type="text" v-model="priceList[46].onePrice"></td>
                                 </tr>
                                 <tr >
                                     <th>5kg~8kg</th>
-                                    <td><input type="text" v-model="priceList[47].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[46].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[47].onePrice"></td>
                                     <td><input type="text" v-model="priceList[48].onePrice"></td>
                                     <td><input type="text" v-model="priceList[49].onePrice"></td>
                                     <td><input type="text" v-model="priceList[50].onePrice"></td>
                                     <td><input type="text" v-model="priceList[51].onePrice"></td>
-                                    <td><input type="text" v-model="priceList[52].onePrice"></td>
                                 </tr>
                                 <tr >
                                     <th>8kg이상</th>
-                                    <td><input type="text" v-model="priceList[53].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[52].onePrice" ></td>
+                                    <td><input type="text" v-model="priceList[53].onePrice"></td>
                                     <td><input type="text" v-model="priceList[54].onePrice"></td>
                                     <td><input type="text" v-model="priceList[55].onePrice"></td>
                                     <td><input type="text" v-model="priceList[56].onePrice"></td>
                                     <td><input type="text" v-model="priceList[57].onePrice"></td>
-                                    <td><input type="text" v-model="priceList[58].onePrice"></td>
                                 </tr>
                                 <!-- 추가요금 -->
                                 <tr>
@@ -216,21 +211,21 @@
                                 <tr>
                                     <th rowspan="4" colspan="2" class="eNonBorder2">추가요금</th>
                                     <th>가위컷</th>
-                                    <td><input type="text" v-model="priceList[59].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[58].onePrice"></td>
                                     <th>특수얼굴컷</th>
-                                    <td colspan="2"><input type="text" v-model="priceList[62].onePrice"></td>
+                                    <td colspan="2"><input type="text" v-model="priceList[61].onePrice"></td>
                                 </tr>
                                 <tr>
                                     <th>엉킴</th>
-                                    <td><input type="text" v-model="priceList[60].onePrice"></td>
-                                    <th>투톤염색</th>
-                                    <td colspan="2"><input type="text" v-model="priceList[63].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[59].onePrice"></td>
+                                    <th>염색</th>
+                                    <td colspan="2"><input type="text" v-model="priceList[62].onePrice"></td>
                                 </tr>
                                 <tr>
                                     <th>기장</th>
-                                    <td><input type="text" v-model="priceList[61].onePrice"></td>
-                                    <th>염색</th>
-                                    <td colspan="2"><input type="text" v-model="priceList[64].onePrice"></td>
+                                    <td><input type="text" v-model="priceList[60].onePrice"></td>
+                                    <th>초과무게당</th>
+                                    <td colspan="2"><input type="text" v-model="priceList[63].onePrice">원 추가</td>
                                 </tr>
                             </table>
                         </div>
@@ -293,7 +288,7 @@
                                     <!-- 오시는길-오른쪽 -->
                                     <div class="eRoadRight">
                                         <div class="eRoadRightContents">
-                                            <p>{{ shopInfo.bAddress }} {{ shopInfo.bdAddress}} ({{ shopInfo.bZipCode }})</p>
+                                            <p>{{ shopInfo.bAddress }} {{ shopInfo.bdAddress}} ({{ shopInfo.bZipCode || '가게 생성 후 표시됩니다.' }}) </p>
                                         </div>
                                         <div class="eRoadRightBtnBox">
                                             <button class="kakaoMapBtn">카카오 지도보기</button>
@@ -427,7 +422,7 @@
             //가격리스트 없을때! 가격리스트 초기화!
             initializePriceList() {
                 let priceList = [];
-                for (let i = 1; i < 66; i++) { // beautyNo가 1번 부터 시작이라 1번부터 값을 할당해야함
+                for (let i = 1; i < 65; i++) { // beautyNo가 1번 부터 시작이라 1번부터 값을 할당해야함
                     priceList.push({ beautyNo: i ,onePrice: '' });
                 }
                 return priceList;
@@ -437,6 +432,9 @@
                 this.action = actionType;
             },
             handleSubmit() {
+                //isChange의 기본값 설정
+                this.shopInfo.isChange = this.shopInfo.isChange || false;
+
                 if (this.action === 'add') {
                     this.addShopInfo();
                 } else if (this.action === 'update') {
@@ -533,7 +531,7 @@
                 }
 
                 // 위치 상태 추가
-                formData.append("isChange", this.shopInfo.isChange);
+                formData.append("isChange", this.shopInfo.isChange || false); //기본값 설정
 
                 console.log("=====보내기전 정보 담은거 확인=====");
 
@@ -1082,10 +1080,10 @@
                     var files = e.target.files;
                     var fileArr = Array.prototype.slice.call(files);
                     fileArr.forEach(file => {
-                        if (sel_files.length < 18) {
+                        if (sel_files.length < 5) {
                             imageLoader(file);
                         } else if (!alerted) {
-                            alert("최대 18장까지만 첨부할 수 있습니다.");
+                            alert("최대 5장까지만 첨부할 수 있습니다.");
                             alerted = true;
                         }
                     });
@@ -1113,16 +1111,16 @@
                     var files = dt.files;
                     if (sel_files.length < 18) {
                         for (let f of files) {
-                            if (sel_files.length < 18) {
+                            if (sel_files.length < 5) {
                                 imageLoader(f);
                             } else if (!alerted) {
-                                alert("최대 18장까지만 첨부할 수 있습니다.");
+                                alert("최대 5장까지만 첨부할 수 있습니다.");
                                 alerted = true;
                                 break;
                             }
                         }
                     } else if (!alerted) {
-                        alert("최대 18장까지만 첨부할 수 있습니다.");
+                        alert("최대 5장까지만 첨부할 수 있습니다.");
                         alerted = true;
                     }
                     updateFileInput();
@@ -1130,7 +1128,7 @@
 
                 // 이미지 로더 함수-첨부된 이미지들을 배열에 넣고 미리보기
                 function imageLoader(file) {
-                    if (sel_files.length >= 18) { // 이미 18개 이상인 경우 추가하지 않음
+                    if (sel_files.length >= 5) { // 이미 18개 이상인 경우 추가하지 않음
                         return;
                     }
                     sel_files.push(file);

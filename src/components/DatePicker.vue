@@ -2,9 +2,9 @@
   <div id="reservationFormDatePicker">
     <div class="dateBox">
       <Datepicker locale="ko" v-model="date" format="yyyy-MM-dd" :enable-time-picker="false" :inline="true"
-        :min-date="minDate" @update:model-value="onDateChange" />
+        @update:model-value="onDateChange" />
     </div>
-
+<!--  :min-date="minDate" -->
     
     <div class="time">
       <!-- <div>선택한 날짜 {{ reserveTime.rtDate }}</div> -->
@@ -44,7 +44,7 @@ import { useRoute } from 'vue-router';
 
 const store = useStore();
 const date = ref(new Date());
-const minDate = ref(new Date());
+// const minDate = ref(new Date());
 
 const reserveTime = ref({
   rtNo: 0,
@@ -144,8 +144,9 @@ const isSelected = (time) => {
 <style>
 #reservationFormDatePicker {
   display: flex;
-  width: 1300px;
-  margin: 0 auto;
+  margin-top: 30px;
+  /* width: 1300px; */
+  /* margin: 0 auto; */
 }
 
 #reservationFormDatePicker .disabled {
@@ -161,17 +162,16 @@ const isSelected = (time) => {
 }
 
 #reservationFormDatePicker .dp__instance_calendar {
-  width: 500px;
+  width: 400px;
   font-size: 20px;
-  padding: 10px;
+  /* padding: 10px; */
   border-bottom: none;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  margin-left: 11px;
 }
 
 #reservationFormDatePicker .dp__calendar_item {
-  padding: 10px;
+  /* padding: 10px; */
 }
 
 #reservationFormDatePicker .dp__calendar_header_item {
@@ -180,19 +180,15 @@ const isSelected = (time) => {
 
 #reservationFormDatePicker .dp__action_button.dp__action_select {
   color: #236C3F;
-  font-size: 0px;
-  width: 420px;
+  width: 400px;
   height: 40px;
-  margin-right: 30px;
-  margin-top: -13px;
-  margin-bottom: 70px;
 }
 
 #reservationFormDatePicker .dp__action_button.dp__action_select::after {
   content: "날짜 선택";
   color: white;
   font-size: 18px;
-  padding-left: 170px;
+  padding-left: 120px;
 }
 
 #reservationFormDatePicker .dp__selection_preview {
@@ -201,15 +197,16 @@ const isSelected = (time) => {
 }
 
 #reservationFormDatePicker .time {
-  width: 800px;
   /* background-color: red; */
-  margin: 100px 0 0 150px;
+  margin-left:60px;
   height: 400px;
   /* margin: 70px 150px 0 300px; */
 }
 
 #reservationFormDatePicker .time p {
-  margin: 23px;
+  margin: 20px 0 0 10px ;
+  font-weight: bold;
+  font-size: 20px;
 }
 
 #reservationFormDatePicker .time button {

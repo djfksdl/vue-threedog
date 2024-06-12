@@ -16,7 +16,7 @@
 
                 <div class="reserveCheckForm" v-bind:key="i" v-for="(reserveVo, i) in reserveList">
                     <!-- 예약정보 -->
-                    <div class="rcfInfo" style="display: flex; justify-content: space-between; align-items: center; ">
+                    <div class="rcfInfo" style="display: flex; justify-content: space-between;">
                         <div>
                             <div>
                                 <p>매장명</p>

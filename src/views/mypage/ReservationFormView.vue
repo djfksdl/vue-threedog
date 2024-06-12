@@ -3,21 +3,15 @@
         <AppHeader />
         <div id="reservationForm">
             <SideBar />
-            <div class="container">
-                <div></div>
-
+            <div class="container8">
+                <h1>예약하기</h1>
 
                 <div>
-                    <!-- <div class="h2Box1">
-                        <h2>가게정보</h2>
-                    </div> -->
-
-
                     <div class="managerInfor">
                         <div class="managerInfor2" style="display: flex">
                             <div>
                                 <img  v-bind:src="`${this.$store.state.apiBaseUrl}/upload/${businessVo.logo}`"
-                                    style="margin: 20px 0 0 30px; width: 220px;height: 220px; border-radius: 5%; border: 1px solid #a7a4a4;">
+                                    style="width: 220px;height: 220px; border-radius: 5%; border: 1px solid #a7a4a4;">
                             </div>
 
                             <div class="managerInfor3">
@@ -52,7 +46,7 @@
                 </div>
 
                 <div>
-                    <h1>예약하기</h1>
+                    
                     <div class="buttonCon">
                         <button
                             :style="{ backgroundColor: currentStep >= 1 ? '#236c3f' : '', color: currentStep === 1 ? 'white' : '' }"
@@ -80,7 +74,7 @@
                     <form v-on:submit.prevent="reserveInsert">
                         <div>
                             <div v-if="currentStep == 1">
-                                <div style=" margin: 30px 0 30px 30px;">
+                                <div>
                                     <h2>📅 날짜와 시간을 선택해주세요</h2>
                                 </div>
                                 <div class="choiceBox">
@@ -129,7 +123,7 @@
 
                                             <div class="bite">
                                                 <div class="biteRange">
-                                                    <label>입질정도</label>
+                                                    <label style="font-weight: bold;">입질정도</label>
                                                     <div class="biteRange2">
 
                                                         <input type="range" min="1" max="3" step="1" list="tickmarks"
@@ -419,8 +413,6 @@
 
                                     <div class="setstepBtnCon4">
                                         <button class="setstepBtn1" @click="setStep(3)">이전으로 이동</button>
-                                    </div>
-                                    <div class="subBtn">
                                         <button class="reserveInsert" type="submit">예약</button>
                                     </div>
                                 </div>

@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- 예약버튼 -->
-        <router-link to="#" class="toReserveFrom" v-on:click="goReserve" :class="{ 'show': showButton }">
+        <router-link to="" class="toReserveFrom" v-on:click="goReserve" :class="{ 'show': showButton }">
             <!-- :class(디렉티브) :showButton이 true일때 show를 추가하고 flase일때는 show클래스를 제거 -->
             <div class="goReForm"><img src="@/assets/images/calendar.png"></div>
         </router-link>
@@ -46,8 +46,18 @@ export default {
             reserveButton .style.opacity = '0';
         },
         goReserve(){
-            console.log("예약 버튼을 눌렀을때");
-            this.$router.push(`/reservationform/${this.$route.params.bNo}`);
+            // console.log("예약 버튼을 눌렀을때");
+            const uNo = this.$store.state.authUser;
+            const bNo = this.$store.state.auth;
+
+            if(!uNo && !bNo){
+                alert("로그인이 필요한 서비스입니다.");
+                this.$router.push('/login');
+            }else if(!uNo && bNo){
+                alert("회원 전용 서비스입니다.");
+            }else{
+                this.$router.push(`/reservationform/${this.$route.params.bNo}`);
+            }
             
         }
         

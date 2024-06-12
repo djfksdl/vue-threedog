@@ -48,18 +48,10 @@
                             <input type="text" id="name" name="name" placeholder="이름" v-model="userVo.uName">
                         </div>
 
-                        <!-- 전화번호 인증 -->
+                        <!-- 전화번호 -->
                         <div class="form-group">
                             <div class="input-container">
                                 <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="전화번호" v-model="userVo.uPhone">
-                                <button type="button" @click="sendVerificationCode" class="small-btn green-btn">전송</button>
-                            </div>
-                        </div>
-                        <!-- 인증번호 입력 -->
-                        <div v-if="showVerificationInput" class="form-group">
-                            <div class="input-container">
-                                <input type="text" id="verificationCode" name="verificationCode" placeholder="인증번호 입력">
-                                <button type="button" @click="verifyCode" class="small-btn green-btn">다시받기</button>
                             </div>
                         </div>
 
@@ -104,6 +96,7 @@
 <script>
 import "@/assets/css/potal/signup.css"
 import axios from "axios";
+import defaultProfileImg from '@/assets/images/default_profile.jpg';
 
 export default {
     name: "SignView",
@@ -180,7 +173,7 @@ export default {
         },
 
         // 회원가입 버튼눌렀을때
-        signup() {
+        async signup() {
             console.log(this.userVo);
 
             if(this.userVo.uId == ""){
@@ -204,7 +197,10 @@ export default {
                 
                 for (let key in this.userVo) {
                     if(key == "file" &&  this.userVo["file"] == null) {
-                        // 파일이 null일때 null로 보내기
+                        // 기본 이미지를 Blob으로 변환하여 추가
+                        const response = await fetch(defaultProfileImg);
+                        const blob = await response.blob();
+                        formData.append("file", blob, 'default_profile.jpg');
                     }else{
                         formData.append(key, this.userVo[key]);
                     }

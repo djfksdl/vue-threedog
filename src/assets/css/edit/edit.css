@@ -278,6 +278,18 @@ font-size: 36px;
     color: #666;
 }
 
+/* 후기 없을때 */
+.container2 .eMidContainer .ePriceReviewContainer .noReviewContainer{
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    width: 100%;
+    height: 700px;
+    text-align: center;
+    padding: 30px;
+    line-height: 600px;
+}
+
+
  /*============= 위치 =============*/
 .container2 .eMidContainer .ePositionContainer{
     /* background-color: skyblue; */
