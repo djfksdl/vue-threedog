@@ -19,7 +19,6 @@ export default createStore({
     },
     mutations: {
         setAuthUser(state, payload) {
-            console.log("oh yeah cmon")
             state.authUser = payload;
         },
         setAuthName(state, payload) {
