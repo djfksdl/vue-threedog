@@ -81,7 +81,8 @@ export default {
       yearlySales: [], // 년도별 매출 데이터 배열
       dayStatsBySize: [],
       selectedCategory: '전체', // 선택된 카테고리
-      charts: {} // 차트를 저장할 객체
+      charts: {}, // 차트를 저장할 객체
+      bNo: this.$store.state.auth.bNo,
     };
   },
   computed: {
@@ -172,14 +173,44 @@ export default {
         responseType: 'json'
       }).then(response => {
         this.monthlySales = response.data.apiData.map(sale => sale.totalPrice);
+
         const labels = response.data.apiData.map(sale => `${sale.month}월`);
+        const backgroundColors = [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(199, 199, 199, 0.2)',
+          'rgba(83, 102, 255, 0.2)',
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)'
+        ];
+        const borderColors = [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(199, 199, 199, 1)',
+          'rgba(83, 102, 255, 1)',
+          'rgba(255, 99, 132, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)'
+        ];
+
         console.log('Monthly Sales:', this.monthlySales);
         this.drawChart(
           'monthlyChartCanvas',
           labels,
           this.monthlySales,
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(255, 206, 86, 1)',
+          backgroundColors,
+          borderColors,
           '월별 매출',
           'doughnut'
         );
@@ -188,6 +219,10 @@ export default {
       });
     },
     getYearList(bNo) {
+      console.log("==========================");
+      console.log(bNo);
+      console.log("==========================");
+
       axios({
         method: 'get',
         url: `${this.$store.state.apiBaseUrl}/api/yearstats`,
@@ -278,7 +313,7 @@ export default {
       this.updateCharts();
     },
     updateCharts() {
-      const bNo = 1; // 예를 들어 bNo가 1인 경우
+      const bNo = this.$store.state.auth.bNo; // 예를 들어 bNo가 1인 경우
       if (this.selectedCategory === '전체' || this.selectedCategory === '주별') {
         this.getWeekList(bNo);
       }
@@ -294,7 +329,7 @@ export default {
     }
   },
   mounted() {
-    const bNo = 1; // 예를 들어 bNo가 1인 경우
+    const bNo = this.$store.state.auth.bNo; // 예를 들어 bNo가 1인 경우
     this.getWeekList(bNo);
     this.getMonthList(bNo);
     this.getYearList(bNo);
