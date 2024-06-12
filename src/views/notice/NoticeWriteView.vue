@@ -70,7 +70,6 @@ export default {
                 responseType: 'json' //수신타입
             }).then(response => {
                 console.log(response); //수신데이타
-                console.log(this.$store.state.token)
 
                 if(response.data.result=="success"){
                     this.$router.push("/announcements");
