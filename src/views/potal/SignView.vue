@@ -96,6 +96,7 @@
 <script>
 import "@/assets/css/potal/signup.css"
 import axios from "axios";
+import defaultProfileImg from '@/assets/images/default_profile.jpg';
 
 export default {
     name: "SignView",
@@ -172,7 +173,7 @@ export default {
         },
 
         // 회원가입 버튼눌렀을때
-        signup() {
+        async signup() {
             console.log(this.userVo);
 
             if(this.userVo.uId == ""){
@@ -196,7 +197,10 @@ export default {
                 
                 for (let key in this.userVo) {
                     if(key == "file" &&  this.userVo["file"] == null) {
-                        // 파일이 null일때 null로 보내기
+                        // 기본 이미지를 Blob으로 변환하여 추가
+                        const response = await fetch(defaultProfileImg);
+                        const blob = await response.blob();
+                        formData.append("file", blob, 'default_profile.jpg');
                     }else{
                         formData.append(key, this.userVo[key]);
                     }
