@@ -15,7 +15,7 @@
 
                     <span id="totalNotice">전체 {{ totalCnt }}건</span>
 
-                    <button id="btnAdd" v-if="true" @click="goToWritePage()">등록</button>
+                    <button id="btnAdd" v-if="this.$store.state.authUser.uName=='사이트 관리자'" @click="goToWritePage()">등록</button>
                     
                     <input id="searchBox" type="search" placeholder="검색" v-model="noticeVo.keyword" v-on:keyup.enter="search">
                     <img id="searchImg" src="https://cdn-icons-png.flaticon.com/512/71/71403.png" v-on:click="search">
@@ -92,7 +92,6 @@ export default {
     methods: {
         getList(list) {
             console.log("리스트 불러오기");
-            console.log(this.$store.state.authUser.userName)
 
             if (this.noticeVo.crtPage <= 1) {
                 this.noticeVo.crtPage = 1;

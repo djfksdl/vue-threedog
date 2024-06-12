@@ -104,15 +104,16 @@ export default {
             }).then(response => {
                 console.log(response); //수신데이타
 
-                 if(response.data.result=="success"){
-                     console.log("성공");
+                if(response.data.result=="success"){
+                    console.log("성공");
 
-                     this.$router.push("/noticeRead/"+this.$route.params.no);
-                 }else{
-                     console.log(response.data.message);
+                    this.$router.push("/noticeRead/"+this.$route.params.no);
+                }else{
+                alert("수정에 실패하였습니다.");
+                console.log(response.data.message);
 
-                     this.$router.push("/announcements");
-                 }
+                this.$router.push("/announcements");
+                }
                 
             }).catch(error => {
                 console.log(error);

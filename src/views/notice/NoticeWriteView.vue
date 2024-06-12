@@ -74,7 +74,8 @@ export default {
                 if(response.data.result=="success"){
                     this.$router.push("/announcements");
                 }else{
-                    alert("로그인이 필요합니다.");
+                    alert("등록에 실패하였습니다.");
+                    console.log(response.data.message);
 
                     this.$router.push("#");
                 }

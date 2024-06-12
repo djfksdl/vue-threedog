@@ -25,8 +25,8 @@
 
             <div id="btnGroup">
                 <button id="btnGoToList" onclick="location.href='/announcements'">목록</button>
-                <button id="btnDelete" @click="deleteNotice(noticeVo.no)">삭제</button>
-                <button id="btnModify" @click="goToModifyPage(noticeVo.no)">수정</button>
+                <button id="btnDelete" v-if="this.$store.state.authUser.uName=='사이트 관리자'" @click="deleteNotice(noticeVo.no)">삭제</button>
+                <button id="btnModify" v-if="this.$store.state.authUser.uName=='사이트 관리자'" @click="goToModifyPage(noticeVo.no)">수정</button>
             </div>
 
         </div>
@@ -97,9 +97,16 @@ export default {
             }).then(response => {
                 console.log(response.data); //수신데이타
 
-                console.log("삭제 성공");
+                if(response.data.result=="success"){
+                    console.log("삭제 성공");
 
-                location.href="/announcements"
+                    this.$router.push("/announcements");
+                }else{
+                    alert("삭제에 실패하였습니다.");
+                    console.log(response.data.message);
+
+                    this.$router.push("#");
+                }
 
             }).catch(error => {
                 console.log(error);
